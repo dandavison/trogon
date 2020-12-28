@@ -3,8 +3,7 @@
 #[macro_use]
 extern crate rocket;
 
-use std::path::PathBuf;
-use std::process;
+mod db;
 
 use rocket::response::content;
 
@@ -13,8 +12,8 @@ fn index() -> &'static str {
     "Hello, world!"
 }
 
-#[get("/html")]
-fn html() -> content::Html<&'static str> {
+#[get("/vue")]
+fn vue() -> content::Html<&'static str> {
     content::Html(
         r#"<!DOCTYPE html>
 <html>
@@ -48,15 +47,18 @@ fn json() -> content::Json<&'static str> {
 
 #[get("/query")]
 fn query() -> String {
-    let bytes = process::Command::new(PathBuf::from("/Users/dan/src/sylph/run_query"))
-        .output()
-        .unwrap()
-        .stdout;
-    String::from_utf8(bytes).unwrap()
+    // FIXME: connection should persist across requests!
+    db::DatabaseConnection::new().send_query(
+        "select sg.name
+from site_guide as sg
+inner join site_day_guide as sdg on sdg.site_guide = sg.id
+where sdg.day = 2;
+",
+    )
 }
 
 fn main() {
     rocket::ignite()
-        .mount("/", routes![index, html, json, query])
+        .mount("/", routes![index, vue, json, query])
         .launch();
 }
