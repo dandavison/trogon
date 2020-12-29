@@ -1,13 +1,18 @@
+drop table if exists site;
 create table site (
   id integer primary key,
-  name varchar
+  name varchar,
+  lat float8,
+  long float8
 );
 
+drop table if exists tour;
 create table tour (
   id integer primary key,
   name varchar
 );
 
+drop table if exists site_day;
 create table site_day (
   id integer primary key,
   tour integer references tour,
@@ -16,6 +21,7 @@ create table site_day (
   unique (site, day)
 );
 
+drop table if exists site_guide;
 create table site_guide (
   id integer primary key,
   name varchar,
@@ -23,6 +29,7 @@ create table site_guide (
   unique (id, site)
 );
 
+drop table if exists site_day_guide;
 create table site_day_guide (
   id integer primary key,
   site integer references site,
