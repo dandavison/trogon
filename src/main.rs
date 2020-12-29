@@ -17,7 +17,13 @@ fn index() -> &'static str {
 
 #[get("/map")]
 fn map() -> Template {
-    Template::render("map", HashMap::<&str, &str>::new())
+    let mut context = HashMap::<&str, f64>::new();
+    let rows = db::get_client()
+        .query("select lat, lon from site where name = 'Villa Azul'", &[])
+        .unwrap();
+    context.insert("lat", rows[0].get("lat"));
+    context.insert("lon", rows[0].get("lon"));
+    Template::render("map", context)
 }
 
 #[get("/vue")]
@@ -53,21 +59,9 @@ fn json() -> content::Json<&'static str> {
     content::Json(r#"{ "hi": "world" }"#)
 }
 
-#[get("/query")]
-fn query() -> String {
-    // FIXME: connection should persist across requests!
-    db::DatabaseConnection::new().send_query(
-        "select sg.name
-from site_guide as sg
-inner join site_day_guide as sdg on sdg.site_guide = sg.id
-where sdg.day = 2;
-",
-    )
-}
-
 fn main() {
     rocket::ignite()
-        .mount("/", routes![index, json, map, query, vue])
+        .mount("/", routes![index, json, map, vue])
         .attach(Template::fairing())
         .launch();
 }

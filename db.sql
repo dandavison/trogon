@@ -3,7 +3,7 @@ create table site (
   id integer primary key,
   name varchar,
   lat float8,
-  long float8
+  lon float8
 );
 
 drop table if exists tour;
@@ -40,8 +40,8 @@ create table site_day_guide (
 );
 
 -- insert Villa Azul as site 1
-insert into site (id, name)
-values (1, 'Villa Azul');
+insert into site (id, name, lat, lon)
+values (1, 'Villa Azul', -0.5745422166246894, -72.11438768433418);
 
 -- insert Fred and Anthony as guide at Villa Azul
 -- with site as (select id from site where name = "Villa Azul")
