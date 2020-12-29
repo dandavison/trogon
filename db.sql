@@ -42,6 +42,8 @@ create table site_day_guide (
 -- site
 insert into site (id, name, lat, lon)
 values (1, 'Villa Azul', -0.5745422166246894, -72.11438768433418);
+insert into site (id, name, lat, lon)
+values (2, 'Moroco', 0.1444015171331046, -70.96084408873314);
 
 -- site_guide
 -- insert Fred and Anthony as guide at Villa Azul
