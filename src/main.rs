@@ -18,9 +18,19 @@ fn map() -> Template {
     Template::render("map", context)
 }
 
+#[get("/site/<id>")]
+fn site(id: i32) -> Template {
+    let site: models::Site = db::get_client()
+        .query("select * from site where id = $1", &[&id])
+        .unwrap()
+        .remove(0)
+        .into();
+    Template::render("site", site)
+}
+
 fn main() {
     rocket::ignite()
-        .mount("/", routes![map])
+        .mount("/", routes![map, site])
         .attach(Template::fairing())
         .launch();
 }
