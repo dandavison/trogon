@@ -39,10 +39,11 @@ create table site_day_guide (
   foreign key (site_guide, site) references site_guide (id, site)
 );
 
--- insert Villa Azul as site 1
+-- site
 insert into site (id, name, lat, lon)
 values (1, 'Villa Azul', -0.5745422166246894, -72.11438768433418);
 
+-- site_guide
 -- insert Fred and Anthony as guide at Villa Azul
 -- with site as (select id from site where name = "Villa Azul")
 insert into site_guide (id, name, site)
@@ -50,15 +51,17 @@ values (1, 'Fred', 1);
 insert into site_guide  (id, name, site)
 values (2, 'Anthony', 1);
 
--- create a tour
+-- tour
 insert into tour (id, name)
 values (1, 'Araracuara Jan 2021');
 
+-- site_day
 insert into site_day (id, tour, site, day)
 values (1, 1, 1, 1);
 insert into site_day (id, tour, site, day)
 values (2, 1, 1, 2);
 
+-- site_day_guide
 -- Fred on day 1
 insert into site_day_guide (id, site, site_guide, day)
 values (1, 1, 1, 1);
