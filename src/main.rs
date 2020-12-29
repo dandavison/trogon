@@ -4,6 +4,7 @@
 extern crate rocket;
 
 mod db;
+mod models;
 
 use std::collections::HashMap;
 
@@ -11,22 +12,9 @@ use rocket_contrib::templates::Template;
 
 #[get("/map")]
 fn map() -> Template {
-    let mut context = HashMap::<&str, Vec<(String, f64, f64, i32)>>::new();
-    let rows = db::get_client()
-        .query(
-            "select id, name, lat, lon from site where name = 'Villa Azul'",
-            &[],
-        )
-        .unwrap();
-    context.insert(
-        "sites",
-        vec![(
-            rows[0].get("name"),
-            rows[0].get("lat"),
-            rows[0].get("lon"),
-            rows[0].get("id"),
-        )],
-    );
+    let rows = db::get_client().query("select * from site", &[]).unwrap();
+    let mut context = HashMap::<&str, Vec<models::Site>>::new();
+    context.insert("sites", models::serializable(rows));
     Template::render("map", context)
 }
 
