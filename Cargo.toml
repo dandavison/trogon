@@ -8,3 +8,8 @@ edition = "2018"
 
 [dependencies]
 rocket = "0.4.6"
+
+[dependencies.rocket_contrib]
+version = "0.4.6"
+default-features = false
+features = ["templates", "tera_templates"]

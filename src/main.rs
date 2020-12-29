@@ -5,11 +5,19 @@ extern crate rocket;
 
 mod db;
 
+use std::collections::HashMap;
+
 use rocket::response::content;
+use rocket_contrib::templates::Template;
 
 #[get("/")]
 fn index() -> &'static str {
     "Hello, world!"
+}
+
+#[get("/map")]
+fn map() -> Template {
+    Template::render("map", HashMap::<&str, &str>::new())
 }
 
 #[get("/vue")]
@@ -59,6 +67,7 @@ where sdg.day = 2;
 
 fn main() {
     rocket::ignite()
-        .mount("/", routes![index, vue, json, query])
+        .mount("/", routes![index, json, map, query, vue])
+        .attach(Template::fairing())
         .launch();
 }
