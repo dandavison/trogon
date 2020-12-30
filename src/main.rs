@@ -43,6 +43,41 @@ fn site(id: i32) -> Template {
     Template::render("site", site)
 }
 
+#[derive(Serialize)]
+struct EbirdHotspotContext {
+    hotspot: models::EbirdHotspot,
+    species: Vec<models::EbirdSpecies>,
+}
+
+#[get("/hotspot/<loc_id>")]
+fn ebird_hotspot(loc_id: String) -> Template {
+    let mut dbclient = db::get_client();
+    let context = EbirdHotspotContext {
+        hotspot: dbclient
+            .query_one(
+                "
+select * from ebird_hotspot where locId = $1
+",
+                &[&loc_id],
+            )
+            .unwrap()
+            .into(),
+        species: models::serializable(
+            dbclient
+                .query(
+                    "
+select * from ebird_species es
+inner join ebird_hotspot_species ehs on ehs.species = es.speciesCode
+where ehs.locId = $1
+",
+                    &[&loc_id],
+                )
+                .unwrap(),
+        ),
+    };
+    Template::render("ebird_hotspot", context)
+}
+
 #[derive(StructOpt)]
 #[structopt(
     name = "sylph",
@@ -86,7 +121,7 @@ fn main() -> std::io::Result<()> {
         process::exit(ebird::load::load_species()?)
     } else {
         rocket::ignite()
-            .mount("/", routes![map, site])
+            .mount("/", routes![map, site, ebird_hotspot])
             .attach(Template::fairing())
             .launch();
     }
