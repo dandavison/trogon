@@ -9,12 +9,5 @@ edition = "2018"
 [dependencies]
 postgres = "0.19.0"
 rocket = "0.4.6"
-
-[dependencies.serde]
-version = "1.0.118"
-features = ["derive"]
-
-[dependencies.rocket_contrib]
-version = "0.4.6"
-default-features = false
-features = ["templates", "tera_templates"]
+rocket_contrib = { version = "0.4.6", default-features = false, features = ["templates", "tera_templates"] }
+serde = { version = "1.0.118", features = ["derive"] }
