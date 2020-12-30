@@ -5,7 +5,7 @@ pub struct Site {
     id: i32,
     name: String,
     lat: f64,
-    lon: f64,
+    lng: f64,
 }
 
 impl From<postgres::Row> for Site {
@@ -14,7 +14,7 @@ impl From<postgres::Row> for Site {
             id: row.get("id"),
             name: row.get("name"),
             lat: row.get("lat"),
-            lon: row.get("lon"),
+            lng: row.get("lon"),
         }
     }
 }
