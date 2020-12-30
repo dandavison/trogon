@@ -1,4 +1,3 @@
-drop table if exists site;
 create table site (
   id integer primary key,
   name varchar,
@@ -6,13 +5,11 @@ create table site (
   lon float8
 );
 
-drop table if exists tour;
 create table tour (
   id integer primary key,
   name varchar
 );
 
-drop table if exists site_day;
 create table site_day (
   id integer primary key,
   tour integer references tour,
@@ -21,7 +18,6 @@ create table site_day (
   unique (site, day)
 );
 
-drop table if exists site_guide;
 create table site_guide (
   id integer primary key,
   name varchar,
@@ -29,7 +25,6 @@ create table site_guide (
   unique (id, site)
 );
 
-drop table if exists site_day_guide;
 create table site_day_guide (
   id integer primary key,
   site integer references site,
@@ -37,6 +32,33 @@ create table site_day_guide (
   day integer,
   foreign key (site, day) references site_day (site, day),
   foreign key (site_guide, site) references site_guide (id, site)
+);
+
+create table ebird_hotspot (
+  locId varchar primary key,
+  locName varchar,
+  countryCode varchar,
+  subnational1Code varchar,
+  lat float8,
+  lng float8,
+  latestObsDt varchar,
+  numSpeciesAllTime integer
+);
+
+create table ebird_species (
+  sciName varchar,
+  comName varchar,
+  speciesCode varchar primary key,
+  category varchar,
+  taxonOrder integer,
+  _order varchar,
+  familyComName varchar,
+  familySciName varchar
+);
+
+create table ebird_hotspot_species (
+  species varchar references ebird_species,
+  locId varchar references ebird_hotspot
 );
 
 -- site

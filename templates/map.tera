@@ -29,14 +29,15 @@
          .bindPopup("<a href='/site/{{ site.id }}' target='_blank'>{{ site.name }}</a>");
       {% endfor %}
 
-      var popup = L.popup();
-      function onMapClick(e) {
-        popup
-          .setLatLng(e.latlng)
-          .setContent("You clicked the map at " + e.latlng.toString())
-          .openOn(mymap);
-      }
-      mymap.on('click', onMapClick);
+      {% for hotspot in ebird_hotspots %}
+        L.circle([{{ hotspot.lat }}, {{ hotspot.lng }}], 50, {
+		    color: 'red',
+		    fillColor: '#f03',
+		    fillOpacity: 0.5
+	      })
+         .addTo(mymap)
+         .bindPopup("<a href='/hotspot/{{ hotspot.locId }}' target='_blank'>{{ hotspot.locName }}</a>");
+      {% endfor %}
       </script>
   </body>
 </html>

@@ -4,18 +4,35 @@
 extern crate rocket;
 
 mod db;
+mod ebird;
 mod models;
 
-use std::collections::HashMap;
+use std::process;
 
 use rocket_contrib::templates::Template;
+use serde::Serialize;
+use structopt::clap::AppSettings::{ColorAlways, ColoredHelp, DeriveDisplayOrder};
+use structopt::StructOpt;
+
+#[derive(Serialize)]
+struct MapContext {
+    sites: Vec<models::Site>,
+    ebird_hotspots: Vec<models::EbirdHotspot>,
+}
 
 #[get("/map")]
 fn map() -> Template {
-    let rows = db::get_client().query("select * from site", &[]).unwrap();
-    let mut context = HashMap::<&str, Vec<models::Site>>::new();
-    context.insert("sites", models::serializable(rows));
-    Template::render("map", context)
+    let sites = db::get_client().query("select * from site", &[]).unwrap();
+    let ebird_hotspots = db::get_client()
+        .query("select * from ebird_hotspot", &[])
+        .unwrap();
+    Template::render(
+        "map",
+        MapContext {
+            sites: models::serializable(sites),
+            ebird_hotspots: models::serializable(ebird_hotspots),
+        },
+    )
 }
 
 #[get("/site/<id>")]
@@ -28,9 +45,52 @@ fn site(id: i32) -> Template {
     Template::render("site", site)
 }
 
-fn main() {
-    rocket::ignite()
-        .mount("/", routes![map, site])
-        .attach(Template::fairing())
-        .launch();
+#[derive(StructOpt)]
+#[structopt(
+    name = "sylph",
+    setting(ColorAlways),
+    setting(ColoredHelp),
+    setting(DeriveDisplayOrder)
+)]
+struct Opt {
+    #[structopt(long, name = "EBIRD_REGION_CODE")]
+    fetch_ebird_hotspots: Option<String>,
+
+    #[structopt(long)]
+    fetch_ebird_hotspot_species: bool,
+
+    #[structopt(long)]
+    fetch_ebird_species: bool,
+
+    #[structopt(long)]
+    load_ebird_hotspots: bool,
+
+    #[structopt(long)]
+    load_ebird_species: bool,
+
+    #[structopt(long)]
+    load_ebird_hotspot_species: bool,
+}
+
+fn main() -> std::io::Result<()> {
+    let opt = Opt::from_args();
+    if let Some(region) = opt.fetch_ebird_hotspots {
+        process::exit(ebird::fetch::fetch_hotspots(region)?)
+    } else if opt.fetch_ebird_hotspot_species {
+        process::exit(ebird::fetch::fetch_hotspot_species()?)
+    } else if opt.fetch_ebird_species {
+        process::exit(ebird::fetch::fetch_species()?)
+    } else if opt.load_ebird_hotspots {
+        process::exit(ebird::load::load_hotspots()?)
+    } else if opt.load_ebird_hotspot_species {
+        process::exit(ebird::load::load_hotspot_species()?)
+    } else if opt.load_ebird_species {
+        process::exit(ebird::load::load_species()?)
+    } else {
+        rocket::ignite()
+            .mount("/", routes![map, site])
+            .attach(Template::fairing())
+            .launch();
+    }
+    Ok(())
 }
