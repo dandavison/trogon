@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Quick Start - Leaflet</title>
+    <title>Sylph</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
@@ -36,7 +36,7 @@
 		    fillOpacity: 0.5
 	      })
          .addTo(mymap)
-         .bindPopup("<a href='/hotspot/{{ hotspot.locId }}' target='_blank'>{{ hotspot.locName }}</a>");
+         .bindPopup("<a href='/hotspot/{{ hotspot.locId }}' target='_blank'>{{ hotspot.locName }}</a><br>{{ hotspot.n_species }} bird species recorded");
       {% endfor %}
       </script>
   </body>

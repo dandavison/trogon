@@ -6,6 +6,7 @@ extern crate rocket;
 mod db;
 mod ebird;
 mod models;
+mod queries;
 
 use std::process;
 
@@ -17,20 +18,17 @@ use structopt::StructOpt;
 #[derive(Serialize)]
 struct MapContext {
     sites: Vec<models::Site>,
-    ebird_hotspots: Vec<models::EbirdHotspot>,
+    ebird_hotspots: Vec<queries::ebird_hotspot_with_species_count::Row>,
 }
 
 #[get("/map")]
 fn map() -> Template {
     let sites = db::get_client().query("select * from site", &[]).unwrap();
-    let ebird_hotspots = db::get_client()
-        .query("select * from ebird_hotspot", &[])
-        .unwrap();
     Template::render(
         "map",
         MapContext {
             sites: models::serializable(sites),
-            ebird_hotspots: models::serializable(ebird_hotspots),
+            ebird_hotspots: queries::ebird_hotspot_with_species_count::query(),
         },
     )
 }
