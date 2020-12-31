@@ -20,6 +20,25 @@ impl From<postgres::Row> for Site {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub struct Guide {
+    id: i32,
+    name: String,
+    tour_guide: bool,
+    biography: Option<String>,
+}
+
+impl From<postgres::Row> for Guide {
+    fn from(row: postgres::Row) -> Self {
+        Self {
+            id: row.get("id"),
+            name: row.get("name"),
+            tour_guide: row.get("tour_guide"),
+            biography: row.get("biography"),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 #[allow(non_snake_case)]
 pub struct EbirdHotspot {
     pub locId: String,

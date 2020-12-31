@@ -33,14 +33,37 @@ fn map() -> Template {
     )
 }
 
+#[derive(Serialize)]
+struct SiteContext {
+    site: models::Site,
+    guides: Vec<models::Guide>,
+}
+
 #[get("/site/<id>")]
 fn site(id: i32) -> Template {
-    let site: models::Site = db::get_client()
+    let mut dbclient = db::get_client();
+    let site: models::Site = dbclient
         .query("select * from site where id = $1", &[&id])
         .unwrap()
         .remove(0)
         .into();
-    Template::render("site", site)
+    let guides = dbclient
+        .query(
+            "
+select * from guide g
+inner join site_guide sg on sg.guide = g.id
+where sg.site = $1
+",
+            &[&id],
+        )
+        .unwrap();
+    Template::render(
+        "site",
+        SiteContext {
+            site,
+            guides: models::serializable(guides),
+        },
+    )
 }
 
 #[derive(Serialize)]

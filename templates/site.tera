@@ -3,6 +3,16 @@
   <head>
   </head>
   <body>
-    name: {{ name }}
+    <h1>{{ site.name }}</h1>
+
+    {{ guides | length }} guides:
+
+    {% for guide in guides %}
+    <h2>{{ guide.name }}</h2>
+    <br>
+    {{ guide.biography }}
+    <br><br><br>
+    {% endfor %}
+
   </body>
 </html>
