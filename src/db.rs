@@ -1,3 +1,3 @@
 pub fn get_client() -> postgres::Client {
-    postgres::Client::connect("host=localhost user=dan dbname=sylph", postgres::NoTls).unwrap()
+    postgres::Client::connect("host=localhost user=catherine dbname=sylph", postgres::NoTls).unwrap()
 }

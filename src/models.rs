@@ -73,7 +73,7 @@ pub struct EbirdSpecies {
     pub comName: String,
     pub speciesCode: String,
     pub category: String,
-    pub taxonOrder: f64, // FIXME this should be an integer type
+    pub taxonOrder: i32, // FIXME this should be an integer type
     pub order: String,
     pub familyComName: Option<String>,
     pub familySciName: Option<String>,
