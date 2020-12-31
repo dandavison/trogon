@@ -24,11 +24,11 @@ psql:
 fetch-ebird-data: fetch-ebird-species fetch-ebird-hotspots
 
 fetch-ebird-species:
-	sylph --fetch-ebird-species
+	$(SYLPH) --fetch-ebird-species
 
 fetch-ebird-hotspots:
 	for region in CO-AMA CO-CAQ CO-GUV CO-VAU; do \
-		sylph --fetch-ebird-hotspots $$region; \
+		$(SYLPH) --fetch-ebird-hotspots $$region; \
 	done
 
 # --fetch-ebird-hotspot-species requires that the hotspots are in the
