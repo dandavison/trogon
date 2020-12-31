@@ -4,7 +4,7 @@ use std::fs;
 use std::path::PathBuf;
 
 use crate::db;
-use crate::ebird::{get_data_directory, get_reader, get_species_file};
+use crate::ebird::{deserialize_json, get_data_directory, get_species_file, read_to_string};
 use crate::models;
 
 pub fn load_hotspots() -> std::io::Result<i32> {
@@ -24,8 +24,8 @@ pub fn load_hotspots() -> std::io::Result<i32> {
 }
 
 pub fn _load_hotspots(path: PathBuf, existing_loc_ids: &HashSet<String>) -> std::io::Result<i32> {
-    let reader = get_reader(&path);
-    let hotspots: Vec<models::EbirdHotspot> = serde_json::from_reader(reader)?;
+    let hotspots: Vec<models::EbirdHotspot> =
+        deserialize_json(&read_to_string(&path)).unwrap_or(vec![]);
     let mut dbclient = db::get_client();
     let mut n_loaded = 0;
     for hotspot in &hotspots {
@@ -76,8 +76,7 @@ pub fn load_hotspot_species() -> std::io::Result<i32> {
 
 pub fn _load_hotspot_species(path: PathBuf) -> std::io::Result<i32> {
     let loc_id = path.file_stem().unwrap().to_str().unwrap();
-    let reader = get_reader(&path);
-    let species: Vec<String> = serde_json::from_reader(reader)?;
+    let species: Vec<String> = deserialize_json(&read_to_string(&path)).unwrap_or(vec![]);
     let mut dbclient = db::get_client();
     let mut n_loaded = 0;
     for sp in &species {
@@ -107,8 +106,8 @@ values ($1, $2);",
 }
 
 pub fn load_species() -> std::io::Result<i32> {
-    let reader = get_reader(&get_species_file());
-    let species: Vec<models::EbirdSpecies> = serde_json::from_reader(reader)?;
+    let species: Vec<models::EbirdSpecies> =
+        deserialize_json(&read_to_string(&get_species_file())).unwrap_or(vec![]);
     let mut dbclient = db::get_client();
     let mut n_loaded = 0;
     for sp in &species {

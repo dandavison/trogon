@@ -2,9 +2,11 @@
 pub mod fetch;
 pub mod load;
 
+use serde::Deserialize;
+
 use std::env;
 use std::fs::{self, File};
-use std::io::{BufReader, BufWriter};
+use std::io::{BufWriter, Read};
 use std::path::PathBuf;
 use std::process;
 
@@ -31,12 +33,25 @@ fn get_hotspots_file(ebird_region_code: &str) -> PathBuf {
     ))
 }
 
-fn get_reader(path: &PathBuf) -> BufReader<File> {
-    let file = File::open(path).unwrap_or_else(|err| {
+fn read_to_string(path: &PathBuf) -> String {
+    let mut file = File::open(path).unwrap_or_else(|err| {
         eprintln!("Error opening file for reading: {:?}: {}", path, err);
         process::exit(1);
     });
-    BufReader::new(file)
+    let mut s = String::new();
+    file.read_to_string(&mut s).unwrap();
+    s
+}
+
+fn deserialize_json<'a, T>(json: &'a str) -> Option<T>
+where
+    T: Deserialize<'a>,
+{
+    if json.is_empty() {
+        None
+    } else {
+        Some(serde_json::from_str(&json).unwrap())
+    }
 }
 
 fn get_writer(path: &PathBuf) -> BufWriter<File> {
