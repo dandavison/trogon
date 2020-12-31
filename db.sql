@@ -8,6 +8,7 @@ create table site (
 insert into site values (1, 'Moroco', 0.1444015171331046, -70.96084408873314);
 insert into site values (2, 'Mitú', 1.2539646349060007, -70.23341850460245);
 insert into site values (3, 'Villa Azul', -0.5745422166246894, -72.11438768433418);
+insert into site values (4, 'Araracuara', -0.5930590066379546, -72.38932491030444);
 
 ------------------------------------------------------------------------------------
 
@@ -69,16 +70,17 @@ insert into trip values (1, 'Araracuara Jan 2021');
 
 ------------------------------------------------------------------------------------
 
--- create table site_day (
---   id integer primary key,
---   trip integer references trip,
---   site integer references site,
---   day integer,
---   unique (site, day)
--- );
+create table trip_site_day (
+  id integer primary key,
+  trip integer references trip,
+  site integer references site,
+  day integer,
+  unique (trip, site, day)
+);
 
--- insert into site_day (id, trip, site, day) values (1, 1, 1, 1);
--- insert into site_day (id, trip, site, day) values (2, 1, 1, 2);
+insert into trip_site_day (id, trip, site, day) values (1, 1, 4, 1);
+insert into trip_site_day (id, trip, site, day) values (2, 1, 3, 2);
+insert into trip_site_day (id, trip, site, day) values (3, 1, 3, 3);
 
 ------------------------------------------------------------------------------------
 

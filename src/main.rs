@@ -101,6 +101,28 @@ where ehs.locId = $1
     Template::render("ebird_hotspot", context)
 }
 
+#[derive(Serialize)]
+struct TripContext {
+    trip: models::Trip,
+}
+
+#[get("/trip/<trip_id>")]
+fn trip(trip_id: i32) -> Template {
+    let mut dbclient = db::get_client();
+    let context = TripContext {
+        trip: dbclient
+            .query_one(
+                "
+select * from trip where id = $1
+",
+                &[&trip_id],
+            )
+            .unwrap()
+            .into(),
+    };
+    Template::render("trip", context)
+}
+
 #[derive(StructOpt)]
 #[structopt(
     name = "sylph",
@@ -144,7 +166,7 @@ fn main() -> std::io::Result<()> {
         process::exit(ebird::load::load_species()?)
     } else {
         rocket::ignite()
-            .mount("/", routes![map, site, ebird_hotspot])
+            .mount("/", routes![map, site, ebird_hotspot, trip])
             .attach(Template::fairing())
             .launch();
     }

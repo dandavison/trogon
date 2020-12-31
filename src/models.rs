@@ -94,6 +94,21 @@ impl From<postgres::Row> for EbirdSpecies {
     }
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Trip {
+    pub id: i32,
+    pub name: String,
+}
+
+impl From<postgres::Row> for Trip {
+    fn from(row: postgres::Row) -> Self {
+        Self {
+            id: row.get("id"),
+            name: row.get("name"),
+        }
+    }
+}
+
 pub fn serializable<Model>(postgres_rows: Vec<postgres::Row>) -> Vec<Model>
 where
     Model: From<postgres::Row>,
