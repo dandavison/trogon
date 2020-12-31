@@ -109,6 +109,25 @@ impl From<postgres::Row> for Trip {
     }
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct TripSiteDay {
+    pub id: i32,
+    pub trip: i32,
+    pub site: i32,
+    pub day: i32,
+}
+
+impl From<postgres::Row> for TripSiteDay {
+    fn from(row: postgres::Row) -> Self {
+        Self {
+            id: row.get("id"),
+            trip: row.get("trip"),
+            site: row.get("site"),
+            day: row.get("day"),
+        }
+    }
+}
+
 pub fn serializable<Model>(postgres_rows: Vec<postgres::Row>) -> Vec<Model>
 where
     Model: From<postgres::Row>,
