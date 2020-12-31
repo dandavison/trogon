@@ -23,7 +23,7 @@ impl From<postgres::Row> for Site {
 pub struct Guide {
     id: i32,
     name: String,
-    tour_guide: bool,
+    trip_guide: bool,
     biography: Option<String>,
 }
 
@@ -32,7 +32,7 @@ impl From<postgres::Row> for Guide {
         Self {
             id: row.get("id"),
             name: row.get("name"),
-            tour_guide: row.get("tour_guide"),
+            trip_guide: row.get("trip_guide"),
             biography: row.get("biography"),
         }
     }

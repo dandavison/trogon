@@ -14,7 +14,7 @@ insert into site values (3, 'Villa Azul', -0.5745422166246894, -72.1143876843341
 create table guide (
   id integer primary key,
   name varchar,
-  tour_guide boolean,
+  trip_guide boolean,
   biography text
 );
 
@@ -60,25 +60,25 @@ insert into guide_language values (3, 2, 1);
 
 ------------------------------------------------------------------------------------
 
--- create table tour (
---   id integer primary key,
---   name varchar
--- );
+create table trip (
+  id integer primary key,
+  name varchar
+);
 
--- insert into tour values (1, 'Araracuara Jan 2021');
+insert into trip values (1, 'Araracuara Jan 2021');
 
 ------------------------------------------------------------------------------------
 
 -- create table site_day (
 --   id integer primary key,
---   tour integer references tour,
+--   trip integer references trip,
 --   site integer references site,
 --   day integer,
 --   unique (site, day)
 -- );
 
--- insert into site_day (id, tour, site, day) values (1, 1, 1, 1);
--- insert into site_day (id, tour, site, day) values (2, 1, 1, 2);
+-- insert into site_day (id, trip, site, day) values (1, 1, 1, 1);
+-- insert into site_day (id, trip, site, day) values (2, 1, 1, 2);
 
 ------------------------------------------------------------------------------------
 
