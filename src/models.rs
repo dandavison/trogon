@@ -35,14 +35,14 @@ pub struct EbirdHotspot {
 impl From<postgres::Row> for EbirdHotspot {
     fn from(row: postgres::Row) -> Self {
         Self {
-            locId: row.try_get("locId").unwrap_or("".to_string()),
-            locName: row.try_get("locName").unwrap_or("".to_string()),
-            countryCode: row.try_get("countryCode").unwrap_or("".to_string()),
-            subnational1Code: row.try_get("subnational1Code").unwrap_or("".to_string()),
-            lat: row.try_get("lat").unwrap_or(-360.0),
-            lng: row.try_get("lng").unwrap_or(-360.0),
-            latestObsDt: row.try_get("latestObsDt").unwrap_or(None),
-            numSpeciesAllTime: row.try_get("numSpeciesAllTime").unwrap_or(None),
+            locId: row.get("locId"),
+            locName: row.get("locName"),
+            countryCode: row.get("countryCode"),
+            subnational1Code: row.get("subnational1Code"),
+            lat: row.get("lat"),
+            lng: row.get("lng"),
+            latestObsDt: row.get("latestObsDt"),
+            numSpeciesAllTime: row.get("numSpeciesAllTime"),
         }
     }
 }
