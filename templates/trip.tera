@@ -4,5 +4,26 @@
   </head>
   <body>
     <h1>{{ trip.name }}</h1>
+
+    {{ days | length }} days:
+
+      <table class="table table-striped table-hover" style="width: 80%">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th></th>
+            <th>Site</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for day in days %}
+          <tr>
+            <td>{{ day.day }}</td>
+            <td>{{ day.site_name }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
   </body>
 </html>
