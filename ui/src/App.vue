@@ -1,8 +1,13 @@
 <template>
-  <div id="app-component"></div>
+  <div id="app-component">
+    <controls />
+    <mapx />
+  </div>
 </template>
 
 <script>
+import Controls from "./Controls.vue";
+import Mapx from "./Map.vue";
 export default {
   setup() {
     console.log("app setup, fetching /api/sites JSON...");
@@ -11,6 +16,7 @@ export default {
     });
     return {};
   },
+  components: { Mapx, Controls },
 };
 </script>
 
