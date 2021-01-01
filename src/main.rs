@@ -4,6 +4,7 @@
 extern crate rocket;
 
 mod api;
+mod cors;
 mod db;
 mod ebird;
 mod models;
@@ -156,6 +157,7 @@ fn main() -> std::io::Result<()> {
             .mount("/api", routes![api::sites])
             .mount("/static", StaticFiles::from("static"))
             .attach(Template::fairing())
+            .attach(cors::CORS())
             .launch();
     }
     Ok(())
