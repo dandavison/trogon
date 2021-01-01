@@ -27,7 +27,7 @@ fetch-ebird-species:
 	$(SYLPH) --fetch-ebird-species
 
 fetch-ebird-hotspots:
-	for region in CO-AMA CO-CAQ CO-GUV CO-VAU; do \
+	for region in CO-AMA CO-CAQ; do \
 		$(SYLPH) --fetch-ebird-hotspots $$region; \
 	done
 
