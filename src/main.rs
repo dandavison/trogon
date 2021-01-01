@@ -8,6 +8,7 @@ mod ebird;
 mod models;
 mod queries;
 
+use rocket_contrib::serve::StaticFiles;
 use std::process;
 
 use rocket_contrib::templates::Template;
@@ -169,6 +170,7 @@ fn main() -> std::io::Result<()> {
     } else {
         rocket::ignite()
             .mount("/", routes![map, site, ebird_hotspot, trip])
+            .mount("/static", StaticFiles::from("static"))
             .attach(Template::fairing())
             .launch();
     }
