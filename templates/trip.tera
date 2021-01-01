@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
+ <head>
+    <title>{{ trip.name }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   </head>
-  <body>
+    <body>
+    <div class="container">
     <h1>{{ trip.name }}</h1>
-
-    {{ days | length }} days:
-
       <table class="table table-striped table-hover" style="width: 80%">
         <thead>
           <tr>
             <th>Day</th>
-            <th></th>
             <th>Site</th>
           </tr>
         </thead>
@@ -19,11 +20,11 @@
           {% for day in days %}
           <tr>
             <td>{{ day.day }}</td>
-            <td>{{ day.site_name }}</td>
+            <td>{{ day.name }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-
+    </div>
   </body>
 </html>

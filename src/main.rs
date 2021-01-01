@@ -104,7 +104,7 @@ where ehs.locId = $1
 #[derive(Serialize)]
 struct TripContext {
     trip: models::Trip,
-    days: Vec<models::TripSiteDay>,
+    days: Vec<queries::trip_site_day_with_site_info::Row>,
 }
 
 #[get("/trip/<trip_id>")]
@@ -120,24 +120,9 @@ select * from trip where id = $1
             )
             .unwrap()
             .into(),
-            days: models::serializable(
-                dbclient
-                    .query(
-                        "
-select *
-from trip_site_day as tsd
-inner join trip as t on tsd.trip = t.id
-inner join site as s on tsd.site = s.id
-where t.id = $1
-order by tsd.day
-",
-                        &[&trip_id],
-                    )
-                    .unwrap(),
-            ),
-        };
-        println!("{:?}", context.days);
-        Template::render("trip", context)
+        days: queries::trip_site_day_with_site_info::query(trip_id),
+    };
+    Template::render("trip", context)
 }
 
 #[derive(StructOpt)]
