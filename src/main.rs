@@ -3,6 +3,7 @@
 #[macro_use]
 extern crate rocket;
 
+mod api;
 mod db;
 mod ebird;
 mod models;
@@ -15,24 +16,6 @@ use rocket_contrib::templates::Template;
 use serde::Serialize;
 use structopt::clap::AppSettings::{ColorAlways, ColoredHelp, DeriveDisplayOrder};
 use structopt::StructOpt;
-
-#[derive(Serialize)]
-struct MapContext {
-    sites: Vec<models::Site>,
-    ebird_hotspots: Vec<queries::ebird_hotspot_with_species_count::Row>,
-}
-
-#[get("/map")]
-fn map() -> Template {
-    let sites = db::get_client().query("select * from site", &[]).unwrap();
-    Template::render(
-        "map",
-        MapContext {
-            sites: models::serializable(sites),
-            ebird_hotspots: queries::ebird_hotspot_with_species_count::query(),
-        },
-    )
-}
 
 #[derive(Serialize)]
 struct SiteContext {
@@ -169,7 +152,8 @@ fn main() -> std::io::Result<()> {
         process::exit(ebird::load::load_species()?)
     } else {
         rocket::ignite()
-            .mount("/", routes![map, site, ebird_hotspot, trip])
+            .mount("/", routes![site, ebird_hotspot, trip])
+            .mount("/api", routes![api::sites])
             .mount("/static", StaticFiles::from("static"))
             .attach(Template::fairing())
             .launch();
