@@ -15,6 +15,7 @@
         />
         <b-menu>
           <b-menu-list label="Menu">
+            <switchx />
             <b-menu-item icon="information-outline" label="Info"></b-menu-item>
             <b-menu-item icon="settings">
               <template slot="label" slot-scope="props">
@@ -71,6 +72,8 @@
 </template>
 
 <script>
+import Switchx from "./Switch.vue";
+
 export default {
   data() {
     return {
@@ -81,6 +84,7 @@ export default {
       right: false,
     };
   },
+  components: { Switchx },
 };
 </script>
 
