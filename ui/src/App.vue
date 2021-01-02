@@ -1,26 +1,28 @@
 <template>
-  <div id="app-component" class="container">
-    <div class="row">
-      <nav class="col-2 border" id="controls-container"><controls /></nav>
-      <div class="col-10 border"><mapx /></div>
-    </div>
+  <div id="app">
+    <img alt="Vue logo" src="./assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
 <script>
-import Controls from "./Controls.vue";
-import Mapx from "./Map.vue";
+import HelloWorld from './components/HelloWorld.vue'
+
 export default {
-  setup() {
-    console.log("app setup, fetching /api/sites JSON...");
-    fetch("http://localhost:8000/api/sites").then((response) => {
-      response.json().then((sites) => console.log(sites));
-    });
-    return {};
-  },
-  components: { Mapx, Controls },
-};
+  name: 'App',
+  components: {
+    HelloWorld
+  }
+}
 </script>
 
 <style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 </style>
