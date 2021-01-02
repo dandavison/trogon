@@ -64,7 +64,9 @@
       </div>
     </b-sidebar>
     <div class="block"></div>
-    <b-button @click="open = true">Show</b-button>
+    <b-button class="show" @click="open = true">
+      Toggle<br />control<br />panel
+    </b-button>
   </section>
 </template>
 
@@ -86,5 +88,9 @@ export default {
 .p-1 {
   padding: 1em;
   z-index: -1;
+}
+button.show {
+  float: right;
+  height: fit-content;
 }
 </style>
