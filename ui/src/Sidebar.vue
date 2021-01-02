@@ -15,7 +15,7 @@
         />
         <b-menu>
           <b-menu-list label="Menu">
-            <switchx @changeshowsites="changeShowSites" />
+            <site-switch @changeshowsites="changeShowSites" />
             <b-menu-item icon="information-outline" label="Info"></b-menu-item>
             <b-menu-item icon="settings">
               <template slot="label" slot-scope="props">
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import Switchx from "./Switch.vue";
+import SiteSwitch from "./SiteSwitch.vue";
 
 export default {
   data() {
@@ -84,7 +84,7 @@ export default {
       right: false,
     };
   },
-  components: { Switchx },
+  components: { SiteSwitch },
   methods: {
     changeShowSites: function (newVal) {
       this.$emit("changeshowsites", newVal);
