@@ -3,17 +3,16 @@
 </template>
 
 <script>
-import { ref } from "vue";
 export default {
-  setup() {
-    let mymap = ref(null);
+  data() {
+    let mymap = null;
     fetch("http://localhost:8000/api/sites").then((response) => {
       response.json().then((sites) => {
-        mymap.value = displayMap(sites);
-        displaySites(sites, mymap.value);
+        mymap = displayMap(sites);
+        displaySites(sites, mymap);
       });
     });
-    return {};
+    return { mymap };
   },
 };
 

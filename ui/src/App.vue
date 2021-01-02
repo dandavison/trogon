@@ -11,10 +11,11 @@
 import Controls from "./Controls.vue";
 import Mapx from "./Map.vue";
 export default {
-  setup() {
+  name: "app",
+  components: { Mapx, Controls },
+  data() {
     return {};
   },
-  components: { Mapx, Controls },
 };
 </script>
 

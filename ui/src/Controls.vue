@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  setup() {
+  data() {
     return {};
   },
 };
