@@ -16,46 +16,15 @@
         <b-menu>
           <b-menu-list label="Menu">
             <site-switch @changeshowsites="changeShowSites" />
-            <b-menu-item icon="information-outline" label="Info"></b-menu-item>
             <b-menu-item icon="settings">
               <template slot="label" slot-scope="props">
-                Administrator
+                Trips
                 <b-icon
                   class="is-pulled-right"
                   :icon="props.expanded ? 'menu-down' : 'menu-up'"
                 ></b-icon>
               </template>
-              <b-menu-item icon="account" label="Users"></b-menu-item>
-              <b-menu-item icon="cellphone-link">
-                <template slot="label">
-                  Devices
-                  <b-dropdown
-                    aria-role="list"
-                    class="is-pulled-right"
-                    position="is-bottom-left"
-                  >
-                    <b-icon icon="dots-vertical" slot="trigger"></b-icon>
-                    <b-dropdown-item aria-role="listitem"
-                      >Action</b-dropdown-item
-                    >
-                    <b-dropdown-item aria-role="listitem"
-                      >Another action</b-dropdown-item
-                    >
-                    <b-dropdown-item aria-role="listitem"
-                      >Something else</b-dropdown-item
-                    >
-                  </b-dropdown>
-                </template>
-              </b-menu-item>
-              <b-menu-item
-                icon="cash-multiple"
-                label="Payments"
-                disabled
-              ></b-menu-item>
-            </b-menu-item>
-            <b-menu-item icon="account" label="My Account">
-              <b-menu-item label="Account data"></b-menu-item>
-              <b-menu-item label="Addresses"></b-menu-item>
+              <trip-switches :trips="trips" @changeshowtrip="changeShowTrip" />
             </b-menu-item>
           </b-menu-list>
           <b-menu-list label="Actions">
@@ -73,6 +42,7 @@
 
 <script>
 import SiteSwitch from "./SiteSwitch.vue";
+import TripSwitches from "./TripSwitches.vue";
 
 export default {
   data() {
@@ -82,12 +52,19 @@ export default {
       fullheight: true,
       fullwidth: false,
       right: false,
+      trips: [
+        { name: "Araracuara", id: 1 },
+        { name: "Vaupes", id: 2 },
+      ],
     };
   },
-  components: { SiteSwitch },
+  components: { SiteSwitch, TripSwitches },
   methods: {
     changeShowSites: function (newVal) {
       this.$emit("changeshowsites", newVal);
+    },
+    changeShowTrip: function (newVal, trip) {
+      this.$emit("changeshowtrip", newVal, trip);
     },
   },
 };
