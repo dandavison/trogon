@@ -7,17 +7,27 @@ import L from "leaflet";
 export default {
   data() {
     let mymap = null;
+    let sitesLayerGroup = null;
     fetch("http://localhost:8000/api/sites").then((response) => {
       response.json().then((sites) => {
-        mymap = displayMap(sites);
-        displaySites(sites, mymap);
+        displayMap(sites);
+        sitesLayerGroup = createSitesLayerGroup(sites, mymap);
       });
     });
     return { mymap };
   },
+  methods: {
+    hideSites() {
+      sitesLayerGroup.remove();
+    },
+    showSites() {
+      sitesLayerGroup.addTo(mymap);
+    },
+  },
 };
 
 function displayMap(sites) {
+  // -> Map
   var mymap = L.map("map").setView([sites[0].lat, sites[0].lng], 5);
 
   L.tileLayer(
@@ -35,12 +45,17 @@ function displayMap(sites) {
   return mymap;
 }
 
-function displaySites(sites, mymap) {
+function createSitesLayerGroup(sites, mymap) {
+  // -> LayerGroup
+  let markers = [];
   for (let site of sites) {
-    L.marker([site.lat, site.lng])
-      .addTo(mymap)
-      .bindPopup(`<a href='/site/${site.id}' target='_blank'>${site.name}</a>`);
+    markers.push(
+      L.marker([site.lat, site.lng]).bindPopup(
+        `<a href='/site/${site.id}' target='_blank'>${site.name}</a>`
+      )
+    );
   }
+  return L.layerGroup(markers);
 }
 </script>
 
