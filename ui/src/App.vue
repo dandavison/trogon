@@ -1,18 +1,18 @@
 <template>
-  <div id="app-component" class="container">
-    <div class="row">
-      <nav class="col-2 border" id="controls-container"><controls /></nav>
-      <div class="col-10 border"><mapx /></div>
+  <section>
+    <div id="app-component" class="container">
+      <sidebar />
+      <div><mapx /></div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
-import Controls from "./Controls.vue";
+import Sidebar from "./Sidebar.vue";
 import Mapx from "./Map.vue";
 export default {
   name: "app",
-  components: { Mapx, Controls },
+  components: { Mapx, Sidebar },
   data() {
     return {};
   },
