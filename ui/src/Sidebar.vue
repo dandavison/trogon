@@ -72,22 +72,7 @@
         </b-menu>
       </div>
     </b-sidebar>
-    <div class="block">
-      <b-field grouped group-multiline>
-        <div class="control">
-          <b-switch v-model="overlay">Overlay</b-switch>
-        </div>
-        <div class="control">
-          <b-switch v-model="fullheight">Fullheight</b-switch>
-        </div>
-        <div class="control">
-          <b-switch v-model="fullwidth">Fullwidth</b-switch>
-        </div>
-        <div class="control">
-          <b-switch v-model="right">Right</b-switch>
-        </div>
-      </b-field>
-    </div>
+    <div class="block"></div>
     <b-button @click="open = true">Show</b-button>
   </section>
 </template>
@@ -97,7 +82,7 @@ export default {
   data() {
     return {
       open: false,
-      overlay: true,
+      overlay: false,
       fullheight: true,
       fullwidth: false,
       right: false,
