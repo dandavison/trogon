@@ -1,7 +1,7 @@
 <template>
   <div>
     <sidebar />
-    <mapx />
+    <mapx v-bind:showSites="showSites" />
   </div>
 </template>
 
@@ -12,7 +12,9 @@ export default {
   name: "mapView",
   components: { Mapx, Sidebar },
   data() {
-    return {};
+    return {
+      showSites: false,
+    };
   },
 };
 </script>

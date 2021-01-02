@@ -5,28 +5,39 @@
 <script>
 import L from "leaflet";
 export default {
+  props: { showSites: Boolean },
   data() {
-    let mymap = null;
-    let sitesLayerGroup = null;
+    this.mymap = null;
+    this.sitesLayerGroup = null;
     fetch("http://localhost:8000/api/sites").then((response) => {
       response.json().then((sites) => {
-        displayMap(sites);
-        sitesLayerGroup = createSitesLayerGroup(sites, mymap);
+        this.mymap = createMap(sites);
+        this.sitesLayerGroup = createSitesLayerGroup(sites);
+        this.doShowSites();
       });
     });
-    return { mymap };
+    return {};
+  },
+  watch: {
+    showSites: (newVal) => {
+      if (newVal) {
+        this.doShowSites();
+      } else {
+        this.doHideSites();
+      }
+    },
   },
   methods: {
-    hideSites() {
-      sitesLayerGroup.remove();
+    doHideSites() {
+      this.sitesLayerGroup.remove();
     },
-    showSites() {
-      sitesLayerGroup.addTo(mymap);
+    doShowSites() {
+      this.sitesLayerGroup.addTo(this.mymap);
     },
   },
 };
 
-function displayMap(sites) {
+function createMap(sites) {
   // -> Map
   var mymap = L.map("map").setView([sites[0].lat, sites[0].lng], 5);
 
@@ -45,7 +56,7 @@ function displayMap(sites) {
   return mymap;
 }
 
-function createSitesLayerGroup(sites, mymap) {
+function createSitesLayerGroup(sites) {
   // -> LayerGroup
   let markers = [];
   for (let site of sites) {
