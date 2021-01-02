@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "buefy": "^0.9.4",
     "core-js": "^3.6.5",
     "leaflet": "^1.7.1",
     "vue": "^2.6.11"
