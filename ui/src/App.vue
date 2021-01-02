@@ -1,18 +1,14 @@
 <template>
   <section>
-    <div id="app-component" class="container">
-      <sidebar />
-      <mapx />
-    </div>
+    <div class="container"><map-view /></div>
   </section>
 </template>
 
 <script>
-import Sidebar from "./Sidebar.vue";
-import Mapx from "./Map.vue";
+import MapView from "./MapView.vue";
 export default {
   name: "app",
-  components: { Mapx, Sidebar },
+  components: { MapView },
   data() {
     return {};
   },
