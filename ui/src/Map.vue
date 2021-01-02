@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import L from "leaflet";
 export default {
   data() {
     let mymap = null;
