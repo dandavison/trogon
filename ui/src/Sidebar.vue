@@ -72,7 +72,7 @@
 export default {
   data() {
     return {
-      open: false,
+      open: true,
       overlay: false,
       fullheight: true,
       fullwidth: false,
