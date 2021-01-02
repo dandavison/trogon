@@ -85,5 +85,6 @@ export default {
 <style>
 .p-1 {
   padding: 1em;
+  z-index: -1;
 }
 </style>

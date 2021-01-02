@@ -2,7 +2,7 @@
   <section>
     <div id="app-component" class="container">
       <sidebar />
-      <div><mapx /></div>
+      <mapx />
     </div>
   </section>
 </template>

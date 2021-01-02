@@ -1,5 +1,5 @@
 <template>
-  <div id="map" style="height: 800px"></div>
+  <div id="map"></div>
 </template>
 
 <script>
@@ -45,4 +45,8 @@ function displaySites(sites, mymap) {
 </script>
 
 <style>
+#map {
+  height: 800px;
+  z-index: -1;
+}
 </style>
