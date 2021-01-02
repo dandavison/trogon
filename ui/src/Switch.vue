@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="field">
-      <b-switch v-model="isSwitched"> </b-switch>
+      <b-switch v-model="isSwitched">Sites</b-switch>
     </div>
   </section>
 </template>
