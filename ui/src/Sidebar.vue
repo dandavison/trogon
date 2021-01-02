@@ -77,7 +77,7 @@ import Switchx from "./Switch.vue";
 export default {
   data() {
     return {
-      open: true,
+      open: false,
       overlay: false,
       fullheight: true,
       fullwidth: false,
