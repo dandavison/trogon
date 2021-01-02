@@ -19,7 +19,7 @@ export default {
     return {};
   },
   watch: {
-    showSites: (newVal) => {
+    showSites: function (newVal) {
       if (newVal) {
         this.doShowSites();
       } else {

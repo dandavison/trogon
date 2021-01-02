@@ -15,7 +15,7 @@
         />
         <b-menu>
           <b-menu-list label="Menu">
-            <switchx />
+            <switchx @changeshowsites="changeShowSites" />
             <b-menu-item icon="information-outline" label="Info"></b-menu-item>
             <b-menu-item icon="settings">
               <template slot="label" slot-scope="props">
@@ -85,6 +85,11 @@ export default {
     };
   },
   components: { Switchx },
+  methods: {
+    changeShowSites: function (newVal) {
+      this.$emit("changeshowsites", newVal);
+    },
+  },
 };
 </script>
 

@@ -15,7 +15,7 @@ export default {
   },
   watch: {
     isSwitched: function (newVal) {
-      this.$emit("change:show-sites", newVal);
+      this.$emit("changeshowsites", newVal);
     },
   },
 };

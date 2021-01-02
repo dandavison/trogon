@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sidebar />
+    <sidebar @changeshowsites="changeShowSites" />
     <mapx v-bind:showSites="showSites" />
   </div>
 </template>
@@ -15,6 +15,11 @@ export default {
     return {
       showSites: false,
     };
+  },
+  methods: {
+    changeShowSites: function (newVal) {
+      this.showSites = newVal;
+    },
   },
 };
 </script>
