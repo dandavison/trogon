@@ -7,8 +7,8 @@ create table site (
 
 insert into site values (1, 'Moroco', 0.1444015171331046, -70.96084408873314);
 insert into site values (2, 'Mitú', 1.2539646349060007, -70.23341850460245);
-insert into site values (3, 'Villa Azul', -0.5745422166246894, -72.11438768433418);
-insert into site values (4, 'Araracuara', -0.5930590066379546, -72.38932491030444);
+insert into site values (3, 'Araracuara', -0.5930590066379546, -72.38932491030444);
+insert into site values (4, 'Villa Azul', -0.5745422166246894, -72.11438768433418);
 
 ------------------------------------------------------------------------------------
 
