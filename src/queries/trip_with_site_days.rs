@@ -2,13 +2,15 @@
 use serde::{Deserialize, Serialize};
 
 use crate::db;
-use crate::models;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[allow(non_snake_case)]
 pub struct SiteDay {
     pub day: i32,
-    pub site: models::Site,
+    pub id: i32,
+    pub name: String,
+    pub lat: f64,
+    pub lng: f64,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -16,7 +18,7 @@ pub struct SiteDay {
 pub struct Trip {
     pub id: i32,
     pub name: String,
-    pub days: Vec<SiteDay>,
+    pub site_days: Vec<SiteDay>,
 }
 
 pub fn query() -> Vec<Trip> {
@@ -36,7 +38,7 @@ order by t.id, tsd.day
         .unwrap();
 
     let mut trips = Vec::<Trip>::new();
-    let mut days = Vec::<SiteDay>::new();
+    let mut site_days = Vec::<SiteDay>::new();
     let mut prev_trip_id = 0;
     let mut trip_name: String = "".to_string();
     for postgres_row in &postgres_rows {
@@ -46,18 +48,16 @@ order by t.id, tsd.day
             trips.push(Trip {
                 id: trip_id,
                 name: trip_name.clone(),
-                days,
+                site_days,
             });
-            days = Vec::<SiteDay>::new();
+            site_days = Vec::<SiteDay>::new();
         } else {
-            days.push(SiteDay {
+            site_days.push(SiteDay {
                 day: postgres_row.get("day"),
-                site: models::Site {
-                    id: postgres_row.get("site_id"),
-                    name: postgres_row.get("site_name"),
-                    lat: postgres_row.get("site_lat"),
-                    lng: postgres_row.get("site_lng"),
-                },
+                id: postgres_row.get("site_id"),
+                name: postgres_row.get("site_name"),
+                lat: postgres_row.get("site_lat"),
+                lng: postgres_row.get("site_lng"),
             });
         }
         prev_trip_id = trip_id;
@@ -66,7 +66,7 @@ order by t.id, tsd.day
         trips.push(Trip {
             id: prev_trip_id,
             name: trip_name,
-            days,
+            site_days,
         })
     };
     trips
