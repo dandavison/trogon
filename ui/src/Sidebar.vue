@@ -27,7 +27,6 @@
         </table>
         <b-menu>
           <b-menu-list label="Menu">
-            <site-switch @changeshowsites="changeShowSites" />
             <b-menu-item v-on:click="getTrips" icon="settings">
               <template slot="label" slot-scope="props">
                 Trips
@@ -38,6 +37,7 @@
               </template>
               <trip-switches :trips="trips" @changeshowtrip="changeShowTrip" />
             </b-menu-item>
+            <site-switch @changeshowsites="changeShowSites" />
           </b-menu-list>
           <b-menu-list label="Actions">
             <b-menu-item label="Logout"></b-menu-item>
