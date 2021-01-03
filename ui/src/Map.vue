@@ -66,18 +66,16 @@ export default {
 
 function createMap(sites) {
   // -> Map
-  var mymap = L.map("map").setView([sites[0].lat, sites[0].lng], 5);
-
+  console.log(sites);
+  var mymap = L.map("map").setView([-41.2858, 174.78682], 14);
+  let mapLink = '<a href="http://www.esri.com/">Esri</a>';
+  let wholink =
+    "i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community";
   L.tileLayer(
-    "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+    "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     {
+      attribution: "&copy; " + mapLink + ", " + wholink,
       maxZoom: 18,
-      attribution:
-        'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      id: "mapbox/streets-v11",
-      tileSize: 512,
-      zoomOffset: -1,
     }
   ).addTo(mymap);
   return mymap;
