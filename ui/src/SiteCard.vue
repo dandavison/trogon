@@ -3,12 +3,13 @@
     <div class="box">
       <article class="media">
         <div class="media-left">
-          <figure class="image is-64x64">
-            <img
-              src="https://user-images.githubusercontent.com/52205/74552822-b0f85f00-4f1b-11ea-908d-48d4f301b6a3.png"
-              alt="Image"
-            />
-          </figure>
+          <b-carousel v-bind="carouselAttributes">
+            <b-carousel-item v-for="image in site.images" :key="image">
+              <figure class="image is-64x64">
+                <img v-bind:src="image" alt="Site Image" />
+              </figure>
+            </b-carousel-item>
+          </b-carousel>
         </div>
         <div class="media-content">
           <div class="content">
@@ -27,7 +28,15 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      carouselAttributes: {
+        arrow: true,
+        arrowBoth: false,
+        autoplay: false,
+        iconSize: "is-small",
+        indicator: false,
+      },
+    };
   },
   props: { site: Object },
 };
