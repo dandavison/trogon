@@ -9,10 +9,22 @@
       v-model="open"
     >
       <div class="p-1">
-        <img
-          src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-          alt="Lightweight UI components for Vue.js based on Bulma"
-        />
+        <table>
+          <tr>
+            <td>
+              <img
+                src="https://user-images.githubusercontent.com/52205/74552822-b0f85f00-4f1b-11ea-908d-48d4f301b6a3.png"
+                style="height: 200px"
+                alt="Sylph"
+              />
+            </td>
+            <td
+              style="display: table-cell; vertical-align: middle; padding: 10px"
+            >
+              <b>Sylph</b>
+            </td>
+          </tr>
+        </table>
         <b-menu>
           <b-menu-list label="Menu">
             <site-switch @changeshowsites="changeShowSites" />
