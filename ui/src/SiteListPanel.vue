@@ -13,7 +13,11 @@
           <b-menu-list>
             <section id="site-cards">
               <div class="field" v-for="site in sites" :key="site.id">
-                <site-card v-bind:site="site" id="site.id" />
+                <site-card
+                  v-bind:site="site"
+                  id="site.id"
+                  @highlightsite="highlightSite"
+                />
               </div>
             </section>
           </b-menu-list>
@@ -38,6 +42,11 @@ export default {
     };
   },
   components: { SiteCard },
+  methods: {
+    highlightSite: function (site) {
+      this.$emit("highlightsite", site);
+    },
+  },
   props: { sites: Array },
 };
 </script>

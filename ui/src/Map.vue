@@ -5,7 +5,12 @@
 <script>
 import L from "leaflet";
 export default {
-  props: { showSites: Boolean, trips: Array, visibleTrips: Map },
+  props: {
+    highlightSite: Object,
+    showSites: Boolean,
+    trips: Array,
+    visibleTrips: Map,
+  },
   data() {
     this.mymap = null;
     this.sitesLayerGroup = null;
@@ -21,6 +26,14 @@ export default {
     return {};
   },
   watch: {
+    highlightSite: function (newVal) {
+      if (newVal) {
+        this.doUnhighlightSite();
+        this.doHighlightSite(newVal);
+      } else {
+        this.doUnhighlightSite();
+      }
+    },
     showSites: function (newVal) {
       if (newVal) {
         this.doShowSites();
@@ -61,6 +74,25 @@ export default {
     },
     doShowTrip(tripId) {
       this.tripsLayerGroup[tripId].addTo(this.mymap);
+    },
+    doHighlightSite(site) {
+      if (!site) {
+        return;
+      }
+      var marker = L.circle([site.lat, site.lng], 500, {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+      }).addTo(this.mymap);
+      this.highlightMarker = marker;
+    },
+    doUnhighlightSite() {
+      let marker = this.highlightMarker;
+      if (!marker) {
+        return;
+      }
+      this.mymap.removeLayer(marker);
+      this.highlightMarker = null;
     },
   },
 };

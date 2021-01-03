@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section @mouseover="highlightSite">
     <div class="box">
       <article class="media">
         <div class="media-left">
@@ -37,6 +37,11 @@ export default {
         indicator: false,
       },
     };
+  },
+  methods: {
+    highlightSite: function () {
+      this.$emit("highlightsite", this.site);
+    },
   },
   props: { site: Object },
 };

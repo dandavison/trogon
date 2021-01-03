@@ -5,9 +5,10 @@
       @changeshowtrip="changeShowTrip"
       @clicktrips="createTrips"
     />
-    <site-list-panel v-bind:sites="sites" />
+    <site-list-panel @highlightsite="doHighlightSite" v-bind:sites="sites" />
     <mapx
       @loadsites="loadSites"
+      v-bind:highlightSite="highlightSite"
       v-bind:showSites="showSites"
       v-bind:trips="trips"
       v-bind:visibleTrips="visibleTrips"
@@ -24,6 +25,7 @@ export default {
   components: { Mapx, ControlPanel, SiteListPanel },
   data() {
     return {
+      highlightSite: null,
       showSites: false,
       sites: [],
       trips: [],
@@ -53,6 +55,9 @@ export default {
         visibleTrips[trip.id] = false;
       }
       this.visibleTrips = visibleTrips;
+    },
+    doHighlightSite: function (site) {
+      this.highlightSite = site;
     },
     loadSites: function (sites) {
       this.sites = sites;
