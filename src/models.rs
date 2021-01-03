@@ -2,10 +2,10 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Site {
-    id: i32,
-    name: String,
-    lat: f64,
-    lng: f64,
+    pub id: i32,
+    pub name: String,
+    pub lat: f64,
+    pub lng: f64,
 }
 
 impl From<postgres::Row> for Site {

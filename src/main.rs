@@ -154,7 +154,7 @@ fn main() -> std::io::Result<()> {
     } else {
         rocket::ignite()
             .mount("/", routes![site, ebird_hotspot, trip])
-            .mount("/api", routes![api::sites])
+            .mount("/api", routes![api::sites, api::trips])
             .mount("/static", StaticFiles::from("static"))
             .attach(Template::fairing())
             .attach(cors::CORS())
