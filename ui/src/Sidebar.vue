@@ -16,7 +16,7 @@
         <b-menu>
           <b-menu-list label="Menu">
             <site-switch @changeshowsites="changeShowSites" />
-            <b-menu-item icon="settings">
+            <b-menu-item v-on:click="getTrips" icon="settings">
               <template slot="label" slot-scope="props">
                 Trips
                 <b-icon
@@ -53,8 +53,54 @@ export default {
       fullwidth: false,
       right: false,
       trips: [
-        { name: "Araracuara", id: 1 },
-        { name: "Vaupes", id: 2 },
+        {
+          name: "Araracuara",
+          id: 1,
+          days: [
+            {
+              day: 1,
+              site: {
+                id: 1,
+                name: "Villa Azul",
+                lat: 1.1,
+                lng: 2.2,
+              },
+            },
+            {
+              day: 2,
+              site: {
+                id: 2,
+                name: "San José del Guaviare",
+                lat: 3.3,
+                lng: 4.4,
+              },
+            },
+          ],
+        },
+        {
+          name: "Vaupes",
+          id: 2,
+          days: [
+            {
+              day: 1,
+              site: {
+                id: 1,
+                name: "Mitu",
+                lat: 1.1,
+                lng: 2.2,
+              },
+            },
+            {
+              day: 2,
+              site: {
+                id: 2,
+                name: "Moroco",
+                lat: 3.3,
+                lng: 4.4,
+              },
+            },
+          ],
+        },
       ],
     };
   },
@@ -65,6 +111,12 @@ export default {
     },
     changeShowTrip: function (newVal, trip) {
       this.$emit("changeshowtrip", newVal, trip);
+    },
+    getTrips: function () {
+      for (let trip of this.trips) {
+        trip["isVisible"] = true;
+      }
+      this.$emit("clicktrips", this.trips);
     },
   },
 };

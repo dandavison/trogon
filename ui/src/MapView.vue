@@ -3,8 +3,9 @@
     <sidebar
       @changeshowsites="changeShowSites"
       @changeshowtrip="changeShowTrip"
+      @clicktrips="showTrips"
     />
-    <mapx v-bind:showSites="showSites" />
+    <mapx v-bind:showSites="showSites" v-bind:trips="trips" />
   </div>
 </template>
 
@@ -17,6 +18,7 @@ export default {
   data() {
     return {
       showSites: false,
+      trips: [],
     };
   },
   methods: {
@@ -24,7 +26,14 @@ export default {
       this.showSites = newVal;
     },
     changeShowTrip: function (newVal, trip) {
-      this.$emit("changeshowtrip", newVal, trip);
+      for (let _trip of this.trips) {
+        if (_trip.id === trip.id) {
+          _trip["isVisible"] = newVal;
+        }
+      }
+    },
+    showTrips: function (trips) {
+      this.trips = trips;
     },
   },
 };
