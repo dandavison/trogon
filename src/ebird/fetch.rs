@@ -61,7 +61,7 @@ fn _fetch_hotspot_species(loc_id: &str) -> Vec<String> {
 /// Fetch the full eBird species "taxonomy" and write it to $SYLPH_DATA_DIR/ebird/species.json.
 /// SYLPH_DATA_DIR defaults to "data/" if it is not set as an environment variable.
 pub fn fetch_species() -> std::io::Result<i32> {
-    let url = format!("https://api.ebird.org/v2/ref/taxonomy/ebird?fmt=json");
+    let url = "https://api.ebird.org/v2/ref/taxonomy/ebird?fmt=json".to_string();
     let species = reqwest::blocking::Client::new()
         .request(Method::GET, &url)
         .header("X-eBirdApiToken", get_ebird_api_token())

@@ -11,7 +11,7 @@ use std::path::PathBuf;
 use std::process;
 
 fn get_data_directory() -> String {
-    env::var("SYLPH_DATA_DIR").unwrap_or("data".to_string())
+    env::var("SYLPH_DATA_DIR").unwrap_or_else(|_| "data".to_string())
 }
 
 fn get_ebird_api_token() -> String {

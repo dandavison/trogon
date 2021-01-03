@@ -25,7 +25,7 @@ pub fn load_hotspots() -> std::io::Result<i32> {
 
 pub fn _load_hotspots(path: PathBuf, existing_loc_ids: &HashSet<String>) -> std::io::Result<i32> {
     let hotspots: Vec<models::EbirdHotspot> =
-        deserialize_json(&read_to_string(&path)).unwrap_or(vec![]);
+        deserialize_json(&read_to_string(&path)).unwrap_or_default();
     let mut dbclient = db::get_client();
     let mut n_loaded = 0;
     for hotspot in &hotspots {
@@ -76,7 +76,7 @@ pub fn load_hotspot_species() -> std::io::Result<i32> {
 
 pub fn _load_hotspot_species(path: PathBuf) -> std::io::Result<i32> {
     let loc_id = path.file_stem().unwrap().to_str().unwrap();
-    let species: Vec<String> = deserialize_json(&read_to_string(&path)).unwrap_or(vec![]);
+    let species: Vec<String> = deserialize_json(&read_to_string(&path)).unwrap_or_default();
     let mut dbclient = db::get_client();
     let mut n_loaded = 0;
     for sp in &species {
@@ -107,7 +107,7 @@ values ($1, $2);",
 
 pub fn load_species() -> std::io::Result<i32> {
     let species: Vec<models::EbirdSpecies> =
-        deserialize_json(&read_to_string(&get_species_file())).unwrap_or(vec![]);
+        deserialize_json(&read_to_string(&get_species_file())).unwrap_or_default();
     let mut dbclient = db::get_client();
     let mut n_loaded = 0;
     for sp in &species {
