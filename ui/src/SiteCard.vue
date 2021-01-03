@@ -1,5 +1,5 @@
 <template>
-  <section @mouseover="highlightSite">
+  <section @mouseover="highlightSite" @mouseleave="unhighlightSite">
     <div class="box">
       <article class="media">
         <div class="media-left">
@@ -41,6 +41,9 @@ export default {
   methods: {
     highlightSite: function () {
       this.$emit("highlightsite", this.site);
+    },
+    unhighlightSite: function () {
+      this.$emit("unhighlightsite", this.site);
     },
   },
   props: { site: Object },

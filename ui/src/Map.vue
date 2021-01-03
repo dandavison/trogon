@@ -28,7 +28,6 @@ export default {
   watch: {
     highlightSite: function (newVal) {
       if (newVal) {
-        this.doUnhighlightSite();
         this.doHighlightSite(newVal);
       } else {
         this.doUnhighlightSite();

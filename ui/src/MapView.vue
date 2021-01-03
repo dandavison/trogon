@@ -6,7 +6,11 @@
       @changeshowtrip="changeShowTrip"
       @clicktrips="createTrips"
     />
-    <site-list-panel @highlightsite="doHighlightSite" v-bind:sites="sites" />
+    <site-list-panel
+      @highlightsite="doHighlightSite"
+      @unhighlightsite="doUnhighlightSite"
+      v-bind:sites="sites"
+    />
     <mapx
       @loadsites="loadSites"
       v-bind:highlightSite="highlightSite"
@@ -60,6 +64,10 @@ export default {
     },
     doHighlightSite: function (site) {
       this.highlightSite = site;
+    },
+    doUnhighlightSite: function (site) {
+      if (this.highlightSite && site.id === this.highlightSite.id)
+        this.highlightSite = null;
     },
     loadSites: function (sites) {
       this.sites = sites;

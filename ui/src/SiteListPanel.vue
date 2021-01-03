@@ -17,6 +17,7 @@
                   v-bind:site="site"
                   id="site.id"
                   @highlightsite="highlightSite"
+                  @unhighlightsite="unhighlightSite"
                 />
               </div>
             </section>
@@ -45,6 +46,9 @@ export default {
   methods: {
     highlightSite: function (site) {
       this.$emit("highlightsite", site);
+    },
+    unhighlightSite: function (site) {
+      this.$emit("unhighlightsite", site);
     },
   },
   props: { sites: Array },
