@@ -1,5 +1,6 @@
 <template>
   <div>
+    <navbar />
     <control-panel
       @changeshowsites="changeShowSites"
       @changeshowtrip="changeShowTrip"
@@ -19,10 +20,11 @@
 <script>
 import ControlPanel from "./ControlPanel.vue";
 import Mapx from "./Map.vue";
+import Navbar from "./Navbar.vue";
 import SiteListPanel from "./SiteListPanel.vue";
 export default {
   name: "mapView",
-  components: { Mapx, ControlPanel, SiteListPanel },
+  components: { ControlPanel, Mapx, Navbar, SiteListPanel },
   data() {
     return {
       highlightSite: null,
