@@ -5,7 +5,7 @@
 <script>
 import L from "leaflet";
 export default {
-  props: { showSites: Boolean, trips: Array },
+  props: { showSites: Boolean, trips: Array, visibleTrips: Map },
   data() {
     this.mymap = null;
     this.sitesLayerGroup = null;
@@ -29,17 +29,19 @@ export default {
     },
     trips: {
       handler(newTrips) {
-        console.log("Map: handling trips", newTrips);
         for (let trip of newTrips) {
-          console.log("Map: loading trips", trip.name);
-          if (trip.isVisible === true) {
-            console.log("Map: visible", trip.name, trip.site_days);
-            this.tripsLayerGroup[trip.id] = createSitesLayerGroup(
-              trip.site_days
-            );
-            this.doShowTrip(trip);
+          this.tripsLayerGroup[trip.id] = createSitesLayerGroup(trip.site_days);
+        }
+      },
+      deep: true,
+    },
+    visibleTrips: {
+      handler(tripIds) {
+        for (var tripId in tripIds) {
+          if (tripIds[tripId]) {
+            this.doShowTrip(tripId);
           } else {
-            console.log("Map: not visible", trip.name, trip.site_days);
+            this.doHideTrip(tripId);
           }
         }
       },
@@ -53,13 +55,11 @@ export default {
     doShowSites() {
       this.sitesLayerGroup.addTo(this.mymap);
     },
-    doHideTrip(trip) {
-      console.log("Map hide trip", trip);
-      this.tripsLayerGroup[trip.id].remove();
+    doHideTrip(tripId) {
+      this.tripsLayerGroup[tripId].remove();
     },
-    doShowTrip(trip) {
-      console.log("Map show trip", trip);
-      this.tripsLayerGroup[trip.id].addTo(this.mymap);
+    doShowTrip(tripId) {
+      this.tripsLayerGroup[tripId].addTo(this.mymap);
     },
   },
 };

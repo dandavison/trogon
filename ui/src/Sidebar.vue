@@ -61,15 +61,15 @@ export default {
               day: 1,
               id: 1,
               name: "Villa Azul",
-              lat: 1.1,
-              lng: 2.2,
+              lat: -0.5930590066379546,
+              lng: -72.11438768433418,
             },
             {
               day: 2,
               id: 2,
               name: "San José del Guaviare",
-              lat: 3.3,
-              lng: 4.4,
+              lat: -0.5745422166246894,
+              lng: -72.38932491030444,
             },
           ],
         },
@@ -81,15 +81,15 @@ export default {
               day: 1,
               id: 1,
               name: "Mitu",
-              lat: 1.1,
-              lng: 2.2,
+              lat: 1.2539646349060007,
+              lng: -70.23341850460245,
             },
             {
               day: 2,
               id: 2,
               name: "Moroco",
-              lat: 3.3,
-              lng: 4.4,
+              lat: 0.1444015171331046,
+              lng: -70.96084408873314,
             },
           ],
         },
@@ -102,23 +102,24 @@ export default {
       this.$emit("changeshowsites", newVal);
     },
     changeShowTrip: function (newVal, trip) {
+      for (let _trip of this.trips) {
+        if (_trip.id == trip.id) {
+          trip["isVisible"] = newVal;
+        }
+      }
       this.$emit("changeshowtrip", newVal, trip);
     },
     getTrips: function () {
-      for (let trip of this.trips) {
-        trip["isVisible"] = true;
-      }
+      // for (let trip of this.trips) {
+      //   trip["isVisible"] = true;
+      // }
       // fetch("http://localhost:8000/api/trips").then((response) => {
       //   response.json().then((trips) => {
       //     for (let trip of trips) {
       //       this.tripsLayerGroup[trip.id] = createSitesLayerGroup(trip.sites);
-      //       this.doShowTrip(trip);
-      //       trip["visible"] = true;
       //     }
       //   });
       // });
-
-      console.log("Sidebar: requested trips");
       this.$emit("clicktrips", this.trips);
     },
   },

@@ -3,9 +3,13 @@
     <sidebar
       @changeshowsites="changeShowSites"
       @changeshowtrip="changeShowTrip"
-      @clicktrips="showTrips"
+      @clicktrips="createTrips"
     />
-    <mapx v-bind:showSites="showSites" v-bind:trips="trips" />
+    <mapx
+      v-bind:showSites="showSites"
+      v-bind:trips="trips"
+      v-bind:visibleTrips="visibleTrips"
+    />
   </div>
 </template>
 
@@ -19,6 +23,7 @@ export default {
     return {
       showSites: false,
       trips: [],
+      visibleTrips: new Map(),
     };
   },
   methods: {
@@ -26,20 +31,24 @@ export default {
       this.showSites = newVal;
     },
     changeShowTrip: function (newVal, trip) {
-      console.log("MapView show trip: ", newVal, trip.name);
-      let newTrips = [];
+      let visibleTrips = new Map();
+
       for (let _trip of this.trips) {
         if (_trip.id === trip.id) {
-          console.log("MapView updating visibility", newVal, trip.name);
-          _trip["isVisible"] = newVal;
-          newTrips.push(_trip);
+          visibleTrips[trip.id] = newVal;
+        } else {
+          visibleTrips[_trip.id] = this.visibleTrips[_trip.id];
         }
       }
-      this.trips = newTrips;
+      this.visibleTrips = visibleTrips;
     },
-    showTrips: function (trips) {
-      console.log("MapView: setting trips", trips);
+    createTrips: function (trips) {
       this.trips = trips;
+      let visibleTrips = new Map();
+      for (let trip of this.trips) {
+        visibleTrips[trip.id] = false;
+      }
+      this.visibleTrips = visibleTrips;
     },
   },
 };
