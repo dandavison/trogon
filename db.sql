@@ -124,3 +124,37 @@ create table ebird_hotspot_species (
   species varchar references ebird_species,
   locId varchar references ebird_hotspot
 );
+
+------------------------------------------------------------------------------------
+
+create table image (
+  id serial primary key,
+  site integer references site,
+  guide integer references guide,
+  url varchar,
+  check (num_nonnulls(site, guide) = 1)
+);
+
+-- Moroco
+insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103485834-2d5f8f00-4dc7-11eb-8072-507b200faffc.png');
+insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103485853-639d0e80-4dc7-11eb-95af-6c64187e90e6.png');
+insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103485873-90512600-4dc7-11eb-8c8e-42137cd9e403.png');
+insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103486046-e7a3c600-4dc8-11eb-83f4-8a702e65364b.png');
+insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103486080-1457dd80-4dc9-11eb-8088-ca5ee516b2d3.png');
+
+-- Mitu
+insert into image (site, guide, url) values (2, null, 'https://user-images.githubusercontent.com/52205/103485896-becf0100-4dc7-11eb-9298-1cb350123df6.png');
+insert into image (site, guide, url) values (2, null, 'https://user-images.githubusercontent.com/52205/103485926-f473ea00-4dc7-11eb-9e56-244abd9f4faf.png');
+insert into image (site, guide, url) values (2, null, 'https://user-images.githubusercontent.com/52205/103485998-9398e180-4dc8-11eb-9604-bc89fe6566a1.png');
+
+-- Araracuara
+insert into image (site, guide, url) values (3, null, 'https://user-images.githubusercontent.com/52205/103486906-49672e80-4dcf-11eb-99e6-020c6f095ba2.png');
+
+-- Villa Azul
+insert into image (site, guide, url) values (4, null, 'https://www.paisatours.com/images/leticia_l.JPG');
+
+-- Jose
+insert into image (site, guide, url) values (null, 1, 'https://user-images.githubusercontent.com/52205/103488643-458dd900-4ddc-11eb-9177-b06b4a067785.png');
+
+-- Miguel
+insert into image (site, guide, url) values (null, 2, 'https://user-images.githubusercontent.com/52205/103485942-17060300-4dc8-11eb-8fcd-e0abab17865f.png');
