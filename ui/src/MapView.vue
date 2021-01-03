@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sidebar
+    <control-panel
       @changeshowsites="changeShowSites"
       @changeshowtrip="changeShowTrip"
       @clicktrips="createTrips"
@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import Sidebar from "./Sidebar.vue";
+import ControlPanel from "./ControlPanel.vue";
 import Mapx from "./Map.vue";
 export default {
   name: "mapView",
-  components: { Mapx, Sidebar },
+  components: { Mapx, ControlPanel },
   data() {
     return {
       showSites: false,
