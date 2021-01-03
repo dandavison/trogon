@@ -2,10 +2,7 @@
   <section>
     <b-sidebar
       type="is-light"
-      :fullheight="fullheight"
-      :fullwidth="fullwidth"
-      :overlay="overlay"
-      :right="right"
+      v-bind="sidebarAttributes"
       v-model="open"
     >
       <div class="p-1">
@@ -60,11 +57,13 @@ import TripSwitches from "./TripSwitches.vue";
 export default {
   data() {
     return {
+      sidebarAttributes: {
+        overlay: false,
+        fullheight: true,
+        fullwidth: false,
+        right: false,
+      },
       open: false,
-      overlay: false,
-      fullheight: true,
-      fullwidth: false,
-      right: false,
       trips: [],
     };
   },
