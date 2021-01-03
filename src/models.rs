@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 pub struct Site {
     pub id: i32,
     pub name: String,
+    pub description: String,
     pub lat: f64,
     pub lng: f64,
 }
@@ -13,6 +14,7 @@ impl From<postgres::Row> for Site {
         Self {
             id: row.get("id"),
             name: row.get("name"),
+            description: row.get("description"),
             lat: row.get("lat"),
             lng: row.get("lng"),
         }

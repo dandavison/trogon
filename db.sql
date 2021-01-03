@@ -2,13 +2,14 @@ create table site (
   id serial primary key,
   name varchar,
   lat float8,
-  lng float8
+  lng float8,
+  description text
 );
 
-insert into site values (1, 'Moroco', 0.1444015171331046, -70.96084408873314);
-insert into site values (2, 'Mitú', 1.2539646349060007, -70.23341850460245);
-insert into site values (3, 'Araracuara', -0.5930590066379546, -72.38932491030444);
-insert into site values (4, 'Villa Azul', -0.5745422166246894, -72.11438768433418);
+insert into site values (1, 'Moroco', 0.1444015171331046, -70.96084408873314, 'Moroco is a small community on the right bank of the Rio Apaporis (?). The inhabitants mostly belong to the XXX indigenous ethnicity. It is surrounded by lowland terra firme forest in good condition. The cliffs of one of the nearby table top mesetas can be reached in 3 hours walk through the forest starting from the opposite bank.');
+insert into site values (2, 'Mitú', 1.2539646349060007, -70.23341850460245, 'Mitú is is a medium-sized town on the banks of the Rio Vaupés in the Colombian Amazon basin. It is the capital of the department of Vaupes. It can only be reached by air or river, but there are several roads leaving town giving access to well-preserved Amazonian terra firme and white sand forests, at which over 400 bird species have been recorded.');
+insert into site values (3, 'Araracuara', -0.5930590066379546, -72.38932491030444, 'Araracuara is a small town with an airstrip on the left bank of the Rio Caquetá.');
+insert into site values (4, 'Villa Azul', -0.5745422166246894, -72.11438768433418, 'Villa Azul is a small community on the left bank of the Rio Caquetá, 10 miles downstream of Araracuara.');
 
 ------------------------------------------------------------------------------------
 

@@ -1,6 +1,10 @@
 <template>
-  <section @mouseover="highlightSite" @mouseleave="unhighlightSite">
-    <div class="box">
+  <section
+    @mouseover="highlightSite"
+    @mouseleave="unhighlightSite"
+    style="height: 200px"
+  >
+    <div class="box" style="height: 200px">
       <article class="media">
         <div class="media-left">
           <b-carousel v-bind="carouselAttributes">
@@ -13,10 +17,10 @@
         </div>
         <div class="media-content">
           <div class="content">
-            <p>
+            <p style="height: 150px; text-overflow: ellipsis; overflow: hidden">
               <strong>{{ site.name }}</strong>
               <br />
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              {{ site.description }}
             </p>
           </div>
         </div>
