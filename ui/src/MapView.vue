@@ -5,7 +5,11 @@
       @changeshowtrip="changeShowTrip"
       @clicktrips="createTrips"
     />
+    <site-list-panel
+      v-bind:sites="sites"
+    />
     <mapx
+      @loadsites="loadSites"
       v-bind:showSites="showSites"
       v-bind:trips="trips"
       v-bind:visibleTrips="visibleTrips"
@@ -16,12 +20,14 @@
 <script>
 import ControlPanel from "./ControlPanel.vue";
 import Mapx from "./Map.vue";
+import SiteListPanel from "./SiteListPanel.vue";
 export default {
   name: "mapView",
-  components: { Mapx, ControlPanel },
+  components: { Mapx, ControlPanel, SiteListPanel },
   data() {
     return {
       showSites: false,
+      sites: [],
       trips: [],
       visibleTrips: new Map(),
     };
@@ -49,6 +55,10 @@ export default {
         visibleTrips[trip.id] = false;
       }
       this.visibleTrips = visibleTrips;
+    },
+    loadSites: function (sites) {
+      console.log("loading sties");
+      this.sites = sites;
     },
   },
 };

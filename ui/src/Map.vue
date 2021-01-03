@@ -15,6 +15,8 @@ export default {
         this.mymap = createMap(sites);
         this.sitesLayerGroup = createSitesLayerGroup(sites);
         this.doShowSites();
+        this.$emit("loadsites", sites);
+        console.log("Map: loaded sites", sites);
       });
     });
     return {};
