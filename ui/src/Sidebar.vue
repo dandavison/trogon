@@ -56,48 +56,40 @@ export default {
         {
           name: "Araracuara",
           id: 1,
-          days: [
+          site_days: [
             {
               day: 1,
-              site: {
-                id: 1,
-                name: "Villa Azul",
-                lat: 1.1,
-                lng: 2.2,
-              },
+              id: 1,
+              name: "Villa Azul",
+              lat: 1.1,
+              lng: 2.2,
             },
             {
               day: 2,
-              site: {
-                id: 2,
-                name: "San José del Guaviare",
-                lat: 3.3,
-                lng: 4.4,
-              },
+              id: 2,
+              name: "San José del Guaviare",
+              lat: 3.3,
+              lng: 4.4,
             },
           ],
         },
         {
           name: "Vaupes",
           id: 2,
-          days: [
+          site_days: [
             {
               day: 1,
-              site: {
-                id: 1,
-                name: "Mitu",
-                lat: 1.1,
-                lng: 2.2,
-              },
+              id: 1,
+              name: "Mitu",
+              lat: 1.1,
+              lng: 2.2,
             },
             {
               day: 2,
-              site: {
-                id: 2,
-                name: "Moroco",
-                lat: 3.3,
-                lng: 4.4,
-              },
+              id: 2,
+              name: "Moroco",
+              lat: 3.3,
+              lng: 4.4,
             },
           ],
         },

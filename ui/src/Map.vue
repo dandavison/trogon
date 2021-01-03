@@ -33,11 +33,13 @@ export default {
         for (let trip of newTrips) {
           console.log("Map: loading trips", trip.name);
           if (trip.isVisible === true) {
-            console.log("Map: visible", trip.name);
-            // this.tripsLayerGroup[trip.id] = createSitesLayerGroup(trip.sites);
-            // this.doShowTrip(trip);
+            console.log("Map: visible", trip.name, trip.site_days);
+            this.tripsLayerGroup[trip.id] = createSitesLayerGroup(
+              trip.site_days
+            );
+            this.doShowTrip(trip);
           } else {
-            console.log("Map: visible", trip.name);
+            console.log("Map: not visible", trip.name, trip.site_days);
           }
         }
       },
