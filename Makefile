@@ -14,13 +14,6 @@ db: build
 	$(SYLPH) --load-ebird-hotspots
 	$(SYLPH) --load-ebird-hotspot-species
 
-describe-db:
-	@echo "SELECT relname as table, n_live_tup as rows FROM pg_stat_user_tables ORDER BY n_live_tup DESC;" \
-	| psql -d sylph
-
-psql:
-	psql -d sylph
-
 fetch-ebird-data: fetch-ebird-species fetch-ebird-hotspots
 
 fetch-ebird-species:
@@ -37,3 +30,16 @@ fetch-and-load-hotspot-species:
 	$(SYLPH) --load-ebird-hotspots
 	$(SYLPH) --fetch-ebird-hotspot-species
 	$(SYLPH) --load-ebird-hotspot-species
+
+describe-db:
+	@echo "SELECT relname as table, n_live_tup as rows FROM pg_stat_user_tables ORDER BY n_live_tup DESC;" \
+	| psql -d sylph
+
+psql:
+	psql -d sylph
+
+pgcli:
+	pgcli -d sylph
+
+lint:
+	cargo clippy
