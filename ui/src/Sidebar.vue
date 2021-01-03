@@ -47,7 +47,7 @@
     </b-sidebar>
     <div class="block"></div>
     <b-button class="show" @click="open = true">
-      Toggle<br />control<br />panel
+      <span v-if="!open">Open control panel</span>
     </b-button>
   </section>
 </template>
@@ -93,7 +93,6 @@ export default {
   z-index: 2;
 }
 button.show {
-  float: right;
   height: fit-content;
 }
 </style>
