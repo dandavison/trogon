@@ -26,13 +26,16 @@ export default {
       this.showSites = newVal;
     },
     changeShowTrip: function (newVal, trip) {
+      console.log("MapView show trip: ", newVal, trip.name);
       for (let _trip of this.trips) {
         if (_trip.id === trip.id) {
+          console.log("MapView updating visibility", newVal, trip.name);
           _trip["isVisible"] = newVal;
         }
       }
     },
     showTrips: function (trips) {
+      console.log("MapView: setting trips", trips);
       this.trips = trips;
     },
   },

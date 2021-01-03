@@ -5,10 +5,11 @@
 <script>
 import L from "leaflet";
 export default {
-  props: { showSites: Boolean },
+  props: { showSites: Boolean, trips: Array },
   data() {
     this.mymap = null;
     this.sitesLayerGroup = null;
+    this.tripsLayerGroup = {};
     fetch("http://localhost:8000/api/sites").then((response) => {
       response.json().then((sites) => {
         this.mymap = createMap(sites);
@@ -26,6 +27,22 @@ export default {
         this.doHideSites();
       }
     },
+    trips: {
+      handler(newTrips) {
+        console.log("Map: handling trips", newTrips);
+        for (let trip of newTrips) {
+          console.log("Map: loading trips", trip.name);
+          if (trip.isVisible === true) {
+            console.log("Map: visible", trip.name);
+            // this.tripsLayerGroup[trip.id] = createSitesLayerGroup(trip.sites);
+            // this.doShowTrip(trip);
+          } else {
+            console.log("Map: visible", trip.name);
+          }
+        }
+      },
+      deep: true,
+    },
   },
   methods: {
     doHideSites() {
@@ -33,6 +50,14 @@ export default {
     },
     doShowSites() {
       this.sitesLayerGroup.addTo(this.mymap);
+    },
+    doHideTrip(trip) {
+      console.log("Map hide trip", trip);
+      this.tripsLayerGroup[trip.id].remove();
+    },
+    doShowTrip(trip) {
+      console.log("Map show trip", trip);
+      this.tripsLayerGroup[trip.id].addTo(this.mymap);
     },
   },
 };

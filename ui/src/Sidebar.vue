@@ -116,6 +116,17 @@ export default {
       for (let trip of this.trips) {
         trip["isVisible"] = true;
       }
+      // fetch("http://localhost:8000/api/trips").then((response) => {
+      //   response.json().then((trips) => {
+      //     for (let trip of trips) {
+      //       this.tripsLayerGroup[trip.id] = createSitesLayerGroup(trip.sites);
+      //       this.doShowTrip(trip);
+      //       trip["visible"] = true;
+      //     }
+      //   });
+      // });
+
+      console.log("Sidebar: requested trips");
       this.$emit("clicktrips", this.trips);
     },
   },
