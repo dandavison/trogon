@@ -2,7 +2,7 @@ create table site (
   id serial primary key,
   name varchar,
   lat float8,
-  lon float8
+  lng float8
 );
 
 insert into site values (1, 'Moroco', 0.1444015171331046, -70.96084408873314);

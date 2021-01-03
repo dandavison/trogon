@@ -14,7 +14,7 @@ impl From<postgres::Row> for Site {
             id: row.get("id"),
             name: row.get("name"),
             lat: row.get("lat"),
-            lng: row.get("lon"),
+            lng: row.get("lng"),
         }
     }
 }
