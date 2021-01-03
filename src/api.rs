@@ -11,3 +11,8 @@ pub fn sites() -> content::Json<String> {
 pub fn trips() -> content::Json<String> {
     content::Json(serde_json::to_string(&queries::trip_with_site_days::query()).unwrap())
 }
+
+#[get("/guides")]
+pub fn guides() -> content::Json<String> {
+    content::Json(serde_json::to_string(&queries::guide_with_images::query()).unwrap())
+}
