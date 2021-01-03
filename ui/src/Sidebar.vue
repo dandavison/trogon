@@ -129,7 +129,7 @@ export default {
 <style>
 .p-1 {
   padding: 1em;
-  z-index: -1;
+  z-index: 2;
 }
 button.show {
   float: right;

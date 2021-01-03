@@ -100,6 +100,6 @@ function createSitesLayerGroup(sites) {
 <style>
 #map {
   height: 800px;
-  z-index: -1;
+  z-index: 1;
 }
 </style>
