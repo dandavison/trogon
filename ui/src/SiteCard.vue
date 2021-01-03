@@ -1,32 +1,26 @@
 <template>
   <section>
-    <b-collapse class="card" animation="slide" aria-id="contentIdForA11y3">
-      <div
-        slot="trigger"
-        slot-scope="props"
-        class="card-header"
-        role="button"
-        aria-controls="contentIdForA11y3"
-      >
-        <p class="card-header-title">Component</p>
-        <a class="card-header-icon">
-          <b-icon :icon="props.open ? 'menu-down' : 'menu-up'"> </b-icon>
-        </a>
-      </div>
-      <div class="card-content">
-        <div class="content">
-          Name: {{ site.name }}<br>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
-          iaculis mauris.
-          <a>#buefy</a>.
+    <div class="box">
+      <article class="media">
+        <div class="media-left">
+          <figure class="image is-64x64">
+            <img
+              src="https://user-images.githubusercontent.com/52205/74552822-b0f85f00-4f1b-11ea-908d-48d4f301b6a3.png"
+              alt="Image"
+            />
+          </figure>
         </div>
-      </div>
-      <footer class="card-footer">
-        <a class="card-footer-item">Save</a>
-        <a class="card-footer-item">Edit</a>
-        <a class="card-footer-item">Delete</a>
-      </footer>
-    </b-collapse>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>{{ site.name }}</strong>
+              <br />
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
   </section>
 </template>
 
@@ -35,6 +29,6 @@ export default {
   data() {
     return {};
   },
-  props: {"site": Object},
+  props: { site: Object },
 };
 </script>

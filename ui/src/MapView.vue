@@ -5,9 +5,7 @@
       @changeshowtrip="changeShowTrip"
       @clicktrips="createTrips"
     />
-    <site-list-panel
-      v-bind:sites="sites"
-    />
+    <site-list-panel v-bind:sites="sites" />
     <mapx
       @loadsites="loadSites"
       v-bind:showSites="showSites"
@@ -57,7 +55,6 @@ export default {
       this.visibleTrips = visibleTrips;
     },
     loadSites: function (sites) {
-      console.log("loading sties");
       this.sites = sites;
     },
   },

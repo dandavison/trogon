@@ -14,10 +14,11 @@
             <td>
               <img
                 src="https://user-images.githubusercontent.com/52205/74552822-b0f85f00-4f1b-11ea-908d-48d4f301b6a3.png"
-                style="height: 200px"
                 alt="Sylph"
               />
             </td>
+          </tr>
+          <tr>
             <td
               style="display: table-cell; vertical-align: middle; padding: 10px"
             >

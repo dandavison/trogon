@@ -9,18 +9,13 @@
       v-model="open"
     >
       <div class="p-1">
-        <img
-          src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-          alt="Lightweight UI components for Vue.js based on Bulma"
-        />
         <b-menu>
-          <b-menu-list label="Menu">
+          <b-menu-list>
             <section id="site-cards">
               <div class="field" v-for="site in sites" :key="site.id">
                 <site-card v-bind:site="site" id="site.id" />
               </div>
             </section>
-            <b-menu-item icon="information-outline" label="Info"></b-menu-item>
           </b-menu-list>
         </b-menu>
       </div>
@@ -35,7 +30,7 @@ import SiteCard from "./SiteCard.vue";
 export default {
   data() {
     return {
-      open: true,
+      open: false,
       overlay: false,
       fullheight: true,
       fullwidth: false,
@@ -43,7 +38,7 @@ export default {
     };
   },
   components: { SiteCard },
-  props: {"sites": Array},
+  props: { sites: Array },
 };
 </script>
 
