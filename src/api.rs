@@ -4,12 +4,12 @@ use rocket::response::content;
 
 #[get("/sites")]
 pub fn sites() -> content::Json<String> {
-    content::Json(serde_json::to_string(&queries::site_with_images::query()).unwrap())
+    content::Json(serde_json::to_string(&queries::sites::query()).unwrap())
 }
 
 #[get("/trips")]
 pub fn trips() -> content::Json<String> {
-    content::Json(serde_json::to_string(&queries::trip_with_site_days::query()).unwrap())
+    content::Json(serde_json::to_string(&queries::trips::query()).unwrap())
 }
 
 #[get("/guides")]
