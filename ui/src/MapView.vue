@@ -2,6 +2,7 @@
   <div>
     <navbar />
     <control-panel
+      @changeshowhotspots="changeShowHotspots"
       @changeshowsites="changeShowSites"
       @changeshowtrip="changeShowTrip"
       @clicktrips="createTrips"
@@ -13,7 +14,9 @@
     />
     <mapx
       @loadsites="loadSites"
+      @loadhotspots="loadHotspots"
       v-bind:highlightSite="highlightSite"
+      v-bind:showHotspots="showHotspots"
       v-bind:showSites="showSites"
       v-bind:trips="trips"
       v-bind:visibleTrips="visibleTrips"
@@ -32,6 +35,7 @@ export default {
   data() {
     return {
       highlightSite: null,
+      showHotspots: false,
       showSites: false,
       sites: [],
       trips: [],
@@ -39,6 +43,9 @@ export default {
     };
   },
   methods: {
+    changeShowHotspots: function (newVal) {
+      this.showHotspots = newVal;
+    },
     changeShowSites: function (newVal) {
       this.showSites = newVal;
     },
@@ -71,6 +78,9 @@ export default {
     },
     loadSites: function (sites) {
       this.sites = sites;
+    },
+    loadHotspots: function (hotspots) {
+      this.hotspots = hotspots;
     },
   },
 };

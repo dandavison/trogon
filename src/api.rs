@@ -2,6 +2,11 @@ use crate::queries;
 
 use rocket::response::content;
 
+#[get("/ebird-hotspots")]
+pub fn ebird_hotspots() -> content::Json<String> {
+    content::Json(serde_json::to_string(&queries::ebird_hotspots::query()).unwrap())
+}
+
 #[get("/sites")]
 pub fn sites() -> content::Json<String> {
     content::Json(serde_json::to_string(&queries::sites::query()).unwrap())

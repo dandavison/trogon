@@ -36,6 +36,7 @@
               <trip-switches :trips="trips" @changeshowtrip="changeShowTrip" />
             </b-menu-item>
             <site-switch @changeshowsites="changeShowSites" />
+            <hotspots-switch @changeshowhotspots="changeShowHotspots" />
           </b-menu-list>
           <b-menu-list label="Actions">
             <b-menu-item label="Logout"></b-menu-item>
@@ -51,6 +52,7 @@
 </template>
 
 <script>
+import HotspotsSwitch from "./HotspotsSwitch";
 import SiteSwitch from "./SiteSwitch.vue";
 import TripSwitches from "./TripSwitches.vue";
 
@@ -67,8 +69,11 @@ export default {
       trips: [],
     };
   },
-  components: { SiteSwitch, TripSwitches },
+  components: { HotspotsSwitch, SiteSwitch, TripSwitches },
   methods: {
+    changeShowHotspots: function (newVal) {
+      this.$emit("changeshowhotspots", newVal);
+    },
     changeShowSites: function (newVal) {
       this.$emit("changeshowsites", newVal);
     },

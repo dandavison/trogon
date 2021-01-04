@@ -7,12 +7,14 @@ import L from "leaflet";
 export default {
   props: {
     highlightSite: Object,
+    showHotspots: Boolean,
     showSites: Boolean,
     trips: Array,
     visibleTrips: Map,
   },
   data() {
     this.mymap = null;
+    this.hotspotsLayerGroup = null;
     this.sitesLayerGroup = null;
     this.tripsLayerGroup = {};
     fetch("http://localhost:8000/api/sites").then((response) => {
@@ -20,6 +22,12 @@ export default {
         this.mymap = createMap(sites);
         this.sitesLayerGroup = createSitesLayerGroup(sites);
         this.$emit("loadsites", sites);
+      });
+    });
+    fetch("http://localhost:8000/api/ebird-hotspots").then((response) => {
+      response.json().then((hotspots) => {
+        this.hotspotsLayerGroup = createHotspotsLayerGroup(hotspots);
+        this.$emit("loadhotspots", hotspots);
       });
     });
     return {};
@@ -30,6 +38,13 @@ export default {
         this.doHighlightSite(newVal);
       } else {
         this.doUnhighlightSite();
+      }
+    },
+    showHotspots: function (newVal) {
+      if (newVal) {
+        this.doShowHotspots();
+      } else {
+        this.doHideHotspots();
       }
     },
     showSites: function (newVal) {
@@ -61,6 +76,12 @@ export default {
     },
   },
   methods: {
+    doHideHotspots() {
+      this.hotspotsLayerGroup.remove();
+    },
+    doShowHotspots() {
+      this.hotspotsLayerGroup.addTo(this.mymap);
+    },
     doHideSites() {
       this.sitesLayerGroup.remove();
     },
@@ -112,6 +133,28 @@ function createMap(sites) {
     }
   ).addTo(mymap);
   return mymap;
+}
+
+function createHotspotsLayerGroup(hotspots) {
+  // -> LayerGroup
+  let markers = [];
+  for (let hotspot of hotspots) {
+    markers.push(
+      L.circle([hotspot.lat, hotspot.lng], 50, {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+      }).bindPopup(formatHotspotDetailHTML(hotspot))
+    );
+  }
+  return L.layerGroup(markers);
+}
+
+function formatHotspotDetailHTML(hotspot) {
+  let html = `<a href='/ebird-hotspot/${hotspot.locId}' target='_blank'>${hotspot.locName}</a>`;
+  html += `<br><br>${hotspot.numSpeciesAllTime || 0} species<br>`;
+  html += `<br>Most recent observations: ${hotspot.latestObsDt || 'none'}`;
+  return html;
 }
 
 function createSitesLayerGroup(sites) {
