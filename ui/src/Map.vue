@@ -153,7 +153,7 @@ function createHotspotsLayerGroup(hotspots) {
 function formatHotspotDetailHTML(hotspot) {
   let html = `<a href='/ebird-hotspot/${hotspot.locId}' target='_blank'>${hotspot.locName}</a>`;
   html += `<br><br>${hotspot.numSpeciesAllTime || 0} species<br>`;
-  html += `<br>Most recent observations: ${hotspot.latestObsDt || 'none'}`;
+  html += `<br>Most recent observations: ${hotspot.latestObsDt || "none"}`;
   return html;
 }
 

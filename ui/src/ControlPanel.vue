@@ -1,10 +1,6 @@
 <template>
   <section>
-    <b-sidebar
-      type="is-light"
-      v-bind="sidebarAttributes"
-      v-model="open"
-    >
+    <b-sidebar type="is-light" v-bind="sidebarAttributes" v-model="open">
       <div class="p-1">
         <table>
           <tr>
