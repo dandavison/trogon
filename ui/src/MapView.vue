@@ -21,6 +21,7 @@
       v-bind:trips="trips"
       v-bind:visibleTrips="visibleTrips"
     />
+    <trip-timeline v-bind:sites="sites" />
   </div>
 </template>
 
@@ -29,9 +30,11 @@ import ControlPanel from "./ControlPanel.vue";
 import Mapx from "./Map.vue";
 import Navbar from "./Navbar.vue";
 import SiteListPanel from "./SiteListPanel.vue";
+import TripTimeline from "./TripTimeline.vue";
+
 export default {
   name: "mapView",
-  components: { ControlPanel, Mapx, Navbar, SiteListPanel },
+  components: { ControlPanel, Mapx, Navbar, SiteListPanel, TripTimeline },
   data() {
     return {
       highlightSite: null,
