@@ -21,12 +21,12 @@ impl From<postgres::Row> for Site {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Guide {
-    id: i32,
-    name: String,
-    trip_guide: bool,
-    biography: Option<String>,
+    pub id: i32,
+    pub name: String,
+    pub trip_guide: bool,
+    pub biography: Option<String>,
 }
 
 impl From<postgres::Row> for Guide {
