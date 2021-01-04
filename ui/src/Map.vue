@@ -19,7 +19,6 @@ export default {
       response.json().then((sites) => {
         this.mymap = createMap(sites);
         this.sitesLayerGroup = createSitesLayerGroup(sites);
-        this.doShowSites();
         this.$emit("loadsites", sites);
       });
     });
