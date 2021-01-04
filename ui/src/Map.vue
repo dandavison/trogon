@@ -120,12 +120,24 @@ function createSitesLayerGroup(sites) {
   let markers = [];
   for (let site of sites) {
     markers.push(
-      L.marker([site.lat, site.lng]).bindPopup(
-        `<a href='/site/${site.id}' target='_blank'>${site.name}</a>`
-      )
+      L.marker([site.lat, site.lng]).bindPopup(formatSiteDetailHTML(site))
     );
   }
   return L.layerGroup(markers);
+}
+
+function formatSiteDetailHTML(site) {
+  let html = `<a href='/site/${site.id}' target='_blank'>${site.name}</a>`;
+  html += `<br><img src="${site.images[0]}" />`;
+  html += `<br><br>${site.guides.length} guide${
+    site.guides.length == 1 ? "" : "s"
+  }:<br>`;
+  html += "<ul>";
+  for (let guide of site.guides) {
+    html += `<li>${guide.name}</li>`;
+  }
+  html += "</ul>";
+  return html;
 }
 </script>
 
