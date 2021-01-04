@@ -2,9 +2,10 @@
   <div id="map"></div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import L from "leaflet";
-export default {
+export default Vue.extend({
   props: {
     highlightSite: Object,
     showHotspots: Boolean,
@@ -114,9 +115,9 @@ export default {
       this.highlightMarker = null;
     },
   },
-};
+});
 
-function createMap(sites) {
+function createMap(sites): L.Map {
   // -> Map
   var mymap = L.map("map").setView([sites[0].lat, sites[0].lng], 5);
 
@@ -135,7 +136,7 @@ function createMap(sites) {
   return mymap;
 }
 
-function createHotspotsLayerGroup(hotspots) {
+function createHotspotsLayerGroup(hotspots): L.LayerGroup {
   // -> LayerGroup
   let markers = [];
   for (let hotspot of hotspots) {
@@ -150,14 +151,14 @@ function createHotspotsLayerGroup(hotspots) {
   return L.layerGroup(markers);
 }
 
-function formatHotspotDetailHTML(hotspot) {
+function formatHotspotDetailHTML(hotspot): string {
   let html = `<a href='/ebird-hotspot/${hotspot.locId}' target='_blank'>${hotspot.locName}</a>`;
   html += `<br><br>${hotspot.numSpeciesAllTime || 0} species<br>`;
   html += `<br>Most recent observations: ${hotspot.latestObsDt || "none"}`;
   return html;
 }
 
-function createSitesLayerGroup(sites) {
+function createSitesLayerGroup(sites):  {
   // -> LayerGroup
   let markers = [];
   for (let site of sites) {
@@ -168,7 +169,7 @@ function createSitesLayerGroup(sites) {
   return L.layerGroup(markers);
 }
 
-function formatSiteDetailHTML(site) {
+function formatSiteDetailHTML(site): string {
   let html = `<a href='/site/${site.id}' target='_blank'>${site.name}</a>`;
   html += `<br><img src="${site.images[0]}" />`;
   html += `<br><br>${site.guides.length} guide${

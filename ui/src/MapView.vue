@@ -25,14 +25,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import ControlPanel from "./ControlPanel.vue";
 import Mapx from "./Map.vue";
 import Navbar from "./Navbar.vue";
 import SiteListPanel from "./SiteListPanel.vue";
 import TripTimeline from "./TripTimeline.vue";
 
-export default {
+export default Vue.extend({
   name: "mapView",
   components: { ControlPanel, Mapx, Navbar, SiteListPanel, TripTimeline },
   data() {
@@ -46,10 +47,10 @@ export default {
     };
   },
   methods: {
-    changeShowHotspots: function (newVal) {
+    changeShowHotspots: function (newVal: boolean) {
       this.showHotspots = newVal;
     },
-    changeShowSites: function (newVal) {
+    changeShowSites: function (newVal: boolean) {
       this.showSites = newVal;
     },
     changeShowTrip: function (newVal, trip) {
@@ -86,7 +87,7 @@ export default {
       this.hotspots = hotspots;
     },
   },
-};
+});
 </script>
 
 <style scoped>

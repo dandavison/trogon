@@ -47,12 +47,13 @@
   </section>
 </template>
 
-<script>
-import HotspotsSwitch from "./HotspotsSwitch";
+<script lang="ts">
+import Vue from "vue";
+import HotspotsSwitch from "./HotspotsSwitch.vue";
 import SiteSwitch from "./SiteSwitch.vue";
 import TripSwitches from "./TripSwitches.vue";
 
-export default {
+export default Vue.extend({
   data() {
     return {
       sidebarAttributes: {
@@ -67,10 +68,10 @@ export default {
   },
   components: { HotspotsSwitch, SiteSwitch, TripSwitches },
   methods: {
-    changeShowHotspots: function (newVal) {
+    changeShowHotspots: function (newVal: boolean) {
       this.$emit("changeshowhotspots", newVal);
     },
-    changeShowSites: function (newVal) {
+    changeShowSites: function (newVal: boolean) {
       this.$emit("changeshowsites", newVal);
     },
     changeShowTrip: function (newVal, trip) {
@@ -85,7 +86,7 @@ export default {
       });
     },
   },
-};
+});
 </script>
 
 <style>

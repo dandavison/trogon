@@ -6,10 +6,11 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import TripSwitch from "./TripSwitch.vue";
 
-export default {
+export default Vue.extend({
   data() {
     return {};
   },
@@ -20,5 +21,5 @@ export default {
       this.$emit("changeshowtrip", newVal, trip);
     },
   },
-};
+});
 </script>

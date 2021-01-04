@@ -29,10 +29,11 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import SiteCard from "./SiteCard.vue";
 
-export default {
+export default Vue.extend({
   data() {
     return {
       open: false,
@@ -52,7 +53,7 @@ export default {
     },
   },
   props: { sites: Array },
-};
+});
 </script>
 
 <style>

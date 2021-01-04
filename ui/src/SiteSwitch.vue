@@ -6,17 +6,18 @@
   </section>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+export default Vue.extend({
   data() {
     return {
       isSwitched: false,
     };
   },
   watch: {
-    isSwitched: function (newVal) {
+    isSwitched: function (newVal: boolean) {
       this.$emit("changeshowsites", newVal);
     },
   },
-};
+});
 </script>

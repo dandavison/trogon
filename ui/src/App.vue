@@ -4,15 +4,16 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import MapView from "./MapView.vue";
-export default {
+export default Vue.extend({
   name: "app",
   components: { MapView },
   data() {
     return {};
   },
-};
+});
 </script>
 
 <style scoped>
