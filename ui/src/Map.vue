@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import L, { Map } from "leaflet";
+import L, { LayerGroup } from "leaflet";
 import { EbirdHotSpot, Site } from "types";
 
 export default Vue.extend({
@@ -16,11 +16,6 @@ export default Vue.extend({
     visibleTrips: Map,
   },
   data() {
-    // TODO: all these should be returned, not set on `this`
-    this.mymap = null;
-    this.hotspotsLayerGroup = null;
-    this.sitesLayerGroup = null;
-    this.tripsLayerGroup = {};
     fetch("http://localhost:8000/api/sites").then((response) => {
       response.json().then((sites) => {
         this.mymap = createMap(sites);
@@ -34,7 +29,13 @@ export default Vue.extend({
         this.$emit("loadhotspots", hotspots);
       });
     });
-    return {};
+    return {
+      mymap: new L.Map(""),
+      hotspotsLayerGroup: new LayerGroup(),
+      sitesLayerGroup: new LayerGroup(),
+      tripsLayerGroup: new Map() as Map<number, LayerGroup>,
+      highlightMarker: null as L.Circle | null,
+    };
   },
   watch: {
     highlightSite: function (newVal) {
@@ -96,10 +97,10 @@ export default Vue.extend({
       this.sitesLayerGroup.addTo(this.mymap);
     },
     doHideTrip(tripId: number): void {
-      this.tripsLayerGroup[tripId].remove();
+      this.tripsLayerGroup.get(tripId)?.remove();
     },
     doShowTrip(tripId: number): void {
-      this.tripsLayerGroup[tripId].addTo(this.mymap);
+      this.tripsLayerGroup.get(tripId)?.addTo(this.mymap);
     },
     doHighlightSite(site: Site): void {
       if (!site) {
