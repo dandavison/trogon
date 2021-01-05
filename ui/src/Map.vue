@@ -7,6 +7,26 @@ import Vue from "vue";
 import L, { LayerGroup } from "leaflet";
 import { EbirdHotSpot, Site } from "types";
 
+function fetchSites(url: string): Site[] {
+  var request = new XMLHttpRequest();
+  request.open("GET", url, false);
+  request.send(null);
+  if (request.status === 200) {
+    return JSON.parse(request.responseText);
+  }
+  return [];
+}
+
+function fetchHotspots(url: string): EbirdHotSpot[] {
+  var request = new XMLHttpRequest();
+  request.open("GET", url, false);
+  request.send(null);
+  if (request.status === 200) {
+    return JSON.parse(request.responseText);
+  }
+  return [];
+}
+
 export default Vue.extend({
   props: {
     highlightSite: Object,
@@ -16,23 +36,19 @@ export default Vue.extend({
     visibleTrips: Map,
   },
   data() {
-    fetch("http://localhost:8000/api/sites").then((response) => {
-      response.json().then((sites) => {
-        this.mymap = createMap(sites);
-        this.sitesLayerGroup = createSitesLayerGroup(sites);
-        this.$emit("loadsites", sites);
-      });
-    });
-    fetch("http://localhost:8000/api/ebird-hotspots").then((response) => {
-      response.json().then((hotspots) => {
-        this.hotspotsLayerGroup = createHotspotsLayerGroup(hotspots);
-        this.$emit("loadhotspots", hotspots);
-      });
-    });
+    const sites = fetchSites("http://localhost:8000/api/sites");
+    const mymap = createMap(sites);
+    const sitesLayerGroup = createSitesLayerGroup(sites);
+    this.$emit("loadsites", sites);
+
+    const hotspots = fetchHotspots("http://localhost:8000/api/ebird-hotspots");
+    const hotspotsLayerGroup = createHotspotsLayerGroup(hotspots);
+    this.$emit("loadhotspots", hotspots);
+
     return {
-      mymap: new L.Map(""),
-      hotspotsLayerGroup: new LayerGroup(),
-      sitesLayerGroup: new LayerGroup(),
+      mymap: mymap,
+      hotspotsLayerGroup: hotspotsLayerGroup,
+      sitesLayerGroup: sitesLayerGroup,
       tripsLayerGroup: new Map() as Map<number, LayerGroup>,
       highlightMarker: null as L.Circle | null,
     };
