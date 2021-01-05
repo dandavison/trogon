@@ -137,25 +137,28 @@ create table image (
 );
 
 -- Moroco
-insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103485834-2d5f8f00-4dc7-11eb-8072-507b200faffc.png');
-insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103485853-639d0e80-4dc7-11eb-95af-6c64187e90e6.png');
-insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103485873-90512600-4dc7-11eb-8c8e-42137cd9e403.png');
-insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103486046-e7a3c600-4dc8-11eb-83f4-8a702e65364b.png');
-insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103486080-1457dd80-4dc9-11eb-8088-ca5ee516b2d3.png');
+insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103703932-6f7b0300-4f76-11eb-9310-0946e4f0d60d.png');
+insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103703969-7c97f200-4f76-11eb-95f1-56132fedfaef.png');
+insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103704002-891c4a80-4f76-11eb-9c38-cc6f485765b2.png');
+insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103704015-90dbef00-4f76-11eb-86ac-0e79bd02611d.png');
+insert into image (site, guide, url) values (1, null, 'https://user-images.githubusercontent.com/52205/103704023-933e4900-4f76-11eb-8dcb-326d714f8197.png');
 
 -- Mitu
-insert into image (site, guide, url) values (2, null, 'https://user-images.githubusercontent.com/52205/103485896-becf0100-4dc7-11eb-9298-1cb350123df6.png');
-insert into image (site, guide, url) values (2, null, 'https://user-images.githubusercontent.com/52205/103485926-f473ea00-4dc7-11eb-9e56-244abd9f4faf.png');
-insert into image (site, guide, url) values (2, null, 'https://user-images.githubusercontent.com/52205/103485998-9398e180-4dc8-11eb-9604-bc89fe6566a1.png');
+insert into image (site, guide, url) values (2, null, 'https://user-images.githubusercontent.com/52205/103704051-9d604780-4f76-11eb-84ab-6aa35879620f.png');
+insert into image (site, guide, url) values (2, null, 'https://user-images.githubusercontent.com/52205/103704057-9fc2a180-4f76-11eb-93a3-a5e14a956a4e.png');
+insert into image (site, guide, url) values (2, null, 'https://user-images.githubusercontent.com/52205/103704065-a224fb80-4f76-11eb-8501-e30e70e4c0e4.png');
 
 -- Araracuara
-insert into image (site, guide, url) values (3, null, 'https://user-images.githubusercontent.com/52205/103486906-49672e80-4dcf-11eb-99e6-020c6f095ba2.png');
+insert into image (site, guide, url) values (3, null, 'https://user-images.githubusercontent.com/52205/103704075-a8b37300-4f76-11eb-8c6b-48583688c378.png');
 
 -- Villa Azul
 insert into image (site, guide, url) values (4, null, 'https://www.paisatours.com/images/leticia_l.JPG');
 
 -- Jose
-insert into image (site, guide, url) values (null, 1, 'https://user-images.githubusercontent.com/52205/103488643-458dd900-4ddc-11eb-9177-b06b4a067785.png');
+insert into image (site, guide, url) values (null, 1, 'https://user-images.githubusercontent.com/52205/103704119-c1238d80-4f76-11eb-8ed2-8cc8891712f0.png');
 
 -- Miguel
-insert into image (site, guide, url) values (null, 2, 'https://user-images.githubusercontent.com/52205/103485942-17060300-4dc8-11eb-8fcd-e0abab17865f.png');
+insert into image (site, guide, url) values (null, 2, 'https://user-images.githubusercontent.com/52205/103704128-c4b71480-4f76-11eb-9737-fb3698394068.png');
+
+-- Guide (name?)
+-- insert into image (site, guide, url) values (null, 3, 'https://user-images.githubusercontent.com/52205/103704148-cc76b900-4f76-11eb-8ab7-f66c36871b1c.png');
