@@ -87,9 +87,9 @@ export default Vue.extend({
       deep: true,
     },
     visibleTrips: {
-      handler(tripIds) {
-        for (var tripId in tripIds) {
-          if (tripIds[tripId]) {
+      handler(newVal: Map<number, boolean>) {
+        for (let [tripId, isVisible] of newVal.entries()) {
+          if (isVisible) {
             this.doShowTrip(tripId);
           } else {
             this.doHideTrip(tripId);

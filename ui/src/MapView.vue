@@ -69,9 +69,9 @@ export default Vue.extend({
     },
     createTrips: function (trips: Trip[]): void {
       this.trips = trips;
-      let visibleTrips = new Map();
+      let visibleTrips = new Map() as Map<number, boolean>;
       for (let trip of this.trips) {
-        visibleTrips[trip.id] = false;
+        visibleTrips.set(trip.id, false);
       }
       this.visibleTrips = visibleTrips;
     },
