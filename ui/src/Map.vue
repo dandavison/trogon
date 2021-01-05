@@ -3,7 +3,6 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable */
 import Vue from "vue";
 import L, { LayerGroup } from "leaflet";
 import { EbirdHotSpot, Site, SiteDay, Trip } from "types";
