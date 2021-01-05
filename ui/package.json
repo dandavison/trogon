@@ -39,8 +39,7 @@
       "@vue/typescript/recommended"
     ],
     "parserOptions": {
-      "parser": "babel-eslint",
-      "ecmaVersion": 6
+      "ecmaVersion": 2020
     },
     "rules": {}
   },
