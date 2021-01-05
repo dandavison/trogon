@@ -5,7 +5,7 @@
 <script lang="ts">
 import Vue from "vue";
 import L, { LayerGroup } from "leaflet";
-import { EbirdHotSpot, Site } from "types";
+import { EbirdHotSpot, Site, Trip } from "types";
 
 function fetchSites(url: string): Site[] {
   var request = new XMLHttpRequest();
@@ -37,7 +37,6 @@ export default Vue.extend({
   },
   data() {
     const sites = fetchSites("http://localhost:8000/api/sites");
-    const mymap = createMap(sites);
     const sitesLayerGroup = createSitesLayerGroup(sites);
     this.$emit("loadsites", sites);
 
@@ -46,12 +45,16 @@ export default Vue.extend({
     this.$emit("loadhotspots", hotspots);
 
     return {
-      mymap: mymap,
       hotspotsLayerGroup: hotspotsLayerGroup,
+      mymap: null as L.Map | null,
+      sites: sites,
       sitesLayerGroup: sitesLayerGroup,
       tripsLayerGroup: new Map() as Map<number, LayerGroup>,
       highlightMarker: null as L.Circle | null,
     };
+  },
+  mounted() {
+    this.mymap = createMap(this.sites);
   },
   watch: {
     highlightSite: function (newVal) {
@@ -76,7 +79,7 @@ export default Vue.extend({
       }
     },
     trips: {
-      handler(newTrips) {
+      handler(newTrips: Trip[]) {
         for (let trip of newTrips) {
           this.tripsLayerGroup.set(
             trip.id,
@@ -104,22 +107,28 @@ export default Vue.extend({
       this.hotspotsLayerGroup.remove();
     },
     doShowHotspots(): void {
-      this.hotspotsLayerGroup.addTo(this.mymap);
+      if (this.mymap) {
+        this.hotspotsLayerGroup.addTo(this.mymap);
+      }
     },
     doHideSites(): void {
       this.sitesLayerGroup.remove();
     },
     doShowSites(): void {
-      this.sitesLayerGroup.addTo(this.mymap);
+      if (this.mymap) {
+        this.sitesLayerGroup.addTo(this.mymap);
+      }
     },
     doHideTrip(tripId: number): void {
       this.tripsLayerGroup.get(tripId)?.remove();
     },
     doShowTrip(tripId: number): void {
-      this.tripsLayerGroup.get(tripId)?.addTo(this.mymap);
+      if (this.mymap) {
+        this.tripsLayerGroup.get(tripId)?.addTo(this.mymap);
+      }
     },
     doHighlightSite(site: Site): void {
-      if (!site) {
+      if (!site || !this.mymap) {
         return;
       }
       var marker = L.circle([site.lat, site.lng], 500, {
@@ -134,7 +143,7 @@ export default Vue.extend({
       if (!marker) {
         return;
       }
-      this.mymap.removeLayer(marker);
+      this.mymap?.removeLayer(marker);
       this.highlightMarker = null;
     },
   },
