@@ -1,3 +1,21 @@
+export interface Guide {
+    id: number,
+    name: string,
+    trip_guide: boolean,
+    biography: string | null,
+    images: string[],
+}
+
+export interface Site {
+    id: number,
+    name: string,
+    description: string,
+    lat: number,
+    lng: number,
+    guides: Guide[],
+    images: string[],
+}
+
 export interface EbirdHotSpot {
     locId: string,
     locName: string,
@@ -5,6 +23,20 @@ export interface EbirdHotSpot {
     subnational1Code: string,
     lat: number,
     lng: number,
-    latestObsDt?: string,
-    numSpeciesAllTime?: number,
+    latestObsDt: string | null,
+    numSpeciesAllTime: number | null,
+}
+
+export interface SiteDay {
+    id: number,
+    day: number,
+    name: string,
+    lat: number,
+    lng: number,
+}
+
+export interface Trip {
+    id: number,
+    name: string,
+    site_days: SiteDay[],
 }

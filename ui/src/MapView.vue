@@ -26,6 +26,7 @@
 </template>
 
 <script lang="ts">
+import { EbirdHotSpot, Site, Trip } from "types";
 import Vue from "vue";
 import ControlPanel from "./ControlPanel.vue";
 import Mapx from "./Map.vue";
@@ -38,34 +39,35 @@ export default Vue.extend({
   components: { ControlPanel, Mapx, Navbar, SiteListPanel, TripTimeline },
   data() {
     return {
-      highlightSite: null,
+      highlightSite: null as Site | null,
       showHotspots: false,
       showSites: false,
-      sites: [],
-      trips: [],
-      visibleTrips: new Map(),
+      sites: [] as Site[],
+      trips: [] as Trip[],
+      visibleTrips: new Map() as Map<number, boolean>,
+      hotspots: [] as EbirdHotSpot[],
     };
   },
   methods: {
-    changeShowHotspots: function (newVal: boolean) {
+    changeShowHotspots: function (newVal: boolean): void {
       this.showHotspots = newVal;
     },
-    changeShowSites: function (newVal: boolean) {
+    changeShowSites: function (newVal: boolean): void {
       this.showSites = newVal;
     },
-    changeShowTrip: function (newVal, trip) {
-      let visibleTrips = new Map();
+    changeShowTrip: function (newVal: boolean, trip: Trip): void {
+      let visibleTrips = new Map() as Map<number, boolean>;
 
       for (let _trip of this.trips) {
         if (_trip.id === trip.id) {
-          visibleTrips[trip.id] = newVal;
+          visibleTrips.set(trip.id, newVal);
         } else {
-          visibleTrips[_trip.id] = this.visibleTrips[_trip.id];
+          visibleTrips.set(_trip.id, this.visibleTrips.get(_trip.id) || false);
         }
       }
       this.visibleTrips = visibleTrips;
     },
-    createTrips: function (trips) {
+    createTrips: function (trips: Trip[]): void {
       this.trips = trips;
       let visibleTrips = new Map();
       for (let trip of this.trips) {
@@ -73,17 +75,17 @@ export default Vue.extend({
       }
       this.visibleTrips = visibleTrips;
     },
-    doHighlightSite: function (site) {
+    doHighlightSite: function (site: Site): void {
       this.highlightSite = site;
     },
-    doUnhighlightSite: function (site) {
+    doUnhighlightSite: function (site: Site): void {
       if (this.highlightSite && site.id === this.highlightSite.id)
         this.highlightSite = null;
     },
-    loadSites: function (sites) {
+    loadSites: function (sites: Site[]): void {
       this.sites = sites;
     },
-    loadHotspots: function (hotspots) {
+    loadHotspots: function (hotspots: EbirdHotSpot[]): void {
       this.hotspots = hotspots;
     },
   },

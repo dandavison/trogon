@@ -15,7 +15,7 @@ export default Vue.extend({
     };
   },
   watch: {
-    isSwitched: function (newVal: boolean) {
+    isSwitched: function (newVal) {
       this.$emit("changeshowsites", newVal);
     },
   },

@@ -26,7 +26,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    info(value) {
+    info(value: number) {
       this.test = value;
     },
   },

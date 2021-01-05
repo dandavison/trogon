@@ -7,6 +7,7 @@
 </template>
 
 <script lang="ts">
+import { Trip } from "types";
 import Vue from "vue";
 import TripSwitch from "./TripSwitch.vue";
 
@@ -17,7 +18,7 @@ export default Vue.extend({
   props: ["trips"],
   components: { TripSwitch },
   methods: {
-    changeShowTrip: function (newVal, trip) {
+    changeShowTrip: function (newVal: boolean, trip: Trip) {
       this.$emit("changeshowtrip", newVal, trip);
     },
   },

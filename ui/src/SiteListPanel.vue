@@ -30,6 +30,7 @@
 </template>
 
 <script lang="ts">
+import { Site } from "types";
 import Vue from "vue";
 import SiteCard from "./SiteCard.vue";
 
@@ -45,10 +46,10 @@ export default Vue.extend({
   },
   components: { SiteCard },
   methods: {
-    highlightSite: function (site) {
+    highlightSite: function (site: Site) {
       this.$emit("highlightsite", site);
     },
-    unhighlightSite: function (site) {
+    unhighlightSite: function (site: Site) {
       this.$emit("unhighlightsite", site);
     },
   },

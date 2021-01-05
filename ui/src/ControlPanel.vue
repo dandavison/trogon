@@ -48,6 +48,7 @@
 </template>
 
 <script lang="ts">
+import { Trip } from "types";
 import Vue from "vue";
 import HotspotsSwitch from "./HotspotsSwitch.vue";
 import SiteSwitch from "./SiteSwitch.vue";
@@ -74,7 +75,7 @@ export default Vue.extend({
     changeShowSites: function (newVal: boolean) {
       this.$emit("changeshowsites", newVal);
     },
-    changeShowTrip: function (newVal, trip) {
+    changeShowTrip: function (newVal: boolean, trip: Trip) {
       this.$emit("changeshowtrip", newVal, trip);
     },
     getTrips: function () {

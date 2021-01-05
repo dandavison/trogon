@@ -4,7 +4,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import L from "leaflet";
+import L, { Map } from "leaflet";
+import { EbirdHotSpot, Site } from "types";
+
 export default Vue.extend({
   props: {
     highlightSite: Object,
@@ -14,6 +16,7 @@ export default Vue.extend({
     visibleTrips: Map,
   },
   data() {
+    // TODO: all these should be returned, not set on `this`
     this.mymap = null;
     this.hotspotsLayerGroup = null;
     this.sitesLayerGroup = null;
@@ -58,7 +61,10 @@ export default Vue.extend({
     trips: {
       handler(newTrips) {
         for (let trip of newTrips) {
-          this.tripsLayerGroup[trip.id] = createSitesLayerGroup(trip.site_days);
+          this.tripsLayerGroup.set(
+            trip.id,
+            createSitesLayerGroup(trip.site_days)
+          );
         }
       },
       deep: true,
@@ -77,25 +83,25 @@ export default Vue.extend({
     },
   },
   methods: {
-    doHideHotspots() {
+    doHideHotspots(): void {
       this.hotspotsLayerGroup.remove();
     },
-    doShowHotspots() {
+    doShowHotspots(): void {
       this.hotspotsLayerGroup.addTo(this.mymap);
     },
-    doHideSites() {
+    doHideSites(): void {
       this.sitesLayerGroup.remove();
     },
-    doShowSites() {
+    doShowSites(): void {
       this.sitesLayerGroup.addTo(this.mymap);
     },
-    doHideTrip(tripId) {
+    doHideTrip(tripId: number): void {
       this.tripsLayerGroup[tripId].remove();
     },
-    doShowTrip(tripId) {
+    doShowTrip(tripId: number): void {
       this.tripsLayerGroup[tripId].addTo(this.mymap);
     },
-    doHighlightSite(site) {
+    doHighlightSite(site: Site): void {
       if (!site) {
         return;
       }
@@ -106,7 +112,7 @@ export default Vue.extend({
       }).addTo(this.mymap);
       this.highlightMarker = marker;
     },
-    doUnhighlightSite() {
+    doUnhighlightSite(): void {
       let marker = this.highlightMarker;
       if (!marker) {
         return;
@@ -117,9 +123,11 @@ export default Vue.extend({
   },
 });
 
-function createMap(sites): L.Map {
-  // -> Map
-  var mymap = L.map("map").setView([sites[0].lat, sites[0].lng], 5);
+function createMap(sites: Array<Site>): L.Map {
+  var mymap = L.map("map");
+  if (sites.length > 0 && sites[0]) {
+    mymap.setView([sites[0].lat, sites[0].lng], 5);
+  }
 
   L.tileLayer(
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
@@ -136,8 +144,7 @@ function createMap(sites): L.Map {
   return mymap;
 }
 
-function createHotspotsLayerGroup(hotspots): L.LayerGroup {
-  // -> LayerGroup
+function createHotspotsLayerGroup(hotspots: Array<EbirdHotSpot>): L.LayerGroup {
   let markers = [];
   for (let hotspot of hotspots) {
     markers.push(
@@ -151,15 +158,14 @@ function createHotspotsLayerGroup(hotspots): L.LayerGroup {
   return L.layerGroup(markers);
 }
 
-function formatHotspotDetailHTML(hotspot): string {
+function formatHotspotDetailHTML(hotspot: EbirdHotSpot): string {
   let html = `<a href='/ebird-hotspot/${hotspot.locId}' target='_blank'>${hotspot.locName}</a>`;
   html += `<br><br>${hotspot.numSpeciesAllTime || 0} species<br>`;
   html += `<br>Most recent observations: ${hotspot.latestObsDt || "none"}`;
   return html;
 }
 
-function createSitesLayerGroup(sites):  {
-  // -> LayerGroup
+function createSitesLayerGroup(sites: Array<Site>): L.LayerGroup {
   let markers = [];
   for (let site of sites) {
     markers.push(
@@ -169,7 +175,7 @@ function createSitesLayerGroup(sites):  {
   return L.layerGroup(markers);
 }
 
-function formatSiteDetailHTML(site): string {
+function formatSiteDetailHTML(site: Site): string {
   let html = `<a href='/site/${site.id}' target='_blank'>${site.name}</a>`;
   html += `<br><img src="${site.images[0]}" />`;
   html += `<br><br>${site.guides.length} guide${
