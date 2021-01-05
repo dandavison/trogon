@@ -5,7 +5,7 @@
 <script lang="ts">
 import Vue from "vue";
 import L, { LayerGroup } from "leaflet";
-import { EbirdHotSpot, Site, Trip } from "types";
+import { EbirdHotSpot, Site, SiteDay, Trip } from "types";
 
 function fetchSites(url: string): Site[] {
   var request = new XMLHttpRequest();
@@ -83,7 +83,7 @@ export default Vue.extend({
         for (let trip of newTrips) {
           this.tripsLayerGroup.set(
             trip.id,
-            createSitesLayerGroup(trip.site_days)
+            createTripLayerGroup(trip.site_days)
           );
         }
       },
@@ -189,6 +189,14 @@ function formatHotspotDetailHTML(hotspot: EbirdHotSpot): string {
   html += `<br><br>${hotspot.numSpeciesAllTime || 0} species<br>`;
   html += `<br>Most recent observations: ${hotspot.latestObsDt || "none"}`;
   return html;
+}
+
+function createTripLayerGroup(sites: Array<SiteDay>): L.LayerGroup {
+  let markers = [];
+  for (let site of sites) {
+    markers.push(L.marker([site.lat, site.lng]));
+  }
+  return L.layerGroup(markers);
 }
 
 function createSitesLayerGroup(sites: Array<Site>): L.LayerGroup {
