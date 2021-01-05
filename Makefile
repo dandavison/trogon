@@ -45,6 +45,9 @@ test: test-cypress
 test-cypress:
 	cd ui && npx cypress run
 
+cypress:
+	cd ui && npx cypress open
+
 psql:
 	psql -d sylph
 
