@@ -1,3 +1,5 @@
+/* eslint-disable no-eval */
+
 <template>
   <div>
     <navbar />
