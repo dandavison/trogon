@@ -158,7 +158,9 @@ fn main() -> std::io::Result<()> {
                 "/api",
                 routes![api::guides, api::ebird_hotspots, api::sites, api::trips],
             )
-            .mount("/static", StaticFiles::from("static"))
+            .mount("/map", StaticFiles::from("ui/dist"))
+            .mount("/js", StaticFiles::from("ui/dist/js"))
+            .mount("/css", StaticFiles::from("ui/dist/css"))
             .attach(Template::fairing())
             .attach(cors::CORS())
             .launch();

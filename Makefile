@@ -1,12 +1,17 @@
 SYLPH = target/debug/sylph
 
-build:
+build: build-rust build-vue
+
+build-rust:
 	cargo build
 
-server:
+build-vue:
+	cd ui && npm run build
+
+server: build
 	cargo run
 
-db: build
+db: build-rust
 	@dropdb --if-exists sylph
 	@createdb sylph
 	@psql -d sylph < db.sql > /dev/null
