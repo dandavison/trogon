@@ -4,3 +4,7 @@ junk.*
 ui/node_modules
 ui/dist
 .vscode
+ui/cypress/plugins
+ui/cypress/screenshots
+ui/cypress/support
+ui/cypress/videos

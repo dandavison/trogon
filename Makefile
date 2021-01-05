@@ -40,6 +40,11 @@ describe-db:
 	@echo "SELECT relname as table, n_live_tup as rows FROM pg_stat_user_tables ORDER BY n_live_tup DESC;" \
 	| psql -d sylph
 
+test: test-cypress
+
+test-cypress:
+	cd ui && npx cypress run
+
 psql:
 	psql -d sylph
 
