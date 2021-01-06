@@ -1,10 +1,8 @@
 //! A query returning an array of sites, each with a nested array of image urls.
-use std::collections::HashMap;
-
 use serde::{Deserialize, Serialize};
 
 use crate::db;
-use crate::models;
+use crate::queries;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[allow(non_snake_case)]
@@ -14,14 +12,14 @@ pub struct Site {
     pub description: String,
     pub lat: f64,
     pub lng: f64,
-    pub guides: Vec<models::Guide>,
-    pub habitats: Vec<models::Habitat>,
+    pub guides: Vec<queries::guides::Guide>,
+    pub habitats: Vec<queries::habitats::Habitat>,
     pub images: Vec<String>,
 }
 
 pub fn query() -> Vec<Site> {
-    let guides = make_guides_lookup_table();
-    let habitats = make_habitats_lookup_table();
+    let guides = queries::guides::lookup_table();
+    let habitats = queries::habitats::lookup_table();
     let mut sites = Vec::<Site>::new();
     for row in db::get_client()
         .query(
@@ -64,28 +62,4 @@ group by s.id;
         })
     }
     sites
-}
-
-fn make_guides_lookup_table() -> HashMap<i32, models::Guide> {
-    // Fetch all guides to use as a lookup table.
-    // TODO: do this in one query.
-    let guides: Vec<models::Guide> =
-        models::serializable(db::get_client().query("select * from guide", &[]).unwrap());
-
-    guides.into_iter().map(|guide| (guide.id, guide)).collect()
-}
-
-fn make_habitats_lookup_table() -> HashMap<i32, models::Habitat> {
-    // Fetch all habitats to use as a lookup table.
-    // TODO: do this in one query.
-    let habitats: Vec<models::Habitat> = models::serializable(
-        db::get_client()
-            .query("select * from habitat", &[])
-            .unwrap(),
-    );
-
-    habitats
-        .into_iter()
-        .map(|habitat| (habitat.id, habitat))
-        .collect()
 }

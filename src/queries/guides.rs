@@ -1,15 +1,16 @@
-//! A query returning an array of sites, each with a nested array of image urls.
+//! A query returning an array of guides, each with a nested array of image urls.
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
 
 use crate::db;
 
-#[derive(Serialize, Deserialize, Debug)]
-#[allow(non_snake_case)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Guide {
-    id: i32,
-    name: String,
-    trip_guide: bool,
-    biography: Option<String>,
+    pub id: i32,
+    pub name: String,
+    pub trip_guide: bool,
+    pub biography: Option<String>,
     pub images: Vec<String>,
 }
 
@@ -29,9 +30,9 @@ pub fn query() -> Vec<Guide> {
     db::get_client()
         .query(
             "
-select g.id, g.name, g.trip_guide, g.biography, array_remove(array_agg(image.url), null) as images
+select g.id, g.name, g.trip_guide, g.biography, array_remove(array_agg(i.url), null) as images
 from guide g
-left outer join image ON image.guide = g.id
+left outer join image i ON i.guide = g.id
 group by g.id
 ",
             &[],
@@ -40,4 +41,8 @@ group by g.id
         .into_iter()
         .map(|row| row.into())
         .collect()
+}
+
+pub fn lookup_table() -> HashMap<i32, Guide> {
+    query().into_iter().map(|h| (h.id, h)).collect()
 }

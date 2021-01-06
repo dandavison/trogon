@@ -19,5 +19,5 @@ pub fn trips() -> content::Json<String> {
 
 #[get("/guides")]
 pub fn guides() -> content::Json<String> {
-    content::Json(serde_json::to_string(&queries::guide_with_images::query()).unwrap())
+    content::Json(serde_json::to_string(&queries::guides::query()).unwrap())
 }
