@@ -33,6 +33,9 @@
 <script lang="ts">
 import { Site } from "types";
 import Vue from "vue";
+import VueI18n from "vue-i18n";
+Vue.use(VueI18n);
+
 import SiteCard from "./SiteCard.vue";
 
 export default Vue.extend({

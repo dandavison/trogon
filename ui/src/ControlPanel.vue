@@ -50,6 +50,9 @@
 <script lang="ts">
 import { Trip } from "types";
 import Vue from "vue";
+import VueI18n from "vue-i18n";
+Vue.use(VueI18n);
+
 import HotspotsSwitch from "./HotspotsSwitch.vue";
 import SiteSwitch from "./SiteSwitch.vue";
 import TripSwitches from "./TripSwitches.vue";

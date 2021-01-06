@@ -4,6 +4,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import VueI18n from "vue-i18n";
+Vue.use(VueI18n);
+
 import L, { LayerGroup } from "leaflet";
 import { EbirdHotSpot, Site, SiteDay, Trip } from "types";
 

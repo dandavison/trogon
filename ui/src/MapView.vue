@@ -28,6 +28,9 @@
 <script lang="ts">
 import { EbirdHotSpot, Site, Trip } from "types";
 import Vue from "vue";
+import VueI18n from "vue-i18n";
+Vue.use(VueI18n);
+
 import ControlPanel from "./ControlPanel.vue";
 import Mapx from "./Map.vue";
 import Navbar from "./Navbar.vue";
