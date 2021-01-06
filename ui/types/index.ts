@@ -6,6 +6,13 @@ export interface Guide {
     images: string[],
 }
 
+export interface Habitat {
+    id: number,
+    name: string,
+    html: string,
+    images: string[],
+}
+
 export interface Site {
     id: number,
     name: string,
@@ -13,6 +20,7 @@ export interface Site {
     lat: number,
     lng: number,
     guides: Guide[],
+    habitats: Habitat[],
     images: string[],
 }
 

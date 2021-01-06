@@ -215,6 +215,16 @@ function createSitesLayerGroup(sites: Array<Site>): L.LayerGroup {
 function formatSiteDetailHTML(site: Site): string {
   let html = `<a href='/site/${site.id}' target='_blank'>${site.name}</a>`;
   html += `<br><img src="${site.images[0]}" />`;
+  // Habitats
+  html += `<br><br>${site.habitats.length} habitat${
+    site.habitats.length == 1 ? "" : "s"
+  }:<br>`;
+  html += "<ul>";
+  for (let habitat of site.habitats) {
+    html += `<li>${habitat.name}</li>`;
+  }
+  html += "</ul>";
+  // Guides
   html += `<br><br>${site.guides.length} guide${
     site.guides.length == 1 ? "" : "s"
   }:<br>`;

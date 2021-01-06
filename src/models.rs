@@ -22,6 +22,23 @@ impl From<postgres::Row> for Site {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct Habitat {
+    pub id: i32,
+    pub name: String,
+    pub html: String,
+}
+
+impl From<postgres::Row> for Habitat {
+    fn from(row: postgres::Row) -> Self {
+        Self {
+            id: row.get("id"),
+            name: row.get("name"),
+            html: row.get("html"),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Guide {
     pub id: i32,
     pub name: String,
