@@ -30,3 +30,16 @@ describe("Control panel", () => {
     cy.contains("species");
   });
 });
+describe("Sites panel", () => {
+  it("Does not highlight invisible sites", () => {
+    cy.visit("http://localhost:8000/map");
+    cy.get(".leaflet-marker-icon").should("not.exist"); // no sites visible on map
+    cy.contains("Show site list").click();
+    cy.contains("Moroco");
+    cy.get(".leaflet-interactive").should("not.exist"); // no site highlights
+    cy.get("section.site-card")
+      .first()
+      .trigger("mouseover");
+    cy.get(".leaflet-interactive").should("not.exist");
+  });
+});

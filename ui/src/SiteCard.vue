@@ -1,5 +1,6 @@
 <template>
   <section
+    class="site-card"
     @mouseover="highlightSite"
     @mouseleave="unhighlightSite"
     style="height: 200px"

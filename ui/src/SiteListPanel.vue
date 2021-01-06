@@ -13,6 +13,7 @@
           <b-menu-list>
             <section id="site-cards">
               <div class="field" v-for="site in sites" :key="site.id">
+                <!-- FIXME: the id is  being set to the string 'site.id' -->
                 <site-card
                   v-bind:site="site"
                   id="site.id"
