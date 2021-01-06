@@ -25,6 +25,18 @@
           <a class="button is-light"> Log in </a>
         </div>
       </b-navbar-item>
+      <b-navbar-item>
+        <locale-selector />
+      </b-navbar-item>
     </template>
   </b-navbar>
 </template>
+
+<script lang="ts">
+import Vue from "vue";
+import LocaleSelector from "./LocaleSelector.vue";
+
+export default Vue.extend({
+  components: { LocaleSelector },
+});
+</script>
