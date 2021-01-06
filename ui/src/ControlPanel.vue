@@ -23,7 +23,7 @@
           <b-menu-list label="Menu">
             <b-menu-item v-on:click="getTrips" icon="settings">
               <template slot="label" slot-scope="props">
-                Trips
+                {{ $t("trips") }}
                 <b-icon
                   class="is-pulled-right"
                   :icon="props.expanded ? 'menu-down' : 'menu-up'"
@@ -42,10 +42,23 @@
     </b-sidebar>
     <div class="block"></div>
     <b-button class="show" @click="open = true">
-      <span v-if="!open">Open control panel</span>
+      <span v-if="!open">{{ $t("show-control-panel") }}</span>
     </b-button>
   </section>
 </template>
+
+<i18n>
+{
+  "en": {
+          "show-control-panel": "Show control panel",
+          "trips": "Trips"
+        },
+  "es": {
+          "show-control-panel": "Revelar panel de control",
+          "trips": "Viajes"
+        }
+}
+</i18n>
 
 <script lang="ts">
 import { Trip } from "types";

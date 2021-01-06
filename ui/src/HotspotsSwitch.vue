@@ -1,10 +1,21 @@
 <template>
   <section>
     <div class="field">
-      <b-switch v-model="isSwitched">Show eBird hotspots</b-switch>
+      <b-switch v-model="isSwitched">{{ $t("show-ebird-hotspots") }}</b-switch>
     </div>
   </section>
 </template>
+
+<i18n>
+{
+  "en": {
+          "show-ebird-hotspots": "Show eBird hotspots"
+        },
+  "es": {
+          "show-ebird-hotspots": "Mostrar hotspots de eBird"
+        }
+}
+</i18n>
 
 <script lang="ts">
 import Vue from "vue";

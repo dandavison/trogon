@@ -26,9 +26,16 @@
         </b-menu>
       </div>
     </b-sidebar>
-    <b-button @click="open = true">Show site list</b-button>
+    <b-button @click="open = true">{{ $t("show-site-list") }}</b-button>
   </section>
 </template>
+
+<i18n>
+{
+  "en": {"show-site-list": "Show site list"},
+  "es": {"show-site-list": "Revelar lista de sitios"}
+}
+</i18n>
 
 <script lang="ts">
 import { Site } from "types";
