@@ -41,11 +41,9 @@ export default Vue.extend({
   data() {
     const sites = fetchSites("http://localhost:8000/api/sites");
     const sitesLayerGroup = createSitesLayerGroup(sites);
-    this.$emit("loadsites", sites);
 
     const hotspots = fetchHotspots("http://localhost:8000/api/ebird-hotspots");
     const hotspotsLayerGroup = createHotspotsLayerGroup(hotspots);
-    this.$emit("loadhotspots", hotspots);
 
     return {
       hotspotsLayerGroup: hotspotsLayerGroup,

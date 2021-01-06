@@ -13,8 +13,6 @@
       v-bind:sites="sites"
     />
     <mapx
-      @loadsites="loadSites"
-      @loadhotspots="loadHotspots"
       v-bind:highlightSite="highlightSite"
       v-bind:showHotspots="showHotspots"
       v-bind:showSites="showSites"
@@ -84,12 +82,6 @@ export default Vue.extend({
     doUnhighlightSite: function (site: Site): void {
       if (this.highlightSite && site.id === this.highlightSite.id)
         this.highlightSite = null;
-    },
-    loadSites: function (sites: Site[]): void {
-      this.sites = sites;
-    },
-    loadHotspots: function (hotspots: EbirdHotSpot[]): void {
-      this.hotspots = hotspots;
     },
   },
 });
