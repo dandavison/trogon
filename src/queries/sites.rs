@@ -19,14 +19,7 @@ pub struct Site {
 }
 
 pub fn query() -> Vec<Site> {
-    // Fetch all guides to use as a lookup table.
-    // TODO: do this in one query.
-    let guides: Vec<models::Guide> =
-        models::serializable(db::get_client().query("select * from guide", &[]).unwrap());
-
-    let guides: HashMap<i32, models::Guide> =
-        guides.into_iter().map(|guide| (guide.id, guide)).collect();
-
+    let guides = make_guides_lookup_table();
     let mut sites = Vec::<Site>::new();
     for row in db::get_client()
         .query(
@@ -60,4 +53,13 @@ group by s.id;
         })
     }
     sites
+}
+
+fn make_guides_lookup_table() -> HashMap<i32, models::Guide> {
+    // Fetch all guides to use as a lookup table.
+    // TODO: do this in one query.
+    let guides: Vec<models::Guide> =
+        models::serializable(db::get_client().query("select * from guide", &[]).unwrap());
+
+    guides.into_iter().map(|guide| (guide.id, guide)).collect()
 }
