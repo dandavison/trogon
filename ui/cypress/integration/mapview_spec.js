@@ -31,15 +31,33 @@ describe("Control panel", () => {
   });
 });
 describe("Sites panel", () => {
+  it("Highlights a visible site", () => {
+    cy.visit("http://localhost:8000/map");
+    // Display some sites and check not highlighted
+    cy.contains("Show control panel").click();
+    cy.contains("Show all sites").click();
+    cy.get(".leaflet-marker-icon").last().click();
+
+    cy.contains("Show site list").click();
+    cy.contains("Moroco");
+    cy.get("path.leaflet-interactive").should("not.exist"); // no site is highlighted
+    cy.get("section.site-card")
+      .first()
+      .trigger("mouseover");
+    cy.get("path.leaflet-interactive"); // a site is highlighted
+  });
   it("Does not highlight invisible sites", () => {
     cy.visit("http://localhost:8000/map");
     cy.get(".leaflet-marker-icon").should("not.exist"); // no sites visible on map
     cy.contains("Show site list").click();
     cy.contains("Moroco");
-    cy.get(".leaflet-interactive").should("not.exist"); // no site highlights
+    cy.get("path.leaflet-interactive").should("not.exist"); // no site highlights
     cy.get("section.site-card")
       .first()
       .trigger("mouseover");
-    cy.get(".leaflet-interactive").should("not.exist");
+    cy.get("section.site-card")
+      .first()
+      .trigger("mouseleave");
+    cy.get("path.leaflet-interactive").should("not.exist");
   });
 });
