@@ -21,7 +21,7 @@
         </table>
         <b-menu>
           <b-menu-list label="Menu">
-            <b-menu-item v-on:click="getTrips" icon="settings">
+            <b-menu-item v-on:click="$emit('click:trips')" icon="settings">
               <template slot="label" slot-scope="props">
                 {{ $t("trips") }}
                 <b-icon
@@ -29,10 +29,13 @@
                   :icon="props.expanded ? 'menu-down' : 'menu-up'"
                 ></b-icon>
               </template>
-              <trip-switches :trips="trips" @changeshowtrip="changeShowTrip" />
+              <trip-switches
+                :trips="trips"
+                @change:show-trip="changeShowTrip"
+              />
             </b-menu-item>
-            <site-switch @changeshowsites="changeShowSites" />
-            <hotspots-switch @changeshowhotspots="changeShowHotspots" />
+            <site-switch @change:show-sites="changeShowSites" />
+            <hotspots-switch @change:show-hotspots="changeShowHotspots" />
           </b-menu-list>
           <b-menu-list label="Actions">
             <b-menu-item label="Logout"></b-menu-item>
@@ -62,7 +65,7 @@
 
 <script lang="ts">
 import { Trip } from "types";
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
 
@@ -80,27 +83,19 @@ export default Vue.extend({
         right: false,
       },
       open: false,
-      trips: [],
     };
   },
   components: { HotspotsSwitch, SiteSwitch, TripSwitches },
+  props: { trips: Array as PropType<Trip[]> },
   methods: {
     changeShowHotspots: function (newVal: boolean) {
-      this.$emit("changeshowhotspots", newVal);
+      this.$emit("change:show-hotspots", newVal);
     },
     changeShowSites: function (newVal: boolean) {
-      this.$emit("changeshowsites", newVal);
+      this.$emit("change:show-sites", newVal);
     },
     changeShowTrip: function (newVal: boolean, trip: Trip) {
-      this.$emit("changeshowtrip", newVal, trip);
-    },
-    getTrips: function () {
-      fetch("http://localhost:8000/api/trips").then((response) => {
-        response.json().then((trips) => {
-          this.trips = trips;
-          this.$emit("clicktrips", this.trips);
-        });
-      });
+      this.$emit("change:show-trip", newVal, trip);
     },
   },
 });

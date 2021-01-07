@@ -31,9 +31,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
+
+import { Site } from "types";
 
 export default Vue.extend({
   data() {
@@ -49,12 +51,12 @@ export default Vue.extend({
   },
   methods: {
     highlightSite: function () {
-      this.$emit("highlightsite", this.site);
+      this.$emit("highlight:site", this.site);
     },
     unhighlightSite: function () {
-      this.$emit("unhighlightsite", this.site);
+      this.$emit("unhighlight:site", this.site);
     },
   },
-  props: { site: Object },
+  props: { site: Object as PropType<Site> },
 });
 </script>

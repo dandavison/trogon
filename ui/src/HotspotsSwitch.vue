@@ -30,7 +30,7 @@ export default Vue.extend({
   },
   watch: {
     isSwitched: function (newVal) {
-      this.$emit("changeshowhotspots", newVal);
+      this.$emit("change:show-hotspots", newVal);
     },
   },
 });

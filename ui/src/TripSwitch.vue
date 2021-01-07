@@ -20,7 +20,7 @@ export default Vue.extend({
   props: ["trip"],
   watch: {
     isSwitched: function (newVal) {
-      this.$emit("changeshowtrip", newVal, this.trip);
+      this.$emit("change:show-trip", newVal, this.trip);
     },
   },
 });

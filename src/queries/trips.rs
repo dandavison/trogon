@@ -6,8 +6,8 @@ use crate::db;
 #[derive(Serialize, Deserialize, Debug)]
 #[allow(non_snake_case)]
 pub struct SiteDay {
-    pub day: i32,
     pub id: i32,
+    pub day: i32,
     pub name: String,
     pub lat: f64,
     pub lng: f64,
@@ -26,8 +26,9 @@ pub fn query() -> Vec<Trip> {
     let postgres_rows = db::get_client()
         .query(
             "
-select t.id as trip_id, t.name as trip_name, tsd.day,
-       s.id as site_id, s.name as site_name, s.lat as site_lat, s.lng as site_lng
+select t.id as trip_id, t.name as trip_name,
+       tsd.id as site_day_id, tsd.day,
+       s.name as site_name, s.lat as site_lat, s.lng as site_lng
 from trip_site_day tsd
 inner join trip t on t.id = tsd.trip
 inner join site s on s.id = tsd.site
@@ -53,8 +54,8 @@ order by t.id, tsd.day
             site_days = Vec::<SiteDay>::new();
         } else {
             site_days.push(SiteDay {
+                id: postgres_row.get("site_day_id"),
                 day: postgres_row.get("day"),
-                id: postgres_row.get("site_id"),
                 name: postgres_row.get("site_name"),
                 lat: postgres_row.get("site_lat"),
                 lng: postgres_row.get("site_lng"),

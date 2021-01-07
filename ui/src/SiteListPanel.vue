@@ -13,12 +13,10 @@
           <b-menu-list>
             <section id="site-cards">
               <div class="field" v-for="site in sites" :key="site.id">
-                <!-- FIXME: the id is  being set to the string 'site.id' -->
                 <site-card
                   v-bind:site="site"
-                  id="site.id"
-                  @highlightsite="highlightSite"
-                  @unhighlightsite="unhighlightSite"
+                  @highlight:site="highlightSite"
+                  @unhighlight:site="unhighlightSite"
                 />
               </div>
             </section>
@@ -39,7 +37,7 @@
 
 <script lang="ts">
 import { Site } from "types";
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
 
@@ -58,13 +56,13 @@ export default Vue.extend({
   components: { SiteCard },
   methods: {
     highlightSite: function (site: Site) {
-      this.$emit("highlightsite", site);
+      this.$emit("highlight:site", site);
     },
     unhighlightSite: function (site: Site) {
-      this.$emit("unhighlightsite", site);
+      this.$emit("unhighlight:site", site);
     },
   },
-  props: { sites: Array },
+  props: { sites: Array as PropType<Site[]> },
 });
 </script>
 

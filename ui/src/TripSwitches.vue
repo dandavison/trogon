@@ -1,7 +1,7 @@
 <template>
   <section id="trip-switches">
     <div class="field" v-for="trip in trips" :key="trip.id">
-      <trip-switch :trip="trip" id="trip.id" @changeshowtrip="changeShowTrip" />
+      <trip-switch :trip="trip" id="trip.id" @change:show-trip="changeShowTrip" />
     </div>
   </section>
 </template>
@@ -22,7 +22,7 @@ export default Vue.extend({
   components: { TripSwitch },
   methods: {
     changeShowTrip: function (newVal: boolean, trip: Trip) {
-      this.$emit("changeshowtrip", newVal, trip);
+      this.$emit("change:show-trip", newVal, trip);
     },
   },
 });

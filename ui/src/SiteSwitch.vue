@@ -30,7 +30,7 @@ export default Vue.extend({
   },
   watch: {
     isSwitched: function (newVal) {
-      this.$emit("changeshowsites", newVal);
+      this.$emit("change:show-sites", newVal);
     },
   },
 });
