@@ -29,13 +29,10 @@
                   :icon="props.expanded ? 'menu-down' : 'menu-up'"
                 ></b-icon>
               </template>
-              <trip-switches
-                :trips="trips"
-                @change:show-trip="changeShowTrip"
-              />
+              <trip-switches :trips="trips" />
             </b-menu-item>
-            <site-switch @change:show-sites="changeShowSites" />
-            <hotspots-switch @change:show-hotspots="changeShowHotspots" />
+            <site-switch />
+            <hotspots-switch />
           </b-menu-list>
           <b-menu-list label="Actions">
             <b-menu-item label="Logout"></b-menu-item>
@@ -87,17 +84,6 @@ export default Vue.extend({
   },
   components: { HotspotsSwitch, SiteSwitch, TripSwitches },
   props: { trips: Array as PropType<Trip[]> },
-  methods: {
-    changeShowHotspots: function (newVal: boolean) {
-      this.$emit("change:show-hotspots", newVal);
-    },
-    changeShowSites: function (newVal: boolean) {
-      this.$emit("change:show-sites", newVal);
-    },
-    changeShowTrip: function (newVal: boolean, trip: Trip) {
-      this.$emit("change:show-trip", newVal, trip);
-    },
-  },
 });
 </script>
 

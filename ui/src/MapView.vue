@@ -26,9 +26,6 @@ the map. This works as follows:
     <control-panel
       v-bind:trips="trips"
       @click:trips="handleClickTrips"
-      @change:show-sites="handleChangeShowSites"
-      @change:show-hotspots="handleChangeShowHotspots"
-      @change:show-trip="handleChangeShowTrip"
     />
     <site-list-panel
       v-bind:sites="sites"
@@ -52,6 +49,7 @@ import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
 
 import ControlPanel from "./ControlPanel.vue";
+import eventBus from "./event-bus";
 import Navbar from "./Navbar.vue";
 import SiteListPanel from "./SiteListPanel.vue";
 import SylphMap from "./SylphMap.vue";
@@ -84,6 +82,11 @@ export default Vue.extend({
         }
       ] as EbirdHotspotGroup[],
     };
+  },
+  mounted() {
+    eventBus.$on("change:show-sites", this.handleChangeShowSites);
+    eventBus.$on("change:show-hotspots", this.handleChangeShowHotspots);
+    eventBus.$on("change:show-trip", this.handleChangeShowTrip);
   },
   methods: {
     handleClickTrips: function (): void {

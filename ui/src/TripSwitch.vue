@@ -11,6 +11,8 @@ import Vue from "vue";
 import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
 
+import eventBus from "./event-bus";
+
 export default Vue.extend({
   data() {
     return {
@@ -20,7 +22,7 @@ export default Vue.extend({
   props: ["trip"],
   watch: {
     isSwitched: function (newVal) {
-      this.$emit("change:show-trip", newVal, this.trip);
+      eventBus.$emit("change:show-trip", newVal, this.trip);
     },
   },
 });
