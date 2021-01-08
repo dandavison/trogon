@@ -103,10 +103,10 @@ export default Vue.extend({
   },
   methods: {
     handleSiteMarkerClick(site: Site): void {
-      window.open(`http://localhost:8000/site/${site.id}`)
+      window.open(`${process.env.VUE_APP_SERVER_URL}/site/${site.id}`)
     },
     formatSiteDetailHTML(site: Site): string {
-      let html = `<a href='http://localhost:8000/site/${site.id}' target='_blank'>${site.name}</a>`;
+      let html = `<a href='${process.env.VUE_APP_SERVER_URL}/site/${site.id}' target='_blank'>${site.name}</a>`;
       html += `<br><img src="${site.images[0]}" />`;
       // Habitats
       html += `<br><br>${site.habitats.length} habitat${

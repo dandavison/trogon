@@ -61,10 +61,10 @@ export default Vue.extend({
   components: { ControlPanel, SylphMap, Navbar, SiteListPanel, TripTimeline },
   data() {
     const sites = fetchJSONSynchronously(
-      "http://localhost:8000/api/sites"
+      `${process.env.VUE_APP_SERVER_URL}/api/sites`
     ) as Site[];
     const ebirdHotspots = fetchJSONSynchronously(
-      "http://localhost:8000/api/ebird-hotspots"
+      `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspots`
     ) as EbirdHotspot[];
     return {
       sites,
@@ -90,7 +90,7 @@ export default Vue.extend({
   },
   methods: {
     handleClickTrips: function (): void {
-      fetch("http://localhost:8000/api/trips").then((response) => {
+      fetch(`${process.env.VUE_APP_SERVER_URL}/api/trips`).then((response) => {
         response.json().then((trips) => {
           this.trips = trips;
         });

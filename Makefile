@@ -1,5 +1,7 @@
 SYLPH = target/debug/sylph
 
+WITH_ENV=env $$(xargs < .env)
+
 build: build-ui build-backend
 
 build-ui:
@@ -8,21 +10,24 @@ build-ui:
 build-backend:
 	cargo build
 
-serve: build-ui serve-backend
-
 serve-ui:
 	cd ui && npm run serve
 
 serve-backend:
-	cargo run
+	$(WITH_ENV) cargo run
+
+serve-backend-and-ui: build-ui serve-backend
 
 test: test-ui
 
 test-ui:
-	cd ui && npx cypress run
+	cd ui && $(WITH_ENV) npx cypress run
 
 test-ui-live:
-	cd ui && npx cypress open
+	cd ui && $(WITH_ENV) npx cypress open
+
+clean:
+	rm -fr ui/dist
 
 psql:
 	psql -d sylph
