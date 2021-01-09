@@ -22,7 +22,6 @@ the map. This works as follows:
  -->
 <template>
   <div>
-    <navbar />
     <control-panel v-bind:trips="trips" @click:trips="handleClickTrips" />
     <site-list-panel
       v-bind:sites="sites"
@@ -47,7 +46,6 @@ Vue.use(VueI18n);
 
 import ControlPanel from "./ControlPanel.vue";
 import eventBus from "./event-bus";
-import Navbar from "./Navbar.vue";
 import SiteListPanel from "./SiteListPanel.vue";
 import SylphMap from "./SylphMap.vue";
 import TripTimeline from "./TripTimeline.vue";
@@ -55,7 +53,7 @@ import { EbirdHotspot, EbirdHotspotGroup, Site, SiteDay, Trip } from "types";
 
 export default Vue.extend({
   name: "mapView",
-  components: { ControlPanel, SylphMap, Navbar, SiteListPanel, TripTimeline },
+  components: { ControlPanel, SylphMap, SiteListPanel, TripTimeline },
   data() {
     const sites = fetchJSONSynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/sites`

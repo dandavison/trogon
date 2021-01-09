@@ -1,9 +1,15 @@
 <template>
-  <div>
-    <p>
-      <router-link to="/map">Map</router-link>
-      <router-link to="/about">About</router-link>
-    </p>
+  <div class="container">
+    <navbar />
     <router-view></router-view>
   </div>
 </template>
+
+<script lang="ts">
+import Vue from "vue";
+import Navbar from "./Navbar.vue";
+
+export default Vue.extend({
+  components: { Navbar }
+});
+</script>
