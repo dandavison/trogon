@@ -7,6 +7,7 @@ Vue.use(VueRouter);
 
 import About from "./About.vue";
 import MapView from "./MapView.vue";
+import SiteDetail from "./SiteDetail.vue";
 import Home from "./Home.vue";
 import Buefy from "buefy";
 import "buefy/dist/buefy.css";
@@ -21,6 +22,7 @@ Vue.use(Buefy, {
 
 const routes = [
   { path: "/map", component: MapView },
+  { path: "/site/:siteIdString", component: SiteDetail, props: true },
   { path: "/about", component: About }
 ];
 
