@@ -1,10 +1,12 @@
 //! A query returning an array of sites, each with a nested array of image urls.
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
 
 use crate::db;
 use crate::queries;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 #[allow(non_snake_case)]
 pub struct Site {
     pub id: i32,
@@ -62,4 +64,8 @@ group by s.id;
         })
     }
     sites
+}
+
+pub fn lookup_table() -> HashMap<i32, Site> {
+    query().into_iter().map(|h| (h.id, h)).collect()
 }

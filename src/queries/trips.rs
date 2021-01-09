@@ -2,15 +2,13 @@
 use serde::{Deserialize, Serialize};
 
 use crate::db;
+use crate::queries::sites;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[allow(non_snake_case)]
 struct SiteDay {
-    id: i32,
     day: i32,
-    name: String,
-    lat: f64,
-    lng: f64,
+    site: sites::Site,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -27,8 +25,7 @@ pub fn query() -> Vec<Trip> {
         .query(
             "
 select t.id as trip_id, t.name as trip_name,
-       tsd.id as site_day_id, tsd.day,
-       s.name as site_name, s.lat as site_lat, s.lng as site_lng
+       tsd.day, s.id as site_id
 from trip_site_day tsd
 inner join trip t on t.id = tsd.trip
 inner join site s on s.id = tsd.site
@@ -37,7 +34,7 @@ order by t.id, tsd.day
             &[],
         )
         .unwrap();
-
+    let sites = sites::lookup_table();
     let mut trips = Vec::<Trip>::new();
     let mut site_days = Vec::<SiteDay>::new();
     let mut prev_trip_id = 0;
@@ -53,12 +50,10 @@ order by t.id, tsd.day
             });
             site_days = Vec::<SiteDay>::new();
         } else {
+            let site_id: i32 = postgres_row.get("site_id");
             site_days.push(SiteDay {
-                id: postgres_row.get("site_day_id"),
                 day: postgres_row.get("day"),
-                name: postgres_row.get("site_name"),
-                lat: postgres_row.get("site_lat"),
-                lng: postgres_row.get("site_lng"),
+                site: sites[&site_id].clone(),
             });
         }
         prev_trip_id = trip_id;
