@@ -19,6 +19,7 @@
             </td>
           </tr>
         </table>
+
         <b-menu>
           <b-menu-list label="Menu">
             <b-menu-item v-on:click="$emit('click:trips')" icon="settings">
@@ -77,13 +78,13 @@ export default Vue.extend({
         overlay: false,
         fullheight: true,
         fullwidth: false,
-        right: false,
+        right: false
       },
-      open: false,
+      open: false
     };
   },
   components: { HotspotsSwitch, SiteSwitch, TripSwitches },
-  props: { trips: Array as PropType<Trip[]> },
+  props: { trips: Array as PropType<Trip[]> }
 });
 </script>
 

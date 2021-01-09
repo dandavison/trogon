@@ -38,6 +38,9 @@ pgcli:
 lint:
 	cargo clippy
 
+format:
+	cd ui && zsh -c 'npx prettier --write * types/**/* src/**/*'
+
 db: build-backend
 	@dropdb --if-exists sylph
 	@createdb sylph

@@ -15,7 +15,7 @@ export default Vue.extend({
   components: { MapView },
   data() {
     return {};
-  },
+  }
 });
 </script>
 

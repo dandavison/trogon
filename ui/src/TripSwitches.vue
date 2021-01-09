@@ -18,6 +18,6 @@ export default Vue.extend({
     return {};
   },
   props: ["trips"],
-  components: { TripSwitch },
+  components: { TripSwitch }
 });
 </script>

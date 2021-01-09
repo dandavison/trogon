@@ -16,14 +16,14 @@ import eventBus from "./event-bus";
 export default Vue.extend({
   data() {
     return {
-      isSwitched: false,
+      isSwitched: false
     };
   },
   props: ["trip"],
   watch: {
-    isSwitched: function (newVal) {
+    isSwitched: function(newVal) {
       eventBus.$emit("change:show-trip", newVal, this.trip);
-    },
-  },
+    }
+  }
 });
 </script>

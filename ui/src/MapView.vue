@@ -23,10 +23,7 @@ the map. This works as follows:
 <template>
   <div>
     <navbar />
-    <control-panel
-      v-bind:trips="trips"
-      @click:trips="handleClickTrips"
-    />
+    <control-panel v-bind:trips="trips" @click:trips="handleClickTrips" />
     <site-list-panel
       v-bind:sites="sites"
       @highlight:site="handleHighlightSite"
@@ -78,9 +75,9 @@ export default Vue.extend({
         {
           id: 1,
           hotspots: ebirdHotspots,
-          visible: false,
+          visible: false
         }
-      ] as EbirdHotspotGroup[],
+      ] as EbirdHotspotGroup[]
     };
   },
   mounted() {
@@ -89,27 +86,27 @@ export default Vue.extend({
     eventBus.$on("change:show-trip", this.handleChangeShowTrip);
   },
   methods: {
-    handleClickTrips: function (): void {
-      fetch(`${process.env.VUE_APP_SERVER_URL}/api/trips`).then((response) => {
-        response.json().then((trips) => {
+    handleClickTrips: function(): void {
+      fetch(`${process.env.VUE_APP_SERVER_URL}/api/trips`).then(response => {
+        response.json().then(trips => {
           this.trips = trips;
         });
       });
     },
-    handleChangeShowSites: function (show: boolean): void {
+    handleChangeShowSites: function(show: boolean): void {
       if (show) {
         this.siteGroups.push(this.sites);
       } else {
         this.siteGroups = [];
       }
     },
-    handleChangeShowHotspots: function (show: boolean): void {
+    handleChangeShowHotspots: function(show: boolean): void {
       var ebirdHotspotGroup = this.ebirdHotspotGroups[0];
       if (ebirdHotspotGroup) {
-          ebirdHotspotGroup.visible = show;
+        ebirdHotspotGroup.visible = show;
       }
     },
-    handleChangeShowTrip: function (show: boolean, trip: Trip) {
+    handleChangeShowTrip: function(show: boolean, trip: Trip) {
       if (show) {
         // TODO: mutate tripSiteGroups correctly
         console.log("TODO", trip); // for the typechecker
@@ -118,15 +115,15 @@ export default Vue.extend({
         this.tripSiteGroups = [[]];
       }
     },
-    handleHighlightSite: function (site: Site): void {
+    handleHighlightSite: function(site: Site): void {
       this.siteHighlightGroups.push([site]);
     },
-    handleUnhighlightSite: function (site: Site): void {
+    handleUnhighlightSite: function(site: Site): void {
       // TODO: mutate siteHighlightGroups correctly
       console.log("TODO", site); // for the typechecker
       this.siteHighlightGroups = [];
-    },
-  },
+    }
+  }
 });
 
 function fetchJSONSynchronously(url: string): Site[] | Trip[] | EbirdHotspot[] {
@@ -140,5 +137,4 @@ function fetchJSONSynchronously(url: string): Site[] | Trip[] | EbirdHotspot[] {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

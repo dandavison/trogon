@@ -69,7 +69,7 @@ import {
   LMarker,
   LCircle,
   LTooltip,
-  LLayerGroup,
+  LLayerGroup
 } from "vue2-leaflet";
 
 export default Vue.extend({
@@ -79,31 +79,31 @@ export default Vue.extend({
     siteHighlightGroups: Array as PropType<Site[][]>,
     tripSiteGroups: Array as PropType<Site[][]>,
     ebirdHotspotGroups: Array as PropType<EbirdHotspot[][]>,
-    center: Array as PropType<number[]>,
+    center: Array as PropType<number[]>
   },
   data() {
     return {
       map: {
-        zoom: 5,
+        zoom: 5
       },
       tileLayer: {
-        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       },
       hotspot: {
         color: "#f03",
         fillOpacity: 0.5,
-        radius: 50,
+        radius: 50
       },
       siteHighlight: {
         color: "#f03",
         fillOpacity: 0.5,
-        radius: 20,
-      },
+        radius: 20
+      }
     };
   },
   methods: {
     handleSiteMarkerClick(site: Site): void {
-      window.open(`${process.env.VUE_APP_SERVER_URL}/site/${site.id}`)
+      window.open(`${process.env.VUE_APP_SERVER_URL}/site/${site.id}`);
     },
     formatSiteDetailHTML(site: Site): string {
       let html = `<a href='${process.env.VUE_APP_SERVER_URL}/site/${site.id}' target='_blank'>${site.name}</a>`;
@@ -127,8 +127,8 @@ export default Vue.extend({
       }
       html += "</ul>";
       return html;
-    },
-  },
+    }
+  }
 });
 </script>
 

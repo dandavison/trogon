@@ -16,12 +16,12 @@ Vue.config.productionTip = false;
 
 Vue.use(Buefy, {
   defaultIconPack: "fas",
-  defaultContainerElement: "#content",
+  defaultContainerElement: "#content"
 });
 
 const routes = [
   { path: "/map", component: MyMap },
-  { path: "/about", component: About },
+  { path: "/about", component: About }
 ];
 
 const router = new VueRouter({ routes });
@@ -29,5 +29,5 @@ const router = new VueRouter({ routes });
 new Vue({
   i18n,
   router,
-  render: (h) => h(Home),
+  render: h => h(Home)
 }).$mount("#app");

@@ -13,6 +13,6 @@ export default {
   name: "LocaleSelector",
   data(): Record<string, unknown> {
     return { langs: ["en", "es"] };
-  },
+  }
 };
 </script>

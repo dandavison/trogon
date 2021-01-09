@@ -50,19 +50,19 @@ export default Vue.extend({
       overlay: false,
       fullheight: true,
       fullwidth: false,
-      right: true,
+      right: true
     };
   },
   components: { SiteCard },
   methods: {
-    highlightSite: function (site: Site) {
+    highlightSite: function(site: Site) {
       this.$emit("highlight:site", site);
     },
-    unhighlightSite: function (site: Site) {
+    unhighlightSite: function(site: Site) {
       this.$emit("unhighlight:site", site);
-    },
+    }
   },
-  props: { sites: Array as PropType<Site[]> },
+  props: { sites: Array as PropType<Site[]> }
 });
 </script>
 

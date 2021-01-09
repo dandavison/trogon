@@ -37,6 +37,6 @@ import Vue from "vue";
 import LocaleSelector from "./LocaleSelector.vue";
 
 export default Vue.extend({
-  components: { LocaleSelector },
+  components: { LocaleSelector }
 });
 </script>

@@ -27,13 +27,13 @@ import eventBus from "./event-bus";
 export default Vue.extend({
   data() {
     return {
-      isSwitched: false,
+      isSwitched: false
     };
   },
   watch: {
-    isSwitched: function (newVal) {
+    isSwitched: function(newVal) {
       eventBus.$emit("change:show-sites", newVal);
-    },
-  },
+    }
+  }
 });
 </script>

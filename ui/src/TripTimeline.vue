@@ -9,7 +9,7 @@
       <div class="card">
         <div class="card-image">
           <figure class="image is-5by4">
-            <a @click="info(list.index)"><img :src="list.images[0]" /></a>
+            <a @click="info(list.index)"><img :src="list.images[0]"/></a>
           </figure>
         </div>
       </div>
@@ -25,14 +25,14 @@ Vue.use(VueI18n);
 export default Vue.extend({
   data() {
     return {
-      test: 0,
+      test: 0
     };
   },
   methods: {
     info(value: number) {
       this.test = value;
-    },
+    }
   },
-  props: { sites: Array },
+  props: { sites: Array }
 });
 </script>

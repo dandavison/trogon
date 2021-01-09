@@ -45,18 +45,18 @@ export default Vue.extend({
         arrowBoth: false,
         autoplay: false,
         iconSize: "is-small",
-        indicator: false,
-      },
+        indicator: false
+      }
     };
   },
   methods: {
-    highlightSite: function () {
+    highlightSite: function() {
       this.$emit("highlight:site", this.site);
     },
-    unhighlightSite: function () {
+    unhighlightSite: function() {
       this.$emit("unhighlight:site", this.site);
-    },
+    }
   },
-  props: { site: Object as PropType<Site> },
+  props: { site: Object as PropType<Site> }
 });
 </script>
