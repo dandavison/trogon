@@ -1,20 +1,33 @@
 import Vue from "vue";
-import VueI18n from "vue-i18n"
+import VueRouter from "vue-router";
+import VueI18n from "vue-i18n";
 
 Vue.use(VueI18n);
-import App from "./App.vue";
-import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
-import i18n from './i18n'
+Vue.use(VueRouter);
+
+import About from "./About.vue";
+import MyMap from "./MyMap.vue";
+import Home from "./Home.vue";
+import Buefy from "buefy";
+import "buefy/dist/buefy.css";
+import i18n from "./i18n";
 
 Vue.config.productionTip = false;
 
 Vue.use(Buefy, {
-  defaultIconPack: 'fas',
-  defaultContainerElement: '#content',
-})
+  defaultIconPack: "fas",
+  defaultContainerElement: "#content",
+});
+
+const routes = [
+  { path: "/map", component: MyMap },
+  { path: "/about", component: About },
+];
+
+const router = new VueRouter({ routes });
 
 new Vue({
   i18n,
-  render: (h) => h(App)
+  router,
+  render: (h) => h(Home),
 }).$mount("#app");

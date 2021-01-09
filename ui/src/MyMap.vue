@@ -12,7 +12,6 @@ Vue.use(VueI18n);
 import MapView from "./MapView.vue";
 
 export default Vue.extend({
-  name: "app",
   components: { MapView },
   data() {
     return {};
@@ -20,5 +19,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
