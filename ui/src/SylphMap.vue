@@ -39,8 +39,8 @@
     >
       <l-marker
         v-for="tripSite in tripSiteGroup"
-        :key="tripSite.id"
-        :lat-lng="[tripSite.lat, tripSite.lng]"
+        :key="tripSite.day"
+        :lat-lng="[tripSite.site.lat, tripSite.site.lng]"
       />
     </l-layer-group>
     <l-layer-group

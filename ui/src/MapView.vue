@@ -35,7 +35,7 @@ the map. This works as follows:
       v-bind:ebirdHotspotGroups="ebirdHotspotGroups"
       v-bind:center="mapCenter"
     />
-    <trip-timeline v-bind:sites="sites" />
+    <trip-timeline v-bind:trip="selectedTrip" />
   </div>
 </template>
 
@@ -73,9 +73,10 @@ export default Vue.extend({
         {
           id: 1,
           hotspots: ebirdHotspots,
-          visible: false
-        }
-      ] as EbirdHotspotGroup[]
+          visible: false,
+        },
+      ] as EbirdHotspotGroup[],
+      selectedTrip: null as Trip | null,
     };
   },
   mounted() {
@@ -106,10 +107,11 @@ export default Vue.extend({
     },
     handleChangeShowTrip: function(show: boolean, trip: Trip) {
       if (show) {
+        this.selectedTrip = trip;
         // TODO: mutate tripSiteGroups correctly
-        console.log("TODO", trip); // for the typechecker
         this.tripSiteGroups.push(this.trips[0]?.site_days || []);
       } else {
+        this.selectedTrip = null;
         this.tripSiteGroups = [[]];
       }
     },
