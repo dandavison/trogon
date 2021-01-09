@@ -5,20 +5,20 @@ use crate::db;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[allow(non_snake_case)]
-pub struct SiteDay {
-    pub id: i32,
-    pub day: i32,
-    pub name: String,
-    pub lat: f64,
-    pub lng: f64,
+struct SiteDay {
+    id: i32,
+    day: i32,
+    name: String,
+    lat: f64,
+    lng: f64,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[allow(non_snake_case)]
 pub struct Trip {
-    pub id: i32,
-    pub name: String,
-    pub site_days: Vec<SiteDay>,
+    id: i32,
+    name: String,
+    site_days: Vec<SiteDay>,
 }
 
 pub fn query() -> Vec<Trip> {
