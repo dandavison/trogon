@@ -24,16 +24,8 @@
         </b-menu>
       </div>
     </b-sidebar>
-    <b-button @click="open = true">{{ $t("show-site-list") }}</b-button>
   </section>
 </template>
-
-<i18n>
-{
-  "en": {"show-site-list": "Show site list"},
-  "es": {"show-site-list": "Revelar lista de sitios"}
-}
-</i18n>
 
 <script lang="ts">
 import { Site } from "types";
@@ -41,6 +33,7 @@ import Vue, { PropType } from "vue";
 import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
 
+import eventBus from "./event-bus";
 import SiteCard from "./SiteCard.vue";
 
 export default Vue.extend({
@@ -54,13 +47,19 @@ export default Vue.extend({
     };
   },
   components: { SiteCard },
+  mounted: function (): void {
+    eventBus.$on("show:site-list", this.showSitesList);
+  },
   methods: {
     highlightSite: function(site: Site) {
       this.$emit("highlight:site", site);
     },
     unhighlightSite: function(site: Site) {
       this.$emit("unhighlight:site", site);
-    }
+    },
+    showSitesList: function (): void {
+      this.open = true;
+    },
   },
   props: { sites: Array as PropType<Site[]> }
 });

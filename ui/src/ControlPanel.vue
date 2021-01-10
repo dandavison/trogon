@@ -42,24 +42,8 @@
       </div>
     </b-sidebar>
     <div class="block"></div>
-    <b-button class="show" @click="open = true">
-      <span v-if="!open">{{ $t("show-control-panel") }}</span>
-    </b-button>
   </section>
 </template>
-
-<i18n>
-{
-  "en": {
-          "show-control-panel": "Show control panel",
-          "trips": "Trips"
-        },
-  "es": {
-          "show-control-panel": "Revelar panel de control",
-          "trips": "Viajes"
-        }
-}
-</i18n>
 
 <script lang="ts">
 import { Trip } from "types";
@@ -67,6 +51,7 @@ import Vue, { PropType } from "vue";
 import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
 
+import eventBus from "./event-bus";
 import HotspotsSwitch from "./HotspotsSwitch.vue";
 import SiteSwitch from "./SiteSwitch.vue";
 import TripSwitches from "./TripSwitches.vue";
@@ -84,7 +69,15 @@ export default Vue.extend({
     };
   },
   components: { HotspotsSwitch, SiteSwitch, TripSwitches },
-  props: { trips: Array as PropType<Trip[]> }
+  props: { trips: Array as PropType<Trip[]> },
+  mounted: function (): void {
+    eventBus.$on("show:control-panel", this.showControlPanel);
+  },
+  methods: {
+    showControlPanel: function (): void {
+      this.open = true;
+    },
+  },
 });
 </script>
 
