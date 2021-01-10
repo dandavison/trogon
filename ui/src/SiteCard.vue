@@ -19,7 +19,9 @@
         <div class="media-content">
           <div class="content">
             <p style="height: 150px; text-overflow: ellipsis; overflow: hidden">
-              <strong>{{ site.name }}</strong>
+              <router-link :to="this.siteURL()"
+                ><strong>{{ site.name }}</strong></router-link
+              >
               <br />
               {{ site.description }}
             </p>
@@ -38,6 +40,7 @@ Vue.use(VueI18n);
 import { Site } from "types";
 
 export default Vue.extend({
+  props: { site: Object as PropType<Site> },
   data() {
     return {
       carouselAttributes: {
@@ -55,8 +58,10 @@ export default Vue.extend({
     },
     unhighlightSite: function() {
       this.$emit("unhighlight:site", this.site);
-    }
+    },
+    siteURL: function () {
+      return `/site/${this.site.id}`;
+    },
   },
-  props: { site: Object as PropType<Site> }
 });
 </script>
