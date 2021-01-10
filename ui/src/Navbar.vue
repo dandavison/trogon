@@ -17,9 +17,11 @@
         <b-navbar-item href="#"> About </b-navbar-item>
         <b-navbar-item href="#"> Contact </b-navbar-item>
       </b-navbar-dropdown>
+
       <b-navbar-item tag="div">
         <router-link to="/map">Map</router-link>
       </b-navbar-item>
+
       <b-navbar-dropdown label="">
         <b-navbar-item href="#" @click="showControlPanel">{{
           $t("show-control-panel")
