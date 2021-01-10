@@ -6,6 +6,7 @@ Vue.use(VueI18n);
 Vue.use(VueRouter);
 
 import About from "./About.vue";
+import LandingPage from "./LandingPage.vue";
 import MapView from "./MapView.vue";
 import SiteDetail from "./SiteDetail.vue";
 import Home from "./Home.vue";
@@ -21,6 +22,7 @@ Vue.use(Buefy, {
 });
 
 const routes = [
+  { path: "/", component: LandingPage },
   { path: "/map", component: MapView },
   { path: "/site/:siteIdString", component: SiteDetail, props: true, name: "site" },
   { path: "/about", component: About }
