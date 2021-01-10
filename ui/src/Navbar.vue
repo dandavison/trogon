@@ -7,13 +7,19 @@
           alt="Sylph"
         />
       </b-navbar-item>
-      <b-navbar-item> <b>Sylph</b> </b-navbar-item>
+      <b-navbar-item
+        ><router-link to="/"><b>Sylph</b></router-link>
+      </b-navbar-item>
     </template>
+
     <template slot="start">
       <b-navbar-dropdown label="Info">
         <b-navbar-item href="#"> About </b-navbar-item>
         <b-navbar-item href="#"> Contact </b-navbar-item>
       </b-navbar-dropdown>
+      <b-navbar-item tag="div">
+        <router-link to="/map">Map</router-link>
+      </b-navbar-item>
     </template>
 
     <template slot="end">
