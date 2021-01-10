@@ -1,20 +1,21 @@
 <template>
-  <div class="container" v-if="this.site">
+  <div class="container" v-if="urls">
     <b-carousel v-bind="carousel">
-      <b-carousel-item v-for="image in site.images" :key="image">
-        <img v-bind:src="image" alt="Site Image" />
+      <b-carousel-item v-for="url in urls" :key="url">
+        <p :class="imageClass">
+          <img :src="url" />
+        </p>
       </b-carousel-item>
     </b-carousel>
   </div>
 </template>
 
 <script lang="ts">
-import { Site } from "types";
 import Vue from "vue";
 import { PropType } from "vue";
 
 export default Vue.extend({
-  props: { site: (Object as null | Object) as PropType<Site> },
+  props: { urls: Array as PropType<String[]>, imageClass: String },
   data() {
     return {
       carousel: {
