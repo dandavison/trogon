@@ -1,12 +1,8 @@
 <template>
   <div class="container" v-if="this.site">
-    Site {{ this.site.id }} images carousel
-
-    <b-carousel v-bind="carouselAttributes">
+    <b-carousel v-bind="carousel">
       <b-carousel-item v-for="image in site.images" :key="image">
-        <figure class="image is-64x64">
-          <img v-bind:src="image" alt="Site Image" />
-        </figure>
+        <img v-bind:src="image" alt="Site Image" />
       </b-carousel-item>
     </b-carousel>
   </div>
@@ -19,5 +15,16 @@ import { PropType } from "vue";
 
 export default Vue.extend({
   props: { site: (Object as null | Object) as PropType<Site> },
+  data() {
+    return {
+      carousel: {
+        // arrow: true,
+        arrowBoth: true,
+        autoplay: false,
+        // iconSize: "is-small",
+        indicator: false,
+      },
+    };
+  },
 });
 </script>
