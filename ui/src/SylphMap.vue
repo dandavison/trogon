@@ -49,17 +49,20 @@
       :visible="ebirdHotspotGroup.visible"
     >
       <l-circle
-        v-for="ebirdHotspot in ebirdHotspotGroup.hotspots"
-        :key="ebirdHotspot.id"
-        :lat-lng="[ebirdHotspot.lat, ebirdHotspot.lng]"
-        v-bind="hotspot"
-      />
+        v-for="hotspot in ebirdHotspotGroup.hotspots"
+        :key="hotspot.id"
+        :lat-lng="[hotspot.lat, hotspot.lng]"
+        v-bind="hotspotProps"
+        @click="handleEbirdHotspotClick(hotspot)"
+      >
+        <l-tooltip :content="formatEbirdHotspotDetailHTML(hotspot)" />
+      </l-circle>
     </l-layer-group>
   </l-map>
 </template>
 
 <script lang="ts">
-import { Site, EbirdHotspot } from "types";
+import { Site, EbirdHotspot, EbirdHotspotGroup } from "types";
 import Vue, { PropType } from "vue";
 import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
@@ -78,7 +81,7 @@ export default Vue.extend({
     siteGroups: Array as PropType<Site[][]>,
     siteHighlightGroups: Array as PropType<Site[][]>,
     tripSiteGroups: Array as PropType<Site[][]>,
-    ebirdHotspotGroups: Array as PropType<EbirdHotspot[][]>,
+    ebirdHotspotGroups: Array as PropType<EbirdHotspotGroup[]>,
     center: Array as PropType<number[]>
   },
   data() {
@@ -89,7 +92,7 @@ export default Vue.extend({
       tileLayer: {
         url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       },
-      hotspot: {
+      hotspotProps: {
         color: "#f03",
         fillOpacity: 0.5,
         radius: 50
@@ -104,6 +107,9 @@ export default Vue.extend({
   methods: {
     handleSiteMarkerClick(site: Site): void {
       this.$router.push(`/site/${site.id}`);
+    },
+    handleEbirdHotspotClick(hotspot: EbirdHotspot): void {
+      window.open(`https://ebird.org/hotspot/${hotspot.locId}`);
     },
     formatSiteDetailHTML(site: Site): string {
       let html = `<h4>${site.name}</h4>`;
@@ -123,8 +129,11 @@ export default Vue.extend({
       }
       html += "</ul>";
       return html;
-    }
-  }
+    },
+    formatEbirdHotspotDetailHTML(hotspot: EbirdHotspot): string {
+      return `${hotspot.locName}`;
+    },
+  },
 });
 </script>
 
