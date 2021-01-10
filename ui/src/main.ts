@@ -22,7 +22,7 @@ Vue.use(Buefy, {
 
 const routes = [
   { path: "/map", component: MapView },
-  { path: "/site/:siteIdString", component: SiteDetail, props: true },
+  { path: "/site/:siteIdString", component: SiteDetail, props: true, name: "site" },
   { path: "/about", component: About }
 ];
 

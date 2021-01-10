@@ -19,7 +19,8 @@
         <div class="media-content">
           <div class="content">
             <p style="height: 150px; text-overflow: ellipsis; overflow: hidden">
-              <router-link :to="this.siteURL()"
+              <router-link
+                :to="{ name: 'site', params: { siteIdString: this.site.id } }"
                 ><strong>{{ site.name }}</strong></router-link
               >
               <br />
@@ -58,9 +59,6 @@ export default Vue.extend({
     },
     unhighlightSite: function() {
       this.$emit("unhighlight:site", this.site);
-    },
-    siteURL: function () {
-      return `/site/${this.site.id}`;
     },
   },
 });
