@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div v-if="this.site">
-      {{ this.site.name }}
+      <b>{{ this.site.name }}</b>
       <detail-map />
     </div>
     <div class="grid-cols-2">

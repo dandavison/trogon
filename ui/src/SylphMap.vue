@@ -109,18 +109,14 @@ export default Vue.extend({
       let html = `<h4>${site.name}</h4>`;
       html += `<br><img src="${site.images[0]}" />`;
       // Habitats
-      html += `<br><br>${site.habitats.length} habitat${
-        site.habitats.length == 1 ? "" : "s"
-      }:<br>`;
+      html += `<br><br><b>Habitats</b>:<br>`;
       html += "<ul>";
       for (let habitat of site.habitats) {
         html += `<li>${habitat.name}</li>`;
       }
       html += "</ul>";
       // Guides
-      html += `<br><br>${site.guides.length} guide${
-        site.guides.length == 1 ? "" : "s"
-      }:<br>`;
+      html += `<br><br><b>Guides</b>:<br>`;
       html += "<ul>";
       for (let guide of site.guides) {
         html += `<li>${guide.name}</li>`;
