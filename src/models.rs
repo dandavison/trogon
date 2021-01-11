@@ -25,7 +25,7 @@ impl From<postgres::Row> for Site {
 pub struct Habitat {
     pub id: i32,
     pub name: String,
-    pub html: String,
+    pub description: String,
 }
 
 impl From<postgres::Row> for Habitat {
@@ -33,7 +33,7 @@ impl From<postgres::Row> for Habitat {
         Self {
             id: row.get("id"),
             name: row.get("name"),
-            html: row.get("html"),
+            description: row.get("description"),
         }
     }
 }
@@ -43,7 +43,7 @@ pub struct Guide {
     pub id: i32,
     pub name: String,
     pub trip_guide: bool,
-    pub biography: Option<String>,
+    pub description: Option<String>,
 }
 
 impl From<postgres::Row> for Guide {
@@ -52,7 +52,7 @@ impl From<postgres::Row> for Guide {
             id: row.get("id"),
             name: row.get("name"),
             trip_guide: row.get("trip_guide"),
-            biography: row.get("biography"),
+            description: row.get("description"),
         }
     }
 }

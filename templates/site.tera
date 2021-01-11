@@ -10,7 +10,7 @@
     {% for guide in guides %}
     <h2>{{ guide.name }}</h2>
     <br>
-    {{ guide.biography }}
+    {{ guide.description }}
     <br><br><br>
     {% endfor %}
 

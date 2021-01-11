@@ -2,14 +2,14 @@ export interface Guide {
   id: number;
   name: string;
   trip_guide: boolean;
-  biography: string | null;
+  description: string | null;
   images: string[];
 }
 
 export interface Habitat {
   id: number;
   name: string;
-  html: string;
+  description: string;
   images: string[];
 }
 

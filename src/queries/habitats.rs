@@ -9,7 +9,7 @@ use crate::db;
 pub struct Habitat {
     pub id: i32,
     pub name: String,
-    pub html: String,
+    pub description: String,
     pub images: Vec<String>,
 }
 
@@ -18,7 +18,7 @@ impl From<postgres::Row> for Habitat {
         Self {
             id: row.get("id"),
             name: row.get("name"),
-            html: row.get("html"),
+            description: row.get("description"),
             images: row.get("images"),
         }
     }
@@ -28,7 +28,7 @@ pub fn query() -> Vec<Habitat> {
     db::get_client()
         .query(
             "
-select h.id, h.name, h.html, array_remove(array_agg(i.url), null) as images
+select h.id, h.name, h.description, array_remove(array_agg(i.url), null) as images
 from habitat h
 left outer join image i ON i.habitat = h.id
 group by h.id

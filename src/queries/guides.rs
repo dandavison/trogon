@@ -10,7 +10,7 @@ pub struct Guide {
     pub id: i32,
     pub name: String,
     pub trip_guide: bool,
-    pub biography: Option<String>,
+    pub description: Option<String>,
     pub images: Vec<String>,
 }
 
@@ -20,7 +20,7 @@ impl From<postgres::Row> for Guide {
             id: row.get("id"),
             name: row.get("name"),
             trip_guide: row.get("trip_guide"),
-            biography: row.get("biography"),
+            description: row.get("description"),
             images: row.get("images"),
         }
     }
@@ -30,7 +30,7 @@ pub fn query() -> Vec<Guide> {
     db::get_client()
         .query(
             "
-select g.id, g.name, g.trip_guide, g.biography, array_remove(array_agg(i.url), null) as images
+select g.id, g.name, g.trip_guide, g.description, array_remove(array_agg(i.url), null) as images
 from guide g
 left outer join image i ON i.guide = g.id
 group by g.id

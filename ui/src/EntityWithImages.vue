@@ -8,7 +8,7 @@
         <p>
           <strong>{{ item.name }}</strong>
           <br />
-          {{ item.html }}
+          {{ item.description }}
         </p>
       </div>
     </div>
