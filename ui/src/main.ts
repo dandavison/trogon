@@ -5,13 +5,13 @@ import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
 Vue.use(VueRouter);
 
+import Buefy from "buefy";
+import "buefy/dist/buefy.css";
 import About from "./About.vue";
 import LandingPage from "./LandingPage.vue";
 import MapView from "./MapView.vue";
 import SiteDetail from "./SiteDetail.vue";
 import Home from "./Home.vue";
-import Buefy from "buefy";
-import "buefy/dist/buefy.css";
 import i18n from "./i18n";
 
 Vue.config.productionTip = false;
