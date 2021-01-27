@@ -7,6 +7,11 @@ pub fn ebird_hotspots() -> content::Json<String> {
     content::Json(serde_json::to_string(&queries::ebird_hotspots::query()).unwrap())
 }
 
+#[get("/ebird-hotspot-species/<loc_id>")]
+pub fn ebird_hotspot_species(loc_id: String) -> content::Json<String> {
+    content::Json(serde_json::to_string(&queries::ebird_hotspot_species::query(loc_id)).unwrap())
+}
+
 #[get("/sites")]
 pub fn sites() -> content::Json<String> {
     content::Json(serde_json::to_string(&queries::sites::query()).unwrap())

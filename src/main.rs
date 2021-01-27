@@ -61,7 +61,13 @@ fn main() -> std::io::Result<()> {
         rocket::ignite()
             .mount(
                 "/api",
-                routes![api::guides, api::ebird_hotspots, api::sites, api::trips],
+                routes![
+                    api::ebird_hotspots,
+                    api::ebird_hotspot_species,
+                    api::guides,
+                    api::sites,
+                    api::trips
+                ],
             )
             .mount("/", StaticFiles::from("ui/dist"))
             .attach(cors::CORS())
