@@ -35,6 +35,17 @@ export interface EbirdHotspot {
   numSpeciesAllTime: number | null;
 }
 
+export interface EbirdSpecies {
+    sciName: string,
+    comName: string,
+    speciesCode: string,
+    category: string,
+    taxonOrder: number,
+    order: string,
+    familyComName: string,
+    familySciName: string,
+}
+
 export interface SiteDay {
   id: number;
   day: number;
