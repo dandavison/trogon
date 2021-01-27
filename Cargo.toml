@@ -10,7 +10,7 @@ edition = "2018"
 postgres = "0.19.0"
 reqwest = { version = "0.10", features = ["blocking", "json"] }
 rocket = "0.4.6"
-rocket_contrib = { version = "0.4.6", default-features = false, features = ["serve", "templates", "tera_templates"] }
+rocket_contrib = { version = "0.4.6", default-features = false, features = ["serve"] }
 serde = { version = "1.0.118", features = ["derive"] }
 serde_json = "1.0.61"
 structopt = "0.3.21"
