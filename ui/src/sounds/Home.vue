@@ -65,7 +65,6 @@ export default Vue.extend({
         genus: "",
         species: "",
       },
-      familyFormatRegex: /([^ ]+)(?: \(([^)]+)\))?/,
     };
   },
   methods: {
@@ -98,12 +97,12 @@ export default Vue.extend({
     isFamilySciNameMatch: function (species: EbirdSpecies): boolean {
       return species.familySciName
         .toLowerCase()
-        .startsWith(this.parseFamilySciNameAnswer().toLowerCase());
+        .startsWith(this.answer.family.toLowerCase());
     },
     isFamilyComNameMatch: function (species: EbirdSpecies): boolean {
       return species.familyComName
         .toLowerCase()
-        .startsWith(this.parseFamilyComNameAnswer().toLowerCase());
+        .startsWith(this.answer.family.toLowerCase());
     },
     isGenusMatch: function (species: EbirdSpecies): boolean {
       if (this.answer.family && !this.isFamilyMatch(species)) {
@@ -123,14 +122,6 @@ export default Vue.extend({
       return formatSpecies(species)
         .toLowerCase()
         .startsWith(this.answer.species.toLowerCase());
-    },
-    parseFamilySciNameAnswer: function (): string {
-      const match = this.familyFormatRegex.exec(this.answer.family);
-      return match ? match[1] || "" : "";
-    },
-    parseFamilyComNameAnswer: function (): string {
-      const match = this.familyFormatRegex.exec(this.answer.family);
-      return match ? match[2] || "" : "";
     },
   },
 });
