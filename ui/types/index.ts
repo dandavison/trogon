@@ -46,6 +46,13 @@ export interface EbirdSpecies {
     familySciName: string,
 }
 
+export interface Recording {
+  url: string,
+  family: string,
+  genus: string,
+  species: string,
+}
+
 export interface SiteDay {
   id: number;
   day: number;

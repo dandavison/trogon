@@ -1,5 +1,12 @@
 <template>
   <section>
+    <nav class="level">
+      <p class="level-item has-text-centered">
+        <b-button @click="setNextRecording">
+          <b-icon pack="fas" icon="forward" size="large"></b-icon>
+        </b-button>
+      </p>
+    </nav>
     <form>
       <b-field label="Family">
         <span>
@@ -7,9 +14,9 @@
             type="text"
             v-model="answer.family"
             :data="filterFamily()"
-            :class="{ 'is-success': answer.family == truth.family }"
+            :class="{ 'is-success': answer.family == recording.family }"
           />
-          <p v-if="answer.family == truth.family">✅</p>
+          <p v-if="answer.family == recording.family">✅</p>
         </span>
       </b-field>
       <b-field label="Genus">
@@ -17,23 +24,23 @@
           type="text"
           v-model="answer.genus"
           :data="filterGenus()"
-          :class="{ 'is-success': answer.genus == truth.genus }"
+          :class="{ 'is-success': answer.genus == recording.genus }"
         />
-        <p v-if="answer.genus == truth.genus">✅</p>
+        <p v-if="answer.genus == recording.genus">✅</p>
       </b-field>
       <b-field label="Species">
         <b-autocomplete
           type="text"
           v-model="answer.species"
           :data="filterSpecies()"
-          :class="{ 'is-success': answer.species == truth.species }"
+          :class="{ 'is-success': answer.species == recording.species }"
         />
-        <p v-if="answer.species == truth.species">✅</p>
+        <p v-if="answer.species == recording.species">✅</p>
       </b-field>
     </form>
     <nav class="level">
       <p class="level-item has-text-centered">
-        <audio controls :src="url" :loop="loop"></audio>
+        <audio controls :src="recording.url" :loop="loop"></audio>
         <b-checkbox v-model="loop">loop {{ loop ? "on" : "off" }}</b-checkbox>
       </p>
     </nav>
@@ -42,32 +49,33 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { EbirdSpecies } from "types";
+import { EbirdSpecies, Recording } from "types";
 import { fetchJSONSynchronously } from "../utils";
 
 export default Vue.extend({
   name: "Home",
   props: { ebirdLocId: String },
   data() {
+    var recordings = getRecordings(this.ebirdLocId);
+    const recording = recordings[0];
     return {
       locationSpecies: fetchJSONSynchronously(
         `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
       ) as EbirdSpecies[],
-      url: "https://www.xeno-canto.org/142305/download",
-      loop: false,
-      truth: {
-        family: "Tityras and Allies",
-        genus: "Pachyramphus",
-        species: "polychopterus",
-      },
+      recordings: recordings,
+      recording: recording,
       answer: {
         family: "",
         genus: "",
         species: "",
       },
+      loop: false,
     };
   },
   methods: {
+    setNextRecording: function (): void {
+      this.recording = this.recordings[0];
+    },
     filterFamily: function () {
       return [
         ...new Set(
@@ -118,6 +126,16 @@ export default Vue.extend({
     },
   },
 });
+function getRecordings(_ebirdLocId: string): Recording[] {
+  return [
+    {
+      url: "https://www.xeno-canto.org/142305/download",
+      family: "Tityras and Allies",
+      genus: "Pachyramphus",
+      species: "polychopterus",
+    },
+  ];
+}
 function formatGenus(species: EbirdSpecies): string {
   return species.sciName.split(" ")[0] || "";
 }
