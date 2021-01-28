@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { fetchJSONSynchronously } from "./utils";
+import { fetchJSONArraySynchronously } from "./utils";
 import { Site } from "types";
 import DetailMap from "./DetailMap.vue";
 import EntityWithImages from "./EntityWithImages.vue";
@@ -69,7 +69,7 @@ export default Vue.extend({
   },
   created() {
     // TODO: how should this obtain the data for the site?
-    const sites = fetchJSONSynchronously(
+    const sites = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/sites`
     ) as Site[];
     const requestedSiteId = parseInt(this.siteIdString);

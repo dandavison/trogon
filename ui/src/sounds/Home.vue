@@ -51,13 +51,13 @@
 import Vue from "vue";
 import { EbirdSpecies, Recording } from "types";
 import { ebirdSpecies } from "./ebird";
-import { fetchJSONSynchronously } from "../utils";
+import { fetchJSONArraySynchronously } from "../utils";
 
 export default Vue.extend({
   name: "Home",
   props: { ebirdLocId: String },
   data() {
-    const locationSpecies = fetchJSONSynchronously(
+    const locationSpecies = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
     ) as EbirdSpecies[];
     var recordings = getRecordings(locationSpecies);

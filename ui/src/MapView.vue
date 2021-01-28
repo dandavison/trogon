@@ -50,16 +50,16 @@ import SiteListPanel from "./SiteListPanel.vue";
 import SylphMap from "./SylphMap.vue";
 import TripTimeline from "./TripTimeline.vue";
 import { EbirdHotspot, EbirdHotspotGroup, Site, SiteDay, Trip } from "types";
-import { fetchJSONSynchronously } from "./utils";
+import { fetchJSONArraySynchronously } from "./utils";
 
 export default Vue.extend({
   name: "mapView",
   components: { ControlPanel, SylphMap, SiteListPanel, TripTimeline },
   data() {
-    const sites = fetchJSONSynchronously(
+    const sites = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/sites`
     ) as Site[];
-    const ebirdHotspots = fetchJSONSynchronously(
+    const ebirdHotspots = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspots`
     ) as EbirdHotspot[];
     return {
