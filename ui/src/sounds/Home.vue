@@ -7,8 +7,7 @@
         </b-button>
       </p>
       <p class="level-item has-text-centered" v-if="recording">
-        <audio controls :src="recording.url" :loop="loop"></audio>
-        <b-checkbox v-model="loop">loop {{ loop ? "on" : "off" }}</b-checkbox>
+        <audio controls :src="recording.url"></audio>
       </p>
     </nav>
     <section>
@@ -80,7 +79,6 @@ export default Vue.extend({
         genus: "",
         species: "",
       },
-      loop: false,
     };
   },
   methods: {
