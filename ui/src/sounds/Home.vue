@@ -14,9 +14,9 @@
             type="text"
             v-model="answer.family"
             :data="filterFamily()"
-            :class="{ 'is-success': answer.family == recording.family }"
+            :class="{ 'is-success': isFamilyCorrect() }"
           />
-          <p v-if="answer.family == recording.family">✅</p>
+          <p v-if="isFamilyCorrect()">✅</p>
         </span>
       </b-field>
       <b-field label="Genus">
@@ -24,23 +24,28 @@
           type="text"
           v-model="answer.genus"
           :data="filterGenus()"
-          :class="{ 'is-success': answer.genus == recording.genus }"
+          :class="{ 'is-success': isGenusCorrect() }"
         />
-        <p v-if="answer.genus == recording.genus">✅</p>
+        <p v-if="isGenusCorrect()">✅</p>
       </b-field>
       <b-field label="Species">
         <b-autocomplete
           type="text"
           v-model="answer.species"
           :data="filterSpecies()"
-          :class="{ 'is-success': answer.species == recording.species }"
+          :class="{ 'is-success': isSpeciesCorrect() }"
         />
-        <p v-if="answer.species == recording.species">✅</p>
+        <p v-if="isSpeciesCorrect()">✅</p>
       </b-field>
     </form>
     <nav class="level">
       <p class="level-item has-text-centered">
-        <audio controls :src="recording.url" :loop="loop"></audio>
+        <audio
+          controls
+          v-if="recording"
+          :src="recording.url"
+          :loop="loop"
+        ></audio>
         <b-checkbox v-model="loop">loop {{ loop ? "on" : "off" }}</b-checkbox>
       </p>
     </nav>
@@ -49,10 +54,21 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { EbirdSpecies } from "types";
+import { EbirdSpecies, Recording } from "types";
 import { ebirdSpecies } from "./ebird";
 import { getRecordings } from "./xeno_canto";
 import { fetchJSONArraySynchronously } from "../utils";
+
+function* makeRecordingsIterator(
+  locationSpecies: EbirdSpecies[]
+): Iterator<Recording> {
+  for (let sp of locationSpecies) {
+    let recordings = getRecordings(sp);
+    if (recordings[0]) {
+      yield recordings[0];
+    }
+  }
+}
 
 export default Vue.extend({
   name: "Home",
@@ -61,12 +77,11 @@ export default Vue.extend({
     const locationSpecies = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
     ) as EbirdSpecies[];
-    const recording = locationSpecies[0]
-      ? getRecordings(locationSpecies[0])[0]
-      : null;
+    const recordings = makeRecordingsIterator(locationSpecies);
     return {
       locationSpecies: locationSpecies,
-      recording: recording,
+      recordings: recordings,
+      recording: null as Recording | null,
       answer: {
         family: "",
         genus: "",
@@ -77,9 +92,12 @@ export default Vue.extend({
   },
   methods: {
     setNextRecording: function (): void {
-      const species = this.locationSpecies[0];
-      if (species) {
-        this.recording = getRecordings(species)[0];
+      const rec = this.recordings.next();
+      if (!rec.done) {
+        this.recording = rec.value;
+        console.log("setNextRecording: ", this.recording);
+      } else {
+        alert("No more recordings!");
       }
     },
     filterFamily: function () {
@@ -117,6 +135,9 @@ export default Vue.extend({
         .toLowerCase()
         .includes(this.answer.family.toLowerCase());
     },
+    isFamilyCorrect: function () {
+      return this.recording?.family === this.answer.family;
+    },
     isGenusMatch: function (species: EbirdSpecies): boolean {
       if (this.answer.family && !this.isFamilyMatch(species)) {
         return false;
@@ -125,6 +146,9 @@ export default Vue.extend({
         .getGenus(species)
         .toLowerCase()
         .startsWith(this.answer.genus.toLowerCase());
+    },
+    isGenusCorrect: function () {
+      return this.recording?.genus === this.answer.genus;
     },
     isSpeciesMatch: function (species: EbirdSpecies): boolean {
       if (this.answer.family && !this.isFamilyMatch(species)) {
@@ -137,6 +161,9 @@ export default Vue.extend({
         .getSpecies(species)
         .toLowerCase()
         .startsWith(this.answer.species.toLowerCase());
+    },
+    isSpeciesCorrect: function () {
+      return this.recording?.species === this.answer.species;
     },
   },
 });
