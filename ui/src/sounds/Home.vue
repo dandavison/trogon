@@ -56,7 +56,7 @@ export default Vue.extend({
       url: "https://www.xeno-canto.org/142305/download",
       loop: false,
       truth: {
-        family: "Tityridae (Tityras and Allies)",
+        family: "Tityras and Allies",
         genus: "Pachyramphus",
         species: "polychopterus",
       },
@@ -90,19 +90,12 @@ export default Vue.extend({
       ].sort();
     },
     isFamilyMatch: function (species: EbirdSpecies): boolean {
-      return (
-        this.isFamilySciNameMatch(species) || this.isFamilyComNameMatch(species)
-      );
-    },
-    isFamilySciNameMatch: function (species: EbirdSpecies): boolean {
-      return species.familySciName
-        .toLowerCase()
-        .startsWith(this.answer.family.toLowerCase());
+      return this.isFamilyComNameMatch(species);
     },
     isFamilyComNameMatch: function (species: EbirdSpecies): boolean {
       return species.familyComName
         .toLowerCase()
-        .startsWith(this.answer.family.toLowerCase());
+        .includes(this.answer.family.toLowerCase());
     },
     isGenusMatch: function (species: EbirdSpecies): boolean {
       if (this.answer.family && !this.isFamilyMatch(species)) {
@@ -132,7 +125,7 @@ function formatSpecies(species: EbirdSpecies): string {
   return species.sciName.split(" ")[1] || "";
 }
 function formatFamily(species: EbirdSpecies): string {
-  return `${species.familySciName} (${species.familyComName})`;
+  return species.familyComName;
 }
 </script>
 
