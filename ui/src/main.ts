@@ -26,7 +26,7 @@ Vue.use(Buefy, {
 
 const routes = [
   { path: "/", component: LandingPage },
-  { path: "/sounds/:ebirdLocId", component: SoundsHome, props: true },
+  { path: "/sounds/:ebirdLocId", component: SoundsHome, props: true, name: "sounds" },
   { path: "/map", component: MapView },
   { path: "/site/:siteIdString", component: SiteDetail, props: true, name: "site" },
   { path: "/about", component: About }

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <navbar />
+    <navbar v-if="$route.name != 'sounds'" />
     <router-view></router-view>
   </div>
 </template>
