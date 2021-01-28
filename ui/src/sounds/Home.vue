@@ -50,18 +50,20 @@
 <script lang="ts">
 import Vue from "vue";
 import { EbirdSpecies, Recording } from "types";
+import { ebirdSpecies } from "./ebird";
 import { fetchJSONSynchronously } from "../utils";
 
 export default Vue.extend({
   name: "Home",
   props: { ebirdLocId: String },
   data() {
-    var recordings = getRecordings(this.ebirdLocId);
+    const locationSpecies = fetchJSONSynchronously(
+      `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
+    ) as EbirdSpecies[];
+    var recordings = getRecordings(locationSpecies);
     const recording = recordings[0];
     return {
-      locationSpecies: fetchJSONSynchronously(
-        `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
-      ) as EbirdSpecies[],
+      locationSpecies: locationSpecies,
       recordings: recordings,
       recording: recording,
       answer: {
@@ -79,21 +81,27 @@ export default Vue.extend({
     filterFamily: function () {
       return [
         ...new Set(
-          this.locationSpecies.filter(this.isFamilyMatch).map(formatFamily)
+          this.locationSpecies
+            .filter(this.isFamilyMatch)
+            .map(ebirdSpecies.getFamily)
         ),
       ].sort();
     },
     filterGenus: function () {
       return [
         ...new Set(
-          this.locationSpecies.filter(this.isGenusMatch).map(formatGenus)
+          this.locationSpecies
+            .filter(this.isGenusMatch)
+            .map(ebirdSpecies.getGenus)
         ),
       ].sort();
     },
     filterSpecies: function () {
       return [
         ...new Set(
-          this.locationSpecies.filter(this.isSpeciesMatch).map(formatSpecies)
+          this.locationSpecies
+            .filter(this.isSpeciesMatch)
+            .map(ebirdSpecies.getSpecies)
         ),
       ].sort();
     },
@@ -109,7 +117,8 @@ export default Vue.extend({
       if (this.answer.family && !this.isFamilyMatch(species)) {
         return false;
       }
-      return formatGenus(species)
+      return ebirdSpecies
+        .getGenus(species)
         .toLowerCase()
         .startsWith(this.answer.genus.toLowerCase());
     },
@@ -120,30 +129,23 @@ export default Vue.extend({
       if (this.answer.genus && !this.isGenusMatch(species)) {
         return false;
       }
-      return formatSpecies(species)
+      return ebirdSpecies
+        .getSpecies(species)
         .toLowerCase()
         .startsWith(this.answer.species.toLowerCase());
     },
   },
 });
-function getRecordings(_ebirdLocId: string): Recording[] {
+function getRecordings(_locationSpecies: EbirdSpecies[]): Recording[] {
   return [
     {
       url: "https://www.xeno-canto.org/142305/download",
       family: "Tityras and Allies",
       genus: "Pachyramphus",
       species: "polychopterus",
+      raw: {},
     },
   ];
-}
-function formatGenus(species: EbirdSpecies): string {
-  return species.sciName.split(" ")[0] || "";
-}
-function formatSpecies(species: EbirdSpecies): string {
-  return species.sciName.split(" ")[1] || "";
-}
-function formatFamily(species: EbirdSpecies): string {
-  return species.familyComName;
 }
 </script>
 
