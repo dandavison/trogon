@@ -1,13 +1,17 @@
 <template>
-  <section>
+  <section style="margin-top: 50px">
     <nav class="level">
       <p class="level-item has-text-centered">
         <b-button @click="setNextRecording">
-          <b-icon pack="fas" icon="forward" size="large"></b-icon>
+          {{ recording ? "Next" : "Start" }}
         </b-button>
       </p>
+      <p class="level-item has-text-centered" v-if="recording">
+        <audio controls :src="recording.url" :loop="loop"></audio>
+        <b-checkbox v-model="loop">loop {{ loop ? "on" : "off" }}</b-checkbox>
+      </p>
     </nav>
-    <form>
+    <section>
       <b-field label="Family">
         <span>
           <b-autocomplete
@@ -16,7 +20,7 @@
             :data="filterFamily()"
             :class="{ 'is-success': isFamilyCorrect() }"
           />
-          <p v-if="isFamilyCorrect()">✅</p>
+          <p v-if="answer.family">{{ isFamilyCorrect() ? "✅" : "❌" }}</p>
         </span>
       </b-field>
       <b-field label="Genus">
@@ -26,7 +30,7 @@
           :data="filterGenus()"
           :class="{ 'is-success': isGenusCorrect() }"
         />
-        <p v-if="isGenusCorrect()">✅</p>
+        <p v-if="answer.genus">{{ isGenusCorrect() ? "✅" : "❌" }}</p>
       </b-field>
       <b-field label="Species">
         <b-autocomplete
@@ -35,20 +39,9 @@
           :data="filterSpecies()"
           :class="{ 'is-success': isSpeciesCorrect() }"
         />
-        <p v-if="isSpeciesCorrect()">✅</p>
+        <p v-if="answer.species">{{ isSpeciesCorrect() ? "✅" : "❌" }}</p>
       </b-field>
-    </form>
-    <nav class="level">
-      <p class="level-item has-text-centered">
-        <audio
-          controls
-          v-if="recording"
-          :src="recording.url"
-          :loop="loop"
-        ></audio>
-        <b-checkbox v-model="loop">loop {{ loop ? "on" : "off" }}</b-checkbox>
-      </p>
-    </nav>
+    </section>
   </section>
 </template>
 
