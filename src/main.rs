@@ -9,6 +9,7 @@ mod db;
 mod ebird;
 mod models;
 mod queries;
+mod xeno_canto;
 
 use rocket_contrib::serve::StaticFiles;
 use std::process;
@@ -69,6 +70,7 @@ fn main() -> std::io::Result<()> {
                     api::trips
                 ],
             )
+            .mount("/xeno-canto", routes![xeno_canto::proxy])
             .mount("/", StaticFiles::from("ui/dist"))
             .attach(cors::CORS())
             .launch();
