@@ -49,8 +49,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { EbirdSpecies, Recording } from "types";
+import { EbirdSpecies } from "types";
 import { ebirdSpecies } from "./ebird";
+import { getRecordings } from "./xeno_canto";
 import { fetchJSONArraySynchronously } from "../utils";
 
 export default Vue.extend({
@@ -60,11 +61,11 @@ export default Vue.extend({
     const locationSpecies = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
     ) as EbirdSpecies[];
-    var recordings = getRecordings(locationSpecies);
-    const recording = recordings[0];
+    const recording = locationSpecies[0]
+      ? getRecordings(locationSpecies[0])[0]
+      : null;
     return {
       locationSpecies: locationSpecies,
-      recordings: recordings,
       recording: recording,
       answer: {
         family: "",
@@ -76,7 +77,10 @@ export default Vue.extend({
   },
   methods: {
     setNextRecording: function (): void {
-      this.recording = this.recordings[0];
+      const species = this.locationSpecies[0];
+      if (species) {
+        this.recording = getRecordings(species)[0];
+      }
     },
     filterFamily: function () {
       return [
@@ -136,17 +140,6 @@ export default Vue.extend({
     },
   },
 });
-function getRecordings(_locationSpecies: EbirdSpecies[]): Recording[] {
-  return [
-    {
-      url: "https://www.xeno-canto.org/142305/download",
-      family: "Tityras and Allies",
-      genus: "Pachyramphus",
-      species: "polychopterus",
-      raw: {},
-    },
-  ];
-}
 </script>
 
 <style scoped>

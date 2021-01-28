@@ -51,6 +51,13 @@ export interface Recording {
   family: string,
   genus: string,
   species: string,
+  raw: object,
+}
+
+export interface XenoCantoRecording {
+  file: string,
+  gen: string,
+  sp: string,
 }
 
 export interface SiteDay {
