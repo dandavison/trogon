@@ -105,11 +105,20 @@ export default Vue.extend({
         .startsWith(this.answer.family.toLowerCase());
     },
     isGenusMatch: function (species: EbirdSpecies): boolean {
+      if (this.answer.family && !this.isFamilyMatch(species)) {
+        return false;
+      }
       return formatGenus(species)
         .toLowerCase()
         .startsWith(this.answer.genus.toLowerCase());
     },
     isSpeciesMatch: function (species: EbirdSpecies): boolean {
+      if (this.answer.family && !this.isFamilyMatch(species)) {
+        return false;
+      }
+      if (this.answer.genus && !this.isGenusMatch(species)) {
+        return false;
+      }
       return formatSpecies(species)
         .toLowerCase()
         .startsWith(this.answer.species.toLowerCase());
