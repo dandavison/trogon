@@ -1,5 +1,6 @@
 <template>
   <div>
+    <control-panel :open="controlPanelOpen" />
     <section style="margin-top: 50px">
       <section>
         <h1 style="font-weight: bold">{{ ebirdHotspot.locName }}</h1>
@@ -106,6 +107,7 @@ import {
 import { getRecordings } from "./xeno_canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
+import ControlPanel from "./ControlPanel.vue";
 
 function* makeRecordingsIterator(species: EbirdSpecies[]): Iterator<Recording> {
   for (const sp of species) {
@@ -119,6 +121,7 @@ function* makeRecordingsIterator(species: EbirdSpecies[]): Iterator<Recording> {
 export default Vue.extend({
   name: "Home",
   props: { ebirdLocId: String },
+  components: { ControlPanel },
   data() {
     const locationSpecies = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
@@ -155,6 +158,7 @@ export default Vue.extend({
         speciesSci: "",
         speciesEn: "",
       },
+      controlPanelOpen: false,
     };
   },
   computed: {
