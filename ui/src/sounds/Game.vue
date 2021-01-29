@@ -101,7 +101,7 @@ import {
   filterToCommonSpecies,
   fetchEbirdHotspot,
 } from "./ebird";
-import { getRecordings } from "./xeno_canto";
+import { getRecordings } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
 
