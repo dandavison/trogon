@@ -18,6 +18,9 @@
       <p class="level-item has-text-centered" v-if="recording">
         <audio controls :src="recording.url"></audio>
       </p>
+      <p class="level-item has-text-centered">
+        <b-button v-if="recording" @click="revealSpecies"> Reveal </b-button>
+      </p>
     </nav>
     <section>
       <b-field
@@ -196,6 +199,15 @@ export default Vue.extend({
     clearInput(): void {
       this.answer.familySci = this.answer.familyEn = this.answer.genus = this.answer.speciesSci = this.answer.speciesEn =
         "";
+    },
+    revealSpecies(): void {
+      if (this.recording) {
+        this.answer.familySci = this.recording.familySci;
+        this.answer.familyEn = this.recording.familyEn;
+        this.answer.genus = this.recording.genus;
+        this.answer.speciesSci = this.recording.speciesSci;
+        this.answer.speciesEn = this.recording.speciesEn;
+      }
     },
     setNextRecording(): void {
       this.clearInput();
