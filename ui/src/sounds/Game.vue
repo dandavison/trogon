@@ -20,7 +20,10 @@
       </p>
     </nav>
     <section>
-      <b-field label="Family (scientific)">
+      <b-field
+        v-if="shouldShowScientificNames"
+        :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
+      >
         <span>
           <b-autocomplete
             type="text"
@@ -33,7 +36,11 @@
           </p>
         </span>
       </b-field>
-      <b-field label="Family (English)">
+
+      <b-field
+        v-if="shouldShowEnglishNames"
+        :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
+      >
         <span>
           <b-autocomplete
             type="text"
@@ -46,6 +53,7 @@
           </p>
         </span>
       </b-field>
+
       <b-field label="Genus">
         <b-autocomplete
           type="text"
@@ -55,7 +63,11 @@
         />
         <p v-if="answer.genus">{{ isGenusCorrect() ? "✅" : "❌" }}</p>
       </b-field>
-      <b-field label="Species (scientific)">
+
+      <b-field
+        v-if="shouldShowScientificNames"
+        :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
+      >
         <b-autocomplete
           type="text"
           v-model="answer.speciesSci"
@@ -66,7 +78,11 @@
           {{ isSpeciesSciCorrect() ? "✅" : "❌" }}
         </p>
       </b-field>
-      <b-field label="Species (English)">
+
+      <b-field
+        v-if="shouldShowEnglishNames"
+        :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
+      >
         <b-autocomplete
           type="text"
           v-model="answer.speciesEn"
@@ -168,6 +184,12 @@ export default Vue.extend({
     },
     challengeRecordings(): Iterator<Recording> {
       return makeRecordingsIterator(this.selectedChallengeSpecies);
+    },
+    shouldShowScientificNames(): boolean {
+      return new Set(["scientific", "both"]).has(this.settings.names);
+    },
+    shouldShowEnglishNames(): boolean {
+      return new Set(["english", "both"]).has(this.settings.names);
     },
   },
   methods: {

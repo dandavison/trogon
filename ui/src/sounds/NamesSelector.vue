@@ -1,10 +1,22 @@
 <template>
   <div class="block">
-    <b-radio v-model="names" name="name" native-value="en"> English </b-radio>
-    <b-radio v-model="names" name="name" native-value="sci">
-      Scientific
-    </b-radio>
-    <b-radio v-model="names" name="name" native-value="both"> Both </b-radio>
+    <ul>
+      <li>
+        <b-radio v-model="names" name="name" native-value="english">
+          English
+        </b-radio>
+      </li>
+      <li>
+        <b-radio v-model="names" name="name" native-value="scientific">
+          Scientific
+        </b-radio>
+      </li>
+      <li>
+        <b-radio v-model="names" name="name" native-value="both">
+          Both
+        </b-radio>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -20,7 +32,7 @@ export default Vue.extend({
     };
   },
   watch: {
-    names: function (_oldVal, newVal) {
+    names: function (newVal) {
       eventBus.$emit("names:change", newVal);
     },
   },
