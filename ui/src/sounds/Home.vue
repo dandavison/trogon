@@ -74,6 +74,7 @@ import {
   fetchEbirdHotspot,
 } from "./ebird";
 import { getRecordings } from "./xeno_canto";
+import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
 
 function* makeRecordingsIterator(species: EbirdSpecies[]): Iterator<Recording> {
@@ -92,6 +93,9 @@ export default Vue.extend({
     const locationSpecies = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
     ) as EbirdSpecies[];
+    const family2order = new Map(
+      locationSpecies.map((sp) => [sp.familyComName, sp.order])
+    );
     var challengeSpecies = filterToCommonSpecies(
       locationSpecies,
       this.ebirdLocId
@@ -99,7 +103,11 @@ export default Vue.extend({
     const challengeFamilies = Object.entries(
       _.groupBy(challengeSpecies, (sp) => sp.familyComName)
     ).map(([family, spp]) => {
-      return { family: family, n: spp.length, selected: false };
+      return {
+        family: family,
+        n: spp.length,
+        selected: isDefaultSelectedFamily(family, family2order),
+      };
     });
 
     challengeSpecies = _.shuffle(challengeSpecies);
