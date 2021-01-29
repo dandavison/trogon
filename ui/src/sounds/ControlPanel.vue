@@ -4,6 +4,8 @@
       <div class="p-1">
         <b-menu>
           <b-menu-list label="">
+            <b-menu-item label="Names"></b-menu-item>
+            <names-selector :settings="settings" />
           </b-menu-list>
         </b-menu>
       </div>
@@ -15,10 +17,11 @@
 <script lang="ts">
 import Vue from "vue";
 import eventBus from "./event-bus";
-import NameTypeSelector from "./NameTypeSelector.vue";
+import NamesSelector from "./NamesSelector.vue";
 
 export default Vue.extend({
-  components: { NameTypeSelector },
+  components: { NamesSelector },
+  props: { settings: Object },
   data() {
     return {
       sidebarAttributes: {
