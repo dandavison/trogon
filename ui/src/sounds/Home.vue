@@ -4,7 +4,9 @@
       <h1 style="font-weight: bold">{{ ebirdHotspot.locName }}</h1>
       <ul>
         <li>{{ locationSpecies.length }} species total</li>
-        <li>{{ challengeSpecies.length }} species in current challenge</li>
+        <li>
+          {{ selectedChallengeSpecies.length }} species in current challenge
+        </li>
       </ul>
     </section>
     <nav class="level">
@@ -48,10 +50,14 @@
         <p v-if="answer.species">{{ isSpeciesCorrect() ? "✅" : "❌" }}</p>
       </b-field>
     </section>
-    <section style="margin-top: 50px">
+    <section
+      id="family-selector"
+      style="margin-top: 50px; height: 400px; overflow-y: auto"
+    >
       <ul>
-        <li v-for="[family, n] in challengeFamilies" :key="family">
-          <b-checkbox></b-checkbox>{{ family }} ({{ n }})
+        <li v-for="family in challengeFamilies" :key="family.family">
+          <b-checkbox v-model="family.selected"></b-checkbox
+          >{{ family.family }} ({{ family.n }})
         </li>
       </ul>
     </section>
@@ -88,7 +94,9 @@ export default Vue.extend({
     );
     const challengeFamilies = Object.entries(
       _.groupBy(challengeSpecies, (sp) => sp.familyComName)
-    ).map(([family, spp]) => [family, spp.length]);
+    ).map(([family, spp]) => {
+      return { family: family, n: spp.length, selected: false };
+    });
 
     challengeSpecies = _.shuffle(challengeSpecies);
 
@@ -104,7 +112,6 @@ export default Vue.extend({
       challengeFamilies,
       ebirdHotspot,
       locationSpecies,
-      challengeRecordings: makeRecordingsIterator(challengeSpecies),
       recording: null as Recording | null,
       answer: {
         family: "",
@@ -112,6 +119,21 @@ export default Vue.extend({
         species: "",
       },
     };
+  },
+  computed: {
+    selectedChallengeSpecies: function (): EbirdSpecies[] {
+      const selectedFamilies = new Set(
+        this.challengeFamilies
+          .filter(({ selected }) => selected)
+          .map((family) => family.family)
+      );
+      return this.challengeSpecies.filter((sp) =>
+        selectedFamilies.has(sp.familyComName)
+      );
+    },
+    challengeRecordings: function (): Iterator<Recording> {
+      return makeRecordingsIterator(this.selectedChallengeSpecies);
+    },
   },
   methods: {
     setNextRecording: function (): void {
