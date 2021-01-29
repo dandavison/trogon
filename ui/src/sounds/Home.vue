@@ -20,15 +20,28 @@
       </p>
     </nav>
     <section>
-      <b-field label="Family">
+      <b-field label="Family (scientific)">
         <span>
           <b-autocomplete
             type="text"
-            v-model="answer.family"
-            :data="filterFamily()"
-            :class="{ 'is-success': isFamilyCorrect() }"
+            v-model="answer.familySci"
+            :data="filterFamilySci()"
+            :class="{ 'is-success': isFamilySciCorrect() }"
           />
-          <p v-if="answer.family">{{ isFamilyCorrect() ? "✅" : "❌" }}</p>
+          <p v-if="answer.familySci">
+            {{ isFamilySciCorrect() ? "✅" : "❌" }}
+          </p>
+        </span>
+      </b-field>
+      <b-field label="Family (English)">
+        <span>
+          <b-autocomplete
+            type="text"
+            v-model="answer.familyEn"
+            :data="filterFamilyEn()"
+            :class="{ 'is-success': isFamilyEnCorrect() }"
+          />
+          <p v-if="answer.familyEn">{{ isFamilyEnCorrect() ? "✅" : "❌" }}</p>
         </span>
       </b-field>
       <b-field label="Genus">
@@ -40,14 +53,27 @@
         />
         <p v-if="answer.genus">{{ isGenusCorrect() ? "✅" : "❌" }}</p>
       </b-field>
-      <b-field label="Species">
+      <b-field label="Species (scientific)">
         <b-autocomplete
           type="text"
-          v-model="answer.species"
-          :data="filterSpecies()"
-          :class="{ 'is-success': isSpeciesCorrect() }"
+          v-model="answer.speciesSci"
+          :data="filterSpeciesSci()"
+          :class="{ 'is-success': isSpeciesSciCorrect() }"
         />
-        <p v-if="answer.species">{{ isSpeciesCorrect() ? "✅" : "❌" }}</p>
+        <p v-if="answer.speciesSci">
+          {{ isSpeciesSciCorrect() ? "✅" : "❌" }}
+        </p>
+      </b-field>
+      <b-field label="Species (English)">
+        <b-autocomplete
+          type="text"
+          v-model="answer.speciesEn"
+          :data="filterSpeciesEn()"
+          :class="{ 'is-success': isSpeciesEnCorrect() }"
+        />
+        <p v-if="answer.speciesEn">
+          {{ isSpeciesEnCorrect() ? "✅" : "❌" }}
+        </p>
       </b-field>
     </section>
     <section
@@ -119,9 +145,11 @@ export default Vue.extend({
       locationSpecies,
       recording: null as Recording | null,
       answer: {
-        family: "",
+        familySci: "",
+        familyEn: "",
         genus: "",
-        species: "",
+        speciesSci: "",
+        speciesEn: "",
       },
     };
   },
@@ -141,8 +169,12 @@ export default Vue.extend({
     },
   },
   methods: {
+    clearInput(): void {
+      this.answer.familySci = this.answer.familyEn = this.answer.genus = this.answer.speciesSci = this.answer.speciesEn =
+        "";
+    },
     setNextRecording(): void {
-      this.answer.family = this.answer.genus = this.answer.species = "";
+      this.clearInput();
       const rec = this.challengeRecordings.next();
       if (!rec.done) {
         this.recording = rec.value;
@@ -150,12 +182,21 @@ export default Vue.extend({
         alert("No more recordings!");
       }
     },
-    filterFamily(): string[] {
+    filterFamilySci(): string[] {
       return [
         ...new Set(
           this.locationSpecies
-            .filter(this.isFamilyMatch)
-            .map(ebirdSpecies.getFamily)
+            .filter(this.isFamilySciMatch)
+            .map(ebirdSpecies.getFamilySci)
+        ),
+      ].sort();
+    },
+    filterFamilyEn(): string[] {
+      return [
+        ...new Set(
+          this.locationSpecies
+            .filter(this.isFamilyEnMatch)
+            .map(ebirdSpecies.getFamilyEn)
         ),
       ].sort();
     },
@@ -168,28 +209,45 @@ export default Vue.extend({
         ),
       ].sort();
     },
-    filterSpecies(): string[] {
+    filterSpeciesSci(): string[] {
       return [
         ...new Set(
           this.locationSpecies
-            .filter(this.isSpeciesMatch)
-            .map(ebirdSpecies.getSpecies)
+            .filter(this.isSpeciesSciMatch)
+            .map(ebirdSpecies.getSpeciesSci)
         ),
       ].sort();
     },
-    isFamilyMatch(species: EbirdSpecies): boolean {
-      return this.isFamilyComNameMatch(species);
+    filterSpeciesEn(): string[] {
+      return [
+        ...new Set(
+          this.locationSpecies
+            .filter(this.isSpeciesEnMatch)
+            .map(ebirdSpecies.getSpeciesEn)
+        ),
+      ].sort();
     },
-    isFamilyComNameMatch(species: EbirdSpecies): boolean {
+    isFamilySciMatch(species: EbirdSpecies): boolean {
+      return species.familySciName
+        .toLowerCase()
+        .includes(this.answer.familySci.toLowerCase());
+    },
+    isFamilyEnMatch(species: EbirdSpecies): boolean {
       return species.familyComName
         .toLowerCase()
-        .includes(this.answer.family.toLowerCase());
+        .includes(this.answer.familyEn.toLowerCase());
     },
-    isFamilyCorrect(): boolean {
-      return this.recording?.family === this.answer.family;
+    isFamilySciCorrect(): boolean {
+      return this.recording?.familySci === this.answer.familySci;
+    },
+    isFamilyEnCorrect(): boolean {
+      return this.recording?.familyEn === this.answer.familyEn;
     },
     isGenusMatch(species: EbirdSpecies): boolean {
-      if (this.answer.family && !this.isFamilyMatch(species)) {
+      if (this.answer.familySci && !this.isFamilySciMatch(species)) {
+        return false;
+      }
+      if (this.answer.familyEn && !this.isFamilyEnMatch(species)) {
         return false;
       }
       return ebirdSpecies
@@ -200,20 +258,35 @@ export default Vue.extend({
     isGenusCorrect(): boolean {
       return this.recording?.genus === this.answer.genus;
     },
-    isSpeciesMatch(species: EbirdSpecies): boolean {
-      if (this.answer.family && !this.isFamilyMatch(species)) {
+    isSpeciesSciMatch(species: EbirdSpecies): boolean {
+      if (this.answer.familySci && !this.isFamilySciMatch(species)) {
         return false;
       }
       if (this.answer.genus && !this.isGenusMatch(species)) {
         return false;
       }
       return ebirdSpecies
-        .getSpecies(species)
+        .getSpeciesSci(species)
         .toLowerCase()
-        .startsWith(this.answer.species.toLowerCase());
+        .startsWith(this.answer.speciesSci.toLowerCase());
     },
-    isSpeciesCorrect(): boolean {
-      return this.recording?.species === this.answer.species;
+    isSpeciesEnMatch(species: EbirdSpecies): boolean {
+      if (this.answer.familyEn && !this.isFamilyEnMatch(species)) {
+        return false;
+      }
+      if (this.answer.genus && !this.isGenusMatch(species)) {
+        return false;
+      }
+      return ebirdSpecies
+        .getSpeciesEn(species)
+        .toLowerCase()
+        .startsWith(this.answer.speciesEn.toLowerCase());
+    },
+    isSpeciesSciCorrect(): boolean {
+      return this.recording?.speciesSci === this.answer.speciesSci;
+    },
+    isSpeciesEnCorrect(): boolean {
+      return this.recording?.speciesEn === this.answer.speciesEn;
     },
   },
 });

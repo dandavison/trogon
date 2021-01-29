@@ -12,18 +12,21 @@ function getXenoCantoRecordings(query: string): XenoCantoRecording[] {
 }
 
 export function getRecordings(species: EbirdSpecies): Recording[] {
-  const family = ebirdSpecies.getFamily(species);
+  const familySci = ebirdSpecies.getFamilySci(species);
+  const familyEn = ebirdSpecies.getFamilyEn(species);
   const genus = ebirdSpecies.getGenus(species);
-  const sp = ebirdSpecies.getSpecies(species);
+  const speciesSci = ebirdSpecies.getSpeciesSci(species);
 
-  const query = `${genus}+${sp}+gen:${genus}`;
+  const query = `${genus}+${speciesSci}+gen:${genus}`;
   var recordings = [];
   for (let raw of getXenoCantoRecordings(query)) {
     recordings.push({
       url: raw.file,
-      family: family,
+      familySci: familySci,
+      familyEn: familyEn,
       genus: raw.gen,
-      species: raw.sp,
+      speciesSci: raw.sp,
+      speciesEn: raw.en,
       raw: raw
     });
   }

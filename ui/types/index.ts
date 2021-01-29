@@ -56,9 +56,11 @@ export interface EbirdObservation {
 
 export interface Recording {
   url: string,
-  family: string,
+  familyEn: string,
+  familySci: string,
   genus: string,
-  species: string,
+  speciesEn: string,
+  speciesSci: string,
   raw: object,
 }
 
@@ -66,6 +68,7 @@ export interface XenoCantoRecording {
   file: string,
   gen: string,
   sp: string,
+  en: string,
 }
 
 export interface SiteDay {

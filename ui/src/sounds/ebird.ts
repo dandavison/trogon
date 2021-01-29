@@ -5,11 +5,17 @@ export const ebirdSpecies = {
   getGenus: function(species: EbirdSpecies): string {
     return species.sciName.split(" ")[0] || "";
   },
-  getSpecies: function(species: EbirdSpecies): string {
+  getSpeciesSci: function(species: EbirdSpecies): string {
     return species.sciName.split(" ")[1] || "";
   },
-  getFamily: function(species: EbirdSpecies): string {
+  getSpeciesEn: function(species: EbirdSpecies): string {
+    return species.comName;
+  },
+  getFamilyEn: function(species: EbirdSpecies): string {
     return species.familyComName;
+  },
+  getFamilySci: function(species: EbirdSpecies): string {
+    return species.familySciName;
   }
 };
 
