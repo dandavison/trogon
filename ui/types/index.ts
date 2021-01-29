@@ -46,6 +46,14 @@ export interface EbirdSpecies {
   familySciName: string,
 }
 
+export interface EbirdObservation {
+  sciName: string,
+  comName: string,
+  speciesCode: string,
+  locId: string,
+  locName: string,  
+}
+
 export interface Recording {
   url: string,
   family: string,

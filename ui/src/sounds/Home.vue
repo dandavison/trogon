@@ -1,5 +1,12 @@
 <template>
   <section style="margin-top: 50px">
+    <section>
+      <h1 style="font-weight: bold">{{ ebirdHotspot.locName }}</h1>
+      <ul>
+        <li>{{ locationSpecies.length }} species total</li>
+        <li>{{ challengeSpecies.length }} species in current challenge</li>
+      </ul>
+    </section>
     <nav class="level">
       <p class="level-item has-text-centered">
         <b-button @click="setNextRecording">
@@ -41,21 +48,27 @@
         <p v-if="answer.species">{{ isSpeciesCorrect() ? "✅" : "❌" }}</p>
       </b-field>
     </section>
+    <section style="margin-top: 50px">
+      <ul>
+        <li v-for="[family, n] in challengeFamilies" :key="family">
+          <b-checkbox></b-checkbox>{{ family }} ({{ n }})
+        </li>
+      </ul>
+    </section>
   </section>
 </template>
 
 <script lang="ts">
+import _ from "lodash";
 import Vue from "vue";
-import { EbirdSpecies, Recording } from "types";
-import { ebirdSpecies } from "./ebird";
+import { EbirdHotspot, EbirdSpecies, Recording } from "types";
+import { ebirdSpecies, filterToCommonSpecies } from "./ebird";
 import { getRecordings } from "./xeno_canto";
 import { fetchJSONArraySynchronously } from "../utils";
 
-function* makeRecordingsIterator(
-  locationSpecies: EbirdSpecies[]
-): Iterator<Recording> {
-  for (let sp of locationSpecies) {
-    let recordings = getRecordings(sp);
+function* makeRecordingsIterator(species: EbirdSpecies[]): Iterator<Recording> {
+  for (const sp of species) {
+    const recordings = getRecordings(sp);
     if (recordings[0]) {
       yield recordings[0];
     }
@@ -69,10 +82,29 @@ export default Vue.extend({
     const locationSpecies = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
     ) as EbirdSpecies[];
-    const recordings = makeRecordingsIterator(locationSpecies);
+    var challengeSpecies = filterToCommonSpecies(
+      locationSpecies,
+      this.ebirdLocId
+    );
+    const challengeFamilies = Object.entries(
+      _.groupBy(challengeSpecies, (sp) => sp.familyComName)
+    ).map(([family, spp]) => [family, spp.length]);
+
+    challengeSpecies = _.shuffle(challengeSpecies);
+
+    const ebirdHotspots = fetchJSONArraySynchronously(
+      `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspots/`
+    ) as EbirdHotspot[];
+    const ebirdHotspot = ebirdHotspots.filter(
+      (h) => h.locId == this.ebirdLocId
+    )[0];
+
     return {
-      locationSpecies: locationSpecies,
-      recordings: recordings,
+      challengeSpecies,
+      challengeFamilies,
+      ebirdHotspot,
+      locationSpecies,
+      challengeRecordings: makeRecordingsIterator(challengeSpecies),
       recording: null as Recording | null,
       answer: {
         family: "",
@@ -83,10 +115,10 @@ export default Vue.extend({
   },
   methods: {
     setNextRecording: function (): void {
-      const rec = this.recordings.next();
+      this.answer.family = this.answer.genus = this.answer.species = "";
+      const rec = this.challengeRecordings.next();
       if (!rec.done) {
         this.recording = rec.value;
-        console.log("setNextRecording: ", this.recording);
       } else {
         alert("No more recordings!");
       }
