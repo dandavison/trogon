@@ -1,99 +1,95 @@
 <template>
-  <div>
-    <navbar />
-    <control-panel :open="controlPanelOpen" />
-    <section style="margin-top: 50px">
-      <section>
-        <h1 style="font-weight: bold">{{ ebirdHotspot.locName }}</h1>
-        <ul>
-          <li>{{ locationSpecies.length }} species total</li>
-          <li>
-            {{ selectedChallengeSpecies.length }} species in current challenge
-          </li>
-        </ul>
-      </section>
-      <nav class="level">
-        <p class="level-item has-text-centered">
-          <b-button @click="setNextRecording">
-            {{ recording ? "Next" : "Start" }}
-          </b-button>
-        </p>
-        <p class="level-item has-text-centered" v-if="recording">
-          <audio controls autoplay :src="recording.url"></audio>
-        </p>
-      </nav>
-      <section>
-        <b-field label="Family (scientific)">
-          <span>
-            <b-autocomplete
-              type="text"
-              v-model="answer.familySci"
-              :data="filterFamilySci()"
-              :class="{ 'is-success': isFamilySciCorrect() }"
-            />
-            <p v-if="answer.familySci">
-              {{ isFamilySciCorrect() ? "✅" : "❌" }}
-            </p>
-          </span>
-        </b-field>
-        <b-field label="Family (English)">
-          <span>
-            <b-autocomplete
-              type="text"
-              v-model="answer.familyEn"
-              :data="filterFamilyEn()"
-              :class="{ 'is-success': isFamilyEnCorrect() }"
-            />
-            <p v-if="answer.familyEn">
-              {{ isFamilyEnCorrect() ? "✅" : "❌" }}
-            </p>
-          </span>
-        </b-field>
-        <b-field label="Genus">
-          <b-autocomplete
-            type="text"
-            v-model="answer.genus"
-            :data="filterGenus()"
-            :class="{ 'is-success': isGenusCorrect() }"
-          />
-          <p v-if="answer.genus">{{ isGenusCorrect() ? "✅" : "❌" }}</p>
-        </b-field>
-        <b-field label="Species (scientific)">
-          <b-autocomplete
-            type="text"
-            v-model="answer.speciesSci"
-            :data="filterSpeciesSci()"
-            :class="{ 'is-success': isSpeciesSciCorrect() }"
-          />
-          <p v-if="answer.speciesSci">
-            {{ isSpeciesSciCorrect() ? "✅" : "❌" }}
-          </p>
-        </b-field>
-        <b-field label="Species (English)">
-          <b-autocomplete
-            type="text"
-            v-model="answer.speciesEn"
-            :data="filterSpeciesEn()"
-            :class="{ 'is-success': isSpeciesEnCorrect() }"
-          />
-          <p v-if="answer.speciesEn">
-            {{ isSpeciesEnCorrect() ? "✅" : "❌" }}
-          </p>
-        </b-field>
-      </section>
-      <section
-        id="family-selector"
-        style="margin-top: 50px; height: 400px; overflow-y: auto"
-      >
-        <ul>
-          <li v-for="family in challengeFamilies" :key="family.family">
-            <b-checkbox v-model="family.selected"></b-checkbox
-            >{{ family.family }} ({{ family.n }})
-          </li>
-        </ul>
-      </section>
+  <section style="margin-top: 50px">
+    <section>
+      <h1 style="font-weight: bold">{{ ebirdHotspot.locName }}</h1>
+      <ul>
+        <li>{{ locationSpecies.length }} species total</li>
+        <li>
+          {{ selectedChallengeSpecies.length }} species in current challenge
+        </li>
+      </ul>
     </section>
-  </div>
+    <nav class="level">
+      <p class="level-item has-text-centered">
+        <b-button @click="setNextRecording">
+          {{ recording ? "Next" : "Start" }}
+        </b-button>
+      </p>
+      <p class="level-item has-text-centered" v-if="recording">
+        <audio controls autoplay :src="recording.url"></audio>
+      </p>
+    </nav>
+    <section>
+      <b-field label="Family (scientific)">
+        <span>
+          <b-autocomplete
+            type="text"
+            v-model="answer.familySci"
+            :data="filterFamilySci()"
+            :class="{ 'is-success': isFamilySciCorrect() }"
+          />
+          <p v-if="answer.familySci">
+            {{ isFamilySciCorrect() ? "✅" : "❌" }}
+          </p>
+        </span>
+      </b-field>
+      <b-field label="Family (English)">
+        <span>
+          <b-autocomplete
+            type="text"
+            v-model="answer.familyEn"
+            :data="filterFamilyEn()"
+            :class="{ 'is-success': isFamilyEnCorrect() }"
+          />
+          <p v-if="answer.familyEn">
+            {{ isFamilyEnCorrect() ? "✅" : "❌" }}
+          </p>
+        </span>
+      </b-field>
+      <b-field label="Genus">
+        <b-autocomplete
+          type="text"
+          v-model="answer.genus"
+          :data="filterGenus()"
+          :class="{ 'is-success': isGenusCorrect() }"
+        />
+        <p v-if="answer.genus">{{ isGenusCorrect() ? "✅" : "❌" }}</p>
+      </b-field>
+      <b-field label="Species (scientific)">
+        <b-autocomplete
+          type="text"
+          v-model="answer.speciesSci"
+          :data="filterSpeciesSci()"
+          :class="{ 'is-success': isSpeciesSciCorrect() }"
+        />
+        <p v-if="answer.speciesSci">
+          {{ isSpeciesSciCorrect() ? "✅" : "❌" }}
+        </p>
+      </b-field>
+      <b-field label="Species (English)">
+        <b-autocomplete
+          type="text"
+          v-model="answer.speciesEn"
+          :data="filterSpeciesEn()"
+          :class="{ 'is-success': isSpeciesEnCorrect() }"
+        />
+        <p v-if="answer.speciesEn">
+          {{ isSpeciesEnCorrect() ? "✅" : "❌" }}
+        </p>
+      </b-field>
+    </section>
+    <section
+      id="family-selector"
+      style="margin-top: 50px; height: 400px; overflow-y: auto"
+    >
+      <ul>
+        <li v-for="family in challengeFamilies" :key="family.family">
+          <b-checkbox v-model="family.selected"></b-checkbox
+          >{{ family.family }} ({{ family.n }})
+        </li>
+      </ul>
+    </section>
+  </section>
 </template>
 
 <script lang="ts">
@@ -108,8 +104,6 @@ import {
 import { getRecordings } from "./xeno_canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
-import ControlPanel from "./ControlPanel.vue";
-import Navbar from "./Navbar.vue";
 
 function* makeRecordingsIterator(species: EbirdSpecies[]): Iterator<Recording> {
   for (const sp of species) {
@@ -122,8 +116,7 @@ function* makeRecordingsIterator(species: EbirdSpecies[]): Iterator<Recording> {
 
 export default Vue.extend({
   name: "Home",
-  props: { ebirdLocId: String },
-  components: { ControlPanel, Navbar },
+  props: { ebirdLocId: String, settings: Object },
   data() {
     const locationSpecies = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
@@ -160,7 +153,6 @@ export default Vue.extend({
         speciesSci: "",
         speciesEn: "",
       },
-      controlPanelOpen: false,
     };
   },
   computed: {

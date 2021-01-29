@@ -15,7 +15,7 @@ import MapView from "./MapView.vue";
 import SiteDetail from "./SiteDetail.vue";
 import Home from "./Home.vue";
 import i18n from "./i18n";
-import SoundsHome from "./sounds/Home.vue";
+import SoundsRoot from "./sounds/Root.vue";
 
 Vue.config.productionTip = false;
 
@@ -26,7 +26,7 @@ Vue.use(Buefy, {
 
 const routes = [
   { path: "/", component: LandingPage },
-  { path: "/sounds/:ebirdLocId", component: SoundsHome, props: true, name: "sounds" },
+  { path: "/sounds/:ebirdLocId", component: SoundsRoot, props: true, name: "sounds" },
   { path: "/map", component: MapView },
   { path: "/site/:siteIdString", component: SiteDetail, props: true, name: "site" },
   { path: "/about", component: About }
