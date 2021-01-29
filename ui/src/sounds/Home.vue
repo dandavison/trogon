@@ -67,8 +67,12 @@
 <script lang="ts">
 import _ from "lodash";
 import Vue from "vue";
-import { EbirdHotspot, EbirdSpecies, Recording } from "types";
-import { ebirdSpecies, filterToCommonSpecies } from "./ebird";
+import { EbirdSpecies, Recording } from "types";
+import {
+  ebirdSpecies,
+  filterToCommonSpecies,
+  fetchEbirdHotspot,
+} from "./ebird";
 import { getRecordings } from "./xeno_canto";
 import { fetchJSONArraySynchronously } from "../utils";
 
@@ -100,17 +104,10 @@ export default Vue.extend({
 
     challengeSpecies = _.shuffle(challengeSpecies);
 
-    const ebirdHotspots = fetchJSONArraySynchronously(
-      `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspots/`
-    ) as EbirdHotspot[];
-    const ebirdHotspot = ebirdHotspots.filter(
-      (h) => h.locId == this.ebirdLocId
-    )[0];
-
     return {
       challengeSpecies,
       challengeFamilies,
-      ebirdHotspot,
+      ebirdHotspot: fetchEbirdHotspot(this.ebirdLocId),
       locationSpecies,
       recording: null as Recording | null,
       answer: {
@@ -121,7 +118,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    selectedChallengeSpecies: function (): EbirdSpecies[] {
+    selectedChallengeSpecies(): EbirdSpecies[] {
       const selectedFamilies = new Set(
         this.challengeFamilies
           .filter(({ selected }) => selected)
@@ -131,12 +128,12 @@ export default Vue.extend({
         selectedFamilies.has(sp.familyComName)
       );
     },
-    challengeRecordings: function (): Iterator<Recording> {
+    challengeRecordings(): Iterator<Recording> {
       return makeRecordingsIterator(this.selectedChallengeSpecies);
     },
   },
   methods: {
-    setNextRecording: function (): void {
+    setNextRecording(): void {
       this.answer.family = this.answer.genus = this.answer.species = "";
       const rec = this.challengeRecordings.next();
       if (!rec.done) {
@@ -145,7 +142,7 @@ export default Vue.extend({
         alert("No more recordings!");
       }
     },
-    filterFamily: function () {
+    filterFamily(): string[] {
       return [
         ...new Set(
           this.locationSpecies
@@ -154,7 +151,7 @@ export default Vue.extend({
         ),
       ].sort();
     },
-    filterGenus: function () {
+    filterGenus(): string[] {
       return [
         ...new Set(
           this.locationSpecies
@@ -163,7 +160,7 @@ export default Vue.extend({
         ),
       ].sort();
     },
-    filterSpecies: function () {
+    filterSpecies(): string[] {
       return [
         ...new Set(
           this.locationSpecies
@@ -172,18 +169,18 @@ export default Vue.extend({
         ),
       ].sort();
     },
-    isFamilyMatch: function (species: EbirdSpecies): boolean {
+    isFamilyMatch(species: EbirdSpecies): boolean {
       return this.isFamilyComNameMatch(species);
     },
-    isFamilyComNameMatch: function (species: EbirdSpecies): boolean {
+    isFamilyComNameMatch(species: EbirdSpecies): boolean {
       return species.familyComName
         .toLowerCase()
         .includes(this.answer.family.toLowerCase());
     },
-    isFamilyCorrect: function () {
+    isFamilyCorrect(): boolean {
       return this.recording?.family === this.answer.family;
     },
-    isGenusMatch: function (species: EbirdSpecies): boolean {
+    isGenusMatch(species: EbirdSpecies): boolean {
       if (this.answer.family && !this.isFamilyMatch(species)) {
         return false;
       }
@@ -192,10 +189,10 @@ export default Vue.extend({
         .toLowerCase()
         .startsWith(this.answer.genus.toLowerCase());
     },
-    isGenusCorrect: function () {
+    isGenusCorrect(): boolean {
       return this.recording?.genus === this.answer.genus;
     },
-    isSpeciesMatch: function (species: EbirdSpecies): boolean {
+    isSpeciesMatch(species: EbirdSpecies): boolean {
       if (this.answer.family && !this.isFamilyMatch(species)) {
         return false;
       }
@@ -207,7 +204,7 @@ export default Vue.extend({
         .toLowerCase()
         .startsWith(this.answer.species.toLowerCase());
     },
-    isSpeciesCorrect: function () {
+    isSpeciesCorrect(): boolean {
       return this.recording?.species === this.answer.species;
     },
   },

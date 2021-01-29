@@ -1,5 +1,5 @@
 import { fetchJSONArraySynchronously } from "@/utils";
-import { EbirdObservation, EbirdSpecies } from "types";
+import { EbirdHotspot, EbirdObservation, EbirdSpecies } from "types";
 
 export const ebirdSpecies = {
   getGenus: function(species: EbirdSpecies): string {
@@ -28,4 +28,11 @@ function fetchRecentObservations(ebirdLocId: string): EbirdObservation[] {
     `https://api.ebird.org/v2/data/obs/${ebirdLocId}/recent/?back=30`,
     { "X-eBirdApiToken": process.env.VUE_APP_EBIRD_API_TOKEN }
   ) as EbirdObservation[];
+}
+
+export function fetchEbirdHotspot(ebirdLocId: string): EbirdHotspot | null {
+  const ebirdHotspots = fetchJSONArraySynchronously(
+    `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspots/`
+  ) as EbirdHotspot[];
+  return ebirdHotspots.filter(h => h.locId == ebirdLocId)[0] || null;
 }
