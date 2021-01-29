@@ -92,7 +92,7 @@ pub struct EbirdSpecies {
     pub comName: String,
     pub speciesCode: String,
     pub category: String,
-    pub taxonOrder: i32, // FIXME this should be an integer type
+    pub taxonOrder: i32, // FIXME: i32/f64 confusion
     pub order: String,
     pub familyComName: Option<String>,
     pub familySciName: Option<String>,
@@ -109,6 +109,26 @@ impl From<postgres::Row> for EbirdSpecies {
             order: row.get("_order"),
             familyComName: row.get("familyComName"),
             familySciName: row.get("familySciName"),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[allow(non_snake_case)]
+pub struct SpeciesImage {
+    pub id: Option<i32>,
+    pub sciName: String,
+    pub speciesCode: Option<String>,
+    pub url: String,
+}
+
+impl From<postgres::Row> for SpeciesImage {
+    fn from(row: postgres::Row) -> Self {
+        Self {
+            id: row.get("id"),
+            sciName: row.get("sciName"),
+            speciesCode: row.get("speciesCode"),
+            url: row.get("url"),
         }
     }
 }

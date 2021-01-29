@@ -164,6 +164,13 @@ create table ebird_species (
   familySciName varchar
 );
 
+create table species_image (
+  id serial primary key,
+  sciName varchar,
+  speciesCode varchar references ebird_species,
+  url varchar
+);
+
 create table ebird_hotspot_species (
   species varchar references ebird_species,
   locId varchar references ebird_hotspot

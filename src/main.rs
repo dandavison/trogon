@@ -42,6 +42,9 @@ struct Opt {
 
     #[structopt(long)]
     load_ebird_hotspot_species: bool,
+
+    #[structopt(long)]
+    load_species_images: bool,
 }
 
 fn main() -> std::io::Result<()> {
@@ -58,6 +61,8 @@ fn main() -> std::io::Result<()> {
         process::exit(ebird::load::load_hotspot_species()?)
     } else if opt.load_ebird_species {
         process::exit(ebird::load::load_species()?)
+    } else if opt.load_species_images {
+        process::exit(ebird::load::load_species_images()?)
     } else {
         rocket::ignite()
             .mount(

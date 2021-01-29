@@ -48,6 +48,7 @@ db: build-backend
 	$(SYLPH) --load-ebird-species
 	$(SYLPH) --load-ebird-hotspots
 	$(SYLPH) --load-ebird-hotspot-species
+	$(SYLPH) --load-species-images
 
 fetch-ebird-data: fetch-ebird-species fetch-ebird-hotspots
 

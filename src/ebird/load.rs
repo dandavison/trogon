@@ -4,7 +4,9 @@ use std::fs;
 use std::path::PathBuf;
 
 use crate::db;
-use crate::ebird::{deserialize_json, get_data_directory, get_species_file, read_to_string};
+use crate::ebird::{
+    deserialize_json, get_data_directory, get_species_file, get_species_images_file, read_to_string,
+};
 use crate::models;
 
 pub fn load_hotspots() -> std::io::Result<i32> {
@@ -137,5 +139,41 @@ values
         n_loaded += 1;
     }
     println!("Loaded {}/{} species", n_loaded, species.len());
+    Ok(0)
+}
+
+pub fn load_species_images() -> std::io::Result<i32> {
+    let images: Vec<models::SpeciesImage> =
+        deserialize_json(&read_to_string(&get_species_images_file())).unwrap_or_default();
+    let mut dbclient = db::get_client();
+    let mut n_loaded = 0;
+    for image in &images {
+        let row = dbclient.query_one(
+            "select * from ebird_species es where es.sciName = $1",
+            &[&image.sciName],
+        );
+        if row.is_ok() {
+            let ebird_species: models::EbirdSpecies = row.unwrap().into();
+            let _ = dbclient
+                .execute(
+                    "
+insert into species_image
+(sciName, speciesCode, url)
+values
+($1, $2, $3);",
+                    &[&image.sciName, &ebird_species.speciesCode, &image.url],
+                )
+                .unwrap_or_else(|err| {
+                    eprintln!("error: {:?}", err);
+                    n_loaded -= 1;
+                    1
+                });
+            n_loaded += 1;
+        } else {
+            eprintln!("error: no ebird_species for {}", image.sciName);
+            n_loaded -= 1;
+        }
+    }
+    println!("Loaded {}/{} species images", n_loaded, images.len());
     Ok(0)
 }

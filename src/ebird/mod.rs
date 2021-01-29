@@ -25,6 +25,13 @@ fn get_species_file() -> PathBuf {
     PathBuf::from(format!("{}/ebird/species.json", get_data_directory()))
 }
 
+fn get_species_images_file() -> PathBuf {
+    PathBuf::from(format!(
+        "{}/ebird/species_images.json",
+        get_data_directory()
+    ))
+}
+
 fn get_hotspots_file(ebird_region_code: &str) -> PathBuf {
     PathBuf::from(format!(
         "{}/ebird/hotspots/{}.json",
