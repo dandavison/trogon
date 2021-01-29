@@ -16,7 +16,7 @@
         </b-button>
       </p>
       <p class="level-item has-text-centered" v-if="recording">
-        <audio controls :src="recording.url"></audio>
+        <audio controls autoplay :src="recording.url"></audio>
       </p>
     </nav>
     <section>
