@@ -1,5 +1,6 @@
 /target
 /data
+/.venv
 junk.*
 ui/node_modules
 ui/dist
