@@ -44,6 +44,7 @@ export interface EbirdSpecies {
   order: string,
   familyComName: string,
   familySciName: string,
+  images: string[],
 }
 
 export interface EbirdObservation {
@@ -51,7 +52,7 @@ export interface EbirdObservation {
   comName: string,
   speciesCode: string,
   locId: string,
-  locName: string,  
+  locName: string,
 }
 
 export interface Recording {
@@ -69,6 +70,7 @@ export interface XenoCantoRecording {
   gen: string,
   sp: string,
   en: string,
+  type: string,
 }
 
 export interface SiteDay {

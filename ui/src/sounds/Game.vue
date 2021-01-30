@@ -22,6 +22,7 @@
         <b-button v-if="recording" @click="revealSpecies"> Reveal </b-button>
       </p>
     </nav>
+
     <section>
       <b-field
         v-if="shouldShowScientificNames"
@@ -97,6 +98,14 @@
         </p>
       </b-field>
     </section>
+
+    <img
+      v-if="
+        image && (showImage || isSpeciesEnCorrect() || isSpeciesSciCorrect())
+      "
+      :src="image"
+    />
+
     <section
       id="family-selector"
       style="margin-top: 50px; height: 400px; overflow-y: auto"
@@ -143,6 +152,9 @@ export default Vue.extend({
     const family2order = new Map(
       locationSpecies.map((sp) => [sp.familyComName, sp.order])
     );
+    const speciesSciName2images = new Map(
+      locationSpecies.map((sp) => [sp.sciName, sp.images])
+    );
     var challengeSpecies = filterToCommonSpecies(
       locationSpecies,
       this.ebirdLocId
@@ -164,6 +176,7 @@ export default Vue.extend({
       challengeFamilies,
       ebirdHotspot: fetchEbirdHotspot(this.ebirdLocId),
       locationSpecies,
+      speciesSciName2images,
       recording: null as Recording | null,
       answer: {
         familySci: "",
@@ -172,6 +185,8 @@ export default Vue.extend({
         speciesSci: "",
         speciesEn: "",
       },
+      showImage: false,
+      image: "",
     };
   },
   computed: {
@@ -207,13 +222,19 @@ export default Vue.extend({
         this.answer.genus = this.recording.genus;
         this.answer.speciesSci = this.recording.speciesSci;
         this.answer.speciesEn = this.recording.speciesEn;
+        this.showImage = true;
       }
     },
     setNextRecording(): void {
       this.clearInput();
+      this.showImage = false;
       const rec = this.challengeRecordings.next();
       if (!rec.done) {
         this.recording = rec.value;
+        let images = this.speciesSciName2images.get(
+          `${this.recording.genus} ${this.recording.speciesSci}`
+        );
+        this.image = images && images[0] ? images[0] : "";
       } else {
         alert("No more recordings!");
       }
