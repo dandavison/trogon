@@ -187,6 +187,7 @@ export default Vue.extend({
       ebirdHotspot,
       locationSpecies,
       speciesSciName2images,
+      recordings: new Map([]) as Map<string, Recording[]>, // speciesSciName
       recording: null as Recording | null,
       answer: {
         familySci: "",
@@ -198,6 +199,10 @@ export default Vue.extend({
       showImage: false,
       image: "",
     };
+  },
+
+  created: function () {
+    this.fetchAllRecordings();
   },
 
   computed: {
@@ -226,12 +231,20 @@ export default Vue.extend({
   },
 
   methods: {
+    fetchAllRecordings(): void {
+      for (let sp of this.selectedChallengeSpecies) {
+        getRecordings(sp, this.ebirdHotspot).then((recs) => {
+          this.recordings.set(sp.speciesCode, recs);
+        });
+      }
+    },
+
     makeRecordingsIterator: function* (
       species: EbirdSpecies[]
     ): Iterator<Recording> {
       for (const sp of species) {
-        const recordings = getRecordings(sp, this.ebirdHotspot);
-        if (recordings[0]) {
+        const recordings = this.recordings.get(sp.speciesCode);
+        if (recordings && recordings[0]) {
           yield recordings[0];
         }
       }

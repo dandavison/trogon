@@ -5,21 +5,27 @@ import {
   XenoCantoRecording
 } from "types";
 import { ebirdSpecies } from "./ebird";
-import { fetchJSONObjectSynchronously } from "../utils";
 
 const XENO_CANTO_API_URL = `${process.env.VUE_APP_SERVER_URL}/xeno-canto/`;
 
-function getXenoCantoRecordings(query: string): XenoCantoRecording[] {
-  const xcData = fetchJSONObjectSynchronously(
-    `${XENO_CANTO_API_URL}?query=${query}+q:A`
-  );
-  return xcData.recordings || [];
+async function getXenoCantoRecordings(query: string): Promise<XenoCantoRecording[]> {
+  const key = `xeno-canto-query:${query}`;
+  if (!localStorage.getItem(key)) {
+    const response = await fetch(`${XENO_CANTO_API_URL}?query=${query}`);
+    localStorage.setItem(key, await response.text());
+  }
+  const text = localStorage.getItem(key);
+  if (text) {
+    return JSON.parse(text).recordings;
+  } else {
+    return [];
+  }
 }
 
-export function getRecordings(
+export async function getRecordings(
   species: EbirdSpecies,
   location: EbirdHotspot | null
-): Recording[] {
+): Promise<Recording[]> {
   const familySci = ebirdSpecies.getFamilySci(species);
   const familyEn = ebirdSpecies.getFamilyEn(species);
   const genus = ebirdSpecies.getGenus(species);
@@ -31,12 +37,12 @@ export function getRecordings(
   if (location) {
     const country = ebirdCountryCode2country.get(location.countryCode);
     if (country) {
-      query = `${query}+cnt:${country}`;
+      query = `${query}+cnt:${country}+q:A`;
     }
   }
 
   var recordings = [];
-  for (let raw of getXenoCantoRecordings(query)) {
+  for (let raw of await getXenoCantoRecordings(query)) {
     if (raw.type === "song") {
       recordings.push({
         url: raw.file,
