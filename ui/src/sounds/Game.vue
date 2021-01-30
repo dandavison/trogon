@@ -143,19 +143,11 @@ import { getRecordings } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
 
-function* makeRecordingsIterator(species: EbirdSpecies[]): Iterator<Recording> {
-  for (const sp of species) {
-    const recordings = getRecordings(sp);
-    if (recordings[0]) {
-      yield recordings[0];
-    }
-  }
-}
-
 export default Vue.extend({
   name: "Home",
   props: { ebirdLocId: String, settings: Object },
   data() {
+    const ebirdHotspot = fetchEbirdHotspot(this.ebirdLocId);
     const locationSpecies = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
     ) as EbirdSpecies[];
@@ -184,7 +176,7 @@ export default Vue.extend({
     return {
       challengeSpecies,
       challengeFamilies,
-      ebirdHotspot: fetchEbirdHotspot(this.ebirdLocId),
+      ebirdHotspot,
       locationSpecies,
       speciesSciName2images,
       recording: null as Recording | null,
@@ -211,7 +203,7 @@ export default Vue.extend({
       );
     },
     challengeRecordings(): Iterator<Recording> {
-      return makeRecordingsIterator(this.selectedChallengeSpecies);
+      return this.makeRecordingsIterator(this.selectedChallengeSpecies);
     },
     shouldShowScientificNames(): boolean {
       return new Set(["scientific", "both"]).has(this.settings.names);
@@ -221,6 +213,17 @@ export default Vue.extend({
     },
   },
   methods: {
+    makeRecordingsIterator: function* (
+      species: EbirdSpecies[]
+    ): Iterator<Recording> {
+      for (const sp of species) {
+        const recordings = getRecordings(sp, this.ebirdHotspot);
+        if (recordings[0]) {
+          yield recordings[0];
+        }
+      }
+    },
+
     clearInput(): void {
       this.answer.familySci = this.answer.familyEn = this.answer.genus = this.answer.speciesSci = this.answer.speciesEn =
         "";

@@ -1,4 +1,9 @@
-import { EbirdSpecies, Recording, XenoCantoRecording } from "types";
+import {
+  EbirdHotspot,
+  EbirdSpecies,
+  Recording,
+  XenoCantoRecording
+} from "types";
 import { ebirdSpecies } from "./ebird";
 import { fetchJSONObjectSynchronously } from "../utils";
 
@@ -11,14 +16,25 @@ function getXenoCantoRecordings(query: string): XenoCantoRecording[] {
   return xcData.recordings || [];
 }
 
-export function getRecordings(species: EbirdSpecies): Recording[] {
+export function getRecordings(
+  species: EbirdSpecies,
+  location: EbirdHotspot | null
+): Recording[] {
   const familySci = ebirdSpecies.getFamilySci(species);
   const familyEn = ebirdSpecies.getFamilyEn(species);
   const genus = ebirdSpecies.getGenus(species);
   const speciesSci = ebirdSpecies.getSpeciesSci(species);
   const speciesEn = ebirdSpecies.getSpeciesEn(species);
+  const ebirdCountryCode2country = new Map([["CO", "Colombia"]]);
 
-  const query = `${genus}+${speciesSci}+gen:${genus}`;
+  var query = `${genus}+${speciesSci}+gen:${genus}`;
+  if (location) {
+    const country = ebirdCountryCode2country.get(location.countryCode);
+    if (country) {
+      query = `${query}+cnt:${country}`;
+    }
+  }
+
   var recordings = [];
   for (let raw of getXenoCantoRecordings(query)) {
     if (raw.type === "song") {
