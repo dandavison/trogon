@@ -15,8 +15,18 @@
           {{ recording ? "Next" : "Start" }}
         </b-button>
       </p>
-      <p class="level-item has-text-centered" v-if="recording">
-        <audio controls :src="recording.url"></audio>
+      <p class="level-item" v-if="recording">
+        <ul>
+          <li><audio controls :src="recording.url"></audio>
+          </li>
+          <li> {{ recording.raw.type }} </li>
+          <li> {{ recording.raw.loc }}, {{ recording.raw.cnt }} </li>
+          <li v-if="recording.raw.also.length[0]"> Also:
+            <ul>
+                <li v-for="sp in recording.raw.also" :key="sp">{{ sp }}</li>
+            </ul>
+          </li>
+        </ul>
       </p>
       <p class="level-item has-text-centered">
         <b-button v-if="recording" @click="revealSpecies"> Reveal </b-button>
