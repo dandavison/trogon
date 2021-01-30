@@ -13,15 +13,17 @@ pub struct Row {
     pub order: String,
     pub familyComName: String,
     pub familySciName: String,
+    pub images: Vec<String>,
 }
 
 pub fn query(loc_id: String) -> Vec<Row> {
     db::get_client()
         .query(
             "
-select sciName, comName, speciesCode, category, taxonOrder, _order, familyComName, familySciName
+select es.sciName, es.comName, es.speciesCode, es.category, es.taxonOrder, es._order, es.familyComName, es.familySciName, si.url
 from ebird_species es
 inner join ebird_hotspot_species ehs on es.speciesCode = ehs.species
+inner join species_image si on es.speciesCode = si.speciesCode
 where ehs.locId = $1",
             &[&loc_id],
         )
@@ -42,6 +44,7 @@ impl From<postgres::Row> for Row {
             order: row.get("_order"),
             familyComName: row.get("familyComName"),
             familySciName: row.get("familySciName"),
+            images: vec![row.get("url")],
         }
     }
 }
