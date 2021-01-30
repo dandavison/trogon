@@ -12,6 +12,7 @@ import eventBus from "./event-bus";
 import ControlPanel from "./ControlPanel.vue";
 import Navbar from "./Navbar.vue";
 import Game from "./Game.vue";
+import { Settings } from "./types";
 
 export default Vue.extend({
   name: "Root",
@@ -21,13 +22,12 @@ export default Vue.extend({
     return {
       settings: {
         names: "english",
-      },
+      } as Settings,
       controlPanelOpen: false,
     };
   },
   mounted: function (): void {
-    eventBus.$on("names:change", (newVal: string) => {
-      console.log("Handling names:change", newVal);
+    eventBus.$on("settings:change:names", (newVal: string) => {
       this.settings.names = newVal;
     });
   },

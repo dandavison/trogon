@@ -134,7 +134,7 @@
 
 <script lang="ts">
 import _ from "lodash";
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import { EbirdSpecies, Recording } from "types";
 import {
   ebirdSpecies,
@@ -144,10 +144,11 @@ import {
 import { getRecordings } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
+import { Settings } from "./types";
 
 export default Vue.extend({
   name: "Home",
-  props: { ebirdLocId: String, settings: Object },
+  props: { ebirdLocId: String, settings: Object as PropType<Settings> },
 
   data() {
     const ebirdHotspot = fetchEbirdHotspot(this.ebirdLocId);

@@ -15,13 +15,14 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import eventBus from "./event-bus";
 import NamesSelector from "./NamesSelector.vue";
+import { Settings } from "./types";
 
 export default Vue.extend({
   components: { NamesSelector },
-  props: { settings: Object },
+  props: { settings: Object as PropType<Settings> },
   data() {
     return {
       sidebarAttributes: {

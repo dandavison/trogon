@@ -21,11 +21,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import eventBus from "./event-bus";
+import { Settings } from "./types";
 
 export default Vue.extend({
-  props: { settings: Object },
+  props: { settings: Object as PropType<Settings> },
   data() {
     return {
       names: this.settings.names,
@@ -33,7 +34,7 @@ export default Vue.extend({
   },
   watch: {
     names: function (newVal) {
-      eventBus.$emit("names:change", newVal);
+      eventBus.$emit("settings:change:names", newVal);
     },
   },
 });
