@@ -316,7 +316,7 @@ export default Vue.extend({
       return ebirdSpecies
         .getSpeciesEn(species)
         .toLowerCase()
-        .startsWith(this.answer.speciesEn.toLowerCase());
+        .includes(this.answer.speciesEn.toLowerCase());
     },
     isSpeciesSciCorrect(): boolean {
       return this.recording?.speciesSci === this.answer.speciesSci;
