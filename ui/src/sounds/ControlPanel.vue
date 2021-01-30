@@ -3,7 +3,8 @@
     <b-sidebar type="is-light" v-bind="sidebarAttributes" v-model="open">
       <div class="p-1">
         <b-menu>
-          <b-menu-list label="">
+          <b-menu-list>
+            <b-switch v-model="newSettings.songsOnly">Songs only</b-switch>
             <b-menu-item label="Names"></b-menu-item>
             <names-selector :settings="settings" />
           </b-menu-list>
@@ -25,6 +26,7 @@ export default Vue.extend({
   props: { settings: Object as PropType<Settings> },
   data() {
     return {
+      newSettings: Object.assign({}, this.settings) as Settings,
       sidebarAttributes: {
         overlay: false,
         fullheight: true,
@@ -34,6 +36,13 @@ export default Vue.extend({
       open: false,
     };
   },
+
+  watch: {
+    "newSettings.songsOnly": function (newVal) {
+      eventBus.$emit("settings:change:songsOnly", newVal);
+    },
+  },
+
   mounted: function (): void {
     eventBus.$on("control-panel:show", () => {
       this.open = true;

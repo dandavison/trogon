@@ -5,6 +5,7 @@ import {
   XenoCantoRecording
 } from "types";
 import { ebirdSpecies } from "./ebird";
+import { Settings } from "./types";
 
 const XENO_CANTO_API_URL = `${process.env.VUE_APP_SERVER_URL}/xeno-canto/`;
 
@@ -24,7 +25,7 @@ async function getXenoCantoRecordings(query: string): Promise<XenoCantoRecording
 
 export async function getRecordings(
   species: EbirdSpecies,
-  location: EbirdHotspot | null
+  location: EbirdHotspot | null,
 ): Promise<Recording[]> {
   const familySci = ebirdSpecies.getFamilySci(species);
   const familyEn = ebirdSpecies.getFamilyEn(species);
@@ -42,18 +43,28 @@ export async function getRecordings(
   }
 
   var recordings = [];
-  for (let raw of await getXenoCantoRecordings(query)) {
-    if (raw.type === "song") {
+  for (let xcRec of await getXenoCantoRecordings(query)) {
       recordings.push({
-        url: raw.file,
+        url: xcRec.file,
         familySci: familySci,
         familyEn: familyEn,
         genus: genus,
         speciesSci: speciesSci,
         speciesEn: speciesEn,
-        raw: raw
+        raw: xcRec,
       });
-    }
   }
   return recordings;
+}
+
+export function recordingMatchesFilters(xcRec: XenoCantoRecording, settings: Settings): boolean {
+  if (settings.songsOnly && !isSong(xcRec.type)) {
+    return false;
+  }
+  return true;
+}
+
+function isSong(type: string): boolean {
+  const words = new Set(type.toLowerCase().split(" "));
+  return words.has("song") || words.has("duet");
 }

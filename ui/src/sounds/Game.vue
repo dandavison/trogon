@@ -19,9 +19,7 @@
       </p>
       <p class="level-item" v-if="recording">
         <ul>
-          <li><audio controls :src="recording.url"></audio>
-          </li>
-          <li> {{ recording.raw.type }} </li>
+          <li><audio controls :src="recording.url"></audio></li>
           <li> {{ recording.raw.loc }}, {{ recording.raw.cnt }} </li>
           <li v-if="recording.raw.also.length[0]"> Also:
             <ul>
@@ -141,7 +139,7 @@ import {
   filterToCommonSpecies,
   fetchEbirdHotspot,
 } from "./ebird";
-import { getRecordings } from "./xeno-canto";
+import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
 import { Settings } from "./types";
@@ -245,7 +243,11 @@ export default Vue.extend({
     ): Iterator<Recording> {
       for (const sp of species) {
         const recordings = this.recordings.get(sp.speciesCode);
-        if (recordings && recordings[0]) {
+        if (
+          recordings &&
+          recordings[0] &&
+          recordingMatchesFilters(recordings[0].raw, this.settings)
+        ) {
           yield recordings[0];
         }
       }

@@ -22,6 +22,7 @@ export default Vue.extend({
     return {
       settings: {
         names: "english",
+        songsOnly: true,
       } as Settings,
       controlPanelOpen: false,
     };
@@ -29,6 +30,9 @@ export default Vue.extend({
   mounted: function (): void {
     eventBus.$on("settings:change:names", (newVal: string) => {
       this.settings.names = newVal;
+    });
+    eventBus.$on("settings:change:songsOnly", (newVal: boolean) => {
+      this.settings.songsOnly = newVal;
     });
   },
 });

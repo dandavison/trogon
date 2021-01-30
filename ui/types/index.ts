@@ -62,7 +62,7 @@ export interface Recording {
   genus: string,
   speciesEn: string,
   speciesSci: string,
-  raw: object,
+  raw: XenoCantoRecording,
 }
 
 export interface XenoCantoRecording {
