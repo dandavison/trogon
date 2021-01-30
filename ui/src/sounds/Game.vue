@@ -1,4 +1,5 @@
 <template>
+
   <section style="margin-top: 50px">
     <section>
       <h1 style="font-weight: bold">{{ ebirdHotspot.locName }}</h1>
@@ -9,6 +10,7 @@
         </li>
       </ul>
     </section>
+
     <nav class="level">
       <p class="level-item has-text-centered">
         <b-button @click="setNextRecording">
@@ -146,21 +148,27 @@ import { fetchJSONArraySynchronously } from "../utils";
 export default Vue.extend({
   name: "Home",
   props: { ebirdLocId: String, settings: Object },
+
   data() {
     const ebirdHotspot = fetchEbirdHotspot(this.ebirdLocId);
+
     const locationSpecies = fetchJSONArraySynchronously(
       `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
     ) as EbirdSpecies[];
+
     const family2order = new Map(
       locationSpecies.map((sp) => [sp.familyComName, sp.order])
     );
+
     const speciesSciName2images = new Map(
       locationSpecies.map((sp) => [sp.sciName, sp.images])
     );
+
     var challengeSpecies = filterToCommonSpecies(
       locationSpecies,
       this.ebirdLocId
     );
+
     const challengeFamilies = Object.entries(
       _.groupBy(challengeSpecies, (sp) => sp.familyComName)
     ).map(([family, spp]) => {
@@ -191,6 +199,7 @@ export default Vue.extend({
       image: "",
     };
   },
+
   computed: {
     selectedChallengeSpecies(): EbirdSpecies[] {
       const selectedFamilies = new Set(
@@ -202,16 +211,20 @@ export default Vue.extend({
         selectedFamilies.has(sp.familyComName)
       );
     },
+
     challengeRecordings(): Iterator<Recording> {
       return this.makeRecordingsIterator(this.selectedChallengeSpecies);
     },
+
     shouldShowScientificNames(): boolean {
       return new Set(["scientific", "both"]).has(this.settings.names);
     },
+
     shouldShowEnglishNames(): boolean {
       return new Set(["english", "both"]).has(this.settings.names);
     },
   },
+
   methods: {
     makeRecordingsIterator: function* (
       species: EbirdSpecies[]
@@ -228,6 +241,7 @@ export default Vue.extend({
       this.answer.familySci = this.answer.familyEn = this.answer.genus = this.answer.speciesSci = this.answer.speciesEn =
         "";
     },
+
     revealSpecies(): void {
       if (this.recording) {
         this.answer.familySci = this.recording.familySci;
@@ -238,6 +252,7 @@ export default Vue.extend({
         this.showImage = true;
       }
     },
+
     setNextRecording(): void {
       this.clearInput();
       this.showImage = false;
@@ -252,6 +267,7 @@ export default Vue.extend({
         alert("No more recordings!");
       }
     },
+
     filterFamilySci(): string[] {
       return [
         ...new Set(
@@ -261,6 +277,7 @@ export default Vue.extend({
         ),
       ].sort();
     },
+
     filterFamilyEn(): string[] {
       return [
         ...new Set(
@@ -270,6 +287,7 @@ export default Vue.extend({
         ),
       ].sort();
     },
+
     filterGenus(): string[] {
       return [
         ...new Set(
@@ -279,6 +297,7 @@ export default Vue.extend({
         ),
       ].sort();
     },
+
     filterSpeciesSci(): string[] {
       return [
         ...new Set(
@@ -288,6 +307,7 @@ export default Vue.extend({
         ),
       ].sort();
     },
+
     filterSpeciesEn(): string[] {
       return [
         ...new Set(
@@ -297,22 +317,27 @@ export default Vue.extend({
         ),
       ].sort();
     },
+
     isFamilySciMatch(species: EbirdSpecies): boolean {
       return species.familySciName
         .toLowerCase()
         .includes(this.answer.familySci.toLowerCase());
     },
+
     isFamilyEnMatch(species: EbirdSpecies): boolean {
       return species.familyComName
         .toLowerCase()
         .includes(this.answer.familyEn.toLowerCase());
     },
+
     isFamilySciCorrect(): boolean {
       return this.recording?.familySci === this.answer.familySci;
     },
+
     isFamilyEnCorrect(): boolean {
       return this.recording?.familyEn === this.answer.familyEn;
     },
+
     isGenusMatch(species: EbirdSpecies): boolean {
       if (this.answer.familySci && !this.isFamilySciMatch(species)) {
         return false;
@@ -325,9 +350,11 @@ export default Vue.extend({
         .toLowerCase()
         .startsWith(this.answer.genus.toLowerCase());
     },
+
     isGenusCorrect(): boolean {
       return this.recording?.genus === this.answer.genus;
     },
+
     isSpeciesSciMatch(species: EbirdSpecies): boolean {
       if (this.answer.familySci && !this.isFamilySciMatch(species)) {
         return false;
@@ -340,6 +367,7 @@ export default Vue.extend({
         .toLowerCase()
         .startsWith(this.answer.speciesSci.toLowerCase());
     },
+
     isSpeciesEnMatch(species: EbirdSpecies): boolean {
       if (this.answer.familyEn && !this.isFamilyEnMatch(species)) {
         return false;
@@ -352,9 +380,11 @@ export default Vue.extend({
         .toLowerCase()
         .includes(this.answer.speciesEn.toLowerCase());
     },
+
     isSpeciesSciCorrect(): boolean {
       return this.recording?.speciesSci === this.answer.speciesSci;
     },
+
     isSpeciesEnCorrect(): boolean {
       return this.recording?.speciesEn === this.answer.speciesEn;
     },
