@@ -221,7 +221,7 @@ export default Vue.extend({
       familyEn2Sci,
       familySci2En,
       speciesSci2En,
-      recordings: new Map([]) as Map<string, Recording[]>, // speciesSciName
+      recordings: new Map([]) as Map<string, Recording[]>, // speciesCode
       recording: null as Recording | null,
       answer: {
         familySci: "",

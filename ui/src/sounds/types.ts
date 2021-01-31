@@ -1,15 +1,10 @@
 export enum NamesLanguage {
-    Scientific = "scientific",
-    English = "English",
-    Both = "both",
+  Scientific = "scientific",
+  English = "English",
+  Both = "both"
 }
 
 export interface Settings {
-    names: NamesLanguage;
-    songsOnly: boolean;
-    promptIncludesImages: boolean;
-    promptIncludesRecording: boolean;
-}
   names: NamesLanguage;
   songsOnly: boolean;
   promptIncludesImages: boolean;
