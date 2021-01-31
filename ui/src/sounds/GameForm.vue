@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <form type="box">
     <b-field
       v-if="shouldShowScientificNames"
       :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
@@ -73,7 +73,7 @@
         {{ isSpeciesEnCorrect() ? "✅" : "❌" }}
       </p>
     </b-field>
-  </section>
+  </form>
 </template>
 
 <script lang="ts">

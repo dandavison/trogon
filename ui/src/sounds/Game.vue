@@ -32,12 +32,19 @@
       </p>
     </nav>
 
-    <game-form
-      ref="gameForm"
-      :locationSpecies="locationSpecies"
-      :recording="recording"
-      :settings="settings"
-    />
+    <div class="container">
+      <div class="columns">
+        <div class="column">
+          <game-form
+            ref="gameForm"
+            :locationSpecies="locationSpecies"
+            :recording="recording"
+            :settings="settings"
+          />
+        </div>
+        <div class="column"></div>
+      </div>
+    </div>
 
     <div
       v-if="
