@@ -108,27 +108,31 @@
       </b-field>
     </section>
 
-    <nav
+    <div
       v-if="
         image && (showImage || isSpeciesEnCorrect() || isSpeciesSciCorrect())
       "
-      class="level"
     >
-      <p
-        class="level-item"
-        v-if="settings.promptIncludesRecording && recording"
-      >
+      <nav class="level">
+        <p class="level-item">
+          <a :href="recordingSpeciesWikipediaURL()" target="_blank">
+            {{ recordingSpeciesSciName() }}
+          </a>
+        </p>
+
+        <p class="level-item">
+          <img :src="image" />
+        </p>
+      </nav>
+
+      <p v-if="settings.promptIncludesRecording && recording">
         <recording-component
           v-for="rec in recordings.get(recording.speciesCode)"
           :key="rec.url"
           :recording="rec"
         />
       </p>
-
-      <p class="level-item">
-        <img :src="image" />
-      </p>
-    </nav>
+    </div>
 
     <section
       id="family-selector"
@@ -353,6 +357,33 @@ export default Vue.extend({
         this.image = images && images[0] ? images[0] : "";
       } else {
         alert("No more recordings!");
+      }
+    },
+
+    recordingSpeciesWikipediaURL(): string | null {
+      if (this.recording) {
+        return `https://en.wikipedia.org/w/index.php?title=${this.recording.genus}_${this.recording.speciesSci}`;
+      } else {
+        return null;
+      }
+    },
+
+    // TODO: remove species/genus names from Recording, leaving speciesCode foreign key.
+    recordingSpeciesSciName(): string | null {
+      if (this.recording) {
+        const speciesEn = this.recording.speciesEn;
+        if (this.settings.names == NamesLanguage.English) {
+          return speciesEn;
+        } else {
+          const speciesSci = `${this.recording.genus} ${this.recording.speciesSci}`;
+          if (this.settings.names == NamesLanguage.Scientific) {
+            return speciesSci;
+          } else {
+            return `${speciesSci} (${speciesEn})`;
+          }
+        }
+      } else {
+        return null;
       }
     },
 
