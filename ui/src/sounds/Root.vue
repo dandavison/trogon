@@ -22,6 +22,8 @@ export default Vue.extend({
     return {
       settings: {
         names: NamesLanguage.English,
+        promptIncludesImages: false,
+        promptIncludesRecording: true,
         songsOnly: true,
       } as Settings,
       controlPanelOpen: false,
@@ -34,6 +36,15 @@ export default Vue.extend({
     eventBus.$on("settings:change:songsOnly", (newVal: boolean) => {
       this.settings.songsOnly = newVal;
     });
+    eventBus.$on("settings:change:promptIncludesImages", (newVal: boolean) => {
+      this.settings.promptIncludesImages = newVal;
+    });
+    eventBus.$on(
+      "settings:change:promptIncludesRecording",
+      (newVal: boolean) => {
+        this.settings.promptIncludesRecording = newVal;
+      }
+    );
   },
 });
 </script>

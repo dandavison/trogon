@@ -5,6 +5,8 @@ export enum NamesLanguage {
 }
 
 export interface Settings {
-  names: NamesLanguage,
-  songsOnly: boolean,
+    names: NamesLanguage;
+    songsOnly: boolean;
+    promptIncludesImages: boolean;
+    promptIncludesRecording: boolean;
 }

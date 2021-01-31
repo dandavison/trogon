@@ -4,9 +4,19 @@
       <div class="p-1">
         <b-menu>
           <b-menu-list>
-            <b-switch v-model="newSettings.songsOnly">Songs only</b-switch>
-            <b-menu-item label="Names"></b-menu-item>
+            <b-menu-item label="Prompt" class="menu-item"></b-menu-item>
+            <b-switch v-model="newSettings.promptIncludesImages">
+              Images
+            </b-switch>
+            <b-switch v-model="newSettings.promptIncludesRecording">
+              Audio
+            </b-switch>
+
+            <b-menu-item label="Names" class="menu-item"></b-menu-item>
             <names-selector :settings="settings" />
+
+            <b-menu-item label="Recordings" class="menu-item"></b-menu-item>
+            <b-switch v-model="newSettings.songsOnly">Songs only</b-switch>
           </b-menu-list>
         </b-menu>
       </div>
@@ -41,6 +51,12 @@ export default Vue.extend({
     "newSettings.songsOnly": function (newVal) {
       eventBus.$emit("settings:change:songsOnly", newVal);
     },
+    "newSettings.promptIncludesImages": function (newVal) {
+      eventBus.$emit("settings:change:promptIncludesImages", newVal);
+    },
+    "newSettings.promptIncludesRecording": function (newVal) {
+      eventBus.$emit("settings:change:promptIncludesRecording", newVal);
+    },
   },
 
   mounted: function (): void {
@@ -50,3 +66,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.menu-item {
+  margin-top: 20px;
+}
+</style>

@@ -17,7 +17,7 @@
           {{ recording ? "Next" : "Start" }}
         </b-button>
       </p>
-      <p class="level-item" v-if="recording">
+      <p class="level-item" v-if="settings.promptIncludesRecording && recording">
         <ul>
           <li><audio controls :src="recording.url"></audio></li>
           <li> {{ recording.raw.loc }}, {{ recording.raw.cnt }} </li>
@@ -28,6 +28,11 @@
           </li>
         </ul>
       </p>
+
+      <p class="level-item" v-if="settings.promptIncludesImages && image">
+        <img :src="image"/>
+      </p>
+
       <p class="level-item has-text-centered">
         <b-button v-if="recording" @click="revealSpecies"> Reveal </b-button>
       </p>
