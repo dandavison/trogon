@@ -1,5 +1,4 @@
 <template>
-
   <section style="margin-top: 50px">
     <section>
       <h1 style="font-weight: bold">{{ ebirdHotspot.locName }}</h1>
@@ -17,20 +16,15 @@
           {{ recording ? "Next" : "Start" }}
         </b-button>
       </p>
-      <p class="level-item" v-if="settings.promptIncludesRecording && recording">
-        <ul>
-          <li><audio controls :src="recording.url"></audio></li>
-          <li> {{ recording.raw.loc }}, {{ recording.raw.cnt }} </li>
-          <li v-if="recording.raw.also.length[0]"> Also:
-            <ul>
-                <li v-for="sp in recording.raw.also" :key="sp">{{ sp }}</li>
-            </ul>
-          </li>
-        </ul>
+      <p
+        class="level-item"
+        v-if="settings.promptIncludesRecording && recording"
+      >
+        <recording-component :recording="recording" />
       </p>
 
       <p class="level-item" v-if="settings.promptIncludesImages && image">
-        <img :src="image"/>
+        <img :src="image" />
       </p>
 
       <p class="level-item has-text-centered">
@@ -114,26 +108,26 @@
       </b-field>
     </section>
 
-    <nav v-if="
+    <nav
+      v-if="
         image && (showImage || isSpeciesEnCorrect() || isSpeciesSciCorrect())
-      " class="level">
-
-      <p class="level-item" v-if="settings.promptIncludesRecording && recording">
-        <ul>
-          <li> {{ recording.raw.loc }}, {{ recording.raw.cnt }} </li>
-          <li> {{ recording.raw.type }} </li>
-          <li v-if="recording.raw.also.length[0]"> Also:
-            <ul>
-                <li v-for="sp in recording.raw.also" :key="sp">{{ sp }}</li>
-            </ul>
-          </li>
-        </ul>
+      "
+      class="level"
+    >
+      <p
+        class="level-item"
+        v-if="settings.promptIncludesRecording && recording"
+      >
+        <recording-component
+          v-for="rec in recordings.get(recording.speciesCode)"
+          :key="rec.url"
+          :recording="rec"
+        />
       </p>
 
       <p class="level-item">
-        <img :src="image"/>
+        <img :src="image" />
       </p>
-
     </nav>
 
     <section
@@ -162,10 +156,12 @@ import {
 import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
+import RecordingComponent from "./Recording.vue";
 import { Answer, NamesLanguage, Recording, Settings } from "./types";
 
 export default Vue.extend({
   name: "Home",
+  components: { RecordingComponent },
   props: { ebirdLocId: String, settings: Object as PropType<Settings> },
 
   data() {

@@ -52,6 +52,7 @@ export async function getRecordings(
         familyEn: familyEn,
         genus: genus,
         speciesSci: speciesSci,
+        speciesCode: species.speciesCode,
         speciesEn: speciesEn,
         raw: xcRec,
       });
