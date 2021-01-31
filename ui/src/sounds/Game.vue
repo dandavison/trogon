@@ -142,7 +142,7 @@ import {
 import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
-import { Settings } from "./types";
+import { NamesLanguage, Settings } from "./types";
 
 export default Vue.extend({
   name: "Home",
@@ -221,11 +221,15 @@ export default Vue.extend({
     },
 
     shouldShowScientificNames(): boolean {
-      return new Set(["scientific", "both"]).has(this.settings.names);
+      return new Set([NamesLanguage.Scientific, NamesLanguage.Both]).has(
+        this.settings.names
+      );
     },
 
     shouldShowEnglishNames(): boolean {
-      return new Set(["english", "both"]).has(this.settings.names);
+      return new Set([NamesLanguage.English, NamesLanguage.Both]).has(
+        this.settings.names
+      );
     },
   },
 
