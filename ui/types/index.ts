@@ -36,41 +36,23 @@ export interface EbirdHotspot {
 }
 
 export interface EbirdSpecies {
-  sciName: string,
-  comName: string,
-  speciesCode: string,
-  category: string,
-  taxonOrder: number,
-  order: string,
-  familyComName: string,
-  familySciName: string,
-  images: string[],
+  sciName: string;
+  comName: string;
+  speciesCode: string;
+  category: string;
+  taxonOrder: number;
+  order: string;
+  familyComName: string;
+  familySciName: string;
+  images: string[];
 }
 
 export interface EbirdObservation {
-  sciName: string,
-  comName: string,
-  speciesCode: string,
-  locId: string,
-  locName: string,
-}
-
-export interface Recording {
-  url: string,
-  familyEn: string,
-  familySci: string,
-  genus: string,
-  speciesEn: string,
-  speciesSci: string,
-  raw: XenoCantoRecording,
-}
-
-export interface XenoCantoRecording {
-  file: string,
-  gen: string,
-  sp: string,
-  en: string,
-  type: string,
+  sciName: string;
+  comName: string;
+  speciesCode: string;
+  locId: string;
+  locName: string;
 }
 
 export interface SiteDay {

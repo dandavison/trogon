@@ -1,9 +1,11 @@
 import {
   EbirdHotspot,
   EbirdSpecies,
+} from "types";
+import {
   Recording,
   XenoCantoRecording
-} from "types";
+} from "./types";
 import { ebirdSpecies } from "./ebird";
 import { Settings } from "./types";
 

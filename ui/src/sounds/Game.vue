@@ -153,7 +153,7 @@
 <script lang="ts">
 import _ from "lodash";
 import Vue, { PropType } from "vue";
-import { EbirdSpecies, Recording } from "types";
+import { EbirdSpecies } from "types";
 import {
   ebirdSpecies,
   filterToCommonSpecies,
@@ -162,7 +162,7 @@ import {
 import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
-import { Answer, NamesLanguage, Settings } from "./types";
+import { Answer, NamesLanguage, Recording, Settings } from "./types";
 
 export default Vue.extend({
   name: "Home",
