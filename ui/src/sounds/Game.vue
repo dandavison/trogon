@@ -23,7 +23,7 @@
         <recording-component :recording="recording" />
       </p>
 
-      <p class="level-item" v-if="settings.promptIncludesImages && image">
+      <p class="level-item" v-if="image && settings.promptIncludesImages">
         <img :src="image" />
       </p>
 
@@ -42,37 +42,31 @@
             :settings="settings"
           />
         </div>
-        <div class="column"></div>
+        <div class="column">
+          <div
+            id="revealed-recording-info"
+            v-if="
+              $refs.gameForm &&
+              ($refs.gameForm.isSpeciesEnCorrect() ||
+                $refs.gameForm.isSpeciesSciCorrect())
+            "
+          >
+            <a :href="recordingSpeciesWikipediaURL()" target="_blank">
+              {{ recordingSpeciesSciName() }}
+            </a>
+
+            <img v-if="image && !settings.promptIncludesImages" :src="image" />
+
+            <p v-if="settings.promptIncludesRecording && recording">
+              <recording-component
+                v-for="rec in recordings.get(recording.speciesCode)"
+                :key="rec.url"
+                :recording="rec"
+              />
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div
-      v-if="
-        image &&
-        (showImage ||
-          $refs.gameForm.isSpeciesEnCorrect() ||
-          $refs.gameForm.isSpeciesSciCorrect())
-      "
-    >
-      <nav class="level">
-        <p class="level-item">
-          <a :href="recordingSpeciesWikipediaURL()" target="_blank">
-            {{ recordingSpeciesSciName() }}
-          </a>
-        </p>
-
-        <p class="level-item">
-          <img :src="image" />
-        </p>
-      </nav>
-
-      <p v-if="settings.promptIncludesRecording && recording">
-        <recording-component
-          v-for="rec in recordings.get(recording.speciesCode)"
-          :key="rec.url"
-          :recording="rec"
-        />
-      </p>
     </div>
 
     <section
