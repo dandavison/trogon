@@ -114,12 +114,27 @@
       </b-field>
     </section>
 
-    <img
-      v-if="
+    <nav v-if="
         image && (showImage || isSpeciesEnCorrect() || isSpeciesSciCorrect())
-      "
-      :src="image"
-    />
+      " class="level">
+
+      <p class="level-item" v-if="settings.promptIncludesRecording && recording">
+        <ul>
+          <li> {{ recording.raw.loc }}, {{ recording.raw.cnt }} </li>
+          <li> {{ recording.raw.type }} </li>
+          <li v-if="recording.raw.also.length[0]"> Also:
+            <ul>
+                <li v-for="sp in recording.raw.also" :key="sp">{{ sp }}</li>
+            </ul>
+          </li>
+        </ul>
+      </p>
+
+      <p class="level-item">
+        <img :src="image"/>
+      </p>
+
+    </nav>
 
     <section
       id="family-selector"
