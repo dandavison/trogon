@@ -162,7 +162,7 @@ import {
 import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
-import { NamesLanguage, Settings } from "./types";
+import { Answer, NamesLanguage, Settings } from "./types";
 
 export default Vue.extend({
   name: "Home",
@@ -177,6 +177,18 @@ export default Vue.extend({
 
     const family2order = new Map(
       locationSpecies.map((sp) => [sp.familyComName, sp.order])
+    );
+
+    const familyEn2Sci = new Map(
+      locationSpecies.map((sp) => [sp.familyComName, sp.familySciName])
+    );
+
+    const familySci2En = new Map(
+      locationSpecies.map((sp) => [sp.familySciName, sp.familyComName])
+    );
+
+    const speciesSci2En = new Map(
+      locationSpecies.map((sp) => [sp.sciName, sp.comName])
     );
 
     const speciesSciName2images = new Map(
@@ -206,6 +218,9 @@ export default Vue.extend({
       ebirdHotspot,
       locationSpecies,
       speciesSciName2images,
+      familyEn2Sci,
+      familySci2En,
+      speciesSci2En,
       recordings: new Map([]) as Map<string, Recording[]>, // speciesSciName
       recording: null as Recording | null,
       answer: {
@@ -214,7 +229,7 @@ export default Vue.extend({
         genus: "",
         speciesSci: "",
         speciesEn: "",
-      },
+      } as Answer,
       showImage: false,
       image: "",
     };
@@ -222,6 +237,43 @@ export default Vue.extend({
 
   created: function () {
     this.fetchAllRecordings();
+  },
+
+  watch: {
+    // Autofill familyEn according to familySci
+    "answer.familySci": function (newVal: string): void {
+      if (!this.answer.familyEn) {
+        const familyEn = this.familySci2En.get(newVal);
+        if (familyEn) {
+          this.answer.familyEn = familyEn;
+        }
+      }
+    },
+
+    // Autofill familySci according to familyEn
+    "answer.familyEn": function (newVal: string): void {
+      if (!this.answer.familySci) {
+        const familySci = this.familyEn2Sci.get(newVal);
+        if (familySci) {
+          this.answer.familySci = familySci;
+        }
+      }
+    },
+
+    // Autofill speciesEn according to (genus, speciesSci)
+    answer: {
+      deep: true,
+      handler(newVal: Answer): void {
+        if (!this.answer.speciesEn && newVal.genus && newVal.speciesSci) {
+          const speciesEn = this.speciesSci2En.get(
+            `${newVal.genus} ${newVal.speciesSci}`
+          );
+          if (speciesEn) {
+            this.answer.speciesEn = speciesEn;
+          }
+        }
+      },
+    },
   },
 
   computed: {
