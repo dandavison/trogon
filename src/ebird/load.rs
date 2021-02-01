@@ -156,11 +156,15 @@ pub fn load_species_images() -> std::io::Result<i32> {
     let mut n_loaded = 0;
     for image in &images {
         let row = dbclient.query_one(
-            "select * from ebird_species es where es.sciName = $1",
+            // sciName exists but has no images
+            "
+select es.speciesCode from ebird_species es
+left outer join species_image si on si.sciName = es.sciName
+where es.sciName = $1 and si.sciName is null",
             &[&image.sciName],
         );
         if row.is_ok() {
-            let ebird_species: models::EbirdSpecies = row.unwrap().into();
+            let species_code: String = row.unwrap().get("speciesCode");
             let _ = dbclient
                 .execute(
                     "
@@ -168,7 +172,7 @@ insert into species_image
 (sciName, speciesCode, url)
 values
 ($1, $2, $3);",
-                    &[&image.sciName, &ebird_species.speciesCode, &image.url],
+                    &[&image.sciName, &species_code, &image.url],
                 )
                 .unwrap_or_else(|err| {
                     eprintln!("error: {:?}", err);
@@ -176,9 +180,6 @@ values
                     1
                 });
             n_loaded += 1;
-        } else {
-            eprintln!("error: no ebird_species for {}", image.sciName);
-            n_loaded -= 1;
         }
     }
     println!("Loaded {}/{} species images", n_loaded, images.len());
