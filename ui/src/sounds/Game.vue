@@ -132,6 +132,10 @@ export default Vue.extend({
       this.ebirdLocId
     );
 
+    console.log(
+      `filterToCommonSpecies: ${locationSpecies.length} => ${challengeSpecies.length} species`
+    );
+
     const challengeFamilies = Object.entries(
       _.groupBy(challengeSpecies, (sp) => sp.familyComName)
     ).map(([family, spp]) => {
