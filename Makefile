@@ -48,7 +48,6 @@ db: build-backend
 	$(SYLPH) --load-ebird-species
 	$(SYLPH) --load-ebird-hotspots
 	$(SYLPH) --load-ebird-hotspot-species
-	$(SYLPH) --load-species-images
 
 fetch-ebird-data: fetch-ebird-species fetch-ebird-hotspots
 
@@ -76,6 +75,9 @@ fetch-species-image-urls: .venv
 	| psql --tuples-only -d sylph \
 	| .venv/bin/python bin/fetch_wikipedia_image_urls.py \
 	> data/ebird/species_images.json
+
+load-species-image-urls:
+	$(SYLPH) --load-species-images
 
 describe-db:
 	@echo "SELECT relname as table, n_live_tup as rows FROM pg_stat_user_tables ORDER BY n_live_tup DESC;" \
