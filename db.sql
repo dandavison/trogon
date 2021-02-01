@@ -96,7 +96,8 @@ insert into language values (2, 'English');
 create table guide_language (
   id integer primary key,
   guide integer references guide (id),
-  language integer references language (id)
+  language integer references language (id),
+  unique (guide, language)
 );
 
 insert into guide_language values (1, 1, 1);
@@ -168,12 +169,14 @@ create table species_image (
   id serial primary key,
   sciName varchar,
   speciesCode varchar references ebird_species,
-  url varchar
+  url varchar,
+  unique (speciesCode, url)
 );
 
 create table ebird_hotspot_species (
   species varchar references ebird_species,
-  locId varchar references ebird_hotspot
+  locId varchar references ebird_hotspot,
+  unique (species, locId)
 );
 
 ------------------------------------------------------------------------------------
