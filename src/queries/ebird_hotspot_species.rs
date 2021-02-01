@@ -16,7 +16,7 @@ pub struct Row {
     pub images: Vec<String>,
 }
 
-pub fn query(loc_id: String) -> Vec<Row> {
+pub fn query(loc_id: &str) -> Vec<Row> {
     db::get_client()
         .query(
             "

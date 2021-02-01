@@ -50,7 +50,7 @@ struct Opt {
 fn main() -> std::io::Result<()> {
     let opt = Opt::from_args();
     if let Some(region) = opt.fetch_ebird_hotspots {
-        process::exit(ebird::fetch::fetch_hotspots(region)?)
+        process::exit(ebird::fetch::fetch_hotspots(&region)?)
     } else if opt.fetch_ebird_hotspot_species {
         process::exit(ebird::fetch::fetch_hotspot_species()?)
     } else if opt.fetch_ebird_species {

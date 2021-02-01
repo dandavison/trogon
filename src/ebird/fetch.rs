@@ -9,7 +9,7 @@ use crate::models;
 
 /// Fetch the hotspots for `region` from the eBird API and write them to $SYLPH_DATA_DIR/ebird/hotspots.
 /// SYLPH_DATA_DIR defaults to "data/" if it is not set as an environment variable.
-pub fn fetch_hotspots(ebird_region_code: String) -> std::io::Result<i32> {
+pub fn fetch_hotspots(ebird_region_code: &str) -> std::io::Result<i32> {
     let url = format!(
         "https://api.ebird.org/v2/ref/hotspot/{}?fmt=json",
         ebird_region_code
