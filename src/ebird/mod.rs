@@ -75,3 +75,12 @@ fn get_writer(path: &PathBuf) -> BufWriter<File> {
     });
     BufWriter::new(file)
 }
+
+pub fn fetch_and_load_hotspot_species(loc_id: &str) -> std::io::Result<i32> {
+    println!("fetch_and_load_hotspot_species: {}", loc_id);
+    fetch::fetch_hotspots(&loc_id)?;
+    load::load_hotspots()?;
+    fetch::fetch_hotspot_species()?;
+    load::load_hotspot_species()?;
+    Ok(0)
+}

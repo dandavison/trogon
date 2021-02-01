@@ -78,8 +78,15 @@ pub fn load_hotspot_species() -> std::io::Result<i32> {
 
 pub fn _load_hotspot_species(path: PathBuf) -> std::io::Result<i32> {
     let loc_id = path.file_stem().unwrap().to_str().unwrap();
-    let species: Vec<String> = deserialize_json(&read_to_string(&path)).unwrap_or_default();
     let mut dbclient = db::get_client();
+    if let Ok(_) = dbclient.query_one(
+        "select locId from ebird_hotspot_species where locId = $1 limit 1",
+        &[&loc_id],
+    ) {
+        // Species already loaded for this hotspot.
+        return Ok(0);
+    }
+    let species: Vec<String> = deserialize_json(&read_to_string(&path)).unwrap_or_default();
     let mut n_loaded = 0;
     for sp in &species {
         let _ = dbclient

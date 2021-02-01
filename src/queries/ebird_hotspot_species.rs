@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::db;
+use crate::ebird;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[allow(non_snake_case)]
@@ -17,7 +18,21 @@ pub struct Row {
 }
 
 pub fn query(loc_id: &str) -> Vec<Row> {
-    db::get_client()
+    let mut dbclient = db::get_client();
+    if dbclient
+        .query_one(
+            "select locId from ebird_hotspot_species where locId = $1 limit 1",
+            &[&loc_id],
+        )
+        .is_err()
+    {
+        // loc_id has no species cached locally
+        if let Err(_) = ebird::fetch_and_load_hotspot_species(&loc_id) {
+            eprintln!("Failed to fetch and load hotspot species: {}", loc_id);
+            return vec![];
+        }
+    }
+    dbclient
         .query(
             "
 select es.sciName, es.comName, es.speciesCode, es.category, es.taxonOrder, es._order, es.familyComName, es.familySciName, si.url
