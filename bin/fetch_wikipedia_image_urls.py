@@ -22,13 +22,11 @@ if __name__ == "__main__":
     with open("data/ebird/species_images.json") as f:
         urls = json.load(f)
     for sciname in json.loads(sys.stdin.read()):
-        genus, species = sciname.split()
         try:
             sys.stderr.write(sciname + "\n")
             urls.append({
-                "genus": genus,
-                "species": species,
-                "image": fetch_image_url(f"{genus}_{species}"),
+                "sciName": sciname,
+                "url": fetch_image_url(sciname.replace(" ", "_")),
             })
         except Exception as exc:
             sys.stderr.write(f"{exc.__class__.__name__}: {exc}\n")
