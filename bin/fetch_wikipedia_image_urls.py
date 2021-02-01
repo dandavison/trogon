@@ -19,7 +19,8 @@ def fetch_image_url(query):
 
 
 if __name__ == "__main__":
-    urls = []
+    with open("data/ebird/species_images.json") as f:
+        urls = json.load(f)
     for sciname in json.loads(sys.stdin.read()):
         genus, species = sciname.split()
         try:
@@ -31,4 +32,5 @@ if __name__ == "__main__":
             })
         except Exception as exc:
             sys.stderr.write(f"{exc.__class__.__name__}: {exc}\n")
-    json.dump(urls, sys.stdout, indent=2)
+    with open("data/ebird/species_images.json", "w") as f:
+        json.dump(urls, f, indent=2)

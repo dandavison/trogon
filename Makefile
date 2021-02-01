@@ -71,10 +71,12 @@ fetch-and-load-hotspot-species:
 	.venv/bin/pip install requests beautifulsoup4 html5lib
 
 fetch-species-image-urls: .venv
-	@echo "select json_agg(distinct sciname) from ebird_species es inner join ebird_hotspot_species ehs ON ehs.species = es.speciescode;" \
+	@echo "select json_agg(distinct es.sciname) from ebird_species es \
+inner join ebird_hotspot_species ehs ON ehs.species = es.speciescode \
+left outer join species_image si ON si.speciescode = es.speciescode \
+where si.speciescode is null;" \
 	| psql --tuples-only -d sylph \
-	| .venv/bin/python bin/fetch_wikipedia_image_urls.py \
-	> data/ebird/species_images.json
+	| .venv/bin/python bin/fetch_wikipedia_image_urls.py
 
 load-species-image-urls:
 	$(SYLPH) --load-species-images
