@@ -51,19 +51,31 @@
                 $refs.gameForm.isSpeciesSciCorrect())
             "
           >
-            <a :href="recordingSpeciesWikipediaURL()" target="_blank">
-              {{ recordingSpeciesSciName() }}
-            </a>
+            <p>
+              <a :href="recordingSpeciesWikipediaURL()" target="_blank">
+                {{ recordingSpeciesSciName() }}
+              </a>
+            </p>
 
             <img v-if="image && !settings.promptIncludesImages" :src="image" />
 
-            <p v-if="settings.promptIncludesRecording && recording">
-              <recording-component
+            <b-dropdown v-if="settings.promptIncludesRecording && recording">
+              <template #trigger="{ active }">
+                <b-button
+                  label="Recordings"
+                  icon-right="chevron-down"
+                  icon-pack="fas"
+                />
+              </template>
+              <b-dropdown-item
                 v-for="rec in recordings.get(recording.speciesCode)"
                 :key="rec.url"
-                :recording="rec"
-              />
-            </p>
+              >
+                <recording-component :recording="rec" />
+              </b-dropdown-item>
+            </b-dropdown>
+
+            <p v-if="settings.promptIncludesRecording && recording"></p>
           </div>
         </div>
       </div>
