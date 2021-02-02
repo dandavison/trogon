@@ -53,7 +53,23 @@
         v-model="answer.speciesSci"
         :data="filterSpeciesSci()"
         :class="{ 'is-success': isSpeciesSciCorrect() }"
-      />
+      >
+        <template slot-scope="props">
+          <div class="media">
+            <div class="media-content">
+              {{ props.option }}
+            </div>
+            <div v-if="answer.genus" class="media-right">
+              <img
+                width="128"
+                :src="
+                  speciesSciName2images.get(`${answer.genus} ${props.option}`)
+                "
+              />
+            </div>
+          </div>
+        </template>
+      </b-autocomplete>
       <p v-if="answer.speciesSci">
         {{ isSpeciesSciCorrect() ? "✅" : "❌" }}
       </p>
@@ -87,6 +103,7 @@ export default Vue.extend({
   props: {
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     recording: Object as PropType<Recording | null>,
+    speciesSciName2images: Map as PropType<Map<string, string>>,
     settings: Object as PropType<Settings>,
   },
   data() {

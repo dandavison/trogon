@@ -39,6 +39,7 @@
             ref="gameForm"
             :locationSpecies="locationSpecies"
             :recording="recording"
+            :speciesSciName2images="speciesSciName2images"
             :settings="settings"
           />
         </div>
