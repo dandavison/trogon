@@ -1,3 +1,4 @@
+import iso3311a2 from "iso-3166-1-alpha-2";
 import {
   EbirdHotspot,
   EbirdSpecies,
@@ -30,13 +31,12 @@ export async function getRecordings(
   const genus = ebirdSpecies.getGenus(species);
   const speciesSci = ebirdSpecies.getSpeciesSci(species);
   const speciesEn = ebirdSpecies.getSpeciesEn(species);
-  const ebirdCountryCode2country = new Map([["CO", "Colombia"]]);
 
   var query = `${genus}+${speciesSci}+gen:${genus}`;
   if (location) {
-    const country = ebirdCountryCode2country.get(location.countryCode);
+    const country = iso3311a2.getCountry(location.countryCode);
     if (country) {
-      query = `${query}+cnt:${country}+q:A`;
+      query = `${query}+cnt:"${country}"+q:A`;
     }
   }
 

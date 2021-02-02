@@ -12,6 +12,7 @@
     "@fortawesome/fontawesome-free": "^5.15.1",
     "buefy": "^0.9.4",
     "core-js": "^3.6.5",
+    "iso-3166-1-alpha-2": "^1.0.0",
     "leaflet": "^1.7.1",
     "lodash": "^4.17.20",
     "vue": "^2.6.11",
