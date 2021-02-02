@@ -1,89 +1,51 @@
 <template>
   <form type="box">
-    <b-field
-      v-if="shouldShowScientificNames"
+    <game-form-field
+      ref="familySciField"
+      :handler="handleFamilySci"
+      :shouldShow="shouldShowScientificNames"
+      :filter="filterFamilySci"
+      :isCorrect="isFamilySciCorrect"
+      :getImages="getImages"
       :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
-    >
-      <span>
-        <b-autocomplete
-          type="text"
-          v-model="answer.familySci"
-          :data="filterFamilySci()"
-        />
-        <p v-if="answer.familySci">
-          {{ isFamilySciCorrect() ? "✅" : "❌" }}
-        </p>
-      </span>
-    </b-field>
+    />
 
-    <b-field
-      v-if="shouldShowEnglishNames"
+    <game-form-field
+      ref="familyEnField"
+      :handler="handleFamilyEn"
+      :shouldShow="shouldShowEnglishNames"
+      :filter="filterFamilyEn"
+      :isCorrect="isFamilyEnCorrect"
+      :getImages="getImages"
       :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
-    >
-      <span>
-        <b-autocomplete
-          type="text"
-          v-model="answer.familyEn"
-          :data="filterFamilyEn()"
-        />
-        <p v-if="answer.familyEn">
-          {{ isFamilyEnCorrect() ? "✅" : "❌" }}
-        </p>
-      </span>
-    </b-field>
+    />
 
-    <b-field label="Genus">
-      <b-autocomplete
-        type="text"
-        v-model="answer.genus"
-        :data="filterGenus()"
-      />
-      <p v-if="answer.genus">{{ isGenusCorrect() ? "✅" : "❌" }}</p>
-    </b-field>
+    <game-form-field
+      :handler="handleGenus"
+      :shouldShow="true"
+      :filter="filterGenus"
+      :isCorrect="isGenusCorrect"
+      :getImages="getImages"
+      :label="'Genus'"
+    />
 
-    <b-field
-      v-if="shouldShowScientificNames"
+    <game-form-field
+      :handler="handleSpeciesSci"
+      :shouldShow="shouldShowScientificNames"
+      :filter="filterSpeciesSci"
+      :isCorrect="isSpeciesSciCorrect"
+      :getImages="getSpeciesSciImageURLs"
       :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
-    >
-      <b-autocomplete
-        type="text"
-        v-model="answer.speciesSci"
-        :data="filterSpeciesSci()"
-      >
-        <template slot-scope="props">
-          <div class="media">
-            <div class="media-content">
-              {{ props.option }}
-            </div>
-            <div v-if="answer.genus" class="media-right">
-              <img
-                width="128"
-                :src="
-                  speciesSciName2images.get(`${answer.genus} ${props.option}`)
-                "
-              />
-            </div>
-          </div>
-        </template>
-      </b-autocomplete>
-      <p v-if="answer.speciesSci">
-        {{ isSpeciesSciCorrect() ? "✅" : "❌" }}
-      </p>
-    </b-field>
+    />
 
-    <b-field
-      v-if="shouldShowEnglishNames"
+    <game-form-field
+      :handler="handleSpeciesEn"
+      :shouldShow="shouldShowEnglishNames"
+      :filter="filterSpeciesEn"
+      :isCorrect="isSpeciesEnCorrect"
+      :getImages="getSpeciesEnImageURLs"
       :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
-    >
-      <b-autocomplete
-        type="text"
-        v-model="answer.speciesEn"
-        :data="filterSpeciesEn()"
-      />
-      <p v-if="answer.speciesEn">
-        {{ isSpeciesEnCorrect() ? "✅" : "❌" }}
-      </p>
-    </b-field>
+    />
   </form>
 </template>
 
@@ -93,12 +55,14 @@ import Vue, { PropType } from "vue";
 import { EbirdSpecies } from "types";
 import { ebirdSpecies } from "./ebird";
 import { Answer, NamesLanguage, Recording, Settings } from "./types";
+import GameFormField from "./GameFormField.vue";
 
 export default Vue.extend({
+  components: { GameFormField },
   props: {
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     recording: Object as PropType<Recording | null>,
-    speciesSciName2images: Map as PropType<Map<string, string>>,
+    speciesSciName2images: Map as PropType<Map<string, string[]>>,
     settings: Object as PropType<Settings>,
   },
   data() {
@@ -114,6 +78,10 @@ export default Vue.extend({
       this.locationSpecies.map((sp) => [sp.sciName, sp.comName])
     );
 
+    const speciesEn2Sci = new Map(
+      this.locationSpecies.map((sp) => [sp.comName, sp.sciName])
+    );
+
     return {
       answer: {
         familySci: "",
@@ -125,30 +93,11 @@ export default Vue.extend({
       familyEn2Sci,
       familySci2En,
       speciesSci2En,
+      speciesEn2Sci,
     };
   },
 
   watch: {
-    // Autofill familyEn according to familySci
-    "answer.familySci": function (newVal: string): void {
-      if (!this.answer.familyEn) {
-        const familyEn = this.familySci2En.get(newVal);
-        if (familyEn) {
-          this.answer.familyEn = familyEn;
-        }
-      }
-    },
-
-    // Autofill familySci according to familyEn
-    "answer.familyEn": function (newVal: string): void {
-      if (!this.answer.familySci) {
-        const familySci = this.familyEn2Sci.get(newVal);
-        if (familySci) {
-          this.answer.familySci = familySci;
-        }
-      }
-    },
-
     // Autofill speciesEn according to (genus, speciesSci)
     answer: {
       deep: true,
@@ -180,6 +129,47 @@ export default Vue.extend({
   },
 
   methods: {
+    handleFamilySci(newVal: string): void {
+      this.answer.familySci = newVal;
+      // Autofill familyEn according to familySci
+      if (!this.answer.familyEn) {
+        const familyEn = this.familySci2En.get(newVal);
+        if (familyEn) {
+          (this.$refs.familyEnField as any).answer = familyEn;
+        }
+      }
+    },
+    handleFamilyEn(newVal: string): void {
+      this.answer.familyEn = newVal;
+      // Autofill familySci according to familyEn
+      if (!this.answer.familySci) {
+        const familySci = this.familyEn2Sci.get(newVal);
+        if (familySci) {
+          (this.$refs.familySciField as any).answer = familySci;
+        }
+      }
+    },
+    handleGenus(newVal: string): void {
+      this.answer.genus = newVal;
+    },
+    handleSpeciesSci(newVal: string): void {
+      this.answer.speciesSci = newVal;
+    },
+    handleSpeciesEn(newVal: string): void {
+      this.answer.speciesEn = newVal;
+    },
+    getSpeciesSciImageURLs(option: string): string[] {
+      const answerSciName = `${this.answer.genus} ${option}`;
+      return this.speciesSciName2images.get(answerSciName) || [];
+    },
+    getSpeciesEnImageURLs(option: string): string[] {
+      const answerSciName = this.speciesEn2Sci.get(option);
+      return this.speciesSciName2images.get(answerSciName || "") || [];
+    },
+    getImages(option: string): string[] {
+      console.log("getImages: ", option);
+      return ["https://www.xeno-canto.org/static/img/avatar-default-200.png"];
+    },
     clearInput(): void {
       this.answer.familySci = this.answer.familyEn = this.answer.genus = this.answer.speciesSci = this.answer.speciesEn =
         "";
