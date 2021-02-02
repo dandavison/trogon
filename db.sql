@@ -248,3 +248,10 @@ insert into url (id, habitat, type, url) values ((select id from habitat h where
                                                  4, 'description', 'https://news.mongabay.com/2016/01/special-issue-of-biotropica-makes-the-case-for-protecting-south-americas-white-sand-forests');
 insert into url (id, habitat, type, url) values ((select id from habitat h where h.name = 'Tropical montane forest'),
                                                  5, 'description', 'https://rainforests.mongabay.com/0103.htm');
+
+------------------------------------------------------------------------------------
+
+create table cache (
+  key varchar primary key,
+  value text
+);
