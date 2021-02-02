@@ -20,7 +20,7 @@
         class="level-item"
         v-if="settings.promptIncludesRecording && recording"
       >
-        <recording-component :recording="recording" />
+        <recording-component :recording="recording" :preload="'auto'" />
       </p>
 
       <p class="level-item" v-if="image && settings.promptIncludesImages">

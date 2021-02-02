@@ -1,6 +1,6 @@
 <template>
   <ul>
-    <li><audio controls :src="recording.url"></audio></li>
+    <li><audio controls :src="recording.url" :preload="preload"></audio></li>
     <li>{{ recording.raw.loc }}, {{ recording.raw.cnt }}</li>
     <li>{{ recording.raw.type }}</li>
     <li v-if="recording.raw.also.length[0]">
@@ -17,6 +17,9 @@ import Vue, { PropType } from "vue";
 import { Recording } from "./types";
 
 export default Vue.extend({
-  props: { recording: Object as PropType<Recording> },
+  props: {
+    recording: Object as PropType<Recording>,
+    preload: { type: String, default: "metadata" },
+  },
 });
 </script>
