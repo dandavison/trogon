@@ -1,6 +1,17 @@
 <template>
   <ul>
-    <li><audio controls :src="recording.url" :preload="preload"></audio></li>
+    <li>
+      <audio
+        controls
+        :src="recording.url"
+        :preload="preload"
+        @canplaythrough="
+          (ev) => {
+            ev.target.play();
+          }
+        "
+      ></audio>
+    </li>
     <li>{{ recording.raw.loc }}, {{ recording.raw.cnt }}</li>
     <li>{{ recording.raw.type }}</li>
     <li v-if="recording.raw.also.length[0]">
