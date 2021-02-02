@@ -9,7 +9,6 @@
           type="text"
           v-model="answer.familySci"
           :data="filterFamilySci()"
-          :class="{ 'is-success': isFamilySciCorrect() }"
         />
         <p v-if="answer.familySci">
           {{ isFamilySciCorrect() ? "✅" : "❌" }}
@@ -26,7 +25,6 @@
           type="text"
           v-model="answer.familyEn"
           :data="filterFamilyEn()"
-          :class="{ 'is-success': isFamilyEnCorrect() }"
         />
         <p v-if="answer.familyEn">
           {{ isFamilyEnCorrect() ? "✅" : "❌" }}
@@ -39,7 +37,6 @@
         type="text"
         v-model="answer.genus"
         :data="filterGenus()"
-        :class="{ 'is-success': isGenusCorrect() }"
       />
       <p v-if="answer.genus">{{ isGenusCorrect() ? "✅" : "❌" }}</p>
     </b-field>
@@ -52,7 +49,6 @@
         type="text"
         v-model="answer.speciesSci"
         :data="filterSpeciesSci()"
-        :class="{ 'is-success': isSpeciesSciCorrect() }"
       >
         <template slot-scope="props">
           <div class="media">
@@ -83,7 +79,6 @@
         type="text"
         v-model="answer.speciesEn"
         :data="filterSpeciesEn()"
-        :class="{ 'is-success': isSpeciesEnCorrect() }"
       />
       <p v-if="answer.speciesEn">
         {{ isSpeciesEnCorrect() ? "✅" : "❌" }}
