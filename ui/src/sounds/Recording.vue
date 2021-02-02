@@ -19,7 +19,7 @@ import { Recording } from "./types";
 export default Vue.extend({
   props: {
     recording: Object as PropType<Recording>,
-    preload: { type: String, default: "none" },
+    preload: { type: String, default: "metadata" },
   },
 });
 </script>

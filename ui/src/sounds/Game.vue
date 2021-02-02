@@ -20,7 +20,7 @@
         class="level-item"
         v-if="settings.promptIncludesRecording && recording"
       >
-        <recording-component :recording="recording" :preload="'auto'" />
+        <recording-component :recording="recording" />
       </p>
 
       <p class="level-item" v-if="image && settings.promptIncludesImages">
@@ -71,7 +71,7 @@
                 v-for="rec in recordings.get(recording.speciesCode)"
                 :key="rec.url"
               >
-                <recording-component :recording="rec" />
+                <recording-component :recording="rec" :preload="'none'" />
               </b-dropdown-item>
             </b-dropdown>
 
