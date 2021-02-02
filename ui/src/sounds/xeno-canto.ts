@@ -12,12 +12,8 @@ import { Settings } from "./types";
 const XENO_CANTO_API_URL = `${process.env.VUE_APP_SERVER_URL}/xeno-canto/`;
 
 async function getXenoCantoRecordings(query: string): Promise<XenoCantoRecording[]> {
-  const key = `xeno-canto-query:${query}`;
-  if (!localStorage.getItem(key)) {
-    const response = await fetch(`${XENO_CANTO_API_URL}?query=${query}`);
-    localStorage.setItem(key, await response.text());
-  }
-  const text = localStorage.getItem(key);
+  const response = await fetch(`${XENO_CANTO_API_URL}?query=${query}`);
+  const text = await response.text();
   if (text) {
     return JSON.parse(text).recordings;
   } else {
