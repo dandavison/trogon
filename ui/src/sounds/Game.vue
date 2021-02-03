@@ -55,40 +55,17 @@
           />
         </div>
         <div class="column">
-          <div
-            id="revealed-recording-info"
+          <reveal-area
             v-if="
               $refs.gameForm &&
               ($refs.gameForm.isSpeciesEnCorrect() ||
                 $refs.gameForm.isSpeciesSciCorrect())
             "
-          >
-            <p>
-              <a :href="recordingSpeciesWikipediaURL()" target="_blank">
-                {{ recordingSpeciesSciName() }}
-              </a>
-            </p>
-
-            <img v-if="image && !settings.promptIncludesImages" :src="image" />
-
-            <b-dropdown v-if="settings.promptIncludesRecording && recording">
-              <template #trigger="{ active }">
-                <b-button
-                  label="Recordings"
-                  icon-right="chevron-down"
-                  icon-pack="fas"
-                />
-              </template>
-              <b-dropdown-item
-                v-for="rec in recordings.get(recording.speciesCode)"
-                :key="rec.url"
-              >
-                <recording-component :recording="rec" :preload="'none'" />
-              </b-dropdown-item>
-            </b-dropdown>
-
-            <p v-if="settings.promptIncludesRecording && recording"></p>
-          </div>
+            :image="image"
+            :recording="recording"
+            :recordings="recordings"
+            :settings="settings"
+          />
         </div>
       </div>
     </div>
@@ -108,20 +85,15 @@ import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
 import RecordingComponent from "./Recording.vue";
-import {
-  ChallengeFamily,
-  ImageURLMaps,
-  NamesLanguage,
-  Recording,
-  Settings,
-} from "./types";
+import { ChallengeFamily, ImageURLMaps, Recording, Settings } from "./types";
 import GameForm from "./GameForm.vue";
 import FamilySelector from "./FamilySelector.vue";
 import eventBus from "./event-bus";
+import RevealArea from "./RevealArea.vue";
 
 export default Vue.extend({
   name: "Home",
-  components: { RecordingComponent, GameForm, FamilySelector },
+  components: { RecordingComponent, GameForm, FamilySelector, RevealArea },
   props: { ebirdLocId: String, settings: Object as PropType<Settings> },
 
   data() {
@@ -256,33 +228,6 @@ export default Vue.extend({
         }
       } else {
         alert("No more recordings!");
-      }
-    },
-
-    recordingSpeciesWikipediaURL(): string | null {
-      if (this.recording) {
-        return `https://en.wikipedia.org/w/index.php?title=${this.recording.genus}_${this.recording.speciesSci}`;
-      } else {
-        return null;
-      }
-    },
-
-    // TODO: remove species/genus names from Recording, leaving speciesCode foreign key.
-    recordingSpeciesSciName(): string | null {
-      if (this.recording) {
-        const speciesEn = this.recording.speciesEn;
-        if (this.settings.names == NamesLanguage.English) {
-          return speciesEn;
-        } else {
-          const speciesSci = `${this.recording.genus} ${this.recording.speciesSci}`;
-          if (this.settings.names == NamesLanguage.Scientific) {
-            return speciesSci;
-          } else {
-            return `${speciesSci} (${speciesEn})`;
-          }
-        }
-      } else {
-        return null;
       }
     },
   },
