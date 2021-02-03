@@ -86,12 +86,10 @@
       id="family-selector"
       style="margin-top: 50px; height: 400px; overflow-y: auto"
     >
-      <ul>
-        <li v-for="[family, data] of challengeFamilies.entries()" :key="family">
-          <b-checkbox v-model="data.selected"></b-checkbox>
-          {{ family }} ({{ data.n }})
-        </li>
-      </ul>
+      <family-selector
+        :challengeFamilies="challengeFamilies"
+        @family:select="handleFamilySelection"
+      />
     </section>
   </section>
 </template>
@@ -117,10 +115,11 @@ import {
   Settings,
 } from "./types";
 import GameForm from "./GameForm.vue";
+import FamilySelector from "./FamilySelector.vue";
 
 export default Vue.extend({
   name: "Home",
-  components: { RecordingComponent, GameForm },
+  components: { RecordingComponent, GameForm, FamilySelector },
   props: { ebirdLocId: String, settings: Object as PropType<Settings> },
 
   data() {
@@ -192,6 +191,14 @@ export default Vue.extend({
   },
 
   methods: {
+    handleFamilySelection(family: string, selected: boolean): void {
+      var challengeFamily = this.challengeFamilies.get(family);
+      if (challengeFamily) {
+        challengeFamily.selected = selected;
+        // TODO: HACK: trigger reactivity: selectedChallengeSpecies
+        this.challengeFamilies = new Map(this.challengeFamilies.entries());
+      }
+    },
     revealSpecies(): void {
       if (this.recording) {
         (this.$refs["gameForm"] as any).revealSpecies();
