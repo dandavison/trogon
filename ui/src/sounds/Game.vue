@@ -15,32 +15,25 @@
       :settings="settings"
     />
 
-    <div class="container">
-      <div class="columns">
-        <div class="column">
-          <game-form
-            ref="gameForm"
-            :locationSpecies="locationSpecies"
-            :recording="recording"
-            :imageURLMaps="imageURLMaps"
-            :settings="settings"
-          />
-        </div>
-        <div class="column">
-          <reveal-area
-            v-if="
-              $refs.gameForm &&
-              ($refs.gameForm.isSpeciesEnCorrect() ||
-                $refs.gameForm.isSpeciesSciCorrect())
-            "
-            :image="image"
-            :recording="recording"
-            :recordings="recordings"
-            :settings="settings"
-          />
-        </div>
-      </div>
-    </div>
+    <game-form
+      ref="gameForm"
+      :locationSpecies="locationSpecies"
+      :recording="recording"
+      :imageURLMaps="imageURLMaps"
+      :settings="settings"
+    />
+
+    <reveal-area
+      v-if="
+        $refs.gameForm &&
+        ($refs.gameForm.isSpeciesEnCorrect() ||
+          $refs.gameForm.isSpeciesSciCorrect())
+      "
+      :image="image"
+      :recording="recording"
+      :recordings="recordings"
+      :settings="settings"
+    />
   </section>
 </template>
 
