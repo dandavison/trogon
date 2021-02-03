@@ -87,9 +87,9 @@
       style="margin-top: 50px; height: 400px; overflow-y: auto"
     >
       <ul>
-        <li v-for="family in challengeFamilies" :key="family.family">
-          <b-checkbox v-model="family.selected"></b-checkbox
-          >{{ family.family }} ({{ family.n }})
+        <li v-for="[family, data] of challengeFamilies.entries()" :key="family">
+          <b-checkbox v-model="data.selected"></b-checkbox>
+          {{ family }} ({{ data.n }})
         </li>
       </ul>
     </section>
@@ -109,7 +109,13 @@ import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
 import RecordingComponent from "./Recording.vue";
-import { ImageURLMaps, NamesLanguage, Recording, Settings } from "./types";
+import {
+  ChallengeFamily,
+  ImageURLMaps,
+  NamesLanguage,
+  Recording,
+  Settings,
+} from "./types";
 import GameForm from "./GameForm.vue";
 
 export default Vue.extend({
@@ -137,15 +143,17 @@ export default Vue.extend({
       `filterToCommonSpecies: ${locationSpecies.length} => ${challengeSpecies.length} species`
     );
 
-    const challengeFamilies = Object.entries(
-      _.groupBy(challengeSpecies, (sp) => sp.familyComName)
-    ).map(([family, spp]) => {
-      return {
-        family: family,
-        n: spp.length,
-        selected: isDefaultSelectedFamily(family, family2order),
-      };
-    });
+    const challengeFamilies: Map<string, ChallengeFamily> = new Map(
+      Object.entries(_.groupBy(challengeSpecies, (sp) => sp.familyComName)).map(
+        ([family, spp]) => [
+          family,
+          {
+            n: spp.length,
+            selected: isDefaultSelectedFamily(family, family2order),
+          },
+        ]
+      )
+    );
 
     challengeSpecies = _.shuffle(challengeSpecies);
 
@@ -169,9 +177,9 @@ export default Vue.extend({
   computed: {
     selectedChallengeSpecies(): EbirdSpecies[] {
       const selectedFamilies = new Set(
-        this.challengeFamilies
-          .filter(({ selected }) => selected)
-          .map((family) => family.family)
+        Array.from(this.challengeFamilies.entries())
+          .filter(([_, { selected }]) => selected)
+          .map(([family, _]) => family)
       );
       return this.challengeSpecies.filter((sp) =>
         selectedFamilies.has(sp.familyComName)

@@ -44,3 +44,8 @@ export interface ImageURLMaps {
   familySci2images: Map<string, Set<string>>;
   familyEn2images: Map<string, Set<string>>;
 }
+
+export interface ChallengeFamily {
+  n: number,
+  selected: boolean,
+}
