@@ -7,6 +7,17 @@
         <li>
           {{ selectedChallengeSpecies.length }} species in current challenge
         </li>
+        <li>
+          <div class="buttons">
+            <b-button
+              label="Select families"
+              @click="isFamilyModalActive = true"
+            />
+          </div>
+          <b-modal v-model="isFamilyModalActive" full-screen>
+            <family-selector :challengeFamilies="challengeFamilies" />
+          </b-modal>
+        </li>
       </ul>
     </section>
 
@@ -81,13 +92,6 @@
         </div>
       </div>
     </div>
-
-    <section
-      id="family-selector"
-      style="margin-top: 50px; height: 400px; overflow-y: auto"
-    >
-      <family-selector :challengeFamilies="challengeFamilies" />
-    </section>
   </section>
 </template>
 
@@ -164,6 +168,7 @@ export default Vue.extend({
       recording: null as Recording | null,
       showImage: false,
       image: "",
+      isFamilyModalActive: false,
     };
   },
 
