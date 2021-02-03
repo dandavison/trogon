@@ -1,5 +1,10 @@
 <template>
-  <l-map id="sylph-map" style="height: 800px" v-bind="map" :center="center">
+  <l-map
+    style="height: 800px"
+    v-bind="map"
+    :center="center"
+    @click="handleClick"
+  >
     <l-tile-layer v-bind="tileLayer"></l-tile-layer>
 
     <l-circle
@@ -20,11 +25,12 @@ import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
 import { LMap, LTileLayer, LCircle, LTooltip, LLayerGroup } from "vue2-leaflet";
 import { EbirdHotspot } from "types";
+import { LeafletMapEvent } from "./types";
+import { fetchEbirdHotspotsByLatLng } from "./ebird";
 
 export default Vue.extend({
   components: { LMap, LTileLayer, LCircle, LTooltip, LLayerGroup },
   props: {
-    ebirdHotspots: Array as PropType<EbirdHotspot[]>,
     center: Array as PropType<number[]>,
   },
   data() {
@@ -40,9 +46,15 @@ export default Vue.extend({
         fillOpacity: 0.5,
         radius: 50,
       },
+      ebirdHotspots: [] as EbirdHotspot[],
     };
   },
   methods: {
+    handleClick(event: LeafletMapEvent): void {
+      fetchEbirdHotspotsByLatLng(event.latlng).then(
+        (data) => (this.ebirdHotspots = data)
+      );
+    },
     handleEbirdHotspotClick(hotspot: EbirdHotspot): void {
       this.$router.push(`/sounds/${hotspot.locId}`);
     },

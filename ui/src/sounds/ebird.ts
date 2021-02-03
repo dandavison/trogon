@@ -1,5 +1,6 @@
 import { fetchJSONArraySynchronously } from "@/utils";
 import { EbirdHotspot, EbirdObservation, EbirdSpecies } from "types";
+import { LeafletLatLng } from "./types";
 
 export const ebirdSpecies = {
   getGenus: function(species: EbirdSpecies): string {
@@ -41,4 +42,10 @@ export function fetchEbirdHotspot(ebirdLocId: string): EbirdHotspot | null {
     `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspots/`
   ) as EbirdHotspot[];
   return ebirdHotspots.filter(h => h.locId == ebirdLocId)[0] || null;
+}
+
+export async function fetchEbirdHotspotsByLatLng(latlng: LeafletLatLng): Promise<EbirdHotspot[]> {
+  const query = `ref/hotspot/geo?lat=${latlng.lat}&lng=${latlng.lng}&fmt=json`;
+  const response = await fetch(`${process.env.VUE_APP_SERVER_URL}/proxy/ebird/${query}`);
+  return await response.json();
 }

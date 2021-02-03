@@ -46,6 +46,15 @@ export interface ImageURLMaps {
 }
 
 export interface ChallengeFamily {
-  n: number,
-  selected: boolean,
+  n: number;
+  selected: boolean;
+}
+
+export interface LeafletLatLng {
+  lat: number;
+  lng: number;
+}
+
+export interface LeafletMapEvent {
+  latlng: LeafletLatLng;
 }
