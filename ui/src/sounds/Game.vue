@@ -82,10 +82,6 @@ export default Vue.extend({
       `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
     ) as EbirdSpecies[];
 
-    const family2order = new Map(
-      locationSpecies.map((sp) => [sp.familyComName, sp.order])
-    );
-
     var challengeSpecies = filterToCommonSpecies(
       locationSpecies,
       this.ebirdLocId
@@ -95,25 +91,11 @@ export default Vue.extend({
       `filterToCommonSpecies: ${locationSpecies.length} => ${challengeSpecies.length} species`
     );
 
-    const challengeFamilies: Map<string, ChallengeFamily> = new Map(
-      Object.entries(_.groupBy(challengeSpecies, (sp) => sp.familyComName)).map(
-        ([family, spp]) => [
-          family,
-          {
-            n: spp.length,
-            selected: isDefaultSelectedFamily(family, family2order),
-          },
-        ]
-      )
-    );
-
-    challengeSpecies = _.shuffle(challengeSpecies);
-
     return {
-      challengeSpecies,
-      challengeFamilies,
       ebirdHotspot,
       locationSpecies,
+      challengeSpecies: _.shuffle(challengeSpecies),
+      challengeFamilies: makeChallengeFamilies(challengeSpecies),
       imageURLMaps: makeImageURLMaps(locationSpecies),
       recordings: new Map([]) as Map<string, Recording[]>, // speciesCode
       recording: null as Recording | null,
@@ -210,6 +192,26 @@ export default Vue.extend({
     },
   },
 });
+
+function makeChallengeFamilies(
+  challengeSpecies: EbirdSpecies[]
+): Map<string, ChallengeFamily> {
+  const family2order = new Map(
+    challengeSpecies.map((sp) => [sp.familyComName, sp.order])
+  );
+
+  return new Map(
+    Object.entries(_.groupBy(challengeSpecies, (sp) => sp.familyComName)).map(
+      ([family, spp]) => [
+        family,
+        {
+          n: spp.length,
+          selected: isDefaultSelectedFamily(family, family2order),
+        },
+      ]
+    )
+  );
+}
 
 function makeImageURLMaps(locationSpecies: EbirdSpecies[]): ImageURLMaps {
   var speciesSciName2images: Map<string, Set<string>> = new Map();
