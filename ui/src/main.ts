@@ -15,7 +15,7 @@ import MapView from "./MapView.vue";
 import SiteDetail from "./SiteDetail.vue";
 import Home from "./Home.vue";
 import i18n from "./i18n";
-import SoundsRoot from "./sounds/Root.vue";
+import SoundsRoot from "./sounds/GameRoot.vue";
 
 Vue.config.productionTip = false;
 

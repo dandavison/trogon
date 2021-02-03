@@ -15,7 +15,7 @@ import Game from "./Game.vue";
 import { NamesLanguage, Settings } from "./types";
 
 export default Vue.extend({
-  name: "Root",
+  name: "GameRoot",
   props: { ebirdLocId: String },
   components: { Navbar, ControlPanel, Game },
   data() {
