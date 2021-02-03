@@ -86,10 +86,7 @@
       id="family-selector"
       style="margin-top: 50px; height: 400px; overflow-y: auto"
     >
-      <family-selector
-        :challengeFamilies="challengeFamilies"
-        @family:select="handleFamilySelection"
-      />
+      <family-selector :challengeFamilies="challengeFamilies" />
     </section>
   </section>
 </template>
@@ -116,6 +113,7 @@ import {
 } from "./types";
 import GameForm from "./GameForm.vue";
 import FamilySelector from "./FamilySelector.vue";
+import eventBus from "./event-bus";
 
 export default Vue.extend({
   name: "Home",
@@ -171,6 +169,10 @@ export default Vue.extend({
 
   created: function () {
     this.fetchAllRecordings();
+  },
+
+  mounted: function () {
+    eventBus.$on("family:select", this.handleFamilySelection);
   },
 
   computed: {

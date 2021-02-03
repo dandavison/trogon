@@ -11,13 +11,14 @@
 </template>
 
 <script lang="ts">
+import eventBus from "./event-bus";
 import Vue, { PropType } from "vue";
 import { ChallengeFamily } from "./types";
 export default Vue.extend({
   props: { challengeFamilies: Map as PropType<Map<string, ChallengeFamily>> },
   methods: {
     selectFamily(family: string, val: boolean): void {
-      this.$emit("family:select", family, val);
+      eventBus.$emit("family:select", family, val);
     },
   },
 });
