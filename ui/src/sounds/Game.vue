@@ -7,27 +7,13 @@
       :challengeFamilies="challengeFamilies"
     />
 
-    <nav class="level">
-      <p class="level-item has-text-centered">
-        <b-button @click="setNextRecording">
-          {{ recording ? "Next" : "Start" }}
-        </b-button>
-      </p>
-      <p
-        class="level-item"
-        v-if="settings.promptIncludesRecording && recording"
-      >
-        <recording-component :recording="recording" />
-      </p>
-
-      <p class="level-item" v-if="image && settings.promptIncludesImages">
-        <img :src="image" />
-      </p>
-
-      <p class="level-item has-text-centered">
-        <b-button v-if="recording" @click="revealSpecies"> Reveal </b-button>
-      </p>
-    </nav>
+    <challenge-controls
+      :image="image"
+      :recording="recording"
+      :setNextRecording="setNextRecording"
+      :revealSpecies="revealSpecies"
+      :settings="settings"
+    />
 
     <div class="container">
       <div class="columns">
@@ -76,6 +62,7 @@ import GameForm from "./GameForm.vue";
 import eventBus from "./event-bus";
 import RevealArea from "./RevealArea.vue";
 import ChallengeDescription from "./ChallengeDescription.vue";
+import ChallengeControls from "./ChallengeControls.vue";
 
 export default Vue.extend({
   name: "Home",
@@ -84,6 +71,7 @@ export default Vue.extend({
     GameForm,
     RevealArea,
     ChallengeDescription,
+    ChallengeControls,
   },
   props: { ebirdLocId: String, settings: Object as PropType<Settings> },
 
