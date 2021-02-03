@@ -208,53 +208,43 @@ export default Vue.extend({
     },
 
     filterFamilySci(): string[] {
-      return [
-        ...new Set(
-          this.locationSpecies
-            .filter(this.isFamilySciMatch)
-            .map(ebirdSpecies.getFamilySci)
-        ),
-      ].sort();
+      return _.uniq(
+        this.locationSpecies
+          .filter(this.isFamilySciMatch)
+          .map(ebirdSpecies.getFamilySci)
+      );
     },
 
     filterFamilyEn(): string[] {
-      return [
-        ...new Set(
-          this.locationSpecies
-            .filter(this.isFamilyEnMatch)
-            .map(ebirdSpecies.getFamilyEn)
-        ),
-      ].sort();
+      return _.uniq(
+        this.locationSpecies
+          .filter(this.isFamilyEnMatch)
+          .map(ebirdSpecies.getFamilyEn)
+      );
     },
 
     filterGenus(): string[] {
-      return [
-        ...new Set(
-          this.locationSpecies
-            .filter(this.isGenusMatch)
-            .map(ebirdSpecies.getGenus)
-        ),
-      ].sort();
+      return _.uniq(
+        this.locationSpecies
+          .filter(this.isGenusMatch)
+          .map(ebirdSpecies.getGenus)
+      );
     },
 
     filterSpeciesSci(): string[] {
-      return [
-        ...new Set(
-          this.locationSpecies
-            .filter(this.isSpeciesSciMatch)
-            .map(ebirdSpecies.getSpeciesSci)
-        ),
-      ].sort();
+      return _.uniq(
+        this.locationSpecies
+          .filter(this.isSpeciesSciMatch)
+          .map(ebirdSpecies.getSpeciesSci)
+      );
     },
 
     filterSpeciesEn(): string[] {
-      return [
-        ...new Set(
-          this.locationSpecies
-            .filter(this.isSpeciesEnMatch)
-            .map(ebirdSpecies.getSpeciesEn)
-        ),
-      ].sort();
+      return _.uniq(
+        this.locationSpecies
+          .filter(this.isSpeciesEnMatch)
+          .map(ebirdSpecies.getSpeciesEn)
+      );
     },
 
     isFamilySciMatch(species: EbirdSpecies): boolean {
