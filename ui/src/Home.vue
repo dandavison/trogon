@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <navbar v-if="$route.name != 'sounds'" />
+    <navbar v-if="!$route.name.startsWith('sounds-')" />
     <router-view></router-view>
   </div>
 </template>

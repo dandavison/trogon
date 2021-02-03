@@ -15,7 +15,8 @@ import MapView from "./MapView.vue";
 import SiteDetail from "./SiteDetail.vue";
 import Home from "./Home.vue";
 import i18n from "./i18n";
-import SoundsRoot from "./sounds/GameRoot.vue";
+import SoundsRoot from "./sounds/Root.vue";
+import SoundsGameRoot from "./sounds/GameRoot.vue";
 
 Vue.config.productionTip = false;
 
@@ -26,9 +27,20 @@ Vue.use(Buefy, {
 
 const routes = [
   { path: "/", component: LandingPage },
-  { path: "/sounds/:ebirdLocId", component: SoundsRoot, props: true, name: "sounds" },
+  { path: "/sounds/", component: SoundsRoot, name: "sounds-root" },
+  {
+    path: "/sounds/:ebirdLocId",
+    component: SoundsGameRoot,
+    props: true,
+    name: "sounds-game-root"
+  },
   { path: "/map", component: MapView },
-  { path: "/site/:siteIdString", component: SiteDetail, props: true, name: "site" },
+  {
+    path: "/site/:siteIdString",
+    component: SiteDetail,
+    props: true,
+    name: "site"
+  },
   { path: "/about", component: About }
 ];
 
