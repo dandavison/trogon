@@ -10,7 +10,7 @@ import {
 import { ebirdSpecies } from "./ebird";
 import { Settings } from "./types";
 
-const XENO_CANTO_API_URL = `${process.env.VUE_APP_SERVER_URL}/xeno-canto/`;
+const XENO_CANTO_API_URL = `${process.env.VUE_APP_SERVER_URL}/proxy/xeno-canto/`;
 
 async function getXenoCantoRecordings(query: string): Promise<XenoCantoRecording[]> {
   const response = await fetch(`${XENO_CANTO_API_URL}?query=${query}`);

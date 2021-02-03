@@ -2,8 +2,8 @@ use rocket::response::content;
 
 use crate::db;
 
-#[get("/?<query>")]
-pub fn proxy(query: String) -> content::Json<String> {
+#[get("/xeno-canto?<query>")]
+pub fn xeno_canto(query: String) -> content::Json<String> {
     let url = format!(
         "https://www.xeno-canto.org/api/2/recordings?query={}",
         query
