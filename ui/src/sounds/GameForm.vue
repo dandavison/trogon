@@ -6,7 +6,7 @@
       :shouldShow="shouldShowScientificNames"
       :filter="filterFamilySci"
       :isCorrect="isFamilySciCorrect"
-      :getImages="getImages"
+      :getImageURLs="getFamilySciImageURLs"
       :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
     />
 
@@ -16,7 +16,7 @@
       :shouldShow="shouldShowEnglishNames"
       :filter="filterFamilyEn"
       :isCorrect="isFamilyEnCorrect"
-      :getImages="getImages"
+      :getImageURLs="getFamilyEnImageURLs"
       :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
     />
 
@@ -25,7 +25,7 @@
       :shouldShow="true"
       :filter="filterGenus"
       :isCorrect="isGenusCorrect"
-      :getImages="getImages"
+      :getImageURLs="getGenusImageURLs"
       :label="'Genus'"
     />
 
@@ -34,7 +34,7 @@
       :shouldShow="shouldShowScientificNames"
       :filter="filterSpeciesSci"
       :isCorrect="isSpeciesSciCorrect"
-      :getImages="getSpeciesSciImageURLs"
+      :getImageURLs="getSpeciesSciImageURLs"
       :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
     />
 
@@ -43,7 +43,7 @@
       :shouldShow="shouldShowEnglishNames"
       :filter="filterSpeciesEn"
       :isCorrect="isSpeciesEnCorrect"
-      :getImages="getSpeciesEnImageURLs"
+      :getImageURLs="getSpeciesEnImageURLs"
       :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
     />
   </form>
@@ -54,7 +54,13 @@ import _ from "lodash";
 import Vue, { PropType } from "vue";
 import { EbirdSpecies } from "types";
 import { ebirdSpecies } from "./ebird";
-import { Answer, NamesLanguage, Recording, Settings } from "./types";
+import {
+  Answer,
+  ImageURLMaps,
+  NamesLanguage,
+  Recording,
+  Settings,
+} from "./types";
 import GameFormField from "./GameFormField.vue";
 
 export default Vue.extend({
@@ -62,7 +68,7 @@ export default Vue.extend({
   props: {
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     recording: Object as PropType<Recording | null>,
-    speciesSciName2images: Map as PropType<Map<string, string[]>>,
+    imageURLMaps: Object as PropType<ImageURLMaps>,
     settings: Object as PropType<Settings>,
   },
   data() {
@@ -160,15 +166,31 @@ export default Vue.extend({
     },
     getSpeciesSciImageURLs(option: string): string[] {
       const answerSciName = `${this.answer.genus} ${option}`;
-      return this.speciesSciName2images.get(answerSciName) || [];
+      return Array.from(
+        this.imageURLMaps.speciesSciName2images.get(answerSciName) || new Set()
+      );
     },
     getSpeciesEnImageURLs(option: string): string[] {
       const answerSciName = this.speciesEn2Sci.get(option);
-      return this.speciesSciName2images.get(answerSciName || "") || [];
+      return Array.from(
+        this.imageURLMaps.speciesSciName2images.get(answerSciName || "") ||
+          new Set()
+      );
     },
-    getImages(option: string): string[] {
-      console.log("getImages: ", option);
-      return ["https://www.xeno-canto.org/static/img/avatar-default-200.png"];
+    getGenusImageURLs(option: string): string[] {
+      return Array.from(
+        this.imageURLMaps.genus2images.get(option) || new Set()
+      );
+    },
+    getFamilySciImageURLs(option: string): string[] {
+      return Array.from(
+        this.imageURLMaps.familySci2images.get(option) || new Set()
+      );
+    },
+    getFamilyEnImageURLs(option: string): string[] {
+      return Array.from(
+        this.imageURLMaps.familyEn2images.get(option) || new Set()
+      );
     },
     clearInput(): void {
       this.answer.familySci = this.answer.familyEn = this.answer.genus = this.answer.speciesSci = this.answer.speciesEn =

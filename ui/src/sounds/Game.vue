@@ -39,7 +39,7 @@
             ref="gameForm"
             :locationSpecies="locationSpecies"
             :recording="recording"
-            :speciesSciName2images="speciesSciName2images"
+            :imageURLMaps="imageURLMaps"
             :settings="settings"
           />
         </div>
@@ -100,12 +100,16 @@
 import _ from "lodash";
 import Vue, { PropType } from "vue";
 import { EbirdSpecies } from "types";
-import { filterToCommonSpecies, fetchEbirdHotspot } from "./ebird";
+import {
+  filterToCommonSpecies,
+  fetchEbirdHotspot,
+  ebirdSpecies,
+} from "./ebird";
 import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import { fetchJSONArraySynchronously } from "../utils";
 import RecordingComponent from "./Recording.vue";
-import { NamesLanguage, Recording, Settings } from "./types";
+import { ImageURLMaps, NamesLanguage, Recording, Settings } from "./types";
 import GameForm from "./GameForm.vue";
 
 export default Vue.extend({
@@ -122,10 +126,6 @@ export default Vue.extend({
 
     const family2order = new Map(
       locationSpecies.map((sp) => [sp.familyComName, sp.order])
-    );
-
-    const speciesSciName2images = new Map(
-      locationSpecies.map((sp) => [sp.sciName, sp.images])
     );
 
     var challengeSpecies = filterToCommonSpecies(
@@ -154,7 +154,7 @@ export default Vue.extend({
       challengeFamilies,
       ebirdHotspot,
       locationSpecies,
-      speciesSciName2images,
+      imageURLMaps: makeImageURLMaps(locationSpecies),
       recordings: new Map([]) as Map<string, Recording[]>, // speciesCode
       recording: null as Recording | null,
       showImage: false,
@@ -217,13 +217,21 @@ export default Vue.extend({
     setNextRecording(): void {
       (this.$refs.gameForm as any).clearInput();
       this.showImage = false;
+      this.image = "";
       const rec = this.challengeRecordings.next();
       if (!rec.done) {
         this.recording = rec.value;
-        let images = this.speciesSciName2images.get(
+        let images = this.imageURLMaps.speciesSciName2images.get(
           `${this.recording.genus} ${this.recording.speciesSci}`
         );
-        this.image = images && images[0] ? images[0] : "";
+        if (images) {
+          let image = images.values().next();
+          if (!image.done) {
+            this.image = image.value;
+          } else {
+            alert("No images for species!");
+          }
+        }
       } else {
         alert("No more recordings!");
       }
@@ -257,4 +265,45 @@ export default Vue.extend({
     },
   },
 });
+
+function makeImageURLMaps(locationSpecies: EbirdSpecies[]): ImageURLMaps {
+  var speciesSciName2images: Map<string, Set<string>> = new Map();
+  var genus2images: Map<string, Set<string>> = new Map();
+  var familySci2images: Map<string, Set<string>> = new Map();
+  var familyEn2images: Map<string, Set<string>> = new Map();
+
+  for (let sp of locationSpecies) {
+    let genus = ebirdSpecies.getGenus(sp);
+    let speciesSci = ebirdSpecies.getSpeciesSci(sp);
+    let haveSeenGenus = true;
+    if (sp.images[0]) {
+      speciesSciName2images.set(`${genus} ${speciesSci}`, new Set(sp.images));
+
+      if (!genus2images.has(genus)) {
+        genus2images.set(genus, new Set());
+        haveSeenGenus = false;
+      }
+      genus2images.get(genus)?.add(sp.images[0]);
+      if (!haveSeenGenus) {
+        let familySci = ebirdSpecies.getFamilySci(sp);
+        let familyEn = ebirdSpecies.getFamilyEn(sp);
+        if (!familySci2images.has(familySci)) {
+          familySci2images.set(familySci, new Set());
+        }
+        if (!familyEn2images.has(familyEn)) {
+          familyEn2images.set(familyEn, new Set());
+        }
+        familySci2images.get(familySci)?.add(sp.images[0]);
+        familyEn2images.get(familyEn)?.add(sp.images[0]);
+      }
+    }
+  }
+
+  return {
+    speciesSciName2images,
+    genus2images,
+    familySci2images,
+    familyEn2images,
+  };
+}
 </script>

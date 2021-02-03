@@ -9,7 +9,7 @@
             </div>
             <div class="media-right">
               <img
-                v-for="url in getImages(props.option)"
+                v-for="url in getImageURLs(props.option)"
                 :key="url"
                 :src="url"
                 width="128"
@@ -33,7 +33,7 @@ export default Vue.extend({
     label: String,
     filter: Function,
     isCorrect: Function,
-    getImages: Function,
+    getImageURLs: Function,
     handler: Function,
   },
   data() {
