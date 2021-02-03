@@ -1,25 +1,11 @@
 <template>
   <section style="margin-top: 50px">
-    <section>
-      <h1 style="font-weight: bold">{{ ebirdHotspot.locName }}</h1>
-      <ul>
-        <li>{{ locationSpecies.length }} species total</li>
-        <li>
-          {{ selectedChallengeSpecies.length }} species in current challenge
-        </li>
-        <li>
-          <div class="buttons">
-            <b-button
-              label="Select families"
-              @click="isFamilyModalActive = true"
-            />
-          </div>
-          <b-modal v-model="isFamilyModalActive" full-screen>
-            <family-selector :challengeFamilies="challengeFamilies" />
-          </b-modal>
-        </li>
-      </ul>
-    </section>
+    <challenge-description
+      :ebirdHotspot="ebirdHotspot"
+      :locationSpecies="locationSpecies"
+      :selectedChallengeSpecies="selectedChallengeSpecies"
+      :challengeFamilies="challengeFamilies"
+    />
 
     <nav class="level">
       <p class="level-item has-text-centered">
@@ -87,13 +73,18 @@ import { fetchJSONArraySynchronously } from "../utils";
 import RecordingComponent from "./Recording.vue";
 import { ChallengeFamily, ImageURLMaps, Recording, Settings } from "./types";
 import GameForm from "./GameForm.vue";
-import FamilySelector from "./FamilySelector.vue";
 import eventBus from "./event-bus";
 import RevealArea from "./RevealArea.vue";
+import ChallengeDescription from "./ChallengeDescription.vue";
 
 export default Vue.extend({
   name: "Home",
-  components: { RecordingComponent, GameForm, FamilySelector, RevealArea },
+  components: {
+    RecordingComponent,
+    GameForm,
+    RevealArea,
+    ChallengeDescription,
+  },
   props: { ebirdLocId: String, settings: Object as PropType<Settings> },
 
   data() {
@@ -140,7 +131,6 @@ export default Vue.extend({
       recording: null as Recording | null,
       showImage: false,
       image: "",
-      isFamilyModalActive: false,
     };
   },
 
