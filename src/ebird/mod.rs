@@ -14,7 +14,7 @@ fn get_data_directory() -> String {
     env::var("SYLPH_DATA_DIR").unwrap_or_else(|_| "data".to_string())
 }
 
-fn get_ebird_api_token() -> String {
+pub fn get_ebird_api_token() -> String {
     env::var("EBIRD_API_TOKEN").unwrap_or_else(|_| {
         eprintln!("EBIRD_API_TOKEN environment variable is not set.");
         std::process::exit(1);
