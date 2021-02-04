@@ -77,7 +77,11 @@ fn main() -> std::io::Result<()> {
             )
             .mount(
                 "/proxy",
-                routes![proxy::ebird_ref_hotspot_geo, proxy::xeno_canto],
+                routes![
+                    proxy::ebird_ref_hotspot_geo,
+                    proxy::ebird_product_spplist,
+                    proxy::xeno_canto
+                ],
             )
             .mount("/", StaticFiles::from("ui/dist"))
             .attach(cors::CORS())
