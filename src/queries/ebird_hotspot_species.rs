@@ -17,6 +17,7 @@ pub struct Row {
     pub images: Vec<String>,
 }
 
+// TODO: this will return multiple rows for a single species, if that species has multiple images.
 pub fn query(loc_id: &str) -> Vec<Row> {
     let mut dbclient = db::get_client();
     if dbclient
@@ -38,7 +39,7 @@ pub fn query(loc_id: &str) -> Vec<Row> {
 select es.sciName, es.comName, es.speciesCode, es.category, es.taxonOrder, es._order, es.familyComName, es.familySciName, si.url
 from ebird_species es
 inner join ebird_hotspot_species ehs on es.speciesCode = ehs.species
-inner join species_image si on es.speciesCode = si.speciesCode
+left outer join species_image si on es.speciesCode = si.speciesCode
 where ehs.locId = $1",
             &[&loc_id],
         )
@@ -59,7 +60,10 @@ impl From<postgres::Row> for Row {
             order: row.get("_order"),
             familyComName: row.get("familyComName"),
             familySciName: row.get("familySciName"),
-            images: vec![row.get("url")],
+            images: match row.get("url") {
+                Some(url) => vec![url],
+                None => vec![],
+            },
         }
     }
 }
