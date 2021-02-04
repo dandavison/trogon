@@ -1,6 +1,7 @@
 <template>
   <section style="margin-top: 50px">
     <challenge-description
+      :ebirdLocId="ebirdLocId"
       :ebirdHotspot="ebirdHotspot"
       :locationSpecies="locationSpecies"
       :selectedChallengeSpecies="selectedChallengeSpecies"
@@ -8,6 +9,7 @@
     />
 
     <challenge-controls
+      v-if="haveLocationData"
       :image="image"
       :recording="recording"
       :setNextRecording="setNextRecording"
@@ -16,6 +18,7 @@
     />
 
     <game-form
+      v-if="haveLocationData"
       ref="gameForm"
       :locationSpecies="locationSpecies"
       :recording="recording"
@@ -40,15 +43,15 @@
 <script lang="ts">
 import _ from "lodash";
 import Vue, { PropType } from "vue";
-import { EbirdSpecies } from "types";
+import { EbirdHotspot, EbirdSpecies } from "types";
 import {
   filterToCommonSpecies,
   fetchEbirdHotspot,
   ebirdSpecies,
+  fetchLocationSpecies,
 } from "./ebird";
 import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
-import { fetchJSONArraySynchronously } from "../utils";
 import RecordingComponent from "./Recording.vue";
 import { ChallengeFamily, ImageURLMaps, Recording, Settings } from "./types";
 import GameForm from "./GameForm.vue";
@@ -69,36 +72,24 @@ export default Vue.extend({
   props: { ebirdLocId: String, settings: Object as PropType<Settings> },
 
   data() {
-    const ebirdHotspot = fetchEbirdHotspot(this.ebirdLocId);
-
-    const locationSpecies = fetchJSONArraySynchronously(
-      `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspot-species/${this.ebirdLocId}`
-    ) as EbirdSpecies[];
-
-    var challengeSpecies = filterToCommonSpecies(
-      locationSpecies,
-      this.ebirdLocId
-    );
-
-    console.log(
-      `filterToCommonSpecies: ${locationSpecies.length} => ${challengeSpecies.length} species`
-    );
-
     return {
-      ebirdHotspot,
-      locationSpecies,
-      challengeSpecies: _.shuffle(challengeSpecies),
-      challengeFamilies: makeChallengeFamilies(challengeSpecies),
-      imageURLMaps: makeImageURLMaps(locationSpecies),
+      ebirdHotspot: null as EbirdHotspot | null,
+      locationSpecies: [] as EbirdSpecies[],
+      challengeSpecies: [] as EbirdSpecies[],
+      challengeFamilies: new Map([]) as Map<string, ChallengeFamily>,
+      imageURLMaps: makeImageURLMaps([]),
       recordings: new Map([]) as Map<string, Recording[]>, // speciesCode
       recording: null as Recording | null,
       showImage: false,
+      haveLocationData: false,
       image: "",
     };
   },
 
   created: function () {
-    this.fetchAllRecordings();
+    this.fetchLocationSpeciesAndRecordings().then(
+      () => (this.haveLocationData = true)
+    );
   },
 
   mounted: function () {
@@ -138,11 +129,25 @@ export default Vue.extend({
       }
     },
 
-    fetchAllRecordings(): void {
+    async fetchLocationSpeciesAndRecordings(): Promise<void> {
+      try {
+        this.locationSpecies = await fetchLocationSpecies(this.ebirdLocId);
+        this.challengeSpecies = _.shuffle(
+          await filterToCommonSpecies(this.locationSpecies, this.ebirdLocId)
+        );
+        this.challengeFamilies = makeChallengeFamilies(this.challengeSpecies);
+        this.fetchAllRecordings();
+        this.imageURLMaps = makeImageURLMaps(this.locationSpecies);
+      } catch (err) {
+        console.log("Error fetching location species and recordings: ", err);
+      }
+    },
+
+    async fetchAllRecordings(): Promise<void> {
+      this.ebirdHotspot = await fetchEbirdHotspot(this.ebirdLocId);
       for (let sp of this.selectedChallengeSpecies) {
-        getRecordings(sp, this.ebirdHotspot).then((recs) => {
-          this.recordings.set(sp.speciesCode, recs);
-        });
+        const recordings = await getRecordings(sp, this.ebirdHotspot);
+        this.recordings.set(sp.speciesCode, recordings);
       }
     },
 

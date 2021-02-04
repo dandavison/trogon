@@ -1,6 +1,8 @@
 <template>
   <section>
-    <h1 style="font-weight: bold">{{ ebirdHotspot.locName }}</h1>
+    <h1 style="font-weight: bold">
+      {{ ebirdHotspot ? ebirdHotspot.locName : ebirdLocId }}
+    </h1>
     <ul>
       <li>{{ locationSpecies.length }} species total</li>
       <li>
@@ -30,6 +32,7 @@ import FamilySelector from "./FamilySelector.vue";
 export default Vue.extend({
   components: { FamilySelector },
   props: {
+    ebirdLocId: String,
     ebirdHotspot: Object as PropType<EbirdHotspot | null>,
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     selectedChallengeSpecies: Array as PropType<EbirdSpecies[]>,
