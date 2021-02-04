@@ -62,7 +62,7 @@
 <script lang="ts">
 import _ from "lodash";
 import Vue, { PropType } from "vue";
-import { EbirdSpecies } from "types";
+import { EbirdSpecies } from "./types";
 import { ebirdSpecies } from "./ebird";
 import {
   Answer,

@@ -11,6 +11,17 @@ export enum NamesLanguage {
   Both = "both"
 }
 
+export interface EbirdSpecies {
+  sciName: string;
+  comName: string;
+  speciesCode: string;
+  category: string;
+  taxonOrder: number;
+  order: string;
+  familyComName: string;
+  familySciName: string;
+}
+
 export interface Recording {
   url: string;
   familyEn: string;

@@ -43,7 +43,7 @@
 <script lang="ts">
 import _ from "lodash";
 import Vue, { PropType } from "vue";
-import { EbirdHotspot, EbirdSpecies } from "types";
+import { EbirdHotspot } from "types";
 import {
   filterToCommonSpecies,
   fetchEbirdHotspot,
@@ -53,7 +53,7 @@ import {
 import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import RecordingComponent from "./Recording.vue";
-import { ChallengeFamily, ImageURLMaps, Recording, Settings } from "./types";
+import { ChallengeFamily, EbirdSpecies, ImageURLMaps, Recording, Settings } from "./types";
 import GameForm from "./GameForm.vue";
 import eventBus from "./event-bus";
 import RevealArea from "./RevealArea.vue";
