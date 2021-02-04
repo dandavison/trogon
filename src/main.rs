@@ -10,6 +10,7 @@ mod ebird;
 mod models;
 mod proxy;
 mod queries;
+mod species_images;
 
 use rocket_contrib::serve::StaticFiles;
 use std::process;
@@ -72,6 +73,7 @@ fn main() -> std::io::Result<()> {
                     api::ebird_hotspot_species,
                     api::guides,
                     api::sites,
+                    api::species_images,
                     api::trips
                 ],
             )

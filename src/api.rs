@@ -1,4 +1,5 @@
 use crate::queries;
+use crate::species_images;
 
 use rocket::response::content;
 
@@ -25,4 +26,12 @@ pub fn trips() -> content::Json<String> {
 #[get("/guides")]
 pub fn guides() -> content::Json<String> {
     content::Json(serde_json::to_string(&queries::guides::query()).unwrap())
+}
+
+/// Fetch images given comma-separated species scientific names
+#[get("/species-image-urls?<species>")]
+pub fn species_images(species: String) -> content::Json<String> {
+    content::Json(
+        serde_json::to_string(&species_images::get_images(species.split(",").collect())).unwrap(),
+    )
 }

@@ -11,6 +11,7 @@ postgres = "0.19.0"
 reqwest = { version = "0.10", features = ["blocking", "json"] }
 rocket = "0.4.6"
 rocket_contrib = { version = "0.4.6", default-features = false, features = ["serve"] }
+scraper = "0.12.0"
 serde = { version = "1.0.118", features = ["derive"] }
 serde_json = "1.0.61"
 structopt = "0.3.21"
