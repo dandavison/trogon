@@ -2,6 +2,7 @@
   <form type="box">
     <game-form-field
       ref="familySciField"
+      id="familySciField"
       :handler="handleFamilySci"
       :shouldShow="shouldShowScientificNames"
       :filter="filterFamilySci"
@@ -12,6 +13,7 @@
 
     <game-form-field
       ref="familyEnField"
+      id="familyEnField"
       :handler="handleFamilyEn"
       :shouldShow="shouldShowEnglishNames"
       :filter="filterFamilyEn"
@@ -22,6 +24,7 @@
 
     <game-form-field
       ref="genusField"
+      id="genusField"
       :handler="handleGenus"
       :shouldShow="true"
       :filter="filterGenus"
@@ -32,6 +35,7 @@
 
     <game-form-field
       ref="speciesSciField"
+      id="speciesSciField"
       :handler="handleSpeciesSci"
       :shouldShow="shouldShowScientificNames"
       :filter="filterSpeciesSci"
@@ -42,6 +46,7 @@
 
     <game-form-field
       ref="speciesEnField"
+      id="speciesEnField"
       :handler="handleSpeciesEn"
       :shouldShow="shouldShowEnglishNames"
       :filter="filterSpeciesEn"

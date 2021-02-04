@@ -1,5 +1,5 @@
 <template>
-  <b-field v-if="shouldShow" :label="label">
+  <b-field v-if="shouldShow" :label="label" :id="id">
     <span>
       <b-autocomplete type="text" v-model="answer" :data="filter()">
         <template slot-scope="props">
@@ -30,6 +30,7 @@ import Vue from "vue";
 export default Vue.extend({
   props: {
     shouldShow: Boolean,
+    id: String,
     label: String,
     filter: Function,
     isCorrect: Function,
