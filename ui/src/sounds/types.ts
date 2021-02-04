@@ -49,6 +49,11 @@ export interface Answer {
   speciesEn: string;
 }
 
+export interface SpeciesImages {
+  species: string;
+  urls: string[];
+}
+
 export interface ImageURLMaps {
   speciesSciName2images: Map<string, Set<string>>;
   genus2images: Map<string, Set<string>>;

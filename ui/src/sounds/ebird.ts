@@ -1,5 +1,5 @@
 import { EbirdHotspot, EbirdObservation } from "types";
-import { LeafletLatLng, EbirdSpecies } from "./types";
+import { LeafletLatLng, EbirdSpecies, SpeciesImages } from "./types";
 
 export const ebirdSpecies = {
   getGenus: function(species: EbirdSpecies): string {
@@ -81,6 +81,17 @@ export async function fetchEbirdHotspotsByLatLng(
 ): Promise<EbirdHotspot[]> {
   const response = await fetch(
     `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/ref/hotspot/geo?lat=${latlng.lat}&lng=${latlng.lng}&fmt=json`
+  );
+  return await response.json();
+}
+
+export async function fetchSpeciesImages(
+  species: EbirdSpecies[]
+): Promise<SpeciesImages[]> {
+  console.log("fetchSpeciesImages:", species);
+  const speciesString = species.map(sp => sp.sciName).join(",");
+  const response = await fetch(
+    `${process.env.VUE_APP_SERVER_URL}/api/species-image-urls?species=${speciesString}`
   );
   return await response.json();
 }

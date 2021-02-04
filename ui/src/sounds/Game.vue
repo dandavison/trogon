@@ -49,11 +49,19 @@ import {
   fetchEbirdHotspot,
   ebirdSpecies,
   fetchLocationSpecies,
+  fetchSpeciesImages,
 } from "./ebird";
 import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import RecordingComponent from "./Recording.vue";
-import { ChallengeFamily, EbirdSpecies, ImageURLMaps, Recording, Settings } from "./types";
+import {
+  ChallengeFamily,
+  EbirdSpecies,
+  ImageURLMaps,
+  Recording,
+  Settings,
+  SpeciesImages,
+} from "./types";
 import GameForm from "./GameForm.vue";
 import eventBus from "./event-bus";
 import RevealArea from "./RevealArea.vue";
@@ -77,7 +85,7 @@ export default Vue.extend({
       locationSpecies: [] as EbirdSpecies[],
       challengeSpecies: [] as EbirdSpecies[],
       challengeFamilies: new Map([]) as Map<string, ChallengeFamily>,
-      imageURLMaps: makeImageURLMaps([]),
+      imageURLMaps: makeImageURLMaps([], []),
       recordings: new Map([]) as Map<string, Recording[]>, // speciesCode
       recording: null as Recording | null,
       showImage: false,
@@ -137,7 +145,11 @@ export default Vue.extend({
         );
         this.challengeFamilies = makeChallengeFamilies(this.challengeSpecies);
         this.fetchAllRecordings();
-        this.imageURLMaps = makeImageURLMaps(this.locationSpecies);
+        const speciesImages = await fetchSpeciesImages(this.locationSpecies);
+        this.imageURLMaps = makeImageURLMaps(
+          speciesImages,
+          this.locationSpecies
+        );
       } catch (err) {
         console.log("Error fetching location species and recordings: ", err);
       }
@@ -211,24 +223,32 @@ function makeChallengeFamilies(
   );
 }
 
-function makeImageURLMaps(locationSpecies: EbirdSpecies[]): ImageURLMaps {
+function makeImageURLMaps(
+  speciesImages: SpeciesImages[],
+  locationSpecies: EbirdSpecies[]
+): ImageURLMaps {
   var speciesSciName2images: Map<string, Set<string>> = new Map();
   var genus2images: Map<string, Set<string>> = new Map();
   var familySci2images: Map<string, Set<string>> = new Map();
   var familyEn2images: Map<string, Set<string>> = new Map();
 
+  const species2images = new Map(
+    speciesImages.map((obj) => [obj.species, obj.urls])
+  );
+
   for (let sp of locationSpecies) {
     let genus = ebirdSpecies.getGenus(sp);
     let speciesSci = ebirdSpecies.getSpeciesSci(sp);
     let haveSeenGenus = true;
-    if (sp.images[0]) {
-      speciesSciName2images.set(`${genus} ${speciesSci}`, new Set(sp.images));
+    let images = species2images.get(sp.sciName) || [];
+    if (images[0]) {
+      speciesSciName2images.set(`${genus} ${speciesSci}`, new Set(images));
 
       if (!genus2images.has(genus)) {
         genus2images.set(genus, new Set());
         haveSeenGenus = false;
       }
-      genus2images.get(genus)?.add(sp.images[0]);
+      genus2images.get(genus)?.add(images[0]);
       if (!haveSeenGenus) {
         let familySci = ebirdSpecies.getFamilySci(sp);
         let familyEn = ebirdSpecies.getFamilyEn(sp);
@@ -238,8 +258,8 @@ function makeImageURLMaps(locationSpecies: EbirdSpecies[]): ImageURLMaps {
         if (!familyEn2images.has(familyEn)) {
           familyEn2images.set(familyEn, new Set());
         }
-        familySci2images.get(familySci)?.add(sp.images[0]);
-        familyEn2images.get(familyEn)?.add(sp.images[0]);
+        familySci2images.get(familySci)?.add(images[0]);
+        familyEn2images.get(familyEn)?.add(images[0]);
       }
     }
   }
