@@ -71,6 +71,7 @@ fn main() -> std::io::Result<()> {
                 routes![
                     api::ebird_hotspots,
                     api::ebird_hotspot_species,
+                    api::ebird_species,
                     api::guides,
                     api::sites,
                     api::species_images,

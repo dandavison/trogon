@@ -28,6 +28,13 @@ pub fn guides() -> content::Json<String> {
     content::Json(serde_json::to_string(&queries::guides::query()).unwrap())
 }
 
+/// Fetch EbirdSpecies given comma-separated ebird species codes
+#[get("/ebird-species?<species_codes>")]
+pub fn ebird_species(species_codes: String) -> content::Json<String> {
+    let species_codes = species_codes.split(",").collect();
+    content::Json(serde_json::to_string(&queries::ebird_species::query(species_codes)).unwrap())
+}
+
 /// Fetch images given comma-separated species scientific names
 #[get("/species-image-urls?<species>")]
 pub fn species_images(species: String) -> content::Json<String> {
