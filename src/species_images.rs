@@ -1,3 +1,5 @@
+use std::thread;
+
 use serde::{Deserialize, Serialize};
 
 use crate::db;
@@ -8,12 +10,19 @@ pub struct SpeciesImage {
     urls: Vec<String>,
 }
 
-pub fn get_images(species: Vec<&str>) -> Vec<SpeciesImage> {
-    let mut images = Vec::new();
-    for sp in species.iter() {
-        images.push(get_image(sp))
+pub fn get_images(species: Vec<String>) -> Vec<SpeciesImage> {
+    let mut threads = Vec::new();
+    for sp in species.into_iter() {
+        threads.push(thread::spawn(move || get_image(&sp)))
     }
-    images
+    let mut results = vec![];
+    for t in threads {
+        match t.join() {
+            Ok(result) => results.push(result),
+            Err(err) => eprintln!("Error scraping wikipedia image: {:?}", err),
+        }
+    }
+    results
 }
 
 fn get_image(species: &str) -> SpeciesImage {
