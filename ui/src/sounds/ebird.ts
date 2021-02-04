@@ -22,11 +22,22 @@ export const ebirdSpecies = {
 export async function fetchLocationSpecies(
   locId: string
 ): Promise<EbirdSpecies[]> {
-  const response = await fetch(
+  var response = await fetch(
     `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/product/spplist/${locId}?fmt=json`
   );
+  const speciesCodes = await response.json();
+  console.log(
+    `Fetched ${speciesCodes.length} species codes for ebird location: ${locId}`
+  );
+  response = await fetch(
+    `${
+      process.env.VUE_APP_SERVER_URL
+    }/api/ebird-species?species_codes=${speciesCodes.join(",")}`
+  );
   const species = await response.json();
-  console.log(`Fetched ${species.length} species for ebird location: ${locId}`);
+  console.log(
+    `Fetched ${species.length} EbirdSpecies for ebird location: ${locId}`
+  );
   return species;
 }
 
