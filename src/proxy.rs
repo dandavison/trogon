@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::path::PathBuf;
 
 use reqwest::Method;
 use rocket::response::content;
@@ -9,14 +8,11 @@ use crate::ebird::get_ebird_api_token;
 
 // TODO: make the URL parser blindly take everything after /ebird/, i.e. the route (with multiple
 // segments) and any query params.
-#[get("/ebird/<route..>?<lat>&<lng>&<fmt>")]
-pub fn ebird(route: PathBuf, lat: f32, lng: f32, fmt: String) -> content::Json<String> {
+#[get("/ebird/ref/hotspot/geo?<lat>&<lng>&<fmt>")]
+pub fn ebird_ref_hotspot_geo(lat: f32, lng: f32, fmt: String) -> content::Json<String> {
     let url = format!(
-        "https://api.ebird.org/v2/{}?lat={}&lng={}&fmt={}",
-        route.to_str().unwrap(),
-        lat,
-        lng,
-        fmt
+        "https://api.ebird.org/v2/ref/hotspot/geo?lat={}&lng={}&fmt={}",
+        lat, lng, fmt
     );
     fetch_json_with_caching(
         &url,

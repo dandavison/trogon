@@ -79,9 +79,8 @@ export async function fetchEbirdHotspot(
 export async function fetchEbirdHotspotsByLatLng(
   latlng: LeafletLatLng
 ): Promise<EbirdHotspot[]> {
-  const query = `ref/hotspot/geo?lat=${latlng.lat}&lng=${latlng.lng}&fmt=json`;
   const response = await fetch(
-    `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/${query}`
+    `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/ref/hotspot/geo?lat=${latlng.lat}&lng=${latlng.lng}&fmt=json`
   );
   return await response.json();
 }
