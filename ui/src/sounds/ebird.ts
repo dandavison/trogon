@@ -35,9 +35,15 @@ export async function filterToCommonSpecies(
   ebirdLocId: string
 ): Promise<EbirdSpecies[]> {
   const observations = await fetchRecentObservations(ebirdLocId);
-  const recentSpeciesCodes = new Set(
-    observations.map(obs => obs.speciesCode)
+  console.log(
+    `Fetched ${observations.length} recent observations for ${ebirdLocId}`
   );
+  if (observations.length === 0) {
+    console.log(`No recent observations for ${ebirdLocId}`);
+    console.log("Not filtering to common species");
+    return locationSpecies;
+  }
+  const recentSpeciesCodes = new Set(observations.map(obs => obs.speciesCode));
   const commonSpecies = locationSpecies.filter(sp =>
     recentSpeciesCodes.has(sp.speciesCode)
   );
