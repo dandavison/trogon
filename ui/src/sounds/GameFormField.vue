@@ -1,12 +1,7 @@
 <template>
   <b-field v-if="shouldShow" :label="label" :id="id">
     <span>
-      <b-autocomplete
-        type="text"
-        :data="filter()"
-        @typing="$emit('update:answer', $event)"
-        @input="$emit('update:answer', $event)"
-      >
+      <b-autocomplete type="text" v-model="answer" :data="filter()">
         <template slot-scope="props">
           <div class="media">
             <div class="media-content">
@@ -34,7 +29,6 @@
 import Vue from "vue";
 export default Vue.extend({
   props: {
-    answer: String,
     shouldShow: Boolean,
     id: String,
     label: String,
@@ -42,6 +36,21 @@ export default Vue.extend({
     isCorrect: Function,
     getImageURLs: Function,
     handler: Function,
+  },
+  data() {
+    return {
+      answer: "",
+    };
+  },
+  watch: {
+    answer: function (newVal) {
+      this.handler(newVal);
+    },
+  },
+  methods: {
+    clear(): void {
+      this.answer = "";
+    },
   },
 });
 </script>

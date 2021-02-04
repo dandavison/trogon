@@ -1,8 +1,9 @@
 <template>
   <form type="box">
     <game-form-field
+      ref="familySciField"
       id="familySciField"
-      v-bind:answer.sync="answer.familySci"
+      :handler="handleFamilySci"
       :shouldShow="shouldShowScientificNames"
       :filter="filterFamilySci"
       :isCorrect="isFamilySciCorrect"
@@ -11,8 +12,9 @@
     />
 
     <game-form-field
+      ref="familyEnField"
       id="familyEnField"
-      v-bind:answer.sync="answer.familyEn"
+      :handler="handleFamilyEn"
       :shouldShow="shouldShowEnglishNames"
       :filter="filterFamilyEn"
       :isCorrect="isFamilyEnCorrect"
@@ -21,8 +23,9 @@
     />
 
     <game-form-field
+      ref="genusField"
       id="genusField"
-      v-bind:answer.sync="answer.genus"
+      :handler="handleGenus"
       :shouldShow="true"
       :filter="filterGenus"
       :isCorrect="isGenusCorrect"
@@ -31,8 +34,9 @@
     />
 
     <game-form-field
+      ref="speciesSciField"
       id="speciesSciField"
-      v-bind:answer.sync="answer.speciesSci"
+      :handler="handleSpeciesSci"
       :shouldShow="shouldShowScientificNames"
       :filter="filterSpeciesSci"
       :isCorrect="isSpeciesSciCorrect"
@@ -41,8 +45,9 @@
     />
 
     <game-form-field
+      ref="speciesEnField"
       id="speciesEnField"
-      v-bind:answer.sync="answer.speciesEn"
+      :handler="handleSpeciesEn"
       :shouldShow="shouldShowEnglishNames"
       :filter="filterSpeciesEn"
       :isCorrect="isSpeciesEnCorrect"
@@ -109,30 +114,10 @@ export default Vue.extend({
   },
 
   watch: {
-    "answer.familySci": function (newVal: string): void {
-      // Autofill familyEn according to familySci
-      if (!this.answer.familyEn) {
-        const familyEn = this.familySci2En.get(newVal);
-        if (familyEn) {
-          this.answer.familyEn = familyEn;
-        }
-      }
-    },
-
-    "answer.FamilyEn": function (newVal: string): void {
-      // Autofill familySci according to familyEn
-      if (!this.answer.familySci) {
-        const familySci = this.familyEn2Sci.get(newVal);
-        if (familySci) {
-          this.answer.familySci = familySci;
-        }
-      }
-    },
-
+    // Autofill speciesEn according to (genus, speciesSci)
     answer: {
       deep: true,
       handler(newVal: Answer): void {
-        // Autofill speciesEn according to (genus, speciesSci)
         if (!this.answer.speciesEn && newVal.genus && newVal.speciesSci) {
           const speciesEn = this.speciesSci2En.get(
             `${newVal.genus} ${newVal.speciesSci}`
@@ -160,6 +145,35 @@ export default Vue.extend({
   },
 
   methods: {
+    handleFamilySci(newVal: string): void {
+      this.answer.familySci = newVal;
+      // Autofill familyEn according to familySci
+      if (!this.answer.familyEn) {
+        const familyEn = this.familySci2En.get(newVal);
+        if (familyEn) {
+          (this.$refs.familyEnField as any).answer = familyEn;
+        }
+      }
+    },
+    handleFamilyEn(newVal: string): void {
+      this.answer.familyEn = newVal;
+      // Autofill familySci according to familyEn
+      if (!this.answer.familySci) {
+        const familySci = this.familyEn2Sci.get(newVal);
+        if (familySci) {
+          (this.$refs.familySciField as any).answer = familySci;
+        }
+      }
+    },
+    handleGenus(newVal: string): void {
+      this.answer.genus = newVal;
+    },
+    handleSpeciesSci(newVal: string): void {
+      this.answer.speciesSci = newVal;
+    },
+    handleSpeciesEn(newVal: string): void {
+      this.answer.speciesEn = newVal;
+    },
     getSpeciesSciImageURLs(option: string): string[] {
       const answerSciName = `${this.answer.genus} ${option}`;
       return Array.from(
@@ -189,13 +203,11 @@ export default Vue.extend({
       );
     },
     clearInput(): void {
-      this.answer = {
-        familySci: "",
-        familyEn: "",
-        genus: "",
-        speciesSci: "",
-        speciesEn: "",
-      };
+      (this.$refs.familySciField as any).clear();
+      (this.$refs.familyEnField as any).clear();
+      (this.$refs.genusField as any).clear();
+      (this.$refs.speciesEnField as any).clear();
+      (this.$refs.speciesSciField as any).clear();
     },
 
     revealSpecies(): void {
