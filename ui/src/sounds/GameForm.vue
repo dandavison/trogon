@@ -49,6 +49,8 @@
       :getImageURLs="getSpeciesEnImageURLs"
       :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
     />
+
+    <b-button @click="clearInput">Clear</b-button>
   </form>
 </template>
 
