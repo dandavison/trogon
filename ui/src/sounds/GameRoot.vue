@@ -23,7 +23,7 @@ export default Vue.extend({
   data() {
     return {
       settings: {
-        names: NamesLanguage.English,
+        names: NamesLanguage.Both,
         promptIncludesImages: false,
         promptIncludesRecording: true,
         songsOnly: true,
