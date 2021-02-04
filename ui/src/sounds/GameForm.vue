@@ -212,11 +212,11 @@ export default Vue.extend({
 
     revealSpecies(): void {
       if (this.recording) {
-        this.answer.familySci = this.recording.familySci;
-        this.answer.familyEn = this.recording.familyEn;
-        this.answer.genus = this.recording.genus;
-        this.answer.speciesSci = this.recording.speciesSci;
-        this.answer.speciesEn = this.recording.speciesEn;
+        (this.$refs.familySciField as any).answer = this.recording.familySci;
+        (this.$refs.familyEnField as any).answer = this.recording.familyEn;
+        (this.$refs.genusField as any).answer = this.recording.genus;
+        (this.$refs.speciesSciField as any).answer = this.recording.speciesSci;
+        (this.$refs.speciesEnField as any).answer = this.recording.speciesEn;
       }
     },
 
