@@ -18,7 +18,7 @@ export interface Recording {
   genus: string;
   speciesEn: string;
   speciesSci: string;
-  speciesCode: string,
+  speciesCode: string;
   raw: XenoCantoRecording;
 }
 
