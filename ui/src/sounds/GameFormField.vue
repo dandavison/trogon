@@ -46,5 +46,10 @@ export default Vue.extend({
       this.handler(newVal);
     },
   },
+  methods: {
+    clear(): void {
+      this.answer = "";
+    },
+  },
 });
 </script>

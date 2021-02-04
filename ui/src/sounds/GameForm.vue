@@ -21,6 +21,7 @@
     />
 
     <game-form-field
+      ref="genusField"
       :handler="handleGenus"
       :shouldShow="true"
       :filter="filterGenus"
@@ -30,6 +31,7 @@
     />
 
     <game-form-field
+      ref="speciesSciField"
       :handler="handleSpeciesSci"
       :shouldShow="shouldShowScientificNames"
       :filter="filterSpeciesSci"
@@ -39,6 +41,7 @@
     />
 
     <game-form-field
+      ref="speciesEnField"
       :handler="handleSpeciesEn"
       :shouldShow="shouldShowEnglishNames"
       :filter="filterSpeciesEn"
@@ -193,8 +196,11 @@ export default Vue.extend({
       );
     },
     clearInput(): void {
-      this.answer.familySci = this.answer.familyEn = this.answer.genus = this.answer.speciesSci = this.answer.speciesEn =
-        "";
+      (this.$refs.familySciField as any).clear();
+      (this.$refs.familyEnField as any).clear();
+      (this.$refs.genusField as any).clear();
+      (this.$refs.speciesEnField as any).clear();
+      (this.$refs.speciesSciField as any).clear();
     },
 
     revealSpecies(): void {
