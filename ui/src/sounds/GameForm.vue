@@ -206,8 +206,8 @@ export default Vue.extend({
       (this.$refs.familySciField as any).clear();
       (this.$refs.familyEnField as any).clear();
       (this.$refs.genusField as any).clear();
-      (this.$refs.speciesEnField as any).clear();
       (this.$refs.speciesSciField as any).clear();
+      (this.$refs.speciesEnField as any).clear();
     },
 
     revealSpecies(): void {
