@@ -145,10 +145,17 @@ export default Vue.extend({
         );
         this.challengeFamilies = makeChallengeFamilies(this.challengeSpecies);
         this.fetchAllRecordings();
-        const speciesImages = await fetchSpeciesImages(this.locationSpecies);
+
         this.imageURLMaps = makeImageURLMaps(
-          speciesImages,
+          await fetchSpeciesImages(this.locationSpecies),
           this.locationSpecies
+        );
+        console.log(
+          `Fetched species images: \
+          familySci ${this.imageURLMaps.familySci2images.size}, \
+          familyEn ${this.imageURLMaps.familyEn2images.size}, \
+          genus ${this.imageURLMaps.genus2images.size}, \
+          speciesSci ${this.imageURLMaps.speciesSciName2images.size}`
         );
       } catch (err) {
         console.log("Error fetching location species and recordings: ", err);

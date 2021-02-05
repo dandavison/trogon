@@ -99,10 +99,26 @@ export async function fetchEbirdHotspotsByLatLng(
 export async function fetchSpeciesImages(
   species: EbirdSpecies[]
 ): Promise<SpeciesImages[]> {
-  console.log("fetchSpeciesImages:", species);
-  const speciesString = species.map(sp => sp.sciName).join(",");
-  const response = await fetch(
-    `${process.env.VUE_APP_SERVER_URL}/api/species-image-urls?species=${speciesString}`
+  // HACK: how to correctly filter to successfully resolved promises only?
+  const speciesImagesSettledPromises = await fetchSpeciesImagesParallel(
+    species
   );
-  return await response.json();
+  return speciesImagesSettledPromises
+    .filter(
+      result =>
+        result.status === "fulfilled" && result.value && result.value.urls
+    )
+    .map((result: any) => result.value); // result: PromiseFulfilledResult<SpeciesImages> ?
+}
+
+async function fetchSpeciesImagesParallel(
+  species: EbirdSpecies[]
+): Promise<PromiseSettledResult<SpeciesImages>[]> {
+  return Promise.allSettled(
+    species.map(sp =>
+      fetch(
+        `${process.env.VUE_APP_SERVER_URL}/api/species-image-urls?species=${sp.sciName}`
+      ).then(resp => resp.json().then(data => data[0]))
+    )
+  );
 }
