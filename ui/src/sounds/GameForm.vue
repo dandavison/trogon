@@ -6,6 +6,7 @@
       :handler="handleFamilySci"
       :shouldShow="shouldShowScientificNames"
       :filter="filterFamilySci"
+      :truth="truth.familySci"
       :isCorrect="isFamilySciCorrect"
       :getImageURLs="getFamilySciImageURLs"
       :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
@@ -17,6 +18,7 @@
       :handler="handleFamilyEn"
       :shouldShow="shouldShowEnglishNames"
       :filter="filterFamilyEn"
+      :truth="truth.familyEn"
       :isCorrect="isFamilyEnCorrect"
       :getImageURLs="getFamilyEnImageURLs"
       :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
@@ -28,6 +30,7 @@
       :handler="handleGenus"
       :shouldShow="true"
       :filter="filterGenus"
+      :truth="truth.genus"
       :isCorrect="isGenusCorrect"
       :getImageURLs="getGenusImageURLs"
       :label="'Genus'"
@@ -39,6 +42,7 @@
       :handler="handleSpeciesSci"
       :shouldShow="shouldShowScientificNames"
       :filter="filterSpeciesSci"
+      :truth="truth.speciesSci"
       :isCorrect="isSpeciesSciCorrect"
       :getImageURLs="getSpeciesSciImageURLs"
       :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
@@ -50,6 +54,7 @@
       :handler="handleSpeciesEn"
       :shouldShow="shouldShowEnglishNames"
       :filter="filterSpeciesEn"
+      :truth="truth.speciesEn"
       :isCorrect="isSpeciesEnCorrect"
       :getImageURLs="getSpeciesEnImageURLs"
       :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
@@ -142,6 +147,26 @@ export default Vue.extend({
         this.settings.names
       );
     },
+
+    truth(): Answer {
+      if (this.recording) {
+        return {
+          familySci: this.recording.familySci,
+          familyEn: this.recording.familyEn,
+          genus: this.recording.genus,
+          speciesSci: this.recording.speciesSci,
+          speciesEn: this.recording.speciesEn,
+        };
+      } else {
+        return {
+          familySci: "",
+          familyEn: "",
+          genus: "",
+          speciesSci: "",
+          speciesEn: "",
+        };
+      }
+    },
   },
 
   methods: {
@@ -212,11 +237,11 @@ export default Vue.extend({
 
     revealSpecies(): void {
       if (this.recording) {
-        (this.$refs.familySciField as any).answer = this.recording.familySci;
-        (this.$refs.familyEnField as any).answer = this.recording.familyEn;
-        (this.$refs.genusField as any).answer = this.recording.genus;
-        (this.$refs.speciesSciField as any).answer = this.recording.speciesSci;
-        (this.$refs.speciesEnField as any).answer = this.recording.speciesEn;
+        (this.$refs.familySciField as any).reveal();
+        (this.$refs.familyEnField as any).reveal();
+        (this.$refs.genusField as any).reveal();
+        (this.$refs.speciesSciField as any).reveal();
+        (this.$refs.speciesEnField as any).reveal();
       }
     },
 
