@@ -118,23 +118,6 @@ export default Vue.extend({
     };
   },
 
-  watch: {
-    // Autofill speciesEn according to (genus, speciesSci)
-    answer: {
-      deep: true,
-      handler(newVal: Answer): void {
-        if (!this.answer.speciesEn && newVal.genus && newVal.speciesSci) {
-          const speciesEn = this.speciesSci2En.get(
-            `${newVal.genus} ${newVal.speciesSci}`
-          );
-          if (speciesEn) {
-            this.answer.speciesEn = speciesEn;
-          }
-        }
-      },
-    },
-  },
-
   computed: {
     shouldShowScientificNames(): boolean {
       return new Set([NamesLanguage.Scientific, NamesLanguage.Both]).has(
@@ -195,14 +178,25 @@ export default Vue.extend({
     },
     handleSpeciesSci(newVal: string): void {
       this.answer.speciesSci = newVal;
+      if (!this.answer.speciesEn) {
+        const speciesEn = this.speciesSci2En.get(newVal);
+        if (speciesEn) {
+          this.answer.speciesEn = speciesEn;
+        }
+      }
     },
     handleSpeciesEn(newVal: string): void {
       this.answer.speciesEn = newVal;
+      if (!this.answer.speciesSci) {
+        const speciesSci = this.speciesEn2Sci.get(newVal);
+        if (speciesSci) {
+          this.answer.speciesSci = speciesSci;
+        }
+      }
     },
     getSpeciesSciImageURLs(option: string): string[] {
-      const answerSciName = `${this.answer.genus} ${option}`;
       return Array.from(
-        this.imageURLMaps.speciesSciName2images.get(answerSciName) || new Set()
+        this.imageURLMaps.speciesSciName2images.get(option) || new Set()
       );
     },
     getSpeciesEnImageURLs(option: string): string[] {

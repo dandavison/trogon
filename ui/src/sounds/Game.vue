@@ -186,7 +186,7 @@ export default Vue.extend({
       if (!rec.done) {
         this.recording = rec.value;
         let images = this.imageURLMaps.speciesSciName2images.get(
-          `${this.recording.genus} ${this.recording.speciesSci}`
+          this.recording.speciesSci
         );
         if (images) {
           let image = images.values().next();
@@ -242,7 +242,7 @@ function makeImageURLMaps(
     let haveSeenGenus = true;
     let images = species2images.get(sp.sciName) || [];
     if (images[0]) {
-      speciesSciName2images.set(`${genus} ${speciesSci}`, new Set(images));
+      speciesSciName2images.set(speciesSci, new Set(images));
 
       if (!genus2images.has(genus)) {
         genus2images.set(genus, new Set());

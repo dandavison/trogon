@@ -6,7 +6,7 @@ export const ebirdSpecies = {
     return species.sciName.split(" ")[0] || "";
   },
   getSpeciesSci: function(species: EbirdSpecies): string {
-    return species.sciName.split(" ")[1] || "";
+    return species.sciName;
   },
   getSpeciesEn: function(species: EbirdSpecies): string {
     return species.comName;

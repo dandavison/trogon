@@ -28,7 +28,7 @@ export async function getRecordings(
   const speciesSci = ebirdSpecies.getSpeciesSci(species);
   const speciesEn = ebirdSpecies.getSpeciesEn(species);
 
-  var query = `${genus}+${speciesSci}+gen:${genus}`;
+  var query = `${speciesSci}+gen:${genus}`;
   if (location) {
     const country = iso3311a2.getCountry(location.countryCode);
     if (country) {

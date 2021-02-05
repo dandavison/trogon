@@ -44,7 +44,10 @@ export default Vue.extend({
   methods: {
     recordingSpeciesWikipediaURL(): string | null {
       if (this.recording) {
-        return `https://en.wikipedia.org/w/index.php?title=${this.recording.genus}_${this.recording.speciesSci}`;
+        return `https://en.wikipedia.org/w/index.php?title=${this.recording.speciesSci.replace(
+          " ",
+          "_"
+        )}`;
       } else {
         return null;
       }
@@ -56,7 +59,7 @@ export default Vue.extend({
         if (this.settings.names == NamesLanguage.English) {
           return speciesEn;
         } else {
-          const speciesSci = `${this.recording.genus} ${this.recording.speciesSci}`;
+          const speciesSci = this.recording.speciesSci;
           if (this.settings.names == NamesLanguage.Scientific) {
             return speciesSci;
           } else {
