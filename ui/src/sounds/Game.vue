@@ -8,8 +8,9 @@
       :challengeFamilies="challengeFamilies"
     />
 
+    <b-loading v-model="isLoading"></b-loading>
+
     <challenge-controls
-      v-if="haveLocationData"
       :image="image"
       :recording="recording"
       :setNextRecording="setNextRecording"
@@ -117,6 +118,10 @@ export default Vue.extend({
 
     challengeRecordings(): Iterator<Recording> {
       return this.makeRecordingsIterator(this.selectedChallengeSpecies);
+    },
+
+    isLoading(): Boolean {
+      return !this.haveLocationData;
     },
   },
 
