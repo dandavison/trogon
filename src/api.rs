@@ -39,9 +39,6 @@ pub fn ebird_species(species_codes: String) -> content::Json<String> {
 #[get("/species-image-urls?<species>")]
 pub fn species_images(species: String) -> content::Json<String> {
     content::Json(
-        serde_json::to_string(&species_images::get_images(
-            species.split(",").map(String::from).collect(),
-        ))
-        .unwrap(),
+        serde_json::to_string(&species_images::get_images(species.split(",").collect())).unwrap(),
     )
 }
