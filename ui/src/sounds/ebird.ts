@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { EbirdHotspot, EbirdObservation } from "types";
 import { LeafletLatLng, EbirdSpecies, SpeciesImages } from "./types";
 
@@ -99,26 +100,44 @@ export async function fetchEbirdHotspotsByLatLng(
 export async function fetchSpeciesImages(
   species: EbirdSpecies[]
 ): Promise<SpeciesImages[]> {
-  // HACK: how to correctly filter to successfully resolved promises only?
-  const speciesImagesSettledPromises = await fetchSpeciesImagesParallel(
-    species
+  const speciesString = species.map(sp => sp.sciName).join(",");
+  const cachedSpeciesImages: SpeciesImages[] = await fetch(
+    `${process.env.VUE_APP_SERVER_URL}/api/species-image-urls?species=${speciesString}&cached_only=true`
+  ).then(resp => resp.json());
+  const remainingSpeciesNames = _.difference(
+    species.map(ebirdSpecies.getSpeciesSci),
+    cachedSpeciesImages.map(si => si.species)
   );
-  return speciesImagesSettledPromises
+  console.log(
+    `Got ${cachedSpeciesImages.length} cached species images; \
+    fetching remaining ${remainingSpeciesNames.length}`
+  );
+  // HACK: how to correctly filter to successfully resolved promises only?
+  const remainingSpeciesImages = (
+    await fetchSpeciesImagesParallel(remainingSpeciesNames)
+  )
     .filter(
       result =>
         result.status === "fulfilled" && result.value && result.value.urls
     )
     .map((result: any) => result.value); // result: PromiseFulfilledResult<SpeciesImages> ?
+
+  return _.concat(cachedSpeciesImages, remainingSpeciesImages);
 }
 
 async function fetchSpeciesImagesParallel(
-  species: EbirdSpecies[]
+  species: string[]
 ): Promise<PromiseSettledResult<SpeciesImages>[]> {
   return Promise.allSettled(
     species.map(sp =>
       fetch(
-        `${process.env.VUE_APP_SERVER_URL}/api/species-image-urls?species=${sp.sciName}`
-      ).then(resp => resp.json().then(data => data[0]))
+        `${process.env.VUE_APP_SERVER_URL}/api/species-image-urls?species=${sp}&cached_only=false`
+      )
+        .then(resp => resp.json())
+        .then(data => data[0])
+        .catch(error =>
+          console.log(`Error: fetchSpeciesImagesParallel: ${error}`)
+        )
     )
   );
 }
