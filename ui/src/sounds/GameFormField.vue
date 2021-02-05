@@ -1,26 +1,28 @@
 <template>
   <b-field v-if="shouldShow" :label="label" :id="id">
-    <b-button @click="reveal">Reveal</b-button>
-    <b-autocomplete type="text" v-model="answer" :data="filter()">
-      <template slot-scope="props">
-        <div class="media">
-          <div class="media-content">
-            {{ props.option }}
+    <span>
+      <b-autocomplete type="text" v-model="answer" :data="filter()">
+        <template slot-scope="props">
+          <div class="media">
+            <div class="media-content">
+              {{ props.option }}
+            </div>
+            <div class="media-right">
+              <img
+                v-for="url in getImageURLs(props.option)"
+                :key="url"
+                :src="url"
+                width="128"
+              />
+            </div>
           </div>
-          <div class="media-right">
-            <img
-              v-for="url in getImageURLs(props.option)"
-              :key="url"
-              :src="url"
-              width="128"
-            />
-          </div>
-        </div>
-      </template>
-    </b-autocomplete>
-    <p v-if="answer">
-      {{ isCorrect() ? "✅" : "❌" }}
-    </p>
+        </template>
+      </b-autocomplete>
+      <b-button @click="reveal">Reveal</b-button>
+      <p v-if="answer">
+        {{ isCorrect() ? "✅" : "❌" }}
+      </p>
+    </span>
   </b-field>
 </template>
 
