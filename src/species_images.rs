@@ -3,20 +3,20 @@ use serde::{Deserialize, Serialize};
 use crate::db;
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct SpeciesImage {
+pub struct SpeciesImages {
     species: String,
     urls: Vec<String>,
 }
 
-pub fn get_images(species: Vec<&str>) -> Vec<SpeciesImage> {
+pub fn get_images(species: Vec<&str>) -> Vec<SpeciesImages> {
     let mut images = Vec::new();
     for sp in species.iter() {
-        images.push(get_image(sp))
+        images.push(_get_images(sp))
     }
     images
 }
 
-fn get_image(species: &str) -> SpeciesImage {
+fn _get_images(species: &str) -> SpeciesImages {
     let html_url = format!(
         "https://en.wikipedia.org/w/index.php?title={}",
         species.replace(" ", "_")
@@ -40,7 +40,7 @@ fn get_image(species: &str) -> SpeciesImage {
             img_url
         }
     };
-    SpeciesImage {
+    SpeciesImages {
         species: species.to_string(),
         urls: vec![img_url],
     }
