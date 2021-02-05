@@ -235,16 +235,6 @@ export default Vue.extend({
       (this.$refs.speciesEnField as any).clear();
     },
 
-    revealSpecies(): void {
-      if (this.recording) {
-        (this.$refs.familySciField as any).reveal();
-        (this.$refs.familyEnField as any).reveal();
-        (this.$refs.genusField as any).reveal();
-        (this.$refs.speciesSciField as any).reveal();
-        (this.$refs.speciesEnField as any).reveal();
-      }
-    },
-
     filterFamilySci(): string[] {
       return _.uniq(
         this.locationSpecies

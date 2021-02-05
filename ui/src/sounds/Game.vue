@@ -13,7 +13,6 @@
       :image="image"
       :recording="recording"
       :setNextRecording="setNextRecording"
-      :revealSpecies="revealSpecies"
       :settings="settings"
     />
 
@@ -128,12 +127,6 @@ export default Vue.extend({
         challengeFamily.selected = selected;
         // TODO: HACK: trigger reactivity: selectedChallengeSpecies
         this.challengeFamilies = new Map(this.challengeFamilies.entries());
-      }
-    },
-    revealSpecies(): void {
-      if (this.recording) {
-        (this.$refs["gameForm"] as any).revealSpecies();
-        this.showImage = true;
       }
     },
 

@@ -12,10 +12,6 @@
     <p class="level-item" v-if="image && settings.promptIncludesImages">
       <img :src="image" />
     </p>
-
-    <p class="level-item has-text-centered">
-      <b-button v-if="recording" @click="revealSpecies"> Reveal </b-button>
-    </p>
   </nav>
 </template>
 
@@ -31,7 +27,6 @@ export default Vue.extend({
     image: String,
     recording: Object as PropType<Recording | null>,
     setNextRecording: Function,
-    revealSpecies: Function,
     settings: Object as PropType<Settings>,
   },
 });
