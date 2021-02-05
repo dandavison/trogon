@@ -181,7 +181,7 @@ export default Vue.extend({
       if (!this.answer.speciesEn) {
         const speciesEn = this.speciesSci2En.get(newVal);
         if (speciesEn) {
-          this.answer.speciesEn = speciesEn;
+          (this.$refs.speciesEnField as any).answer = speciesEn;
         }
       }
     },
@@ -190,7 +190,7 @@ export default Vue.extend({
       if (!this.answer.speciesSci) {
         const speciesSci = this.speciesEn2Sci.get(newVal);
         if (speciesSci) {
-          this.answer.speciesSci = speciesSci;
+          (this.$refs.speciesSciField as any).answer = speciesSci;
         }
       }
     },
