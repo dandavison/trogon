@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
 
 use crate::db;
@@ -8,23 +10,58 @@ pub struct SpeciesImages {
     urls: Vec<String>,
 }
 
-pub fn get_images(species: Vec<&str>) -> Vec<SpeciesImages> {
+pub fn get_images(species: Vec<&str>, cached_only: bool) -> Vec<SpeciesImages> {
+    if cached_only {
+        get_images_from_cache(species)
+    } else {
+        get_images_from_cache_or_scraper(species)
+    }
+}
+
+pub fn get_images_from_cache(species: Vec<&str>) -> Vec<SpeciesImages> {
+    let keys2species: HashMap<String, &str> = species
+        .into_iter()
+        .map(|s| (make_wikipedia_url(s), s))
+        .collect();
+    let rows: Vec<postgres::Row> = db::get_client()
+        .query(
+            "select key, value from cache where key = ANY($1)",
+            &[&keys2species.keys().collect::<Vec<&String>>()],
+        )
+        .unwrap();
+
+    rows.iter()
+        .map(|row| {
+            let key: &str = row.get("key");
+            let url: String = row.get("value");
+            SpeciesImages {
+                species: keys2species.get(key).unwrap().to_string(),
+                urls: vec![url],
+            }
+        })
+        .collect()
+}
+
+pub fn get_images_from_cache_or_scraper(species: Vec<&str>) -> Vec<SpeciesImages> {
     let mut images = Vec::new();
     for sp in species.iter() {
-        images.push(_get_images(sp))
+        images.push(_get_images_for_one_species(sp))
     }
     images
 }
 
-fn _get_images(species: &str) -> SpeciesImages {
-    let html_url = format!(
+fn make_wikipedia_url(species: &str) -> String {
+    format!(
         "https://en.wikipedia.org/w/index.php?title={}",
         species.replace(" ", "_")
-    );
-    let cache_key = format!("scrape:{}", html_url);
+    )
+}
+
+fn _get_images_for_one_species(species: &str) -> SpeciesImages {
+    let html_url = make_wikipedia_url(species);
     let mut dbclient = db::get_client();
     let img_url = match dbclient
-        .query_one("select value from cache where key = $1", &[&cache_key])
+        .query_one("select value from cache where key = $1", &[&html_url])
         .map(|row| row.get("value"))
     {
         Ok(value) => value,
@@ -33,7 +70,7 @@ fn _get_images(species: &str) -> SpeciesImages {
             dbclient
                 .execute(
                     "insert into cache (key, value) values ($1, $2);",
-                    &[&cache_key, &img_url],
+                    &[&html_url, &img_url],
                 )
                 .unwrap();
 
