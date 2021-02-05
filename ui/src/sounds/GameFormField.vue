@@ -1,7 +1,12 @@
 <template>
   <b-field v-if="shouldShow" :label="label" :id="id">
     <span>
-      <b-autocomplete type="text" v-model="answer" :data="filter()">
+      <b-autocomplete
+        type="text"
+        v-model="answer"
+        :data="filter()"
+        max-height="600px"
+      >
         <template slot-scope="props">
           <div class="media">
             <div class="media-content">
