@@ -171,14 +171,24 @@ export default Vue.extend({
     makeRecordingsIterator: function* (
       species: EbirdSpecies[]
     ): Iterator<Recording> {
-      for (const sp of species) {
-        const recordings = this.recordings.get(sp.speciesCode);
-        if (
-          recordings &&
-          recordings[0] &&
-          recordingMatchesFilters(recordings[0].raw, this.settings)
-        ) {
-          yield recordings[0];
+      for (let sp of species) {
+        const recordings = this.recordings.get(sp.speciesCode) || [];
+        // TODO: type
+        for (let recording of this.makeSpeciesRecordingsIterator(
+          recordings
+        ) as any) {
+          yield recording;
+          break;
+        }
+      }
+    },
+
+    makeSpeciesRecordingsIterator: function* (
+      recordings: Recording[]
+    ): Iterator<Recording> {
+      for (let recording of _.shuffle(recordings)) {
+        if (recordingMatchesFilters(recording.raw, this.settings)) {
+          yield recording;
         }
       }
     },
