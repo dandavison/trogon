@@ -23,7 +23,7 @@
           </div>
         </template>
       </b-autocomplete>
-      <b-button @click="reveal">Reveal</b-button>
+      <b-button v-if="answer != truth" @click="reveal">Reveal</b-button>
       <p v-if="answer">
         {{ isCorrect() ? "✅" : "❌" }}
       </p>
