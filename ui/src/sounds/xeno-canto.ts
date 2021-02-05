@@ -6,7 +6,9 @@ import { Settings } from "./types";
 
 const XENO_CANTO_API_URL = `${process.env.VUE_APP_SERVER_URL}/proxy/xeno-canto/`;
 
-async function getXenoCantoRecordings(query: string): Promise<XenoCantoRecording[]> {
+async function getXenoCantoRecordings(
+  query: string
+): Promise<XenoCantoRecording[]> {
   const response = await fetch(`${XENO_CANTO_API_URL}?query=${query}`);
   const text = await response.text();
   if (text) {
@@ -18,7 +20,7 @@ async function getXenoCantoRecordings(query: string): Promise<XenoCantoRecording
 
 export async function getRecordings(
   species: EbirdSpecies,
-  location: EbirdHotspot | null,
+  location: EbirdHotspot | null
 ): Promise<Recording[]> {
   const familySci = ebirdSpecies.getFamilySci(species);
   const familyEn = ebirdSpecies.getFamilyEn(species);
@@ -36,21 +38,24 @@ export async function getRecordings(
 
   var recordings = [];
   for (let xcRec of await getXenoCantoRecordings(query)) {
-      recordings.push({
-        url: xcRec.file,
-        familySci: familySci,
-        familyEn: familyEn,
-        genus: genus,
-        speciesSci: speciesSci,
-        speciesCode: species.speciesCode,
-        speciesEn: speciesEn,
-        raw: xcRec,
-      });
+    recordings.push({
+      url: xcRec.file,
+      familySci: familySci,
+      familyEn: familyEn,
+      genus: genus,
+      speciesSci: speciesSci,
+      speciesCode: species.speciesCode,
+      speciesEn: speciesEn,
+      raw: xcRec
+    });
   }
   return recordings;
 }
 
-export function recordingMatchesFilters(xcRec: XenoCantoRecording, settings: Settings): boolean {
+export function recordingMatchesFilters(
+  xcRec: XenoCantoRecording,
+  settings: Settings
+): boolean {
   if (settings.songsOnly && !isSong(xcRec.type)) {
     return false;
   }
