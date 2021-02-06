@@ -95,6 +95,17 @@ export default Vue.extend({
       this.locationSpecies.map((sp) => [sp.familySciName, sp.familyComName])
     );
 
+    const genus2familySci = new Map(
+      this.locationSpecies.map((sp) => [
+        ebirdSpecies.getGenus(sp),
+        sp.familySciName,
+      ])
+    );
+
+    const speciesSci2genus = new Map(
+      this.locationSpecies.map((sp) => [sp.sciName, ebirdSpecies.getGenus(sp)])
+    );
+
     const speciesSci2En = new Map(
       this.locationSpecies.map((sp) => [sp.sciName, sp.comName])
     );
@@ -113,6 +124,8 @@ export default Vue.extend({
       } as Answer,
       familyEn2Sci,
       familySci2En,
+      genus2familySci,
+      speciesSci2genus,
       speciesSci2En,
       speciesEn2Sci,
     };
@@ -155,7 +168,7 @@ export default Vue.extend({
   methods: {
     handleFamilySci(newVal: string): void {
       this.answer.familySci = newVal;
-      // Autofill familyEn according to familySci
+      // Autofill familyEn
       if (!this.answer.familyEn) {
         const familyEn = this.familySci2En.get(newVal);
         if (familyEn) {
@@ -165,7 +178,7 @@ export default Vue.extend({
     },
     handleFamilyEn(newVal: string): void {
       this.answer.familyEn = newVal;
-      // Autofill familySci according to familyEn
+      // Autofill familySci
       if (!this.answer.familySci) {
         const familySci = this.familyEn2Sci.get(newVal);
         if (familySci) {
@@ -175,18 +188,34 @@ export default Vue.extend({
     },
     handleGenus(newVal: string): void {
       this.answer.genus = newVal;
+      // Autofill familySci
+      if (!this.answer.familySci) {
+        const familySci = this.genus2familySci.get(newVal);
+        if (familySci) {
+          (this.$refs.familySciField as any).answer = familySci;
+        }
+      }
     },
     handleSpeciesSci(newVal: string): void {
       this.answer.speciesSci = newVal;
+      // Autofill speciesEn
       if (!this.answer.speciesEn) {
         const speciesEn = this.speciesSci2En.get(newVal);
         if (speciesEn) {
           (this.$refs.speciesEnField as any).answer = speciesEn;
         }
       }
+      // Autofill genus
+      if (!this.answer.genus) {
+        const genus = this.speciesSci2genus.get(newVal);
+        if (genus) {
+          (this.$refs.genusField as any).answer = genus;
+        }
+      }
     },
     handleSpeciesEn(newVal: string): void {
       this.answer.speciesEn = newVal;
+      // Autofill speciesSci
       if (!this.answer.speciesSci) {
         const speciesSci = this.speciesEn2Sci.get(newVal);
         if (speciesSci) {
