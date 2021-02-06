@@ -6,6 +6,10 @@
         v-model="answer"
         :data="filter()"
         max-height="600px"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
       >
         <template slot-scope="props">
           <div class="media">
