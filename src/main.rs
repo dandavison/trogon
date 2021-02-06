@@ -82,6 +82,7 @@ fn main() -> std::io::Result<()> {
                 "/proxy",
                 routes![
                     proxy::ebird_ref_hotspot_geo,
+                    proxy::ebird_ref_hotspot_info,
                     proxy::ebird_product_spplist,
                     proxy::xeno_canto
                 ],

@@ -22,6 +22,20 @@ pub fn ebird_ref_hotspot_geo(lat: f32, lng: f32, fmt: String) -> content::Json<S
     )
 }
 
+#[get("/ebird/ref/hotspot/info/<loc_id>?<fmt>")]
+pub fn ebird_ref_hotspot_info(loc_id: String, fmt: String) -> content::Json<String> {
+    let url = format!(
+        "https://api.ebird.org/v2/ref/hotspot/info/{}?fmt={}",
+        loc_id, fmt
+    );
+    fetch_json_with_caching(
+        &url,
+        vec![("X-eBirdApiToken", get_ebird_api_token().as_str())]
+            .into_iter()
+            .collect(),
+    )
+}
+
 #[get("/ebird/product/spplist/<loc_id>?<fmt>")]
 pub fn ebird_product_spplist(loc_id: String, fmt: String) -> content::Json<String> {
     let url = format!(
