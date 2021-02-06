@@ -80,12 +80,10 @@ async function fetchRecentObservations(
 
 export async function fetchEbirdHotspot(
   ebirdLocId: string
-): Promise<EbirdHotspot | null> {
-  const response = await fetch(
-    `${process.env.VUE_APP_SERVER_URL}/api/ebird-hotspots/`
-  );
-  const ebirdHotspots: EbirdHotspot[] = await response.json();
-  return ebirdHotspots.filter(h => h.locId == ebirdLocId)[0] || null;
+): Promise<EbirdHotspot> {
+  return fetch(
+    `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/ref/hotspot/info/${ebirdLocId}?fmt=json`
+  ).then(response => response.json());
 }
 
 export async function fetchEbirdHotspotsByLatLng(
