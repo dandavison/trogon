@@ -3,7 +3,7 @@
     style="height: 800px"
     v-bind="map"
     :center="center"
-    @click.right="showPopup"
+    @click.right="showCoordinatesPopup"
   >
     <l-tile-layer v-bind="tileLayer"></l-tile-layer>
 
@@ -12,22 +12,31 @@
       :key="hotspot.id"
       :lat-lng="[hotspot.lat, hotspot.lng]"
       v-bind="hotspotProps"
-      @click="handleEbirdHotspotClick(hotspot)"
     >
-      <l-tooltip :content="formatEbirdHotspotDetailHTML(hotspot)" />
-    </l-circle>
-
-    <l-layer-group>
-      <l-popup
-        v-if="popup.latlng"
-        :latLng="popup.latlng"
-        @remove="() => (popup.latlng = null)"
-      >
-        <b-button @click="fetchNearbyHotspots">
-          Fetch nearby Ebird hotspots
+      <l-popup>
+        <b-button
+          class="is-success is-light"
+          @click="
+            () => $router.push(`/sounds/challenge?location=${hotspot.locId}`)
+          "
+        >
+          {{ hotspot.locName }}
         </b-button>
       </l-popup>
-    </l-layer-group>
+    </l-circle>
+
+    <l-marker v-if="popup.latlng" :latLng="popup.latlng">
+      <l-popup>
+        <b-button
+          class="is-success is-light"
+          @click="
+            () => $router.push(`/sounds/challenge?coords=${popup.latlng}`)
+          "
+        >
+          ({{ popup.latlng.lat.toFixed(2) }}, {{ popup.latlng.lng.toFixed(2) }})
+        </b-button>
+      </l-popup>
+    </l-marker>
   </l-map>
 </template>
 
@@ -39,8 +48,8 @@ import {
   LMap,
   LTileLayer,
   LCircle,
+  LMarker,
   LPopup,
-  LTooltip,
   LLayerGroup,
 } from "vue2-leaflet";
 import { EbirdHotspot } from "types";
@@ -49,7 +58,14 @@ import { LatLng } from "leaflet";
 import { LeafletMapEvent } from "./types";
 
 export default Vue.extend({
-  components: { LMap, LTileLayer, LCircle, LPopup, LTooltip, LLayerGroup },
+  components: {
+    LMap,
+    LTileLayer,
+    LCircle,
+    LMarker,
+    LPopup,
+    LLayerGroup,
+  },
   props: {
     center: Array as PropType<number[]>,
   },
@@ -64,7 +80,7 @@ export default Vue.extend({
       hotspotProps: {
         color: "#f03",
         fillOpacity: 0.5,
-        radius: 50,
+        radius: 500,
       },
       popup: {
         latlng: null as LatLng | null,
@@ -73,22 +89,13 @@ export default Vue.extend({
     };
   },
   methods: {
-    showPopup(event: LeafletMapEvent): void {
-      console.log("showPopup", event);
+    showCoordinatesPopup(event: LeafletMapEvent): void {
       this.popup.latlng = event.latlng as any; // TODO
-    },
-    fetchNearbyHotspots(): void {
       if (this.popup.latlng) {
         fetchEbirdHotspotsByLatLng(this.popup.latlng).then(
           (data) => (this.ebirdHotspots = data)
         );
       }
-    },
-    handleEbirdHotspotClick(hotspot: EbirdHotspot): void {
-      this.$router.push(`/sounds/${hotspot.locId}`);
-    },
-    formatEbirdHotspotDetailHTML(hotspot: EbirdHotspot): string {
-      return `${hotspot.locName}`;
     },
   },
 });

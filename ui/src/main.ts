@@ -29,9 +29,12 @@ const routes = [
   { path: "/", component: LandingPage },
   { path: "/sounds/", component: SoundsRoot, name: "sounds-root" },
   {
-    path: "/sounds/:ebirdLocId",
+    path: "/sounds/challenge/",
     component: SoundsGameRoot,
-    props: true,
+    props: (route: any) => ({
+      ebirdLocId: route.query.location,
+      latlng: route.query.coords
+    }),
     name: "sounds-game-root"
   },
   { path: "/map", component: MapView },

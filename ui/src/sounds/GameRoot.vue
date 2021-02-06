@@ -8,6 +8,8 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { LatLng } from "leaflet";
+
 import eventBus from "./event-bus";
 import ControlPanel from "./ControlPanel.vue";
 import Navbar from "./Navbar.vue";
@@ -16,7 +18,7 @@ import { NamesLanguage, Settings } from "./types";
 
 export default Vue.extend({
   name: "GameRoot",
-  props: { ebirdLocId: String },
+  props: { ebirdLocId: String, latlng: LatLng },
   components: { Navbar, ControlPanel, Game },
   data() {
     return {
