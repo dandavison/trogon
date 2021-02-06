@@ -345,7 +345,7 @@ export default Vue.extend({
       return ebirdSpecies
         .getSpeciesSci(species)
         .toLowerCase()
-        .startsWith(this.answer.speciesSci.toLowerCase());
+        .includes(this.answer.speciesSci.toLowerCase());
     },
 
     isSpeciesEnMatch(species: EbirdSpecies): boolean {
