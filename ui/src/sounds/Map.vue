@@ -3,7 +3,7 @@
     style="height: 800px"
     v-bind="map"
     :center="center"
-    @click="handleClick"
+    @click.right="showPopup"
   >
     <l-tile-layer v-bind="tileLayer"></l-tile-layer>
 
@@ -16,6 +16,18 @@
     >
       <l-tooltip :content="formatEbirdHotspotDetailHTML(hotspot)" />
     </l-circle>
+
+    <l-layer-group>
+      <l-popup
+        v-if="popup.latlng"
+        :latLng="popup.latlng"
+        @remove="() => (popup.latlng = null)"
+      >
+        <b-button @click="fetchNearbyHotspots">
+          Fetch nearby Ebird hotspots
+        </b-button>
+      </l-popup>
+    </l-layer-group>
   </l-map>
 </template>
 
@@ -23,13 +35,21 @@
 import Vue, { PropType } from "vue";
 import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
-import { LMap, LTileLayer, LCircle, LTooltip, LLayerGroup } from "vue2-leaflet";
+import {
+  LMap,
+  LTileLayer,
+  LCircle,
+  LPopup,
+  LTooltip,
+  LLayerGroup,
+} from "vue2-leaflet";
 import { EbirdHotspot } from "types";
-import { LeafletMapEvent } from "./types";
 import { fetchEbirdHotspotsByLatLng } from "./ebird";
+import { LatLng } from "leaflet";
+import { LeafletMapEvent } from "./types";
 
 export default Vue.extend({
-  components: { LMap, LTileLayer, LCircle, LTooltip, LLayerGroup },
+  components: { LMap, LTileLayer, LCircle, LPopup, LTooltip, LLayerGroup },
   props: {
     center: Array as PropType<number[]>,
   },
@@ -46,14 +66,23 @@ export default Vue.extend({
         fillOpacity: 0.5,
         radius: 50,
       },
+      popup: {
+        latlng: null as LatLng | null,
+      },
       ebirdHotspots: [] as EbirdHotspot[],
     };
   },
   methods: {
-    handleClick(event: LeafletMapEvent): void {
-      fetchEbirdHotspotsByLatLng(event.latlng).then(
-        (data) => (this.ebirdHotspots = data)
-      );
+    showPopup(event: LeafletMapEvent): void {
+      console.log("showPopup", event);
+      this.popup.latlng = event.latlng as any; // TODO
+    },
+    fetchNearbyHotspots(): void {
+      if (this.popup.latlng) {
+        fetchEbirdHotspotsByLatLng(this.popup.latlng).then(
+          (data) => (this.ebirdHotspots = data)
+        );
+      }
     },
     handleEbirdHotspotClick(hotspot: EbirdHotspot): void {
       this.$router.push(`/sounds/${hotspot.locId}`);
