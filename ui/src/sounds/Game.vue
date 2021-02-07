@@ -137,12 +137,15 @@ export default Vue.extend({
 
     async fetchLocationSpeciesAndRecordings(): Promise<void> {
       try {
+        // Fetch combined species list for all locations
         this.locationSpecies = await fetchLocationSpecies([this.ebirdLocId]);
+
         this.challengeSpecies = _.shuffle(
           await filterToCommonSpecies(this.locationSpecies, this.ebirdLocId)
         );
         this.challengeFamilies = makeChallengeFamilies(this.challengeSpecies);
-        this.fetchAllRecordings();
+        this.ebirdHotspot = await fetchEbirdHotspot(this.ebirdLocId);
+        this.fetchAllRecordings(this.locationSpecies, this.ebirdHotspot);
 
         this.imageURLMaps = makeImageURLMaps(
           await fetchSpeciesImages(this.locationSpecies),
@@ -160,10 +163,12 @@ export default Vue.extend({
       }
     },
 
-    async fetchAllRecordings(): Promise<void> {
-      this.ebirdHotspot = await fetchEbirdHotspot(this.ebirdLocId);
-      for (let sp of this.selectedChallengeSpecies) {
-        const recordings = await getRecordings(sp, this.ebirdHotspot);
+    async fetchAllRecordings(
+      species: EbirdSpecies[],
+      ebirdHotspot: EbirdHotspot
+    ): Promise<void> {
+      for (let sp of species) {
+        const recordings = await getRecordings(sp, ebirdHotspot);
         this.recordings.set(sp.speciesCode, recordings);
       }
     },
