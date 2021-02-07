@@ -87,6 +87,7 @@ export default Vue.extend({
       recentObservations: [] as EbirdObservation[],
       challengeSpecies: [] as EbirdSpecies[],
       challengeFamilies: new Map([]) as Map<string, ChallengeFamily>,
+      speciesImages: [] as SpeciesImages[],
       imageURLMaps: makeImageURLMaps([], []),
       recordings: new Map([]) as Map<string, Recording[]>, // speciesCode
       recording: null as Recording | null,
@@ -96,9 +97,16 @@ export default Vue.extend({
     };
   },
 
-  created: function () {
-    this.fetchLocationSpeciesAndRecordings().then(
-      () => (this.haveLocationData = true)
+  created: async function () {
+    await this.fetchLocationData();
+    this.haveLocationData = true;
+    this.challengeSpecies = _.shuffle(
+      filterToCommonSpecies(this.locationSpecies, this.recentObservations)
+    );
+    this.challengeFamilies = makeChallengeFamilies(this.challengeSpecies);
+    this.imageURLMaps = makeImageURLMaps(
+      this.speciesImages,
+      this.locationSpecies
     );
   },
 
@@ -137,7 +145,7 @@ export default Vue.extend({
       }
     },
 
-    async fetchLocationSpeciesAndRecordings(): Promise<void> {
+    async fetchLocationData(): Promise<void> {
       try {
         // Parallel: fetch combined species list for all locations, and hotspot info
         [
@@ -149,28 +157,12 @@ export default Vue.extend({
           fetchEbirdHotspot(this.ebirdLocId),
           fetchRecentObservations(this.ebirdLocId),
         ]);
-
+        [, this.speciesImages] = await Promise.all([
+          this.fetchAllRecordings(this.locationSpecies, this.ebirdHotspot),
+          fetchSpeciesImages(this.locationSpecies),
+        ]);
         console.log(
-          `Fetched ${this.recentObservations.length} recent observations for ${this.ebirdLocId}`
-        );
-
-        await this.fetchAllRecordings(this.locationSpecies, this.ebirdHotspot);
-
-        this.challengeSpecies = _.shuffle(
-          filterToCommonSpecies(this.locationSpecies, this.recentObservations)
-        );
-        this.challengeFamilies = makeChallengeFamilies(this.challengeSpecies);
-
-        this.imageURLMaps = makeImageURLMaps(
-          await fetchSpeciesImages(this.locationSpecies),
-          this.locationSpecies
-        );
-        console.log(
-          `Fetched species images: \
-          familySci ${this.imageURLMaps.familySci2images.size}, \
-          familyEn ${this.imageURLMaps.familyEn2images.size}, \
-          genus ${this.imageURLMaps.genus2images.size}, \
-          speciesSci ${this.imageURLMaps.speciesSciName2images.size}`
+          `Fetched data for ${this.ebirdLocId}: ${this.locationSpecies.length} species, ${this.recentObservations.length} recent observations`
         );
       } catch (err) {
         console.log("Error fetching location species and recordings: ", err);
