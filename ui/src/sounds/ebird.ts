@@ -51,20 +51,18 @@ export async function fetchLocationSpecies(
   return species;
 }
 
-export async function filterToCommonSpecies(
+export function filterToCommonSpecies(
   locationSpecies: EbirdSpecies[],
-  ebirdLocId: string
-): Promise<EbirdSpecies[]> {
-  const observations = await fetchRecentObservations(ebirdLocId);
-  console.log(
-    `Fetched ${observations.length} recent observations for ${ebirdLocId}`
-  );
-  if (observations.length === 0) {
-    console.log(`No recent observations for ${ebirdLocId}`);
+  recentObservations: EbirdObservation[]
+): EbirdSpecies[] {
+  if (recentObservations.length === 0) {
+    console.log(`No recent observations`);
     console.log("Not filtering to common species");
     return locationSpecies;
   }
-  const recentSpeciesCodes = new Set(observations.map(obs => obs.speciesCode));
+  const recentSpeciesCodes = new Set(
+    recentObservations.map(obs => obs.speciesCode)
+  );
   const commonSpecies = locationSpecies.filter(sp =>
     recentSpeciesCodes.has(sp.speciesCode)
   );
@@ -74,7 +72,7 @@ export async function filterToCommonSpecies(
   return commonSpecies;
 }
 
-async function fetchRecentObservations(
+export async function fetchRecentObservations(
   ebirdLocId: string
 ): Promise<EbirdObservation[]> {
   // TODO: client-side code shouldn't use EBIRD_API_TOKEN

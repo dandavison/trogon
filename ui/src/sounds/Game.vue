@@ -43,12 +43,13 @@
 <script lang="ts">
 import _ from "lodash";
 import Vue, { PropType } from "vue";
-import { EbirdHotspot } from "types";
+import { EbirdHotspot, EbirdObservation } from "types";
 import {
   filterToCommonSpecies,
   fetchEbirdHotspot,
   ebirdSpecies,
   fetchLocationSpecies,
+  fetchRecentObservations,
   fetchSpeciesImages,
 } from "./ebird";
 import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
@@ -83,6 +84,7 @@ export default Vue.extend({
     return {
       ebirdHotspot: null as EbirdHotspot | null,
       locationSpecies: [] as EbirdSpecies[],
+      recentObservations: [] as EbirdObservation[],
       challengeSpecies: [] as EbirdSpecies[],
       challengeFamilies: new Map([]) as Map<string, ChallengeFamily>,
       imageURLMaps: makeImageURLMaps([], []),
@@ -137,15 +139,27 @@ export default Vue.extend({
 
     async fetchLocationSpeciesAndRecordings(): Promise<void> {
       try {
-        // Fetch combined species list for all locations
-        this.locationSpecies = await fetchLocationSpecies([this.ebirdLocId]);
+        // Parallel: fetch combined species list for all locations, and hotspot info
+        [
+          this.locationSpecies,
+          this.ebirdHotspot,
+          this.recentObservations,
+        ] = await Promise.all([
+          fetchLocationSpecies([this.ebirdLocId]),
+          fetchEbirdHotspot(this.ebirdLocId),
+          fetchRecentObservations(this.ebirdLocId),
+        ]);
+
+        console.log(
+          `Fetched ${this.recentObservations.length} recent observations for ${this.ebirdLocId}`
+        );
+
+        await this.fetchAllRecordings(this.locationSpecies, this.ebirdHotspot);
 
         this.challengeSpecies = _.shuffle(
-          await filterToCommonSpecies(this.locationSpecies, this.ebirdLocId)
+          filterToCommonSpecies(this.locationSpecies, this.recentObservations)
         );
         this.challengeFamilies = makeChallengeFamilies(this.challengeSpecies);
-        this.ebirdHotspot = await fetchEbirdHotspot(this.ebirdLocId);
-        this.fetchAllRecordings(this.locationSpecies, this.ebirdHotspot);
 
         this.imageURLMaps = makeImageURLMaps(
           await fetchSpeciesImages(this.locationSpecies),
@@ -166,11 +180,14 @@ export default Vue.extend({
     async fetchAllRecordings(
       species: EbirdSpecies[],
       ebirdHotspot: EbirdHotspot
-    ): Promise<void> {
-      for (let sp of species) {
-        const recordings = await getRecordings(sp, ebirdHotspot);
-        this.recordings.set(sp.speciesCode, recordings);
-      }
+    ): Promise<any> {
+      return Promise.all(
+        species.map((sp) =>
+          getRecordings(sp, ebirdHotspot).then((recordings) =>
+            this.recordings.set(sp.speciesCode, recordings)
+          )
+        )
+      );
     },
 
     makeRecordingsIterator: function* (
