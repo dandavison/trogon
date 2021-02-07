@@ -137,7 +137,7 @@ export default Vue.extend({
 
     async fetchLocationSpeciesAndRecordings(): Promise<void> {
       try {
-        this.locationSpecies = await fetchLocationSpecies(this.ebirdLocId);
+        this.locationSpecies = await fetchLocationSpecies([this.ebirdLocId]);
         this.challengeSpecies = _.shuffle(
           await filterToCommonSpecies(this.locationSpecies, this.ebirdLocId)
         );

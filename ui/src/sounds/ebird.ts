@@ -1,4 +1,6 @@
 import _ from "lodash";
+
+import { fetchMultipleJSON } from "./utils";
 import { EbirdHotspot, EbirdObservation } from "types";
 import { LeafletLatLng, EbirdSpecies, SpeciesImages } from "./types";
 
@@ -21,23 +23,30 @@ export const ebirdSpecies = {
 };
 
 export async function fetchLocationSpecies(
-  locId: string
+  locIds: string[]
 ): Promise<EbirdSpecies[]> {
-  var response = await fetch(
-    `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/product/spplist/${locId}?fmt=json`
+  /// Fetch species lists for each location in parallel
+  var speciesCodes = await fetchMultipleJSON(
+    locIds.map(
+      locId =>
+        `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/product/spplist/${locId}?fmt=json`
+    )
   );
-  const speciesCodes = await response.json();
+  speciesCodes = _.union(speciesCodes);
   console.log(
-    `Fetched ${speciesCodes.length} species codes for ebird location: ${locId}`
+    `Fetched ${speciesCodes.length} species codes for locations: ${locIds.join(
+      ","
+    )}`
   );
-  response = await fetch(
+  const species = await fetch(
     `${
       process.env.VUE_APP_SERVER_URL
     }/api/ebird-species?species_codes=${speciesCodes.join(",")}`
-  );
-  const species = await response.json();
+  ).then(resp => resp.json());
   console.log(
-    `Fetched ${species.length} EbirdSpecies for ebird location: ${locId}`
+    `Fetched ${species.length} EbirdSpecies for ebird locations: ${locIds.join(
+      ","
+    )}`
   );
   return species;
 }
