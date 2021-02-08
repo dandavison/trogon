@@ -4,7 +4,7 @@
       :ebirdLocIds="ebirdLocIds"
       :ebirdHotspots="ebirdHotspots"
       :locationSpecies="locationSpecies"
-      :selectedChallengeSpecies="selectedChallengeSpecies"
+      :challengeRecordings="challengeRecordings"
       :challengeFamilies="challengeFamilies"
     />
 
@@ -92,13 +92,19 @@ export default Vue.extend({
       ebirdHotspots: [] as EbirdHotspot[],
       locationSpecies: [] as EbirdSpecies[],
       speciesCode2SciName: new Map([]) as Map<string, string>,
+      species2familySci: new Map([]) as Map<string, string>,
+      species2familyEn: new Map([]) as Map<string, string>,
       commonSpecies: new Set([]) as Set<string>,
       recentObservations: [] as EbirdObservation[],
-      challengeSpecies: [] as EbirdSpecies[],
       challengeFamilies: new Map([]) as Map<string, ChallengeFamily>,
+      selectedFamilies: new Set([]) as Set<string>,
       speciesImages: [] as SpeciesImages[],
       imageURLMaps: makeImageURLMaps([], []),
       recordings: new Map([]) as Map<string, Recording[]>, // speciesCode
+      challengeRecordings: [] as Recording[],
+      challengeRecordingsIterator: makeRecordingsIterator(
+        []
+      ) as Iterator<Recording>,
       recording: null as Recording | null,
       showImage: false,
       haveLocationData: false,
@@ -109,59 +115,78 @@ export default Vue.extend({
   created: async function () {
     await this.fetchLocationData();
     this.haveLocationData = true;
+    this.imageURLMaps = makeImageURLMaps(
+      this.speciesImages,
+      this.locationSpecies
+    );
     this.speciesCode2SciName = new Map(
       this.locationSpecies.map((sp) => [sp.speciesCode, sp.sciName])
+    );
+    this.species2familySci = new Map(
+      this.locationSpecies.map((sp) => [sp.sciName, sp.familySciName])
+    );
+    this.species2familyEn = new Map(
+      this.locationSpecies.map((sp) => [sp.sciName, sp.familyComName])
     );
     this.commonSpecies = new Set(
       this.recentObservations
         .map((obs) => this.speciesCode2SciName.get(obs.speciesCode))
         .filter(Boolean) as any
     );
-    this.challengeFamilies = makeChallengeFamilies(this.challengeSpecies);
-    this.imageURLMaps = makeImageURLMaps(
-      this.speciesImages,
-      this.locationSpecies
+    this.challengeFamilies = makeChallengeFamilies(this.locationSpecies);
+    this.selectedFamilies = new Set(
+      Array.from(this.challengeFamilies.entries())
+        .filter(([_, { selected }]) => selected)
+        .map(([family, _]) => family)
     );
+    this.setChallengeRecordings();
   },
 
   mounted: function () {
     eventBus.$on("family:select", this.handleFamilySelection);
   },
 
+  watch: {
+    settings: {
+      deep: true,
+      handler: function (_newVal: Settings) {
+        this.setChallengeRecordings();
+      },
+    },
+    challengeFamilies: {
+      deep: true,
+      handler: function (_newVal: Map<string, ChallengeFamily>) {
+        this.setChallengeRecordings();
+      },
+    },
+  },
+
   computed: {
-    selectedChallengeSpecies(): EbirdSpecies[] {
-      const selectedFamilies = new Set(
-        Array.from(this.challengeFamilies.entries())
-          .filter(([_, { selected }]) => selected)
-          .map(([family, _]) => family)
-      );
-      return this.challengeSpecies.filter((sp) =>
-        selectedFamilies.has(sp.familyComName)
-      );
-    },
-
-    challengeRecordings(): Iterator<Recording> {
-      return this.makeRecordingsIterator(this.selectedChallengeSpecies);
-    },
-
     isLoading(): Boolean {
       return !this.haveLocationData;
     },
   },
 
   methods: {
+    setChallengeRecordings(): void {
+      this.challengeRecordings = this.makeChallengeRecordings(
+        this.locationSpecies
+      );
+      this.challengeRecordingsIterator = makeRecordingsIterator(
+        this.challengeRecordings
+      );
+    },
+
     handleFamilySelection(family: string, selected: boolean): void {
       var challengeFamily = this.challengeFamilies.get(family);
       if (challengeFamily) {
         challengeFamily.selected = selected;
-        // TODO: HACK: trigger reactivity: selectedChallengeSpecies
-        this.challengeFamilies = new Map(this.challengeFamilies.entries());
       }
     },
 
     async fetchLocationData(): Promise<void> {
       try {
-        // Parallel: fetch combined species list for all locations, and hotspot info
+        // Determine locations from request parameters
         if (this.locationRequest.ebirdLocId) {
           this.ebirdLocIds = [this.locationRequest.ebirdLocId];
         } else if (this.locationRequest.latlng) {
@@ -172,6 +197,7 @@ export default Vue.extend({
         } else {
           throw "Expected ebird ebirdLocId or coordinates";
         }
+        // In parallel: given locations, fetch combined species list, hotspot info, and recent observations.
         [
           this.locationSpecies,
           this.ebirdHotspots,
@@ -183,6 +209,7 @@ export default Vue.extend({
             : fetchEbirdHotspots(this.ebirdLocIds),
           fetchRecentObservations(this.ebirdLocIds),
         ]);
+        // In parallel: given species list, fetch recording and image URLs
         [, this.speciesImages] = await Promise.all([
           this.fetchAllRecordings(this.locationSpecies, this.ebirdHotspots),
           fetchSpeciesImages(this.locationSpecies),
@@ -208,19 +235,19 @@ export default Vue.extend({
       );
     },
 
-    makeRecordingsIterator: function* (
-      species: EbirdSpecies[]
-    ): Iterator<Recording> {
-      for (let sp of species) {
+    makeChallengeRecordings: function (species: EbirdSpecies[]): Recording[] {
+      var challengeRecordings = [];
+      for (let sp of _.shuffle(species)) {
         const recordings = this.recordings.get(sp.speciesCode) || [];
         // TODO: type
         for (let recording of this.makeSpeciesRecordingsIterator(
           recordings
         ) as any) {
-          yield recording;
+          challengeRecordings.push(recording);
           break;
         }
       }
+      return challengeRecordings;
     },
 
     makeSpeciesRecordingsIterator: function* (
@@ -240,9 +267,12 @@ export default Vue.extend({
       if (settings.songsOnly && !isSong(xcRec.type)) {
         return false;
       }
+      const species = `${xcRec.gen} ${xcRec.sp}`;
+      if (settings.commonSpeciesOnly && !this.commonSpecies.has(species)) {
+        return false;
+      }
       if (
-        settings.commonSpeciesOnly &&
-        !this.commonSpecies.has(`${xcRec.gen} ${xcRec.sp}`)
+        !this.selectedFamilies.has(this.species2familyEn.get(species) || "")
       ) {
         return false;
       }
@@ -253,7 +283,7 @@ export default Vue.extend({
       (this.$refs.gameForm as any).clearInput();
       this.showImage = false;
       this.image = "";
-      const rec = this.challengeRecordings.next();
+      const rec = this.challengeRecordingsIterator.next();
       if (!rec.done) {
         this.recording = rec.value;
         let images = this.imageURLMaps.speciesSciName2images.get(
@@ -341,5 +371,11 @@ function makeImageURLMaps(
     familySci2images,
     familyEn2images,
   };
+}
+
+function* makeRecordingsIterator(recordings: Recording[]): Iterator<Recording> {
+  for (let rec of recordings) {
+    yield rec;
+  }
 }
 </script>
