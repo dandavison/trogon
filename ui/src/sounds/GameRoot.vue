@@ -2,23 +2,22 @@
   <div>
     <navbar />
     <control-panel :open="controlPanelOpen" :settings="settings" />
-    <game :settings="settings" :ebirdLocId="ebirdLocId" />
+    <game :settings="settings" :locationRequest="locationRequest" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { LatLngLiteral } from "leaflet";
 
 import eventBus from "./event-bus";
 import ControlPanel from "./ControlPanel.vue";
 import Navbar from "./Navbar.vue";
 import Game from "./Game.vue";
-import { NamesLanguage, Settings } from "./types";
+import { LocationRequest, NamesLanguage, Settings } from "./types";
 
 export default Vue.extend({
   name: "GameRoot",
-  props: { ebirdLocId: String, latlng: Object as PropType<LatLngLiteral> },
+  props: { locationRequest: Object as PropType<LocationRequest> },
   components: { Navbar, ControlPanel, Game },
   data() {
     return {

@@ -30,7 +30,12 @@
         <b-button
           class="is-success is-light"
           @click="
-            () => $router.push(`/sounds/challenge?coords=${popup.latlng}`)
+            () =>
+              $router.push(
+                `/sounds/challenge?coords=${popup.latlng.lat.toFixed(
+                  2
+                )},${popup.latlng.lng.toFixed(2)}`
+              )
           "
         >
           ({{ popup.latlng.lat.toFixed(2) }}, {{ popup.latlng.lng.toFixed(2) }})

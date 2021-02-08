@@ -1,7 +1,7 @@
 <template>
   <section style="margin-top: 50px">
     <challenge-description
-      :ebirdLocId="ebirdLocId"
+      :ebirdLocIds="ebirdLocIds"
       :ebirdHotspots="ebirdHotspots"
       :locationSpecies="locationSpecies"
       :selectedChallengeSpecies="selectedChallengeSpecies"
@@ -43,6 +43,7 @@
 <script lang="ts">
 import _ from "lodash";
 import Vue, { PropType } from "vue";
+
 import { EbirdHotspot, EbirdObservation } from "types";
 import {
   filterToCommonSpecies,
@@ -51,11 +52,13 @@ import {
   fetchLocationSpecies,
   fetchRecentObservations,
   fetchSpeciesImages,
+  fetchEbirdHotspotsByLatLng,
 } from "./ebird";
 import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import RecordingComponent from "./Recording.vue";
 import {
+  LocationRequest,
   ChallengeFamily,
   EbirdSpecies,
   ImageURLMaps,
@@ -78,10 +81,14 @@ export default Vue.extend({
     ChallengeDescription,
     ChallengeControls,
   },
-  props: { ebirdLocId: String, settings: Object as PropType<Settings> },
+  props: {
+    locationRequest: Object as PropType<LocationRequest>,
+    settings: Object as PropType<Settings>,
+  },
 
   data() {
     return {
+      ebirdLocIds: [] as string[],
       ebirdHotspots: [] as EbirdHotspot[],
       locationSpecies: [] as EbirdSpecies[],
       recentObservations: [] as EbirdObservation[],
@@ -148,21 +155,33 @@ export default Vue.extend({
     async fetchLocationData(): Promise<void> {
       try {
         // Parallel: fetch combined species list for all locations, and hotspot info
+        if (this.locationRequest.ebirdLocId) {
+          this.ebirdLocIds = [this.locationRequest.ebirdLocId];
+        } else if (this.locationRequest.latlng) {
+          this.ebirdHotspots = await fetchEbirdHotspotsByLatLng(
+            this.locationRequest.latlng
+          );
+          this.ebirdLocIds = this.ebirdHotspots.map((h) => h.locId);
+        } else {
+          throw "Expected ebird ebirdLocId or coordinates";
+        }
         [
           this.locationSpecies,
           this.ebirdHotspots,
           this.recentObservations,
         ] = await Promise.all([
-          fetchLocationSpecies([this.ebirdLocId]),
-          fetchEbirdHotspots([this.ebirdLocId]),
-          fetchRecentObservations([this.ebirdLocId]),
+          fetchLocationSpecies(this.ebirdLocIds),
+          this.ebirdHotspots
+            ? Promise.resolve(this.ebirdHotspots)
+            : fetchEbirdHotspots(this.ebirdLocIds),
+          fetchRecentObservations(this.ebirdLocIds),
         ]);
         [, this.speciesImages] = await Promise.all([
           this.fetchAllRecordings(this.locationSpecies, this.ebirdHotspots),
           fetchSpeciesImages(this.locationSpecies),
         ]);
         console.log(
-          `Fetched data for ${this.ebirdLocId}: ${this.locationSpecies.length} species, ${this.recentObservations.length} recent observations`
+          `Fetched data for ${this.ebirdLocIds}: ${this.locationSpecies.length} species, ${this.recentObservations.length} recent observations`
         );
       } catch (err) {
         console.log("Error fetching location species and recordings: ", err);

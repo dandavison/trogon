@@ -4,7 +4,7 @@
       {{
         ebirdHotspots
           ? ebirdHotspots.map((h) => h.locName).join(", ")
-          : ebirdLocId
+          : ebirdLocIds.join(", ")
       }}
     </h1>
     <ul>

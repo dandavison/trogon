@@ -5,6 +5,7 @@ import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
 Vue.use(VueRouter);
 
+import _ from "lodash";
 import Buefy from "buefy";
 import "buefy/dist/buefy.css";
 import "../node_modules/@fortawesome/fontawesome-free/js/all.js";
@@ -15,6 +16,7 @@ import MapView from "./MapView.vue";
 import SiteDetail from "./SiteDetail.vue";
 import Home from "./Home.vue";
 import i18n from "./i18n";
+import { LocationRequest } from "./sounds/types";
 import SoundsRoot from "./sounds/Root.vue";
 import SoundsGameRoot from "./sounds/GameRoot.vue";
 
@@ -32,8 +34,12 @@ const routes = [
     path: "/sounds/challenge/",
     component: SoundsGameRoot,
     props: (route: any) => ({
-      ebirdLocId: route.query.location,
-      latlng: route.query.coords
+      locationRequest: {
+        ebirdLocId: route.query.location,
+        latlng: route.query.coords
+          ? (_.zipObject(["lat", "lng"], route.query.coords.split(",")) as any)
+          : null
+      } as LocationRequest
     }),
     name: "sounds-game-root"
   },

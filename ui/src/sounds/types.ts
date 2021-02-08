@@ -13,6 +13,11 @@ export enum NamesLanguage {
   Both = "both"
 }
 
+export interface LocationRequest {
+  ebirdLocId?: string;
+  latlng?: LatLngLiteral;
+}
+
 export interface EbirdSpecies {
   sciName: string;
   comName: string;
