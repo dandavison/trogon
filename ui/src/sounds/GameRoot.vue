@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { LatLng } from "leaflet";
+import Vue, { PropType } from "vue";
+import { LatLngLiteral } from "leaflet";
 
 import eventBus from "./event-bus";
 import ControlPanel from "./ControlPanel.vue";
@@ -18,7 +18,7 @@ import { NamesLanguage, Settings } from "./types";
 
 export default Vue.extend({
   name: "GameRoot",
-  props: { ebirdLocId: String, latlng: LatLng },
+  props: { ebirdLocId: String, latlng: Object as PropType<LatLngLiteral> },
   components: { Navbar, ControlPanel, Game },
   data() {
     return {

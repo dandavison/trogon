@@ -1,3 +1,5 @@
+import { LatLngLiteral } from "leaflet";
+
 export interface Settings {
   names: NamesLanguage;
   songsOnly: boolean;
@@ -66,11 +68,6 @@ export interface ChallengeFamily {
   selected: boolean;
 }
 
-export interface LeafletLatLng {
-  lat: number;
-  lng: number;
-}
-
 export interface LeafletMapEvent {
-  latlng: LeafletLatLng;
+  latlng: LatLngLiteral;
 }

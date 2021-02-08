@@ -54,7 +54,7 @@ import {
 } from "vue2-leaflet";
 import { EbirdHotspot } from "types";
 import { fetchEbirdHotspotsByLatLng } from "./ebird";
-import { LatLng } from "leaflet";
+import { LatLngLiteral } from "leaflet";
 import { LeafletMapEvent } from "./types";
 
 export default Vue.extend({
@@ -83,7 +83,7 @@ export default Vue.extend({
         radius: 500,
       },
       popup: {
-        latlng: null as LatLng | null,
+        latlng: null as LatLngLiteral | null,
       },
       ebirdHotspots: [] as EbirdHotspot[],
     };

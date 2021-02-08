@@ -1,8 +1,9 @@
 import _ from "lodash";
+import { LatLngLiteral } from "leaflet";
 
 import { fetchMultipleJSON } from "./utils";
 import { EbirdHotspot, EbirdObservation } from "types";
-import { LeafletLatLng, EbirdSpecies, SpeciesImages } from "./types";
+import { EbirdSpecies, SpeciesImages } from "./types";
 
 export const ebirdSpecies = {
   getGenus: function(species: EbirdSpecies): string {
@@ -96,7 +97,7 @@ export async function fetchEbirdHotspots(
 }
 
 export async function fetchEbirdHotspotsByLatLng(
-  latlng: LeafletLatLng
+  latlng: LatLngLiteral
 ): Promise<EbirdHotspot[]> {
   const response = await fetch(
     `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/ref/hotspot/geo?lat=${latlng.lat}&lng=${latlng.lng}&fmt=json`
