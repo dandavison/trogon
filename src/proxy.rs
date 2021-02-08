@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 use reqwest::Method;
 use rocket::response::content;
@@ -6,41 +7,27 @@ use rocket::response::content;
 use crate::db;
 use crate::ebird::get_ebird_api_token;
 
-// TODO: make the URL parser blindly take everything after /ebird/, i.e. the route (with multiple
-// segments) and any query params.
-#[get("/ebird/ref/hotspot/geo?<lat>&<lng>&<fmt>")]
-pub fn ebird_ref_hotspot_geo(lat: f32, lng: f32, fmt: String) -> content::Json<String> {
-    let url = format!(
-        "https://api.ebird.org/v2/ref/hotspot/geo?lat={}&lng={}&fmt={}",
-        lat, lng, fmt
-    );
-    fetch_json_with_caching(
-        &url,
-        vec![("X-eBirdApiToken", get_ebird_api_token().as_str())]
-            .into_iter()
-            .collect(),
-    )
+#[derive(Debug)]
+pub struct Query<'q> {
+    params: Vec<&'q str>,
 }
 
-#[get("/ebird/ref/hotspot/info/<loc_id>?<fmt>")]
-pub fn ebird_ref_hotspot_info(loc_id: String, fmt: String) -> content::Json<String> {
-    let url = format!(
-        "https://api.ebird.org/v2/ref/hotspot/info/{}?fmt={}",
-        loc_id, fmt
-    );
-    fetch_json_with_caching(
-        &url,
-        vec![("X-eBirdApiToken", get_ebird_api_token().as_str())]
-            .into_iter()
-            .collect(),
-    )
+impl<'q> rocket::request::FromQuery<'q> for Query<'q> {
+    type Error = ();
+
+    fn from_query(query: rocket::request::Query<'q>) -> Result<Self, Self::Error> {
+        Ok(Query {
+            params: query.map(|param| param.raw.as_str()).collect(),
+        })
+    }
 }
 
-#[get("/ebird/product/spplist/<loc_id>?<fmt>")]
-pub fn ebird_product_spplist(loc_id: String, fmt: String) -> content::Json<String> {
+#[get("/ebird/<path..>?<query..>")]
+pub fn ebird(path: PathBuf, query: Query) -> content::Json<String> {
     let url = format!(
-        "https://api.ebird.org/v2/product/spplist/{}?fmt={}",
-        loc_id, fmt
+        "https://api.ebird.org/v2/{}?{}",
+        path.to_str().unwrap(),
+        query.params.join("&")
     );
     fetch_json_with_caching(
         &url,
