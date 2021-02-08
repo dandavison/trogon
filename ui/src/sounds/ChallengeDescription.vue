@@ -1,7 +1,11 @@
 <template>
   <section>
     <h1 style="font-weight: bold">
-      {{ ebirdHotspot ? ebirdHotspot.locName : ebirdLocId }}
+      {{
+        ebirdHotspots
+          ? ebirdHotspots.map((h) => h.locName).join(", ")
+          : ebirdLocId
+      }}
     </h1>
     <ul>
       <li>{{ locationSpecies.length }} species total</li>
@@ -33,7 +37,7 @@ export default Vue.extend({
   components: { FamilySelector },
   props: {
     ebirdLocId: String,
-    ebirdHotspot: Object as PropType<EbirdHotspot | null>,
+    ebirdHotspots: Array as PropType<EbirdHotspot[]>,
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     selectedChallengeSpecies: Array as PropType<EbirdSpecies[]>,
     challengeFamilies: Map as PropType<Map<string, ChallengeFamily>>,

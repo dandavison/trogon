@@ -84,12 +84,15 @@ export async function fetchRecentObservations(
   return _.union(_.flatten(observations));
 }
 
-export async function fetchEbirdHotspot(
-  ebirdLocId: string
-): Promise<EbirdHotspot> {
-  return fetch(
-    `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/ref/hotspot/info/${ebirdLocId}?fmt=json`
-  ).then(response => response.json());
+export async function fetchEbirdHotspots(
+  locIds: string[]
+): Promise<EbirdHotspot[]> {
+  return (await fetchMultipleJSON(
+    locIds.map(
+      locId =>
+        `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/ref/hotspot/info/${locId}?fmt=json`
+    )
+  )) as EbirdHotspot[];
 }
 
 export async function fetchEbirdHotspotsByLatLng(

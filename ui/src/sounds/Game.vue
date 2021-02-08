@@ -2,7 +2,7 @@
   <section style="margin-top: 50px">
     <challenge-description
       :ebirdLocId="ebirdLocId"
-      :ebirdHotspot="ebirdHotspot"
+      :ebirdHotspots="ebirdHotspots"
       :locationSpecies="locationSpecies"
       :selectedChallengeSpecies="selectedChallengeSpecies"
       :challengeFamilies="challengeFamilies"
@@ -46,7 +46,7 @@ import Vue, { PropType } from "vue";
 import { EbirdHotspot, EbirdObservation } from "types";
 import {
   filterToCommonSpecies,
-  fetchEbirdHotspot,
+  fetchEbirdHotspots,
   ebirdSpecies,
   fetchLocationSpecies,
   fetchRecentObservations,
@@ -82,7 +82,7 @@ export default Vue.extend({
 
   data() {
     return {
-      ebirdHotspot: null as EbirdHotspot | null,
+      ebirdHotspots: [] as EbirdHotspot[],
       locationSpecies: [] as EbirdSpecies[],
       recentObservations: [] as EbirdObservation[],
       challengeSpecies: [] as EbirdSpecies[],
@@ -150,15 +150,15 @@ export default Vue.extend({
         // Parallel: fetch combined species list for all locations, and hotspot info
         [
           this.locationSpecies,
-          this.ebirdHotspot,
+          this.ebirdHotspots,
           this.recentObservations,
         ] = await Promise.all([
           fetchLocationSpecies([this.ebirdLocId]),
-          fetchEbirdHotspot(this.ebirdLocId),
+          fetchEbirdHotspots([this.ebirdLocId]),
           fetchRecentObservations([this.ebirdLocId]),
         ]);
         [, this.speciesImages] = await Promise.all([
-          this.fetchAllRecordings(this.locationSpecies, this.ebirdHotspot),
+          this.fetchAllRecordings(this.locationSpecies, this.ebirdHotspots),
           fetchSpeciesImages(this.locationSpecies),
         ]);
         console.log(
@@ -171,11 +171,11 @@ export default Vue.extend({
 
     async fetchAllRecordings(
       species: EbirdSpecies[],
-      ebirdHotspot: EbirdHotspot
+      ebirdHotspots: EbirdHotspot[]
     ): Promise<any> {
       return Promise.all(
         species.map((sp) =>
-          getRecordings(sp, ebirdHotspot).then((recordings) =>
+          getRecordings(sp, ebirdHotspots).then((recordings) =>
             this.recordings.set(sp.speciesCode, recordings)
           )
         )

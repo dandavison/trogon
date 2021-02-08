@@ -20,7 +20,7 @@ async function getXenoCantoRecordings(
 
 export async function getRecordings(
   species: EbirdSpecies,
-  location: EbirdHotspot | null
+  locations: EbirdHotspot[]
 ): Promise<Recording[]> {
   const familySci = ebirdSpecies.getFamilySci(species);
   const familyEn = ebirdSpecies.getFamilyEn(species);
@@ -29,8 +29,10 @@ export async function getRecordings(
   const speciesEn = ebirdSpecies.getSpeciesEn(species);
 
   var query = `${speciesSci}+gen:${genus}`;
-  if (location) {
-    const country = iso3311a2.getCountry(location.countryCode);
+  const countryCodes = new Set(locations.map(loc => loc.countryCode));
+  if (countryCodes.size === 1) {
+    const [countryCode] = countryCodes;
+    const country = iso3311a2.getCountry(countryCode);
     if (country) {
       query = `${query}+cnt:"${country}"+q:A`;
     }
