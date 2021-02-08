@@ -155,7 +155,7 @@ export default Vue.extend({
         ] = await Promise.all([
           fetchLocationSpecies([this.ebirdLocId]),
           fetchEbirdHotspot(this.ebirdLocId),
-          fetchRecentObservations(this.ebirdLocId),
+          fetchRecentObservations([this.ebirdLocId]),
         ]);
         [, this.speciesImages] = await Promise.all([
           this.fetchAllRecordings(this.locationSpecies, this.ebirdHotspot),

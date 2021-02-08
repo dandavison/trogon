@@ -73,11 +73,15 @@ export function filterToCommonSpecies(
 }
 
 export async function fetchRecentObservations(
-  ebirdLocId: string
+  locIds: string[]
 ): Promise<EbirdObservation[]> {
-  return await fetch(
-    `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/data/obs/${ebirdLocId}/recent/?back=30`
-  ).then(response => response.json());
+  var observations = (await fetchMultipleJSON(
+    locIds.map(
+      locId =>
+        `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/data/obs/${locId}/recent/?back=30&fmt=json`
+    )
+  )) as EbirdObservation[];
+  return _.union(_.flatten(observations));
 }
 
 export async function fetchEbirdHotspot(
