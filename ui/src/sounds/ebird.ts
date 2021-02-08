@@ -52,27 +52,6 @@ export async function fetchLocationSpecies(
   return species;
 }
 
-export function filterToCommonSpecies(
-  locationSpecies: EbirdSpecies[],
-  recentObservations: EbirdObservation[]
-): EbirdSpecies[] {
-  if (recentObservations.length === 0) {
-    console.log(`No recent observations`);
-    console.log("Not filtering to common species");
-    return locationSpecies;
-  }
-  const recentSpeciesCodes = new Set(
-    recentObservations.map(obs => obs.speciesCode)
-  );
-  const commonSpecies = locationSpecies.filter(sp =>
-    recentSpeciesCodes.has(sp.speciesCode)
-  );
-  console.log(
-    `filterToCommonSpecies: ${locationSpecies.length} => ${commonSpecies.length} species`
-  );
-  return commonSpecies;
-}
-
 export async function fetchRecentObservations(
   locIds: string[]
 ): Promise<EbirdObservation[]> {

@@ -2,7 +2,6 @@ import iso3311a2 from "iso-3166-1-alpha-2";
 import { EbirdHotspot } from "types";
 import { EbirdSpecies, Recording, XenoCantoRecording } from "./types";
 import { ebirdSpecies } from "./ebird";
-import { Settings } from "./types";
 
 const XENO_CANTO_API_URL = `${process.env.VUE_APP_SERVER_URL}/proxy/xeno-canto/`;
 
@@ -54,17 +53,7 @@ export async function getRecordings(
   return recordings;
 }
 
-export function recordingMatchesFilters(
-  xcRec: XenoCantoRecording,
-  settings: Settings
-): boolean {
-  if (settings.songsOnly && !isSong(xcRec.type)) {
-    return false;
-  }
-  return true;
-}
-
-function isSong(type: string): boolean {
+export function isSong(type: string): boolean {
   const words = new Set(type.toLowerCase().split(" "));
   return words.has("song") || words.has("duet");
 }

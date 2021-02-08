@@ -46,7 +46,6 @@ import Vue, { PropType } from "vue";
 
 import { EbirdHotspot, EbirdObservation } from "types";
 import {
-  filterToCommonSpecies,
   fetchEbirdHotspots,
   ebirdSpecies,
   fetchLocationSpecies,
@@ -54,7 +53,7 @@ import {
   fetchSpeciesImages,
   fetchEbirdHotspotsByLatLng,
 } from "./ebird";
-import { getRecordings, recordingMatchesFilters } from "./xeno-canto";
+import { getRecordings, isSong } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import RecordingComponent from "./Recording.vue";
 import {
@@ -65,6 +64,7 @@ import {
   Recording,
   Settings,
   SpeciesImages,
+  XenoCantoRecording,
 } from "./types";
 import GameForm from "./GameForm.vue";
 import eventBus from "./event-bus";
@@ -91,6 +91,8 @@ export default Vue.extend({
       ebirdLocIds: [] as string[],
       ebirdHotspots: [] as EbirdHotspot[],
       locationSpecies: [] as EbirdSpecies[],
+      speciesCode2SciName: new Map([]) as Map<string, string>,
+      commonSpecies: new Set([]) as Set<string>,
       recentObservations: [] as EbirdObservation[],
       challengeSpecies: [] as EbirdSpecies[],
       challengeFamilies: new Map([]) as Map<string, ChallengeFamily>,
@@ -107,8 +109,13 @@ export default Vue.extend({
   created: async function () {
     await this.fetchLocationData();
     this.haveLocationData = true;
-    this.challengeSpecies = _.shuffle(
-      filterToCommonSpecies(this.locationSpecies, this.recentObservations)
+    this.speciesCode2SciName = new Map(
+      this.locationSpecies.map((sp) => [sp.speciesCode, sp.sciName])
+    );
+    this.commonSpecies = new Set(
+      this.recentObservations
+        .map((obs) => this.speciesCode2SciName.get(obs.speciesCode))
+        .filter(Boolean) as any
     );
     this.challengeFamilies = makeChallengeFamilies(this.challengeSpecies);
     this.imageURLMaps = makeImageURLMaps(
@@ -220,10 +227,26 @@ export default Vue.extend({
       recordings: Recording[]
     ): Iterator<Recording> {
       for (let recording of _.shuffle(recordings)) {
-        if (recordingMatchesFilters(recording.raw, this.settings)) {
+        if (this.recordingMatchesFilters(recording.raw, this.settings)) {
           yield recording;
         }
       }
+    },
+
+    recordingMatchesFilters(
+      xcRec: XenoCantoRecording,
+      settings: Settings
+    ): boolean {
+      if (settings.songsOnly && !isSong(xcRec.type)) {
+        return false;
+      }
+      if (
+        settings.commonSpeciesOnly &&
+        !this.commonSpecies.has(`${xcRec.gen} ${xcRec.sp}`)
+      ) {
+        return false;
+      }
+      return true;
     },
 
     setNextRecording(): void {

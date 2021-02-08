@@ -25,6 +25,7 @@ export default Vue.extend({
         names: NamesLanguage.Both,
         promptIncludesImages: false,
         promptIncludesRecording: true,
+        commonSpeciesOnly: true,
         songsOnly: true,
       } as Settings,
       controlPanelOpen: false,
@@ -33,6 +34,9 @@ export default Vue.extend({
   mounted: function (): void {
     eventBus.$on("settings:change:names", (newVal: NamesLanguage) => {
       this.settings.names = newVal;
+    });
+    eventBus.$on("settings:change:commonSpeciesOnly", (newVal: boolean) => {
+      this.settings.commonSpeciesOnly = newVal;
     });
     eventBus.$on("settings:change:songsOnly", (newVal: boolean) => {
       this.settings.songsOnly = newVal;

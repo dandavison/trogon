@@ -16,6 +16,9 @@
             <names-selector :settings="settings" />
 
             <b-menu-item label="Recordings" class="menu-item"></b-menu-item>
+            <b-switch v-model="newSettings.commonSpeciesOnly">
+              common species only
+            </b-switch>
             <b-switch v-model="newSettings.songsOnly">Songs only</b-switch>
           </b-menu-list>
         </b-menu>
@@ -48,6 +51,9 @@ export default Vue.extend({
   },
 
   watch: {
+    "newSettings.commonSpeciesOnly": function (newVal) {
+      eventBus.$emit("settings:change:commonSpeciesOnly", newVal);
+    },
     "newSettings.songsOnly": function (newVal) {
       eventBus.$emit("settings:change:songsOnly", newVal);
     },

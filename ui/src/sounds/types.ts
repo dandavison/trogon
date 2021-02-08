@@ -2,6 +2,7 @@ import { LatLngLiteral } from "leaflet";
 
 export interface Settings {
   names: NamesLanguage;
+  commonSpeciesOnly: boolean;
   songsOnly: boolean;
   promptIncludesImages: boolean;
   promptIncludesRecording: boolean;
