@@ -75,14 +75,9 @@ export function filterToCommonSpecies(
 export async function fetchRecentObservations(
   ebirdLocId: string
 ): Promise<EbirdObservation[]> {
-  // TODO: client-side code shouldn't use EBIRD_API_TOKEN
-  const response = await fetch(
-    `https://api.ebird.org/v2/data/obs/${ebirdLocId}/recent/?back=30`,
-    {
-      headers: { "X-eBirdApiToken": process.env.VUE_APP_EBIRD_API_TOKEN || "" }
-    }
-  );
-  return await response.json();
+  return await fetch(
+    `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/data/obs/${ebirdLocId}/recent/?back=30`
+  ).then(response => response.json());
 }
 
 export async function fetchEbirdHotspot(
