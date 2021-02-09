@@ -4,7 +4,7 @@
       <b-autocomplete
         type="text"
         v-model="answer"
-        :data="filter()"
+        :data="filteredCandidates"
         max-height="600px"
         autocomplete="off"
         autocorrect="off"
@@ -52,6 +52,11 @@ export default Vue.extend({
     return {
       answer: "",
     };
+  },
+  computed: {
+    filteredCandidates(): string[] {
+      return this.filter(this.answer);
+    },
   },
   watch: {
     answer: function (newVal) {

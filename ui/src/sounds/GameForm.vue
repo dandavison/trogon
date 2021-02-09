@@ -258,56 +258,58 @@ export default Vue.extend({
       (this.$refs.speciesEnField as any).clear();
     },
 
-    filterFamilySci(): string[] {
-      return _.uniq(
-        this.locationSpecies
-          .filter(this.isFamilySciMatch)
-          .map(ebirdSpecies.getFamilySci)
+    filterFamilySci(answer: string): string[] {
+      return this._filter(
+        answer,
+        this.isFamilySciMatch,
+        ebirdSpecies.getFamilySci
       );
     },
 
-    filterFamilyEn(): string[] {
-      return _.uniq(
-        this.locationSpecies
-          .filter(this.isFamilyEnMatch)
-          .map(ebirdSpecies.getFamilyEn)
+    filterFamilyEn(answer: string): string[] {
+      return this._filter(
+        answer,
+        this.isFamilyEnMatch,
+        ebirdSpecies.getFamilyEn
       );
     },
 
-    filterGenus(): string[] {
-      return _.uniq(
-        this.locationSpecies
-          .filter(this.isGenusMatch)
-          .map(ebirdSpecies.getGenus)
+    filterGenus(answer: string): string[] {
+      return this._filter(answer, this.isGenusMatch, ebirdSpecies.getGenus);
+    },
+
+    filterSpeciesSci(answer: string): string[] {
+      return this._filter(
+        answer,
+        this.isSpeciesSciMatch,
+        ebirdSpecies.getSpeciesSci
       );
     },
 
-    filterSpeciesSci(): string[] {
-      return _.uniq(
-        this.locationSpecies
-          .filter(this.isSpeciesSciMatch)
-          .map(ebirdSpecies.getSpeciesSci)
+    filterSpeciesEn(answer: string): string[] {
+      return this._filter(
+        answer,
+        this.isSpeciesEnMatch,
+        ebirdSpecies.getSpeciesEn
       );
     },
 
-    filterSpeciesEn(): string[] {
+    _filter(
+      answer: string,
+      matchFn: Function,
+      mapFn: (_: EbirdSpecies) => string
+    ): string[] {
       return _.uniq(
-        this.locationSpecies
-          .filter(this.isSpeciesEnMatch)
-          .map(ebirdSpecies.getSpeciesEn)
+        this.locationSpecies.filter((sp) => matchFn(answer, sp)).map(mapFn)
       );
     },
 
-    isFamilySciMatch(species: EbirdSpecies): boolean {
-      return species.familySciName
-        .toLowerCase()
-        .includes(this.answer.familySci.toLowerCase());
+    isFamilySciMatch(answer: string, species: EbirdSpecies): boolean {
+      return species.familySciName.toLowerCase().includes(answer.toLowerCase());
     },
 
-    isFamilyEnMatch(species: EbirdSpecies): boolean {
-      return species.familyComName
-        .toLowerCase()
-        .includes(this.answer.familyEn.toLowerCase());
+    isFamilyEnMatch(answer: string, species: EbirdSpecies): boolean {
+      return species.familyComName.toLowerCase().includes(answer.toLowerCase());
     },
 
     isFamilySciCorrect(): boolean {
@@ -318,47 +320,56 @@ export default Vue.extend({
       return this.recording?.familyEn === this.answer.familyEn;
     },
 
-    isGenusMatch(species: EbirdSpecies): boolean {
-      if (this.answer.familySci && !this.isFamilySciMatch(species)) {
+    isGenusMatch(answer: string, species: EbirdSpecies): boolean {
+      if (
+        this.answer.familySci &&
+        !this.isFamilySciMatch(this.answer.familySci, species)
+      ) {
         return false;
       }
-      if (this.answer.familyEn && !this.isFamilyEnMatch(species)) {
+      if (
+        this.answer.familyEn &&
+        !this.isFamilyEnMatch(this.answer.familyEn, species)
+      ) {
         return false;
       }
       return ebirdSpecies
         .getGenus(species)
         .toLowerCase()
-        .startsWith(this.answer.genus.toLowerCase());
+        .startsWith(answer.toLowerCase());
     },
 
     isGenusCorrect(): boolean {
       return this.recording?.genus === this.answer.genus;
     },
 
-    isSpeciesSciMatch(species: EbirdSpecies): boolean {
-      if (this.answer.familySci && !this.isFamilySciMatch(species)) {
+    isSpeciesSciMatch(answer: string, species: EbirdSpecies): boolean {
+      if (
+        this.answer.familySci &&
+        !this.isFamilySciMatch(this.answer.familySci, species)
+      ) {
         return false;
       }
-      if (this.answer.genus && !this.isGenusMatch(species)) {
+      if (this.answer.genus && !this.isGenusMatch(this.answer.genus, species)) {
         return false;
       }
       return ebirdSpecies
         .getSpeciesSci(species)
         .toLowerCase()
-        .includes(this.answer.speciesSci.toLowerCase());
+        .includes(answer.toLowerCase());
     },
 
-    isSpeciesEnMatch(species: EbirdSpecies): boolean {
-      if (this.answer.familyEn && !this.isFamilyEnMatch(species)) {
+    isSpeciesEnMatch(answer: string, species: EbirdSpecies): boolean {
+      if (this.answer.familyEn && !this.isFamilyEnMatch(answer, species)) {
         return false;
       }
-      if (this.answer.genus && !this.isGenusMatch(species)) {
+      if (this.answer.genus && !this.isGenusMatch(answer, species)) {
         return false;
       }
       return ebirdSpecies
         .getSpeciesEn(species)
         .toLowerCase()
-        .includes(this.answer.speciesEn.toLowerCase());
+        .includes(answer.toLowerCase());
     },
 
     isSpeciesSciCorrect(): boolean {
