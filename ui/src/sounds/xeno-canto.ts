@@ -3,7 +3,7 @@ import { EbirdHotspot } from "types";
 import { EbirdSpecies, Recording, XenoCantoRecording } from "./types";
 import { ebirdSpecies } from "./ebird";
 
-const XENO_CANTO_API_URL = `${process.env.VUE_APP_SERVER_URL}/proxy/xeno-canto/`;
+const XENO_CANTO_API_URL = `${process.env.VUE_APP_SERVER_URL}/proxy/xeno-canto/2/`;
 
 async function getXenoCantoRecordings(
   query: string

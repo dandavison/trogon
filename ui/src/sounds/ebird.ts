@@ -30,7 +30,7 @@ export async function fetchLocationSpecies(
   var speciesCodes = await fetchMultipleJSON(
     locIds.map(
       locId =>
-        `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/product/spplist/${locId}?fmt=json`
+        `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/v2/product/spplist/${locId}?fmt=json`
     )
   );
   speciesCodes = _.union(speciesCodes);
@@ -58,7 +58,7 @@ export async function fetchRecentObservations(
   var observations = (await fetchMultipleJSON(
     locIds.map(
       locId =>
-        `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/data/obs/${locId}/recent/?back=30&fmt=json`
+        `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/v2/data/obs/${locId}/recent/?back=30&fmt=json`
     )
   )) as EbirdObservation[];
   return _.union(_.flatten(observations));
@@ -70,7 +70,7 @@ export async function fetchEbirdHotspots(
   return (await fetchMultipleJSON(
     locIds.map(
       locId =>
-        `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/ref/hotspot/info/${locId}?fmt=json`
+        `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/v2/ref/hotspot/info/${locId}?fmt=json`
     )
   )) as EbirdHotspot[];
 }
@@ -79,7 +79,7 @@ export async function fetchEbirdHotspotsByLatLng(
   latlng: LatLngLiteral
 ): Promise<EbirdHotspot[]> {
   const response = await fetch(
-    `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/ref/hotspot/geo?lat=${latlng.lat}&lng=${latlng.lng}&fmt=json`
+    `${process.env.VUE_APP_SERVER_URL}/proxy/ebird/v2/ref/hotspot/geo?lat=${latlng.lat}&lng=${latlng.lng}&fmt=json`
   );
   return await response.json();
 }

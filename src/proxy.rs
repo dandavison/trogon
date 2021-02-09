@@ -25,7 +25,7 @@ impl<'q> rocket::request::FromQuery<'q> for Query<'q> {
 #[get("/ebird/<path..>?<query..>")]
 pub fn ebird(path: PathBuf, query: Query) -> content::Json<String> {
     let url = format!(
-        "https://api.ebird.org/v2/{}?{}",
+        "https://api.ebird.org/{}?{}",
         path.to_str().unwrap(),
         query.params.join("&")
     );
@@ -39,10 +39,7 @@ pub fn ebird(path: PathBuf, query: Query) -> content::Json<String> {
 
 #[get("/xeno-canto?<query>")]
 pub fn xeno_canto(query: String) -> content::Json<String> {
-    let url = format!(
-        "https://www.xeno-canto.org/api/2/recordings?query={}",
-        query
-    );
+    let url = format!("https://www.xeno-canto.org/api/recordings?query={}", query);
     fetch_json_with_caching(&url, HashMap::new())
 }
 
