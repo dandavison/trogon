@@ -17,7 +17,7 @@
         />
       </template>
       <b-dropdown-item
-        v-for="rec in recordings.get(recording.speciesCode)"
+        v-for="rec in recordings.get(recording.sciName)"
         :key="rec.url"
       >
         <recording-component :recording="rec" :preload="'none'" />
@@ -52,7 +52,6 @@ export default Vue.extend({
         return null;
       }
     },
-    // TODO: remove species/genus names from Recording, leaving speciesCode foreign key.
     recordingSpeciesSciName(): string | null {
       if (this.recording) {
         const speciesEn = this.recording.speciesEn;

@@ -37,10 +37,36 @@ pub fn ebird(path: PathBuf, query: Query) -> content::Json<String> {
     )
 }
 
-#[get("/xeno-canto?<query>")]
-pub fn xeno_canto(query: String) -> content::Json<String> {
-    let url = format!("https://www.xeno-canto.org/api/recordings?query={}", query);
+#[get("/xeno-canto/<path..>?<query>")]
+pub fn xeno_canto(path: PathBuf, query: String) -> content::Json<String> {
+    let url = make_xeno_canto_url(path.to_str().unwrap(), &query);
     fetch_json_with_caching(&url, HashMap::new())
+}
+
+#[get("/xeno-canto-cached/<path..>?<queries>")]
+pub fn xeno_canto_cached(path: PathBuf, queries: String) -> content::Json<String> {
+    let url2query: HashMap<String, &str> = queries
+        .split(",")
+        .map(|q| (make_xeno_canto_url(path.to_str().unwrap(), q), q))
+        .collect();
+    let rows: Vec<postgres::Row> = db::get_client()
+        .query(
+            "select key, value from cache where key = ANY($1)",
+            &[&url2query.keys().collect::<Vec<&String>>()],
+        )
+        .unwrap();
+    let mut query2doc: HashMap<&str, String> = HashMap::new();
+    for row in rows {
+        let url: &str = row.get("key");
+        let query: &str = url2query.get(url).unwrap();
+        let doc: String = row.get("value");
+        query2doc.insert(query, doc);
+    }
+    content::Json(serde_json::to_string(&query2doc).unwrap())
+}
+
+fn make_xeno_canto_url(path: &str, query: &str) -> String {
+    format!("https://www.xeno-canto.org/api/{}?query={}", path, query)
 }
 
 // TODO: check we are only caching 200 responses

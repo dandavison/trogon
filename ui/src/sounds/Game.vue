@@ -53,7 +53,7 @@ import {
   fetchSpeciesImages,
   fetchEbirdHotspotsByLatLng,
 } from "./ebird";
-import { getRecordings, isSong } from "./xeno-canto";
+import { fetchAllRecordings, isSong } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import RecordingComponent from "./Recording.vue";
 import {
@@ -100,7 +100,7 @@ export default Vue.extend({
       selectedFamilies: new Set([]) as Set<string>,
       speciesImages: [] as SpeciesImages[],
       imageURLMaps: makeImageURLMaps([], []),
-      recordings: new Map([]) as Map<string, Recording[]>, // speciesCode
+      recordings: new Map([]) as Map<string, Recording[]>, // sciName
       challengeRecordings: [] as Recording[],
       challengeRecordingsIterator: makeRecordingsIterator(
         []
@@ -210,35 +210,24 @@ export default Vue.extend({
           fetchRecentObservations(this.ebirdLocIds),
         ]);
         // In parallel: given species list, fetch recording and image URLs
-        [, this.speciesImages] = await Promise.all([
-          this.fetchAllRecordings(this.locationSpecies, this.ebirdHotspots),
+        [this.recordings, this.speciesImages] = await Promise.all([
+          fetchAllRecordings(this.locationSpecies, this.ebirdHotspots),
           fetchSpeciesImages(this.locationSpecies),
         ]);
-        console.log(
-          `Fetched data for ${this.ebirdLocIds}: ${this.locationSpecies.length} species, ${this.recentObservations.length} recent observations`
-        );
+        console.log(`Fetched data for ${this.ebirdLocIds}:`);
+        console.log(`species: ${this.locationSpecies.length}`);
+        console.log(`images: ${this.speciesImages.length}`);
+        console.log(`recordings: ${this.recordings.size}`);
+        console.log(`recent observations: ${this.recentObservations.length}`);
       } catch (err) {
         console.log("Error fetching location species and recordings: ", err);
       }
     },
 
-    async fetchAllRecordings(
-      species: EbirdSpecies[],
-      ebirdHotspots: EbirdHotspot[]
-    ): Promise<any> {
-      return Promise.all(
-        species.map((sp) =>
-          getRecordings(sp, ebirdHotspots).then((recordings) =>
-            this.recordings.set(sp.speciesCode, recordings)
-          )
-        )
-      );
-    },
-
     makeChallengeRecordings: function (species: EbirdSpecies[]): Recording[] {
       var challengeRecordings = [];
       for (let sp of _.shuffle(species)) {
-        const recordings = this.recordings.get(sp.speciesCode) || [];
+        const recordings = this.recordings.get(sp.sciName) || [];
         // TODO: type
         for (let recording of this.makeSpeciesRecordingsIterator(
           recordings
