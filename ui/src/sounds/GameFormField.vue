@@ -18,13 +18,11 @@
               {{ props.option }}
             </div>
             <div class="media-right">
-              <figure
-                class="image is-128x128"
-                 v-for="url in getImageURLs(props.option)"
+              <img
+                v-for="url in getImageURLs(props.option)"
                 :key="url"
-              >
-                <img :src="url" />
-              </figure>
+                :src="url"
+              />
             </div>
           </div>
         </template>
