@@ -12,7 +12,6 @@
       >
         <recording-player
           :recording="recording"
-          @play:challenge-recording="$emit('play:challenge-recording')"
         />
       </p>
 

@@ -10,7 +10,7 @@
             ev.target.play();
           }
         "
-        @play="$emit('play:challenge-recording')"
+        @play="eventBus.$emit('play:challenge-recording')"
       ></audio>
     </li>
     <li>{{ recording.raw.loc }}, {{ recording.raw.cnt }}</li>
@@ -26,12 +26,19 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
+
+import eventBus from "./event-bus";
 import { Recording } from "./types";
 
 export default Vue.extend({
   props: {
     recording: Object as PropType<Recording>,
     preload: { type: String, default: "metadata" },
+  },
+  data() {
+    return {
+      eventBus,
+    };
   },
 });
 </script>

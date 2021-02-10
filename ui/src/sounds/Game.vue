@@ -15,7 +15,6 @@
       :recording="recording"
       :setNextRecording="setNextRecording"
       :settings="settings"
-      @play:challenge-recording="challengeActive = true"
     />
 
     <game-form
@@ -145,6 +144,10 @@ export default Vue.extend({
 
   mounted: function () {
     eventBus.$on("family:select", this.handleFamilySelection);
+    eventBus.$on(
+      "play:challenge-recording",
+      () => (this.challengeActive = true)
+    );
   },
 
   watch: {
