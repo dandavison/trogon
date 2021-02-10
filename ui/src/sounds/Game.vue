@@ -204,7 +204,7 @@ export default Vue.extend({
           this.recentObservations,
         ] = await Promise.all([
           fetchLocationSpecies(this.ebirdLocIds),
-          this.ebirdHotspots
+          this.ebirdHotspots.length > 0
             ? Promise.resolve(this.ebirdHotspots)
             : fetchEbirdHotspots(this.ebirdLocIds),
           fetchRecentObservations(this.ebirdLocIds),
@@ -214,7 +214,8 @@ export default Vue.extend({
           fetchAllRecordings(this.locationSpecies, this.ebirdHotspots),
           fetchSpeciesImages(this.locationSpecies),
         ]);
-        console.log(`Fetched data for ${this.ebirdLocIds}:`);
+        console.log(`Fetched data for ${this.ebirdLocIds.length} locIds:`);
+        console.log(`hotspots: ${this.ebirdHotspots.length}`);
         console.log(`species: ${this.locationSpecies.length}`);
         console.log(`images: ${this.speciesImages.length}`);
         console.log(`recordings: ${this.recordings.size}`);
