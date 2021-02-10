@@ -10,6 +10,7 @@
             ev.target.play();
           }
         "
+        @play="$emit('play:challenge-recording')"
       ></audio>
     </li>
     <li>{{ recording.raw.loc }}, {{ recording.raw.cnt }}</li>

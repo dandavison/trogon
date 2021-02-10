@@ -15,6 +15,7 @@
       :recording="recording"
       :setNextRecording="setNextRecording"
       :settings="settings"
+      @play:challenge-recording="challengeActive = true"
     />
 
     <game-form
@@ -270,7 +271,6 @@ export default Vue.extend({
     },
 
     setNextRecording(): void {
-      this.challengeActive = true;
       (this.$refs.gameForm as any)?.clearInput();
       this.image = "";
       const rec = this.challengeRecordingsIterator.next();
