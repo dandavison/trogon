@@ -360,10 +360,13 @@ export default Vue.extend({
     },
 
     isSpeciesEnMatch(answer: string, species: EbirdSpecies): boolean {
-      if (this.answer.familyEn && !this.isFamilyEnMatch(answer, species)) {
+      if (
+        this.answer.familyEn &&
+        !this.isFamilyEnMatch(this.answer.familyEn, species)
+      ) {
         return false;
       }
-      if (this.answer.genus && !this.isGenusMatch(answer, species)) {
+      if (this.answer.genus && !this.isGenusMatch(this.answer.genus, species)) {
         return false;
       }
       return this._transform(ebirdSpecies.getSpeciesEn(species)).includes(
