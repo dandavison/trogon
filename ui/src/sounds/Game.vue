@@ -18,7 +18,7 @@
     />
 
     <game-form
-      v-if="haveLocationData"
+      v-if="challengeActive"
       ref="gameForm"
       :locationSpecies="locationSpecies"
       :recording="recording"
@@ -107,6 +107,7 @@ export default Vue.extend({
       ) as Iterator<Recording>,
       recording: null as Recording | null,
       haveLocationData: false,
+      challengeActive: false,
       image: "",
     };
   },
@@ -269,7 +270,8 @@ export default Vue.extend({
     },
 
     setNextRecording(): void {
-      (this.$refs.gameForm as any).clearInput();
+      this.challengeActive = true;
+      (this.$refs.gameForm as any)?.clearInput();
       this.image = "";
       const rec = this.challengeRecordingsIterator.next();
       if (!rec.done) {
