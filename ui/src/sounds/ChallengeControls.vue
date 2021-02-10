@@ -10,9 +10,7 @@
         class="level-item"
         v-if="settings.promptIncludesRecording && recording"
       >
-        <recording-player
-          :recording="recording"
-        />
+        <recording-player :recording="recording" />
       </p>
 
       <p class="level-item" v-if="image && settings.promptIncludesImages">
