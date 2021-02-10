@@ -15,6 +15,7 @@
           <b-button
             label="Select families"
             @click="isFamilyModalActive = true"
+            class="is-info"
           />
         </div>
         <b-modal v-model="isFamilyModalActive" full-screen>
