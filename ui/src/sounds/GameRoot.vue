@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <section class="section">
     <navbar />
     <control-panel :open="controlPanelOpen" :settings="settings" />
     <game :settings="settings" :locationRequest="locationRequest" />
-  </div>
+  </section>
 </template>
 
 <script lang="ts">

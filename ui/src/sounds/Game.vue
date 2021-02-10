@@ -1,5 +1,5 @@
 <template>
-  <section style="margin-top: 50px">
+  <section>
     <challenge-description
       :ebirdLocIds="ebirdLocIds"
       :ebirdHotspots="ebirdHotspots"

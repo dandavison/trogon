@@ -1,18 +1,23 @@
 <template>
-  <nav class="level">
-    <p class="level-item has-text-centered">
-      <b-button @click="setNextRecording" class="is-success">
-        {{ recording ? "Next" : "Start" }}
-      </b-button>
-    </p>
-    <p class="level-item" v-if="settings.promptIncludesRecording && recording">
-      <recording-component :recording="recording" />
-    </p>
+  <section class="section">
+    <nav class="level">
+      <p class="level-item has-text-centered">
+        <b-button @click="setNextRecording" class="is-success is-large">
+          {{ recording ? "Next" : "Start" }}
+        </b-button>
+      </p>
+      <p
+        class="level-item"
+        v-if="settings.promptIncludesRecording && recording"
+      >
+        <recording-component :recording="recording" />
+      </p>
 
-    <p class="level-item" v-if="image && settings.promptIncludesImages">
-      <img :src="image" />
-    </p>
-  </nav>
+      <p class="level-item" v-if="image && settings.promptIncludesImages">
+        <img :src="image" />
+      </p>
+    </nav>
+  </section>
 </template>
 
 <script lang="ts">
