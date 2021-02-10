@@ -309,13 +309,15 @@ export default Vue.extend({
     // is*Match
 
     isFamilySciMatch(answer: string, species: EbirdSpecies): boolean {
-      return species.familySciName
-        .toLowerCase()
-        .startsWith(answer.toLowerCase());
+      return this._transform(species.familySciName).startsWith(
+        this._transform(answer)
+      );
     },
 
     isFamilyEnMatch(answer: string, species: EbirdSpecies): boolean {
-      return species.familyComName.toLowerCase().includes(answer.toLowerCase());
+      return this._transform(species.familyComName).includes(
+        this._transform(answer)
+      );
     },
 
     isGenusMatch(answer: string, species: EbirdSpecies): boolean {
@@ -331,10 +333,9 @@ export default Vue.extend({
       ) {
         return false;
       }
-      return ebirdSpecies
-        .getGenus(species)
-        .toLowerCase()
-        .startsWith(answer.toLowerCase());
+      return this._transform(ebirdSpecies.getGenus(species)).startsWith(
+        this._transform(answer)
+      );
     },
 
     isSpeciesSciMatch(answer: string, species: EbirdSpecies): boolean {
@@ -347,12 +348,14 @@ export default Vue.extend({
       if (this.answer.genus && !this.isGenusMatch(this.answer.genus, species)) {
         return false;
       }
-      answer = answer.toLowerCase();
-      const speciesSciSp = ebirdSpecies.getSpeciesSciSp(species).toLowerCase();
+      answer = this._transform(answer);
+      const speciesSciSp = this._transform(
+        ebirdSpecies.getSpeciesSciSp(species)
+      );
       if (speciesSciSp.startsWith(answer)) {
         return true;
       }
-      const speciesSci = ebirdSpecies.getSpeciesSci(species).toLowerCase();
+      const speciesSci = this._transform(ebirdSpecies.getSpeciesSci(species));
       return speciesSci.startsWith(answer);
     },
 
@@ -363,10 +366,13 @@ export default Vue.extend({
       if (this.answer.genus && !this.isGenusMatch(answer, species)) {
         return false;
       }
-      return ebirdSpecies
-        .getSpeciesEn(species)
-        .toLowerCase()
-        .includes(answer.toLowerCase());
+      return this._transform(ebirdSpecies.getSpeciesEn(species)).includes(
+        this._transform(answer.toLowerCase())
+      );
+    },
+
+    _transform(name: string): string {
+      return name.toLowerCase().replace("-", " ");
     },
 
     // is*Correct
