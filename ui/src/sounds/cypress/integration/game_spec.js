@@ -26,8 +26,26 @@ describe("Form field behaviour", () => {
     cy.contains("Cracidae").should("be.visible");
     cy.get("#familySciField input").type("T");
     cy.contains("Tinamidae").should("be.visible");
-    cy.contains("Anatidae").should("not.be.visible");
-    cy.contains("Cracidae").should("not.be.visible");
+    // TODO: make the same assertion of non-visibility in all cases,
+    // remaining agnostic about whether it's in the DOM or not.
+    cy.contains("Anatidae").should("not.exist");
+    cy.contains("Cracidae").should("not.exist");
+  });
+
+  it("English species name autocomplete works", () => {
+    const tinamou = "Undulated Tinamou";
+    const tanager = "Flame-crested Tanager";
+    cy.contains(tinamou).should("not.be.visible");
+    cy.contains(tanager).should("not.be.visible");
+    cy.get("#speciesEnField input").type("{uparrow}");
+    cy.contains(tinamou).should("be.visible");
+    cy.contains(tanager).should("not.be.visible");
+    cy.contains("Clear").click();
+    cy.get("#speciesEnField input").type("Tan");
+    // TODO: make the same assertion of non-visibility in all cases,
+    // remaining agnostic about whether it's in the DOM or not.
+    cy.contains(tinamou).should("not.exist");
+    cy.contains(tanager).should("be.visible");
   });
 
   it("English family autofills on entering scientific family", () => {
