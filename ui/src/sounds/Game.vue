@@ -106,7 +106,6 @@ export default Vue.extend({
         []
       ) as Iterator<Recording>,
       recording: null as Recording | null,
-      showImage: false,
       haveLocationData: false,
       image: "",
     };
@@ -271,7 +270,6 @@ export default Vue.extend({
 
     setNextRecording(): void {
       (this.$refs.gameForm as any).clearInput();
-      this.showImage = false;
       this.image = "";
       const rec = this.challengeRecordingsIterator.next();
       if (!rec.done) {
