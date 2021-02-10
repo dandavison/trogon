@@ -82,6 +82,7 @@ export default Vue.extend({
     return {
       map: {
         zoom: 2,
+        tap: true,
       },
       tileLayer: {
         url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
