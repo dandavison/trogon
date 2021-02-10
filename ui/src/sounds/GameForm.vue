@@ -370,7 +370,11 @@ export default Vue.extend({
     _includes(truth: string, answer: string): boolean {
       truth = truth.toLowerCase();
       answer = answer.toLowerCase();
-      return truth.includes(answer);
+      if (answer.length > 1) {
+        return truth.includes(answer);
+      } else {
+        return truth.startsWith(answer);
+      }
     },
 
     _startsWith(truth: string, answer: string): boolean {
