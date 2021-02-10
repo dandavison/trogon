@@ -25,7 +25,7 @@ export default Vue.extend({
         names: NamesLanguage.Both,
         promptIncludesImages: false,
         promptIncludesRecording: true,
-        commonSpeciesOnly: true,
+        commonSpeciesOnly: false,
         songsOnly: true,
       } as Settings,
       controlPanelOpen: false,
