@@ -4,6 +4,7 @@
     v-bind="map"
     :center="center"
     @click.right="showCoordinatesPopup"
+    v-touch:touchhold="showCoordinatesPopup"
   >
     <l-tile-layer v-bind="tileLayer"></l-tile-layer>
 
@@ -47,8 +48,12 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
+import Vue2TouchEvents from "vue2-touch-events";
 import VueI18n from "vue-i18n";
+
+Vue.use(Vue2TouchEvents);
 Vue.use(VueI18n);
+
 import {
   LMap,
   LTileLayer,
