@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-describe("Form field autofill behaviour", () => {
+describe("Form field behaviour", () => {
   before(() => {
     cy.visit("/sounds/challenge?location=L5845383");
     cy.contains("Family (scientific)");
@@ -14,6 +14,20 @@ describe("Form field autofill behaviour", () => {
   afterEach(() => {
     cy.contains("Clear").click();
     cy.get("input").should("have.value", "");
+  });
+
+  it("Scientific family autocomplete works", () => {
+    cy.contains("Tinamidae").should("not.be.visible");
+    cy.contains("Anatidae").should("not.be.visible");
+    cy.contains("Cracidae").should("not.be.visible");
+    cy.get("#familySciField input").type("{uparrow}");
+    cy.contains("Tinamidae").should("be.visible");
+    cy.contains("Anatidae").should("be.visible");
+    cy.contains("Cracidae").should("be.visible");
+    cy.get("#familySciField input").type("T");
+    cy.contains("Tinamidae").should("be.visible");
+    cy.contains("Anatidae").should("not.be.visible");
+    cy.contains("Cracidae").should("not.be.visible");
   });
 
   it("English family autofills on entering scientific family", () => {
