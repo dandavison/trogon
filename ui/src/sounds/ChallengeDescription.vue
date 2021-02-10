@@ -2,7 +2,7 @@
   <section>
     <h1 style="font-weight: bold">
       {{
-        ebirdHotspots
+        ebirdHotspots.length > 0
           ? ebirdHotspots.map((h) => h.locName).join(", ")
           : ebirdLocIds.join(", ")
       }}
@@ -34,7 +34,7 @@ import FamilySelector from "./FamilySelector.vue";
 export default Vue.extend({
   components: { FamilySelector },
   props: {
-    ebirdLocId: String,
+    ebirdLocIds: Array as PropType<string[]>,
     ebirdHotspots: Array as PropType<EbirdHotspot[]>,
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     challengeRecordings: Array as PropType<Recording[]>,
