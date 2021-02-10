@@ -3,8 +3,7 @@
     style="height: 800px"
     v-bind="map"
     :center="center"
-    @click.right="showCoordinatesPopup"
-    v-touch:touchhold="showCoordinatesPopup"
+    @contextmenu="showCoordinatesPopup"
   >
     <l-tile-layer v-bind="tileLayer"></l-tile-layer>
 
