@@ -9,6 +9,9 @@ export const ebirdSpecies = {
   getGenus: function(species: EbirdSpecies): string {
     return species.sciName.split(" ")[0] || "";
   },
+  getSpeciesSciSp: function(species: EbirdSpecies): string {
+    return species.sciName.split(" ")[1] || "";
+  },
   getSpeciesSci: function(species: EbirdSpecies): string {
     return species.sciName;
   },

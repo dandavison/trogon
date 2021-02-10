@@ -309,7 +309,9 @@ export default Vue.extend({
     // is*Match
 
     isFamilySciMatch(answer: string, species: EbirdSpecies): boolean {
-      return species.familySciName.toLowerCase().includes(answer.toLowerCase());
+      return species.familySciName
+        .toLowerCase()
+        .startsWith(answer.toLowerCase());
     },
 
     isFamilyEnMatch(answer: string, species: EbirdSpecies): boolean {
@@ -345,10 +347,13 @@ export default Vue.extend({
       if (this.answer.genus && !this.isGenusMatch(this.answer.genus, species)) {
         return false;
       }
-      return ebirdSpecies
-        .getSpeciesSci(species)
-        .toLowerCase()
-        .includes(answer.toLowerCase());
+      answer = answer.toLowerCase();
+      const speciesSciSp = ebirdSpecies.getSpeciesSciSp(species).toLowerCase();
+      if (speciesSciSp.startsWith(answer)) {
+        return true;
+      }
+      const speciesSci = ebirdSpecies.getSpeciesSci(species).toLowerCase();
+      return speciesSci.startsWith(answer);
     },
 
     isSpeciesEnMatch(answer: string, species: EbirdSpecies): boolean {
