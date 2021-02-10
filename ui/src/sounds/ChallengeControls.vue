@@ -10,7 +10,7 @@
         class="level-item"
         v-if="settings.promptIncludesRecording && recording"
       >
-        <recording-component :recording="recording" />
+        <recording-player :recording="recording" />
       </p>
 
       <p class="level-item" v-if="image && settings.promptIncludesImages">
@@ -24,10 +24,10 @@
 import Vue, { PropType } from "vue";
 import { Recording, Settings } from "./types";
 
-import RecordingComponent from "./Recording.vue";
+import RecordingPlayer from "./RecordingPlayer.vue";
 
 export default Vue.extend({
-  components: { RecordingComponent },
+  components: { RecordingPlayer },
   props: {
     image: String,
     recording: Object as PropType<Recording | null>,

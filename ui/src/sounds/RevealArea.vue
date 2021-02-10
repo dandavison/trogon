@@ -31,10 +31,10 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { NamesLanguage, Recording, Settings } from "./types";
-import RecordingComponent from "./Recording.vue";
+import RecordingPlayer from "./RecordingPlayer.vue";
 
 export default Vue.extend({
-  components: { RecordingComponent },
+  components: { RecordingPlayer },
   props: {
     image: String,
     recording: Object as PropType<Recording>,

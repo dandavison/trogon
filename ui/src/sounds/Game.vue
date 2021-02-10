@@ -55,7 +55,7 @@ import {
 } from "./ebird";
 import { fetchAllRecordings, isSong } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
-import RecordingComponent from "./Recording.vue";
+import RecordingPlayer from "./RecordingPlayer.vue";
 import {
   LocationRequest,
   ChallengeFamily,
@@ -75,7 +75,7 @@ import ChallengeControls from "./ChallengeControls.vue";
 export default Vue.extend({
   name: "Home",
   components: {
-    RecordingComponent,
+    RecordingPlayer,
     GameForm,
     RevealArea,
     ChallengeDescription,
