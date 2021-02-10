@@ -13,16 +13,18 @@
         spellcheck="false"
       >
         <template slot-scope="props">
-          <div class="media">
-            <div class="media-content">
-              {{ props.option }}
+          <div class="level">
+            <div class="level-left">
+              <div class="level-item">{{ props.option }}</div>
             </div>
-            <div class="media-right">
-              <img
-                v-for="url in getImageURLs(props.option)"
-                :key="url"
-                :src="url"
-              />
+            <div class="level-right">
+              <div class="level-item">
+                <img
+                  v-for="url in getImageURLs(props.option)"
+                  :key="url"
+                  :src="url"
+                />
+              </div>
             </div>
           </div>
         </template>
