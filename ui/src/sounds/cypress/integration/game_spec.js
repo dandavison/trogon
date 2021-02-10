@@ -2,10 +2,14 @@
 
 describe("Game", () => {
   it("English family name autofills on entering scientific family name", () => {
-    cy.visit("/sounds/L2697642");
+    cy.visit("/sounds/challenge?location=L5845383");
     cy.contains("Family (scientific)");
-    cy.get("#familySciField input").type("Columbidae");
     cy.contains("Family (English)");
-    cy.get("#familyEnField input").should("have.text", "Pigeons and Doves");
+    cy.get("#familyEnField input").should(
+      "not.have.value",
+      "Pigeons and Doves"
+    );
+    cy.get("#familySciField input").type("Columbidae");
+    cy.get("#familyEnField input").should("have.value", "Pigeons and Doves");
   });
 });
