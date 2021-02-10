@@ -84,4 +84,12 @@ describe("Form field behaviour", () => {
       "Patagioenas subvinacea"
     );
   });
+
+  it("English species name autocomplete is filtered when genus filled out", () => {
+    cy.get("#genusField input").type("Psarocolius");
+    cy.get("#speciesEnField input").type("{uparrow}");
+    cy.contains("Russet-backed Oropendola").should("be.visible");
+    cy.get("#speciesEnField input").type("Russet");
+    cy.contains("Russet-backed Oropendola").should("be.visible");
+  });
 });
