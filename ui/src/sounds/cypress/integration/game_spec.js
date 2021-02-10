@@ -16,6 +16,10 @@ describe("Form field behaviour", () => {
     cy.get("input").should("have.value", "");
   });
 
+  it("Location info is displayed", () => {
+    cy.contains("Cerro Pinturas");
+  });
+
   it("Scientific family autocomplete works", () => {
     cy.contains("Tinamidae").should("not.be.visible");
     cy.contains("Anatidae").should("not.be.visible");
