@@ -309,14 +309,13 @@ export default Vue.extend({
     // is*Match
 
     isFamilySciMatch(answer: string, species: EbirdSpecies): boolean {
-      return this._transform(species.familySciName).startsWith(
-        this._transform(answer)
-      );
+      return this._startsWith(species.familySciName, answer);
     },
 
     isFamilyEnMatch(answer: string, species: EbirdSpecies): boolean {
-      return this._transform(species.familyComName).includes(
-        this._transform(answer)
+      return this._includes(
+        species.familyComName.replace("-", " "),
+        answer.replace("-", " ")
       );
     },
 
@@ -333,9 +332,7 @@ export default Vue.extend({
       ) {
         return false;
       }
-      return this._transform(ebirdSpecies.getGenus(species)).startsWith(
-        this._transform(answer)
-      );
+      return this._startsWith(ebirdSpecies.getGenus(species), answer);
     },
 
     isSpeciesSciMatch(answer: string, species: EbirdSpecies): boolean {
@@ -348,15 +345,10 @@ export default Vue.extend({
       if (this.answer.genus && !this.isGenusMatch(this.answer.genus, species)) {
         return false;
       }
-      answer = this._transform(answer);
-      const speciesSciSp = this._transform(
-        ebirdSpecies.getSpeciesSciSp(species)
+      return (
+        this._startsWith(ebirdSpecies.getSpeciesSciSp(species), answer) ||
+        this._startsWith(ebirdSpecies.getSpeciesSci(species), answer)
       );
-      if (speciesSciSp.startsWith(answer)) {
-        return true;
-      }
-      const speciesSci = this._transform(ebirdSpecies.getSpeciesSci(species));
-      return speciesSci.startsWith(answer);
     },
 
     isSpeciesEnMatch(answer: string, species: EbirdSpecies): boolean {
@@ -369,13 +361,22 @@ export default Vue.extend({
       if (this.answer.genus && !this.isGenusMatch(this.answer.genus, species)) {
         return false;
       }
-      return this._transform(ebirdSpecies.getSpeciesEn(species)).includes(
-        this._transform(answer.toLowerCase())
+      return this._includes(
+        ebirdSpecies.getSpeciesEn(species).replace("-", " "),
+        answer.replace("-", " ")
       );
     },
 
-    _transform(name: string): string {
-      return name.toLowerCase().replace("-", " ");
+    _includes(truth: string, answer: string): boolean {
+      truth = truth.toLowerCase();
+      answer = answer.toLowerCase();
+      return truth.includes(answer);
+    },
+
+    _startsWith(truth: string, answer: string): boolean {
+      truth = truth.toLowerCase();
+      answer = answer.toLowerCase();
+      return truth.startsWith(answer);
     },
 
     // is*Correct
