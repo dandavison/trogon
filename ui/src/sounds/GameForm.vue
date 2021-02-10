@@ -258,6 +258,8 @@ export default Vue.extend({
       (this.$refs.speciesEnField as any).clear();
     },
 
+    // filter*
+
     filterFamilySci(answer: string): string[] {
       return this._filter(
         answer,
@@ -304,20 +306,14 @@ export default Vue.extend({
       );
     },
 
+    // is*Match
+
     isFamilySciMatch(answer: string, species: EbirdSpecies): boolean {
       return species.familySciName.toLowerCase().includes(answer.toLowerCase());
     },
 
     isFamilyEnMatch(answer: string, species: EbirdSpecies): boolean {
       return species.familyComName.toLowerCase().includes(answer.toLowerCase());
-    },
-
-    isFamilySciCorrect(): boolean {
-      return this.recording?.familySci === this.answer.familySci;
-    },
-
-    isFamilyEnCorrect(): boolean {
-      return this.recording?.familyEn === this.answer.familyEn;
     },
 
     isGenusMatch(answer: string, species: EbirdSpecies): boolean {
@@ -337,10 +333,6 @@ export default Vue.extend({
         .getGenus(species)
         .toLowerCase()
         .startsWith(answer.toLowerCase());
-    },
-
-    isGenusCorrect(): boolean {
-      return this.recording?.genus === this.answer.genus;
     },
 
     isSpeciesSciMatch(answer: string, species: EbirdSpecies): boolean {
@@ -370,6 +362,20 @@ export default Vue.extend({
         .getSpeciesEn(species)
         .toLowerCase()
         .includes(answer.toLowerCase());
+    },
+
+    // is*Correct
+
+    isFamilySciCorrect(): boolean {
+      return this.recording?.familySci === this.answer.familySci;
+    },
+
+    isFamilyEnCorrect(): boolean {
+      return this.recording?.familyEn === this.answer.familyEn;
+    },
+
+    isGenusCorrect(): boolean {
+      return this.recording?.genus === this.answer.genus;
     },
 
     isSpeciesSciCorrect(): boolean {
