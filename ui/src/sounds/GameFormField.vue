@@ -9,7 +9,7 @@
         :open-on-focus="true"
         @select="handleSelect"
         dropdown-position="bottom"
-        max-height="600px"
+        max-height="100%"
         autocomplete="off"
         autocorrect="off"
         autocapitalize="off"
