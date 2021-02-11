@@ -13,7 +13,6 @@
         autocorrect="off"
         autocapitalize="off"
         spellcheck="false"
-        readonly
       >
         <template slot-scope="props">
           <div class="level">
