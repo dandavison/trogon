@@ -22,6 +22,7 @@
       ref="gameForm"
       :locationSpecies="locationSpecies"
       :recording="recording"
+      :image="image"
       :imageURLMaps="imageURLMaps"
       :settings="settings"
     />

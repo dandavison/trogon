@@ -129,6 +129,7 @@ export default Vue.extend({
   props: {
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     recording: Object as PropType<Recording | null>,
+    image: String as PropType<string | null>,
     imageURLMaps: Object as PropType<ImageURLMaps>,
     settings: Object as PropType<Settings>,
   },
@@ -282,6 +283,9 @@ export default Vue.extend({
     },
 
     getSpeciesSciImageURLs(answer: string): string[] {
+      if (this.settings.promptIncludesImages) {
+        return [];
+      }
       return this._getImageURLs(
         answer,
         this.imageURLMaps.speciesSciName2images
@@ -289,6 +293,9 @@ export default Vue.extend({
     },
 
     getSpeciesEnImageURLs(answer: string): string[] {
+      if (this.settings.promptIncludesImages) {
+        return [];
+      }
       return this._getImageURLs(
         this.speciesEn2Sci.get(answer) || "",
         this.imageURLMaps.speciesSciName2images
@@ -312,6 +319,9 @@ export default Vue.extend({
       imageURLMap: Map<string, Set<string>>
     ): string[] {
       var images = imageURLMap.get(answer) || new Set();
+      if (this.settings.promptIncludesImages && this.image) {
+        images.delete(this.image);
+      }
       return Array.from(images);
     },
 
