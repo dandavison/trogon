@@ -14,7 +14,6 @@
       ></audio>
     </li>
     <li>{{ recording.raw.loc }}, {{ recording.raw.cnt }}</li>
-    <li>{{ recording.raw.type }}</li>
     <li v-if="recording.raw.also.length[0]">
       Also:
       <ul>
