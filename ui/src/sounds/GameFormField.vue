@@ -6,6 +6,7 @@
         v-model="answer"
         :data="filteredCandidates"
         :open-on-focus="true"
+        @select="handleSelect"
         dropdown-position="bottom"
         max-height="600px"
         autocomplete="off"
@@ -42,6 +43,7 @@
 import Vue from "vue";
 export default Vue.extend({
   props: {
+    initial: String,
     shouldShow: Boolean,
     id: String,
     label: String,
@@ -53,7 +55,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      answer: "",
+      answer: this.initial,
     };
   },
   computed: {
@@ -72,6 +74,11 @@ export default Vue.extend({
     },
     reveal(): void {
       this.answer = this.truth;
+    },
+    handleSelect(answer: string) {
+      this.answer = answer;
+      this.handler(this.answer);
+      this.$emit("select");
     },
   },
 });

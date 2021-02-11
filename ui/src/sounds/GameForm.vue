@@ -6,7 +6,9 @@
         <game-form-field
           ref="familySciField"
           id="familySciField"
+          :initial="answer.familySci"
           :handler="handleFamilySci"
+          @select="isModal.familySci = false"
           :shouldShow="shouldShowScientificNames"
           :filter="filterFamilySci"
           :truth="truth.familySci"
@@ -23,7 +25,9 @@
         <game-form-field
           ref="familyEnField"
           id="familyEnField"
+          :initial="answer.familyEn"
           :handler="handleFamilyEn"
+          @select="isModal.familyEn = false"
           :shouldShow="shouldShowEnglishNames"
           :filter="filterFamilyEn"
           :truth="truth.familyEn"
@@ -40,7 +44,9 @@
         <game-form-field
           ref="genusField"
           id="genusField"
+          :initial="answer.genus"
           :handler="handleGenus"
+          @select="isModal.genus = false"
           :shouldShow="true"
           :filter="filterGenus"
           :truth="truth.genus"
@@ -57,7 +63,9 @@
         <game-form-field
           ref="speciesSciField"
           id="speciesSciField"
+          :initial="answer.speciesSci"
           :handler="handleSpeciesSci"
+          @select="isModal.speciesSci = false"
           :shouldShow="shouldShowScientificNames"
           :filter="filterSpeciesSci"
           :truth="truth.speciesSci"
@@ -74,7 +82,9 @@
         <game-form-field
           ref="speciesEnField"
           id="speciesEnField"
+          :initial="answer.speciesEn"
           :handler="handleSpeciesEn"
+          @select="isModal.speciesEn = false"
           :shouldShow="shouldShowEnglishNames"
           :filter="filterSpeciesEn"
           :truth="truth.speciesEn"
