@@ -2,7 +2,7 @@
   <section class="section">
     <nav class="level">
       <p class="level-item has-text-centered">
-        <b-button @click="setNextRecording" class="is-success is-large">
+        <b-button @click="setNextRecording" class="is-success">
           {{ recording ? "Next" : "Start" }}
         </b-button>
       </p>
