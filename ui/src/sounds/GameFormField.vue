@@ -1,40 +1,43 @@
 <template>
   <b-field v-if="shouldShow" :label="label" :id="id">
-    <span>
-      <b-autocomplete
-        type="text"
-        v-model="answer"
-        :data="filteredCandidates"
-        :open-on-focus="true"
-        dropdown-position="bottom"
-        max-height="600px"
-        autocomplete="off"
-        autocorrect="off"
-        autocapitalize="off"
-        spellcheck="false"
-      >
-        <template slot-scope="props">
-          <div class="level">
-            <div class="level-left">
-              <div class="level-item">{{ props.option }}</div>
-            </div>
-            <div class="level-right">
-              <div class="level-item">
-                <img
-                  v-for="url in getImageURLs(props.option)"
-                  :key="url"
-                  :src="url"
-                />
+    <b-switch v-model="modalActive"></b-switch>
+    <b-modal v-model="modalActive" full-screen>
+      <span>
+        <b-autocomplete
+          type="text"
+          v-model="answer"
+          :data="filteredCandidates"
+          :open-on-focus="true"
+          dropdown-position="bottom"
+          max-height="600px"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        >
+          <template slot-scope="props">
+            <div class="level">
+              <div class="level-left">
+                <div class="level-item">{{ props.option }}</div>
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  <img
+                    v-for="url in getImageURLs(props.option)"
+                    :key="url"
+                    :src="url"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </template>
-      </b-autocomplete>
-      <b-button v-if="answer != truth" @click="reveal">Reveal</b-button>
-      <p v-if="answer">
-        {{ isCorrect() ? "✅" : "❌" }}
-      </p>
-    </span>
+          </template>
+        </b-autocomplete>
+        <b-button v-if="answer != truth" @click="reveal">Reveal</b-button>
+        <p v-if="answer">
+          {{ isCorrect() ? "✅" : "❌" }}
+        </p>
+      </span>
+    </b-modal>
   </b-field>
 </template>
 
@@ -54,6 +57,7 @@ export default Vue.extend({
   data() {
     return {
       answer: "",
+      modalActive: false,
     };
   },
   computed: {
