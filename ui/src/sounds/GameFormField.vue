@@ -4,6 +4,7 @@
       <b-autocomplete
         type="text"
         v-model="answer"
+        ref="autocomplete"
         :data="filteredCandidates"
         :open-on-focus="true"
         @select="handleSelect"
@@ -52,6 +53,11 @@ export default Vue.extend({
     isCorrect: Function,
     getImageURLs: Function,
     handler: Function,
+  },
+  mounted() {
+    (this.$refs.autocomplete as any).$refs.input.$on("focus", () => {
+      (this.$refs.autocomplete as any).$refs.input.$emit("blur");
+    });
   },
   data() {
     return {
