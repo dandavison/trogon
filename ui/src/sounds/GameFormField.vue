@@ -55,9 +55,12 @@ export default Vue.extend({
     handler: Function,
   },
   mounted() {
-    (this.$refs.autocomplete as any).$refs.input.$on("focus", () => {
-      (this.$refs.autocomplete as any).$refs.input.$emit("blur");
-    });
+    (this.$refs.autocomplete as any).$refs.dropdown.querySelector(
+      ".dropdown-content"
+    ).onscroll = () => {
+      console.log("dropdown-content@scroll");
+      document.querySelector("#familySciField input").blur();
+    };
   },
   data() {
     return {
