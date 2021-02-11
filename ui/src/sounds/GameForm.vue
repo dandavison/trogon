@@ -280,33 +280,41 @@ export default Vue.extend({
         }
       }
     },
-    getSpeciesSciImageURLs(option: string): string[] {
-      return Array.from(
-        this.imageURLMaps.speciesSciName2images.get(option) || new Set()
+
+    getSpeciesSciImageURLs(answer: string): string[] {
+      return this._getImageURLs(
+        answer,
+        this.imageURLMaps.speciesSciName2images
       );
     },
-    getSpeciesEnImageURLs(option: string): string[] {
-      const answerSciName = this.speciesEn2Sci.get(option);
-      return Array.from(
-        this.imageURLMaps.speciesSciName2images.get(answerSciName || "") ||
-          new Set()
+
+    getSpeciesEnImageURLs(answer: string): string[] {
+      return this._getImageURLs(
+        this.speciesEn2Sci.get(answer) || "",
+        this.imageURLMaps.speciesSciName2images
       );
     },
-    getGenusImageURLs(option: string): string[] {
-      return Array.from(
-        this.imageURLMaps.genus2images.get(option) || new Set()
-      );
+
+    getGenusImageURLs(answer: string): string[] {
+      return this._getImageURLs(answer, this.imageURLMaps.genus2images);
     },
-    getFamilySciImageURLs(option: string): string[] {
-      return Array.from(
-        this.imageURLMaps.familySci2images.get(option) || new Set()
-      );
+
+    getFamilySciImageURLs(answer: string): string[] {
+      return this._getImageURLs(answer, this.imageURLMaps.familySci2images);
     },
-    getFamilyEnImageURLs(option: string): string[] {
-      return Array.from(
-        this.imageURLMaps.familyEn2images.get(option) || new Set()
-      );
+
+    getFamilyEnImageURLs(answer: string): string[] {
+      return this._getImageURLs(answer, this.imageURLMaps.familyEn2images);
     },
+
+    _getImageURLs(
+      answer: string,
+      imageURLMap: Map<string, Set<string>>
+    ): string[] {
+      var images = imageURLMap.get(answer) || new Set();
+      return Array.from(images);
+    },
+
     clearInput(): void {
       (this.$refs.familySciField as any).clear();
       (this.$refs.familyEnField as any).clear();
