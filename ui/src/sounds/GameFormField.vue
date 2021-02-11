@@ -55,12 +55,7 @@ export default Vue.extend({
     handler: Function,
   },
   mounted() {
-    (this.$refs.autocomplete as any).$refs.dropdown.querySelector(
-      ".dropdown-content"
-    ).onscroll = () => {
-      console.log("dropdown-content@scroll");
-      document.querySelector("#familySciField input").blur();
-    };
+    this.dismissMobileKeyboardOnDropdownScroll();
   },
   data() {
     return {
@@ -88,6 +83,23 @@ export default Vue.extend({
       this.answer = answer;
       this.handler(this.answer);
       this.$emit("select");
+    },
+    dismissMobileKeyboardOnDropdownScroll(): void {
+      const autocomplete = this.$refs.autocomplete as any;
+      const input = autocomplete?.$refs.input.$refs.input as HTMLElement;
+      const dropdown = autocomplete?.$refs.dropdown as HTMLElement;
+      const dropdownContent = dropdown?.querySelector(
+        ".dropdown-content"
+      ) as HTMLElement;
+      if (input && dropdownContent) {
+        dropdownContent.onscroll = () => {
+          input.blur();
+        };
+      } else {
+        console.log(
+          "Failed to obtain references to input and dropdown HTML elements."
+        );
+      }
     },
   },
 });
