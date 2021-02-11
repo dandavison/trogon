@@ -229,6 +229,7 @@ export default Vue.extend({
         }
       }
     },
+
     handleFamilyEn(newVal: string): void {
       this.answer.familyEn = newVal;
       // Autofill familySci
@@ -239,6 +240,7 @@ export default Vue.extend({
         }
       }
     },
+
     handleGenus(newVal: string): void {
       this.answer.genus = newVal;
       // Autofill familySci
@@ -249,6 +251,7 @@ export default Vue.extend({
         }
       }
     },
+
     handleSpeciesSci(newVal: string): void {
       this.answer.speciesSci = newVal;
       // Autofill speciesEn
@@ -266,6 +269,7 @@ export default Vue.extend({
         }
       }
     },
+
     handleSpeciesEn(newVal: string): void {
       this.answer.speciesEn = newVal;
       // Autofill speciesSci
