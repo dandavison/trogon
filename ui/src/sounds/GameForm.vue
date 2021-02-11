@@ -1,13 +1,15 @@
 <template>
   <form type="box">
-    <b-switch v-model="isModal.familySci"></b-switch>
-    <game-form-field-container :isModal="isModal.familySci">
+    <game-form-field-container
+      :isModal="settings.useFieldModals && isModal.familySci"
+    >
       <template v-slot:form-field>
         <game-form-field
           ref="familySciField"
           id="familySciField"
           :initial="answer.familySci"
           :handler="handleFamilySci"
+          @focus="isModal.familySci = true"
           @select="isModal.familySci = false"
           :shouldShow="shouldShowScientificNames"
           :filter="filterFamilySci"
@@ -19,14 +21,16 @@
       </template>
     </game-form-field-container>
 
-    <b-switch v-model="isModal.familyEn"></b-switch>
-    <game-form-field-container :isModal="isModal.familyEn">
+    <game-form-field-container
+      :isModal="settings.useFieldModals && isModal.familyEn"
+    >
       <template v-slot:form-field>
         <game-form-field
           ref="familyEnField"
           id="familyEnField"
           :initial="answer.familyEn"
           :handler="handleFamilyEn"
+          @focus="isModal.familyEn = true"
           @select="isModal.familyEn = false"
           :shouldShow="shouldShowEnglishNames"
           :filter="filterFamilyEn"
@@ -38,14 +42,16 @@
       </template>
     </game-form-field-container>
 
-    <b-switch v-model="isModal.genus"></b-switch>
-    <game-form-field-container :isModal="isModal.genus">
+    <game-form-field-container
+      :isModal="settings.useFieldModals && isModal.genus"
+    >
       <template v-slot:form-field>
         <game-form-field
           ref="genusField"
           id="genusField"
           :initial="answer.genus"
           :handler="handleGenus"
+          @focus="isModal.genus = true"
           @select="isModal.genus = false"
           :shouldShow="true"
           :filter="filterGenus"
@@ -57,14 +63,16 @@
       </template>
     </game-form-field-container>
 
-    <b-switch v-model="isModal.speciesSci"></b-switch>
-    <game-form-field-container :isModal="isModal.speciesSci">
+    <game-form-field-container
+      :isModal="settings.useFieldModals && isModal.speciesSci"
+    >
       <template v-slot:form-field>
         <game-form-field
           ref="speciesSciField"
           id="speciesSciField"
           :initial="answer.speciesSci"
           :handler="handleSpeciesSci"
+          @focus="isModal.speciesSci = true"
           @select="isModal.speciesSci = false"
           :shouldShow="shouldShowScientificNames"
           :filter="filterSpeciesSci"
@@ -76,14 +84,16 @@
       </template>
     </game-form-field-container>
 
-    <b-switch v-model="isModal.speciesEn"></b-switch>
-    <game-form-field-container :isModal="isModal.speciesEn">
+    <game-form-field-container
+      :isModal="settings.useFieldModals && isModal.speciesEn"
+    >
       <template v-slot:form-field>
         <game-form-field
           ref="speciesEnField"
           id="speciesEnField"
           :initial="answer.speciesEn"
           :handler="handleSpeciesEn"
+          @focus="isModal.speciesEn = true"
           @select="isModal.speciesEn = false"
           :shouldShow="shouldShowEnglishNames"
           :filter="filterSpeciesEn"

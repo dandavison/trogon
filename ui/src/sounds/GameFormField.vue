@@ -7,6 +7,7 @@
         ref="autocomplete"
         :data="filteredCandidates"
         :open-on-focus="true"
+        @focus="$emit('focus')"
         @select="handleSelect"
         dropdown-position="bottom"
         max-height="100%"
