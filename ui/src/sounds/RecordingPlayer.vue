@@ -10,7 +10,7 @@
             ev.target.play();
           }
         "
-        @play="eventBus.$emit('play:challenge-recording')"
+        @loadeddata="eventBus.$emit('ready:challenge-recording')"
       ></audio>
     </li>
     <li>{{ recording.raw.loc }}, {{ recording.raw.cnt }}</li>

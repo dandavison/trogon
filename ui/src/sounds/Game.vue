@@ -145,7 +145,7 @@ export default Vue.extend({
   mounted: function () {
     eventBus.$on("family:select", this.handleFamilySelection);
     eventBus.$on(
-      "play:challenge-recording",
+      "ready:challenge-recording",
       () => (this.challengeActive = true)
     );
   },
