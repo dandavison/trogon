@@ -5,6 +5,7 @@
         type="text"
         v-model="answer"
         :data="filteredCandidates"
+        :open-on-focus="true"
         dropdown-position="bottom"
         max-height="600px"
         autocomplete="off"
