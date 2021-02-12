@@ -275,7 +275,7 @@ export default Vue.extend({
     },
 
     setNextRecording(): void {
-      (this.$refs.gameForm as any)?.clearInput();
+      (this.$refs.gameForm as any)?.clear();
       this.image = "";
       const rec = this.challengeRecordingsIterator.next();
       if (!rec.done) {

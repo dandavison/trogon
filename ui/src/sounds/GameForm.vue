@@ -105,7 +105,7 @@
       </template>
     </game-form-field-container>
 
-    <b-button @click="clearInput">Clear</b-button>
+    <b-button @click="clear">Clear</b-button>
   </form>
 </template>
 
@@ -325,7 +325,7 @@ export default Vue.extend({
       return Array.from(images);
     },
 
-    clearInput(): void {
+    clear(): void {
       (this.$refs.familySciField as any).clear();
       (this.$refs.familyEnField as any).clear();
       (this.$refs.genusField as any).clear();
