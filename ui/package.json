@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
+    "@types/leaflet": "^1.5.21",
     "@vue/cli-plugin-unit-jest": "^4.5.11",
     "buefy": "^0.9.4",
     "core-js": "^3.6.5",
