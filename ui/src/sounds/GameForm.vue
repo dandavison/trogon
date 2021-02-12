@@ -204,6 +204,9 @@ export default Vue.extend({
     },
 
     truth(): Answer {
+      if (this.settings.debug) {
+        console.log(`GameForm.truth:`, JSON.stringify(this.recording));
+      }
       if (this.recording) {
         return {
           familySci: this.recording.familySci,
@@ -226,6 +229,9 @@ export default Vue.extend({
 
   methods: {
     handleFamilySci(newVal: string): void {
+      if (this.settings.debug) {
+        console.log("handleFamilySci:", JSON.stringify(newVal));
+      }
       this.answer.familySci = newVal;
       // Autofill familyEn
       if (!this.answer.familyEn) {
@@ -237,6 +243,9 @@ export default Vue.extend({
     },
 
     handleFamilyEn(newVal: string): void {
+      if (this.settings.debug) {
+        console.log("handleFamilyEn:", JSON.stringify(newVal));
+      }
       this.answer.familyEn = newVal;
       // Autofill familySci
       if (!this.answer.familySci) {
@@ -248,6 +257,9 @@ export default Vue.extend({
     },
 
     handleGenus(newVal: string): void {
+      if (this.settings.debug) {
+        console.log("handleGenus:", JSON.stringify(newVal));
+      }
       this.answer.genus = newVal;
       // Autofill familySci
       if (!this.answer.familySci) {
@@ -259,6 +271,9 @@ export default Vue.extend({
     },
 
     handleSpeciesSci(newVal: string): void {
+      if (this.settings.debug) {
+        console.log("handleSpeciesSci:", JSON.stringify(newVal));
+      }
       this.answer.speciesSci = newVal;
       // Autofill speciesEn
       if (!this.answer.speciesEn) {
@@ -277,6 +292,9 @@ export default Vue.extend({
     },
 
     handleSpeciesEn(newVal: string): void {
+      if (this.settings.debug) {
+        console.log("handleSpeciesEn:", JSON.stringify(newVal));
+      }
       this.answer.speciesEn = newVal;
       // Autofill speciesSci
       if (!this.answer.speciesSci) {
@@ -349,6 +367,9 @@ export default Vue.extend({
     },
 
     filterFamilyEn(answer: string): string[] {
+      if (this.settings.debug) {
+        console.log("filterFamilyEn:", JSON.stringify(answer));
+      }
       return this._filter(
         answer,
         this.isFamilyEnMatch,

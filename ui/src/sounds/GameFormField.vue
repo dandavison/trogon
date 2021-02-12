@@ -69,22 +69,47 @@ export default Vue.extend({
   },
   computed: {
     filteredCandidates(): string[] {
+      if (this.settings.debug) {
+        console.log(
+          `${this.id}.filteredCandidates:`,
+          JSON.stringify(this.answer)
+        );
+      }
       return this.filter(this.answer);
     },
   },
   watch: {
-    answer: function (newVal) {
-      this.handler(newVal);
+    answer: function (value: string): void {
+      if (this.settings.debug) {
+        console.log(`${this.id}: watch: answer:`, JSON.stringify(value));
+      }
+      this.handler(value);
     },
   },
   methods: {
     clear(): void {
+      if (this.settings.debug) {
+        console.log(`GameFormField(${this.id}).clear`);
+      }
       this.answer = "";
     },
     reveal(): void {
+      if (this.settings.debug) {
+        console.log(
+          `GameFormField(${this.id}).reveal:`,
+          JSON.stringify(this.answer),
+          JSON.stringify(this.truth)
+        );
+      }
       this.answer = this.truth;
     },
     handleSelect(answer: string) {
+      if (this.settings.debug) {
+        console.log(
+          `GameFormField(${this.id}).handleSelect:`,
+          JSON.stringify(answer)
+        );
+      }
       this.answer = answer;
       this.handler(this.answer);
       this.$emit("select");
