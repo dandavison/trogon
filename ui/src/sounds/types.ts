@@ -7,7 +7,6 @@ export interface Settings {
   promptIncludesImages: boolean;
   promptIncludesRecording: boolean;
   useFieldModals: boolean;
-  debug: boolean;
 }
 
 export enum NamesLanguage {

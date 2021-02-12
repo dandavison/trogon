@@ -40,9 +40,9 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from "vue";
+import Vue from "vue";
 
-import { Settings } from "./types";
+import { debug } from "./utils";
 
 export default Vue.extend({
   props: {
@@ -55,7 +55,6 @@ export default Vue.extend({
     isCorrect: Function,
     getImageURLs: Function,
     handler: Function,
-    settings: Object as PropType<Settings>,
   },
   mounted() {
     this.dismissMobileKeyboardOnDropdownScroll();
@@ -67,47 +66,34 @@ export default Vue.extend({
   },
   computed: {
     filteredCandidates(): string[] {
-      if (this.settings.debug) {
-        console.log(
-          `${this.id}.filteredCandidates:`,
-          JSON.stringify(this.answer)
-        );
-      }
+      debug([`${this.id}.filteredCandidates:`, JSON.stringify(this.answer)]);
       return this.filter(this.answer);
     },
   },
   watch: {
     answer: function (value: string): void {
-      if (this.settings.debug) {
-        console.log(`${this.id}: watch: answer:`, JSON.stringify(value));
-      }
+      debug([`${this.id}: watch: answer:`, JSON.stringify(value)]);
       this.handler(value);
     },
   },
   methods: {
     clear(): void {
-      if (this.settings.debug) {
-        console.log(`GameFormField(${this.id}).clear`);
-      }
+      debug([`GameFormField(${this.id}).clear`]);
       this.answer = "";
     },
     reveal(): void {
-      if (this.settings.debug) {
-        console.log(
-          `GameFormField(${this.id}).reveal:`,
-          JSON.stringify(this.answer),
-          JSON.stringify(this.truth)
-        );
-      }
+      debug([
+        `GameFormField(${this.id}).reveal:`,
+        JSON.stringify(this.answer),
+        JSON.stringify(this.truth),
+      ]);
       this.answer = this.truth;
     },
     handleSelect(answer: string) {
-      if (this.settings.debug) {
-        console.log(
-          `GameFormField(${this.id}).handleSelect:`,
-          JSON.stringify(answer)
-        );
-      }
+      debug([
+        `GameFormField(${this.id}).handleSelect:`,
+        JSON.stringify(answer),
+      ]);
       if (answer) {
         this.answer = answer;
         this.handler(this.answer);
@@ -118,14 +104,12 @@ export default Vue.extend({
     styleInputAccordingToAnswer() {
       const autocomplete = this.$refs.autocomplete as any;
       const input = autocomplete?.$refs.input.$refs.input as HTMLElement;
-      if (this.settings.debug) {
-        console.log(
-          `${this.id}.styleInputAccordingToAnswer:`,
-          input,
-          JSON.stringify(this.answer),
-          JSON.stringify(this.truth)
-        );
-      }
+      debug([
+        `${this.id}.styleInputAccordingToAnswer:`,
+        `${input}`,
+        JSON.stringify(this.answer),
+        JSON.stringify(this.truth),
+      ]);
       if (input) {
         input.classList.remove("is-danger");
         input.classList.remove("is-success");

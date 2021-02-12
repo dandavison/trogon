@@ -10,3 +10,10 @@ export async function fetchMultipleJSON(urls: string[]): Promise<Object[]> {
     .filter(result => result.status === "fulfilled")
     .map((result: any) => result.value);
 }
+
+export function debug(msg: string[], force: boolean = false): void {
+  var debug = false;
+  if (debug || force) {
+    console.log.apply(null, msg);
+  }
+}
