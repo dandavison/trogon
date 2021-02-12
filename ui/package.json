@@ -74,6 +74,12 @@
       "ts-jest": {
         "diagnostics": false
       }
-    }
+    },
+    "setupFiles": [
+      "./src/sounds/__tests__/setup.js"
+    ],
+    "testMatch": [
+      "**/__tests__/*.test.[jt]s"
+    ]
   }
 }

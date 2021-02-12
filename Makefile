@@ -21,6 +21,7 @@ serve-backend-and-ui: build-ui serve-backend
 test: test-ui
 
 test-ui:
+	cd ui && npm test
 	cd ui && $(WITH_ENV) npx cypress run
 
 test-ui-live:

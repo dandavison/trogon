@@ -47,6 +47,8 @@ export interface XenoCantoRecording {
   sp: string;
   en: string;
   type: string;
+  loc: string;
+  cnt: string;
 }
 
 export interface Answer {
