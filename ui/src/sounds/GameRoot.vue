@@ -28,6 +28,7 @@ export default Vue.extend({
         commonSpeciesOnly: false,
         songsOnly: true,
         useFieldModals: false,
+        debug: false,
       } as Settings,
       controlPanelOpen: false,
     };

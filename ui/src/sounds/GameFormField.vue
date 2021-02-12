@@ -42,7 +42,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
+
+import { Settings } from "./types";
+
 export default Vue.extend({
   props: {
     initial: String,
@@ -54,6 +57,7 @@ export default Vue.extend({
     isCorrect: Function,
     getImageURLs: Function,
     handler: Function,
+    settings: Object as PropType<Settings>,
   },
   mounted() {
     this.dismissMobileKeyboardOnDropdownScroll();

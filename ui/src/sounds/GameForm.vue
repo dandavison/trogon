@@ -17,6 +17,7 @@
           :isCorrect="isFamilySciCorrect"
           :getImageURLs="getFamilySciImageURLs"
           :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
+          :settings="settings"
         />
       </template>
     </game-form-field-container>
@@ -38,6 +39,7 @@
           :isCorrect="isFamilyEnCorrect"
           :getImageURLs="getFamilyEnImageURLs"
           :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
+          :settings="settings"
         />
       </template>
     </game-form-field-container>
@@ -59,6 +61,7 @@
           :isCorrect="isGenusCorrect"
           :getImageURLs="getGenusImageURLs"
           :label="'Genus'"
+          :settings="settings"
         />
       </template>
     </game-form-field-container>
@@ -80,6 +83,7 @@
           :isCorrect="isSpeciesSciCorrect"
           :getImageURLs="getSpeciesSciImageURLs"
           :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
+          :settings="settings"
         />
       </template>
     </game-form-field-container>
@@ -101,6 +105,7 @@
           :isCorrect="isSpeciesEnCorrect"
           :getImageURLs="getSpeciesEnImageURLs"
           :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
+          :settings="settings"
         />
       </template>
     </game-form-field-container>
