@@ -130,9 +130,9 @@ export default Vue.extend({
           input.blur();
         };
       } else {
-        console.log(
-          "Failed to obtain references to input and dropdown HTML elements."
-        );
+        debug([
+          "Failed to obtain references to input and dropdown HTML elements.",
+        ]);
       }
     },
   },
