@@ -68,20 +68,6 @@
     "not dead"
   ],
   "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "json",
-      "vue"
-    ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "transform": {
-      ".*\\.(vue)$": "vue-jest"
-    },
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "**/*.{js,ts,vue}",
-      "!**/node_modules/**"
-    ]
+    "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel"
   }
 }
