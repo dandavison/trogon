@@ -5,6 +5,7 @@
         type="text"
         v-model="answer"
         ref="autocomplete"
+        :class="{ 'is-success': isCorrect() }"
         :data="filteredCandidates"
         :open-on-focus="true"
         @focus="$emit('focus')"
@@ -34,9 +35,6 @@
         </template>
       </b-autocomplete>
       <b-button v-if="answer != truth" @click="reveal">Reveal</b-button>
-      <p v-if="answer">
-        {{ isCorrect() ? "✅" : "❌" }}
-      </p>
     </span>
   </b-field>
 </template>
@@ -114,6 +112,26 @@ export default Vue.extend({
         this.answer = answer;
         this.handler(this.answer);
         this.$emit("select");
+      }
+      this.styleInputAccordingToAnswer();
+    },
+    styleInputAccordingToAnswer() {
+      const autocomplete = this.$refs.autocomplete as any;
+      const input = autocomplete?.$refs.input.$refs.input as HTMLElement;
+      if (this.settings.debug) {
+        console.log(
+          `${this.id}.styleInputAccordingToAnswer:`,
+          input,
+          JSON.stringify(this.answer),
+          JSON.stringify(this.truth)
+        );
+      }
+      if (input) {
+        input.classList.remove("is-danger");
+        input.classList.remove("is-success");
+        if (this.answer && this.truth) {
+          input.classList.add(this.isCorrect() ? "is-success" : "is-danger");
+        }
       }
     },
     dismissMobileKeyboardOnDropdownScroll(): void {
