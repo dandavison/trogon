@@ -110,9 +110,11 @@ export default Vue.extend({
           JSON.stringify(answer)
         );
       }
-      this.answer = answer;
-      this.handler(this.answer);
-      this.$emit("select");
+      if (answer) {
+        this.answer = answer;
+        this.handler(this.answer);
+        this.$emit("select");
+      }
     },
     dismissMobileKeyboardOnDropdownScroll(): void {
       const autocomplete = this.$refs.autocomplete as any;
