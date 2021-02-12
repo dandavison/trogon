@@ -73,6 +73,11 @@
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "transform": {
       ".*\\.(vue)$": "vue-jest"
-    }
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,ts,vue}",
+      "!**/node_modules/**"
+    ]
   }
 }
