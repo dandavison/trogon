@@ -47,6 +47,10 @@
     "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.11"
   },
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
   "eslintConfig": {
     "root": true,
     "env": {
