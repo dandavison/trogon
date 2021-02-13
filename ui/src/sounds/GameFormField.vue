@@ -71,10 +71,13 @@ export default Vue.extend({
     },
   },
   watch: {
-    answer: function (value: string): void {
-      debug([`${this.id}: watch: answer:`, JSON.stringify(value)]);
-      this.handler(value);
-    },
+    answer: {
+      sync: true,
+      handler: function (value: string): void {
+        debug([`${this.id}: watch: answer:`, JSON.stringify(value)]);
+        this.handler(value);
+      },
+    } as any, // sync is private
   },
   methods: {
     clear(): void {
