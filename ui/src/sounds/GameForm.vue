@@ -8,7 +8,6 @@
           ref="familySciField"
           id="familySciField"
           :initial="answer.familySci"
-          :handler="handleFamilySci"
           @focus="isModal.familySci = true"
           @select="isModal.familySci = false"
           :shouldShow="shouldShowScientificNames"
@@ -29,7 +28,6 @@
           ref="familyEnField"
           id="familyEnField"
           :initial="answer.familyEn"
-          :handler="handleFamilyEn"
           @focus="isModal.familyEn = true"
           @select="isModal.familyEn = false"
           :shouldShow="shouldShowEnglishNames"
@@ -50,7 +48,6 @@
           ref="genusField"
           id="genusField"
           :initial="answer.genus"
-          :handler="handleGenus"
           @focus="isModal.genus = true"
           @select="isModal.genus = false"
           :shouldShow="true"
@@ -71,7 +68,6 @@
           ref="speciesSciField"
           id="speciesSciField"
           :initial="answer.speciesSci"
-          :handler="handleSpeciesSci"
           @focus="isModal.speciesSci = true"
           @select="isModal.speciesSci = false"
           :shouldShow="shouldShowScientificNames"
@@ -92,7 +88,6 @@
           ref="speciesEnField"
           id="speciesEnField"
           :initial="answer.speciesEn"
-          :handler="handleSpeciesEn"
           @focus="isModal.speciesEn = true"
           @select="isModal.speciesEn = false"
           :shouldShow="shouldShowEnglishNames"
@@ -164,13 +159,6 @@ export default Vue.extend({
     );
 
     return {
-      answer: {
-        familySci: "",
-        familyEn: "",
-        genus: "",
-        speciesSci: "",
-        speciesEn: "",
-      } as Answer,
       familyEn2Sci,
       familySci2En,
       genus2familySci,
@@ -220,72 +208,83 @@ export default Vue.extend({
         };
       }
     },
+
+    answer(): Answer {
+      var answer = {
+        familySci: (this.$refs.familySciField as any)?.answer || "",
+        familyEn: (this.$refs.familyEnField as any)?.answer || "",
+        genus: (this.$refs.genusField as any)?.answer || "",
+        speciesSci: (this.$refs.speciesSciField as any)?.answer || "",
+        speciesEn: (this.$refs.speciesEnField as any)?.answer || "",
+      };
+      this.handleFamilySci(answer);
+      this.handleFamilyEn(answer);
+      this.handleGenus(answer);
+      this.handleSpeciesSci(answer);
+      this.handleSpeciesEn(answer);
+      return answer;
+    },
   },
 
   methods: {
-    handleFamilySci(newVal: string): void {
-      debug(["handleFamilySci:", JSON.stringify(newVal)]);
-      this.answer.familySci = newVal;
+    handleFamilySci(answer: Answer): void {
+      debug(["handleFamilySci:", JSON.stringify(answer.familySci)]);
       // Autofill familyEn
-      if (!this.answer.familyEn) {
-        const familyEn = this.familySci2En.get(newVal);
+      if (!answer.familyEn) {
+        const familyEn = this.familySci2En.get(answer.familySci);
         if (familyEn) {
-          (this.$refs.familyEnField as any).answer = familyEn;
+          answer.familyEn = familyEn;
         }
       }
     },
 
-    handleFamilyEn(newVal: string): void {
-      debug(["handleFamilyEn:", JSON.stringify(newVal)]);
-      this.answer.familyEn = newVal;
+    handleFamilyEn(answer: Answer): void {
+      debug(["handleFamilyEn:", JSON.stringify(answer.familyEn)]);
       // Autofill familySci
-      if (!this.answer.familySci) {
-        const familySci = this.familyEn2Sci.get(newVal);
+      if (!answer.familySci) {
+        const familySci = this.familyEn2Sci.get(answer.familyEn);
         if (familySci) {
-          (this.$refs.familySciField as any).answer = familySci;
+          answer.familySci = familySci;
         }
       }
     },
 
-    handleGenus(newVal: string): void {
-      debug(["handleGenus:", JSON.stringify(newVal)]);
-      this.answer.genus = newVal;
+    handleGenus(answer: Answer): void {
+      debug(["handleGenus:", JSON.stringify(answer.genus)]);
       // Autofill familySci
-      if (!this.answer.familySci) {
-        const familySci = this.genus2familySci.get(newVal);
+      if (!answer.familySci) {
+        const familySci = this.genus2familySci.get(answer.genus);
         if (familySci) {
-          (this.$refs.familySciField as any).answer = familySci;
+          answer.familySci = familySci;
         }
       }
     },
 
-    handleSpeciesSci(newVal: string): void {
-      debug(["handleSpeciesSci:", JSON.stringify(newVal)]);
-      this.answer.speciesSci = newVal;
+    handleSpeciesSci(answer: Answer): void {
+      debug(["handleSpeciesSci:", JSON.stringify(answer.speciesSci)]);
       // Autofill speciesEn
-      if (!this.answer.speciesEn) {
-        const speciesEn = this.speciesSci2En.get(newVal);
+      if (!answer.speciesEn) {
+        const speciesEn = this.speciesSci2En.get(answer.speciesSci);
         if (speciesEn) {
-          (this.$refs.speciesEnField as any).answer = speciesEn;
+          answer.speciesEn = speciesEn;
         }
       }
       // Autofill genus
-      if (!this.answer.genus) {
-        const genus = this.speciesSci2genus.get(newVal);
+      if (!answer.genus) {
+        const genus = this.speciesSci2genus.get(answer.speciesSci);
         if (genus) {
-          (this.$refs.genusField as any).answer = genus;
+          answer.genus = genus;
         }
       }
     },
 
-    handleSpeciesEn(newVal: string): void {
-      debug(["handleSpeciesEn:", JSON.stringify(newVal)]);
-      this.answer.speciesEn = newVal;
+    handleSpeciesEn(answer: Answer): void {
+      debug(["handleSpeciesEn:", JSON.stringify(answer.speciesEn)]);
       // Autofill speciesSci
-      if (!this.answer.speciesSci) {
-        const speciesSci = this.speciesEn2Sci.get(newVal);
+      if (!answer.speciesSci) {
+        const speciesSci = this.speciesEn2Sci.get(answer.speciesEn);
         if (speciesSci) {
-          (this.$refs.speciesSciField as any).answer = speciesSci;
+          answer.speciesSci = speciesSci;
         }
       }
     },

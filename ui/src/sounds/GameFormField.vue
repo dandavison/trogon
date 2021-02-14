@@ -54,7 +54,6 @@ export default Vue.extend({
     truth: String,
     isCorrect: Function,
     getImageURLs: Function,
-    handler: Function,
   },
   mounted() {
     this.dismissMobileKeyboardOnDropdownScroll();
@@ -70,17 +69,10 @@ export default Vue.extend({
       return this.filter(this.answer);
     },
   },
-  watch: {
-    answer: function (value: string): void {
-      debug([`${this.id}: watch: answer:`, JSON.stringify(value)]);
-      this.handler(value);
-    },
-  },
   methods: {
     clear(): void {
       debug([`GameFormField(${this.id}).clear`]);
       this.answer = "";
-      this.handler(this.answer);
     },
     reveal(): void {
       debug([
@@ -97,7 +89,6 @@ export default Vue.extend({
       ]);
       if (answer) {
         this.answer = answer;
-        this.handler(this.answer);
         this.$emit("select");
       }
       this.styleInputAccordingToAnswer();
