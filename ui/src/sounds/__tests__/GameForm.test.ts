@@ -56,7 +56,6 @@ describe("GameForm misc", () => {
     vm.answer.speciesSci = "xxx";
     vm.answer.speciesEn = "xxx";
     vm.clear();
-    await vm.$nextTick();
     expect(vm.answer.familySci).toEqual("");
     expect(vm.answer.familyEn).toEqual("");
     expect(vm.answer.genus).toEqual("");

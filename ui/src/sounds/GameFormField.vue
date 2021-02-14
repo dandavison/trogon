@@ -80,6 +80,7 @@ export default Vue.extend({
     clear(): void {
       debug([`GameFormField(${this.id}).clear`]);
       this.answer = "";
+      this.handler(this.answer);
     },
     reveal(): void {
       debug([
