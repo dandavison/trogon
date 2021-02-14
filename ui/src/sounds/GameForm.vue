@@ -482,10 +482,20 @@ export default Vue.extend({
     },
 
     isSpeciesSciCorrect(): boolean {
+      debug([
+        "isSpeciesSciCorrect",
+        JSON.stringify(this.recording?.speciesSci),
+        JSON.stringify(this.answer.speciesSci),
+      ]);
       return this.recording?.speciesSci === this.answer.speciesSci;
     },
 
     isSpeciesEnCorrect(): boolean {
+      debug([
+        "isSpeciesEnCorrect",
+        JSON.stringify(this.recording?.speciesEn),
+        JSON.stringify(this.answer.speciesEn),
+      ]);
       return this.recording?.speciesEn === this.answer.speciesEn;
     },
   },
