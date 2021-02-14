@@ -7,7 +7,7 @@ describe("GameFormField", () => {
   test("clear() works", () => {
     const initial = "initial-value";
     const wrapper = shallowMount(GameFormField, {
-      propsData: { initial }
+      propsData: { initial, handler: () => null, settings: {} }
     });
     var vm: GameFormFieldInstance = wrapper.vm;
     expect(vm.answer === initial);
