@@ -1,26 +1,15 @@
 <template>
-  <ul>
-    <li>
-      <audio
-        controls
-        :src="recording.url"
-        :preload="preload"
-        @canplaythrough="
-          (ev) => {
-            ev.target.play();
-          }
-        "
-        @loadeddata="eventBus.$emit('ready:challenge-recording')"
-      ></audio>
-    </li>
-    <li>{{ recording.raw.loc }}, {{ recording.raw.cnt }}</li>
-    <li v-if="recording.raw.also.length[0]">
-      Also:
-      <ul>
-        <li v-for="sp in recording.raw.also" :key="sp">{{ sp }}</li>
-      </ul>
-    </li>
-  </ul>
+  <audio
+    controls
+    :src="recording.url"
+    :preload="preload"
+    @canplaythrough="
+      (ev) => {
+        ev.target.play();
+      }
+    "
+    @loadeddata="eventBus.$emit('ready:challenge-recording')"
+  ></audio>
 </template>
 
 <script lang="ts">
@@ -41,3 +30,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+audio::-webkit-media-controls-panel {
+  background-color: white;
+}
+</style>
