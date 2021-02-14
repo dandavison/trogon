@@ -18,7 +18,8 @@
     />
 
     <game-form
-      v-if="challengeActive"
+      v-if="recording"
+      :class="{ 'is-loading': recording && !challengeActive }"
       ref="gameForm"
       :locationSpecies="locationSpecies"
       :recording="recording"

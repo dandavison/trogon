@@ -1,5 +1,5 @@
 <template>
-  <form type="box">
+  <form>
     <game-form-field-container
       :isModal="settings.useFieldModals && isModal.familySci"
     >
