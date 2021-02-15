@@ -1,48 +1,51 @@
 <template>
-  <l-map
-    style="height: 800px"
-    v-bind="map"
-    :center="center"
-    @contextmenu="showCoordinatesPopup"
-  >
-    <l-tile-layer v-bind="tileLayer"></l-tile-layer>
-
-    <l-circle
-      v-for="hotspot in ebirdHotspots"
-      :key="hotspot.id"
-      :lat-lng="[hotspot.lat, hotspot.lng]"
-      v-bind="hotspotProps"
+  <div>
+    <l-map
+      style="height: 800px"
+      v-bind="map"
+      :center="center"
+      @contextmenu="showCoordinatesPopup"
     >
-      <l-popup>
-        <b-button
-          class="is-success is-light"
-          @click="
-            () => $router.push(`/trogon/challenge?location=${hotspot.locId}`)
-          "
-        >
-          {{ hotspot.locName }}
-        </b-button>
-      </l-popup>
-    </l-circle>
+      <l-tile-layer v-bind="tileLayer"></l-tile-layer>
 
-    <l-marker v-if="popup.latlng" :latLng="popup.latlng">
-      <l-popup>
-        <b-button
-          class="is-success is-light"
-          @click="
-            () =>
-              $router.push(
-                `/trogon/challenge?coords=${popup.latlng.lat.toFixed(
-                  2
-                )},${popup.latlng.lng.toFixed(2)}`
-              )
-          "
-        >
-          ({{ popup.latlng.lat.toFixed(2) }}, {{ popup.latlng.lng.toFixed(2) }})
-        </b-button>
-      </l-popup>
-    </l-marker>
-  </l-map>
+      <l-circle
+        v-for="hotspot in ebirdHotspots"
+        :key="hotspot.id"
+        :lat-lng="[hotspot.lat, hotspot.lng]"
+        v-bind="hotspotProps"
+      >
+        <l-popup>
+          <b-button
+            class="is-success is-light"
+            @click="
+              () => $router.push(`/trogon/challenge?location=${hotspot.locId}`)
+            "
+          >
+            {{ hotspot.locName }}
+          </b-button>
+        </l-popup>
+      </l-circle>
+
+      <l-marker v-if="popup.latlng" :latLng="popup.latlng">
+        <l-popup>
+          <b-button
+            class="is-success is-light"
+            @click="
+              () =>
+                $router.push(
+                  `/trogon/challenge?coords=${popup.latlng.lat.toFixed(
+                    2
+                  )},${popup.latlng.lng.toFixed(2)}`
+                )
+            "
+          >
+            ({{ popup.latlng.lat.toFixed(2) }},
+            {{ popup.latlng.lng.toFixed(2) }})
+          </b-button>
+        </l-popup>
+      </l-marker>
+    </l-map>
+  </div>
 </template>
 
 <script lang="ts">
