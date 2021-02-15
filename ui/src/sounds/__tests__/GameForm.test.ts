@@ -3,9 +3,6 @@ import { mount } from "@vue/test-utils";
 import GameForm from "../GameForm.vue";
 type GameFormInstance = InstanceType<typeof GameForm>;
 
-import GameFormField from "../GameFormField.vue";
-type GameFormFieldInstance = InstanceType<typeof GameFormField>;
-
 import { ebirdSpecies as ES } from "../ebird";
 import {
   locationSpecies,
@@ -72,94 +69,72 @@ describe("GameForm misc", () => {
 describe("GameForm autofill and isCorrect", () => {
   test("preconditions", () => {
     const vm: GameFormInstance = factory().vm;
-    var familySciField = vm.$refs.familySciField as GameFormFieldInstance;
-    var familyEnField = vm.$refs.familyEnField as GameFormFieldInstance;
-    var genusField = vm.$refs.genusField as GameFormFieldInstance;
-    var speciesSciField = vm.$refs.speciesSciField as GameFormFieldInstance;
-    var speciesEnField = vm.$refs.speciesEnField as GameFormFieldInstance;
-    expect(familySciField.answer).toEqual("");
-    expect(familyEnField.answer).toEqual("");
-    expect(genusField.answer).toEqual("");
-    expect(speciesSciField.answer).toEqual("");
-    expect(speciesEnField.answer).toEqual("");
-    expect(familySciField.isCorrect()).toEqual(false);
-    expect(familyEnField.isCorrect()).toEqual(false);
-    expect(genusField.isCorrect()).toEqual(false);
-    expect(speciesSciField.isCorrect()).toEqual(false);
-    expect(speciesEnField.isCorrect()).toEqual(false);
+    expect(vm.familySciField.answer).toEqual("");
+    expect(vm.familyEnField.answer).toEqual("");
+    expect(vm.genusField.answer).toEqual("");
+    expect(vm.speciesSciField.answer).toEqual("");
+    expect(vm.speciesEnField.answer).toEqual("");
+    expect(vm.familySciField.isCorrect()).toEqual(false);
+    expect(vm.familyEnField.isCorrect()).toEqual(false);
+    expect(vm.genusField.isCorrect()).toEqual(false);
+    expect(vm.speciesSciField.isCorrect()).toEqual(false);
+    expect(vm.speciesEnField.isCorrect()).toEqual(false);
   });
 
   test("familySci input works", () => {
     const vm: GameFormInstance = factory().vm;
-    var familySciField = vm.$refs.familySciField as GameFormFieldInstance;
-    var familyEnField = vm.$refs.familyEnField as GameFormFieldInstance;
-    familySciField.answer = ES.getFamilySci(incorrectFamily);
-    expect(familySciField.isCorrect()).toEqual(false);
-    expect(familyEnField.isCorrect()).toEqual(false);
+    vm.familySciField.answer = ES.getFamilySci(incorrectFamily);
+    expect(vm.familySciField.isCorrect()).toEqual(false);
+    expect(vm.familyEnField.isCorrect()).toEqual(false);
     vm.clear();
-    familySciField.answer = ES.getFamilySci(correctFamily);
+    vm.familySciField.answer = ES.getFamilySci(correctFamily);
     expectCorrectFamilySciEntered(vm);
   });
 
   test("familyEn input works", () => {
     const vm: GameFormInstance = factory().vm;
-    var familySciField = vm.$refs.familySciField as GameFormFieldInstance;
-    var familyEnField = vm.$refs.familyEnField as GameFormFieldInstance;
-    familyEnField.answer = ES.getFamilyEn(incorrectFamily);
-    expect(familySciField.isCorrect()).toEqual(false);
-    expect(familyEnField.isCorrect()).toEqual(false);
+    vm.familyEnField.answer = ES.getFamilyEn(incorrectFamily);
+    expect(vm.familySciField.isCorrect()).toEqual(false);
+    expect(vm.familyEnField.isCorrect()).toEqual(false);
     vm.clear();
-    familyEnField.answer = ES.getFamilyEn(correctFamily);
+    vm.familyEnField.answer = ES.getFamilyEn(correctFamily);
     expectCorrectFamilyEnEntered(vm);
   });
 
   test("genus input works", () => {
     const vm: GameFormInstance = factory().vm;
-    var familySciField = vm.$refs.familySciField as GameFormFieldInstance;
-    var familyEnField = vm.$refs.familyEnField as GameFormFieldInstance;
-    var genusField = vm.$refs.genusField as GameFormFieldInstance;
-    genusField.answer = ES.getGenus(correctFamily);
-    expect(familySciField.isCorrect()).toEqual(true);
-    expect(familyEnField.isCorrect()).toEqual(true);
-    expect(genusField.isCorrect()).toEqual(false);
+    vm.genusField.answer = ES.getGenus(correctFamily);
+    expect(vm.familySciField.isCorrect()).toEqual(true);
+    expect(vm.familyEnField.isCorrect()).toEqual(true);
+    expect(vm.genusField.isCorrect()).toEqual(false);
     vm.clear();
-    genusField.answer = ES.getGenus(correctGenus);
+    vm.genusField.answer = ES.getGenus(correctGenus);
     expectCorrectGenusEntered(vm);
   });
 
   test("speciesSci input works", () => {
     const vm: GameFormInstance = factory().vm;
-    var familySciField = vm.$refs.familySciField as GameFormFieldInstance;
-    var familyEnField = vm.$refs.familyEnField as GameFormFieldInstance;
-    var genusField = vm.$refs.genusField as GameFormFieldInstance;
-    var speciesSciField = vm.$refs.speciesSciField as GameFormFieldInstance;
-    var speciesEnField = vm.$refs.speciesEnField as GameFormFieldInstance;
-    speciesSciField.answer = ES.getSpeciesSci(correctGenus);
-    expect(familySciField.isCorrect()).toEqual(true);
-    expect(familyEnField.isCorrect()).toEqual(true);
-    expect(genusField.isCorrect()).toEqual(true);
-    expect(speciesSciField.isCorrect()).toEqual(false);
-    expect(speciesEnField.isCorrect()).toEqual(false);
+    vm.speciesSciField.answer = ES.getSpeciesSci(correctGenus);
+    expect(vm.familySciField.isCorrect()).toEqual(true);
+    expect(vm.familyEnField.isCorrect()).toEqual(true);
+    expect(vm.genusField.isCorrect()).toEqual(true);
+    expect(vm.speciesSciField.isCorrect()).toEqual(false);
+    expect(vm.speciesEnField.isCorrect()).toEqual(false);
     vm.clear();
-    speciesSciField.answer = ES.getSpeciesSci(correctSpecies);
+    vm.speciesSciField.answer = ES.getSpeciesSci(correctSpecies);
     expectCorrectSpeciesSciEntered(vm);
   });
 
   test("speciesEn input works", () => {
     const vm: GameFormInstance = factory().vm;
-    var familySciField = vm.$refs.familySciField as GameFormFieldInstance;
-    var familyEnField = vm.$refs.familyEnField as GameFormFieldInstance;
-    var genusField = vm.$refs.genusField as GameFormFieldInstance;
-    var speciesSciField = vm.$refs.speciesSciField as GameFormFieldInstance;
-    var speciesEnField = vm.$refs.speciesEnField as GameFormFieldInstance;
-    speciesEnField.answer = ES.getSpeciesEn(correctGenus);
-    expect(familySciField.isCorrect()).toEqual(true);
-    expect(familyEnField.isCorrect()).toEqual(true);
-    expect(genusField.isCorrect()).toEqual(true);
-    expect(speciesSciField.isCorrect()).toEqual(false);
-    expect(speciesEnField.isCorrect()).toEqual(false);
+    vm.speciesEnField.answer = ES.getSpeciesEn(correctGenus);
+    expect(vm.familySciField.isCorrect()).toEqual(true);
+    expect(vm.familyEnField.isCorrect()).toEqual(true);
+    expect(vm.genusField.isCorrect()).toEqual(true);
+    expect(vm.speciesSciField.isCorrect()).toEqual(false);
+    expect(vm.speciesEnField.isCorrect()).toEqual(false);
     vm.clear();
-    speciesEnField.answer = ES.getSpeciesEn(correctSpecies);
+    vm.speciesEnField.answer = ES.getSpeciesEn(correctSpecies);
     expectCorrectSpeciesEnEntered(vm);
   });
 });
@@ -167,87 +142,65 @@ describe("GameForm autofill and isCorrect", () => {
 describe("GameForm reveal", () => {
   test("familySci reveal works", () => {
     const vm: GameFormInstance = factory().vm;
-    const field = vm.$refs.familySciField as GameFormFieldInstance;
-    field.reveal();
+    vm.familySciField.reveal();
     expectCorrectFamilySciEntered(vm);
   });
 
   test("familyEn reveal works", () => {
     const vm: GameFormInstance = factory().vm;
-    const field = vm.$refs.familyEnField as GameFormFieldInstance;
-    field.reveal();
+    vm.familyEnField.reveal();
     expectCorrectFamilyEnEntered(vm);
   });
 
   test("genus reveal works", () => {
     const vm: GameFormInstance = factory().vm;
-    const field = vm.$refs.genusField as GameFormFieldInstance;
-    field.reveal();
+    vm.genusField.reveal();
     expectCorrectGenusEntered(vm);
   });
 
   test("speciesSci reveal works", () => {
     const vm: GameFormInstance = factory().vm;
-    const field = vm.$refs.speciesSciField as GameFormFieldInstance;
-    field.reveal();
+    vm.speciesSciField.reveal();
     expectCorrectSpeciesSciEntered(vm);
   });
 
   test("speciesEn reveal works", () => {
     const vm: GameFormInstance = factory().vm;
-    const field = vm.$refs.speciesEnField as GameFormFieldInstance;
-    field.reveal();
+    vm.speciesEnField.reveal();
     expectCorrectSpeciesEnEntered(vm);
   });
 });
 
 function expectCorrectFamilySciEntered(vm: GameFormInstance) {
-  var familySciField = vm.$refs.familySciField as GameFormFieldInstance;
-  var familyEnField = vm.$refs.familyEnField as GameFormFieldInstance;
-  expect(familySciField.isCorrect()).toEqual(true);
-  expect(familyEnField.isCorrect()).toEqual(true); // autofill
+  expect(vm.familySciField.isCorrect()).toEqual(true);
+  expect(vm.familyEnField.isCorrect()).toEqual(true); // autofill
 }
 
 function expectCorrectFamilyEnEntered(vm: GameFormInstance) {
-  var familySciField = vm.$refs.familySciField as GameFormFieldInstance;
-  var familyEnField = vm.$refs.familyEnField as GameFormFieldInstance;
-  expect(familySciField.isCorrect()).toEqual(true); // autofill
-  expect(familyEnField.isCorrect()).toEqual(true);
+  expect(vm.familySciField.isCorrect()).toEqual(true); // autofill
+  expect(vm.familyEnField.isCorrect()).toEqual(true);
 }
 
 function expectCorrectGenusEntered(vm: GameFormInstance) {
-  var familySciField = vm.$refs.familySciField as GameFormFieldInstance;
-  var familyEnField = vm.$refs.familyEnField as GameFormFieldInstance;
-  var genusField = vm.$refs.genusField as GameFormFieldInstance;
-  expect(familySciField.isCorrect()).toEqual(true); // autofill
-  expect(familyEnField.isCorrect()).toEqual(true); // autofill
-  expect(genusField.isCorrect()).toEqual(true);
+  expect(vm.familySciField.isCorrect()).toEqual(true); // autofill
+  expect(vm.familyEnField.isCorrect()).toEqual(true); // autofill
+  expect(vm.genusField.isCorrect()).toEqual(true);
 }
 
 function expectCorrectSpeciesSciEntered(vm: GameFormInstance) {
-  var familySciField = vm.$refs.familySciField as GameFormFieldInstance;
-  var familyEnField = vm.$refs.familyEnField as GameFormFieldInstance;
-  var genusField = vm.$refs.genusField as GameFormFieldInstance;
-  var speciesSciField = vm.$refs.speciesSciField as GameFormFieldInstance;
-  var speciesEnField = vm.$refs.speciesEnField as GameFormFieldInstance;
-  expect(familySciField.isCorrect()).toEqual(true); // autofill
-  expect(familyEnField.isCorrect()).toEqual(true); // autofill
-  expect(genusField.isCorrect()).toEqual(true); // autofill
-  expect(speciesSciField.isCorrect()).toEqual(true);
-  expect(speciesEnField.isCorrect()).toEqual(true); // autofill
+  expect(vm.familySciField.isCorrect()).toEqual(true); // autofill
+  expect(vm.familyEnField.isCorrect()).toEqual(true); // autofill
+  expect(vm.genusField.isCorrect()).toEqual(true); // autofill
+  expect(vm.speciesSciField.isCorrect()).toEqual(true);
+  expect(vm.speciesEnField.isCorrect()).toEqual(true); // autofill
 }
 
 function expectCorrectSpeciesEnEntered(vm: GameFormInstance) {
-  var familySciField = vm.$refs.familySciField as GameFormFieldInstance;
-  var familyEnField = vm.$refs.familyEnField as GameFormFieldInstance;
-  var genusField = vm.$refs.genusField as GameFormFieldInstance;
-  var speciesSciField = vm.$refs.speciesSciField as GameFormFieldInstance;
-  var speciesEnField = vm.$refs.speciesEnField as GameFormFieldInstance;
-  expect(familySciField.isCorrect()).toEqual(true); // autofill
-  expect(familyEnField.isCorrect()).toEqual(true); // autofill
-  expect(genusField.isCorrect()).toEqual(true); // autofill
-  expect(speciesSciField.isCorrect()).toEqual(true); // autofill
-  expect(speciesEnField.isCorrect()).toEqual(true);
+  expect(vm.familySciField.isCorrect()).toEqual(true); // autofill
+  expect(vm.familyEnField.isCorrect()).toEqual(true); // autofill
+  expect(vm.genusField.isCorrect()).toEqual(true); // autofill
+  expect(vm.speciesSciField.isCorrect()).toEqual(true); // autofill
+  expect(vm.speciesEnField.isCorrect()).toEqual(true);
 }
 
 function factory() {

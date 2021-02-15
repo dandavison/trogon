@@ -119,6 +119,8 @@ import {
 import GameFormField from "./GameFormField.vue";
 import GameFormFieldContainer from "./GameFormFieldContainer.vue";
 
+type GameFormFieldInstance = InstanceType<typeof GameFormField>;
+
 export default Vue.extend({
   components: { GameFormFieldContainer, GameFormField },
   props: {
@@ -213,6 +215,26 @@ export default Vue.extend({
         };
       }
     },
+
+    familySciField(): GameFormFieldInstance {
+      return this.$refs.familySciField as GameFormFieldInstance;
+    },
+
+    familyEnField(): GameFormFieldInstance {
+      return this.$refs.familyEnField as GameFormFieldInstance;
+    },
+
+    genusField(): GameFormFieldInstance {
+      return this.$refs.genusField as GameFormFieldInstance;
+    },
+
+    speciesSciField(): GameFormFieldInstance {
+      return this.$refs.speciesSciField as GameFormFieldInstance;
+    },
+
+    speciesEnField(): GameFormFieldInstance {
+      return this.$refs.speciesEnField as GameFormFieldInstance;
+    },
   },
 
   methods: {
@@ -221,7 +243,7 @@ export default Vue.extend({
       this.answer.familySci = value;
       // Autofill familyEn
       const familyEn = this.familySci2En.get(value) || "";
-      (this.$refs.familyEnField as any).answer = familyEn;
+      this.familyEnField.answer = familyEn;
     },
 
     handleFamilyEn(value: string): void {
@@ -229,7 +251,7 @@ export default Vue.extend({
       this.answer.familyEn = value;
       // Autofill familySci
       const familySci = this.familyEn2Sci.get(value) || "";
-      (this.$refs.familySciField as any).answer = familySci;
+      this.familySciField.answer = familySci;
     },
 
     handleGenus(value: string): void {
@@ -238,7 +260,7 @@ export default Vue.extend({
       // Autofill familySci if the genus is valid
       const familySci = this.genus2familySci.get(value);
       if (familySci) {
-        (this.$refs.familySciField as any).answer = familySci;
+        this.familySciField.answer = familySci;
       }
     },
 
@@ -251,7 +273,7 @@ export default Vue.extend({
       // Autofill genus if the species is valid
       const genus = this.speciesSci2genus.get(value);
       if (genus) {
-        (this.$refs.genusField as any).answer = genus;
+        this.genusField.answer = genus;
       }
     },
 
@@ -260,7 +282,7 @@ export default Vue.extend({
       this.answer.speciesEn = value;
       // Autofill speciesSci
       const speciesSci = this.speciesEn2Sci.get(value) || "";
-      (this.$refs.speciesSciField as any).answer = speciesSci;
+      this.speciesSciField.answer = speciesSci;
     },
 
     getSpeciesSciImageURLs(answer: string): string[] {
@@ -307,11 +329,11 @@ export default Vue.extend({
     },
 
     clear(): void {
-      (this.$refs.familySciField as any).clear();
-      (this.$refs.familyEnField as any).clear();
-      (this.$refs.genusField as any).clear();
-      (this.$refs.speciesSciField as any).clear();
-      (this.$refs.speciesEnField as any).clear();
+      this.familySciField.clear();
+      this.familyEnField.clear();
+      this.genusField.clear();
+      this.speciesSciField.clear();
+      this.speciesEnField.clear();
     },
 
     // filter*
