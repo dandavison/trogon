@@ -2,7 +2,7 @@
 
 describe("Form field behaviour", () => {
   before(() => {
-    cy.visit("/sounds/challenge?location=L5845383");
+    cy.visit("/trogon/challenge?location=L5845383");
     cy.contains("Start").click();
     cy.contains("Family (scientific)");
     cy.contains("Family (English)");

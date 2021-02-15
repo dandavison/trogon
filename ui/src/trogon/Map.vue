@@ -17,7 +17,7 @@
         <b-button
           class="is-success is-light"
           @click="
-            () => $router.push(`/sounds/challenge?location=${hotspot.locId}`)
+            () => $router.push(`/trogon/challenge?location=${hotspot.locId}`)
           "
         >
           {{ hotspot.locName }}
@@ -32,7 +32,7 @@
           @click="
             () =>
               $router.push(
-                `/sounds/challenge?coords=${popup.latlng.lat.toFixed(
+                `/trogon/challenge?coords=${popup.latlng.lat.toFixed(
                   2
                 )},${popup.latlng.lng.toFixed(2)}`
               )

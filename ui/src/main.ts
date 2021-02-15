@@ -16,9 +16,9 @@ import MapView from "./MapView.vue";
 import SiteDetail from "./SiteDetail.vue";
 import Home from "./Home.vue";
 import i18n from "./i18n";
-import { LocationRequest } from "./sounds/types";
-import SoundsRoot from "./sounds/Root.vue";
-import SoundsGameRoot from "./sounds/GameRoot.vue";
+import { LocationRequest } from "./trogon/types";
+import TrogonRoot from "./trogon/Root.vue";
+import TrogonGameRoot from "./trogon/GameRoot.vue";
 
 Vue.config.productionTip = false;
 
@@ -29,10 +29,10 @@ Vue.use(Buefy, {
 
 const routes = [
   { path: "/", component: LandingPage },
-  { path: "/sounds/", component: SoundsRoot, name: "sounds-root" },
+  { path: "/trogon/", component: TrogonRoot, name: "trogon-root" },
   {
-    path: "/sounds/challenge/",
-    component: SoundsGameRoot,
+    path: "/trogon/challenge/",
+    component: TrogonGameRoot,
     props: (route: any) => ({
       locationRequest: {
         ebirdLocId: route.query.location,
@@ -41,7 +41,7 @@ const routes = [
           : null
       } as LocationRequest
     }),
-    name: "sounds-game-root"
+    name: "trogon-game-root"
   },
   { path: "/map", component: MapView },
   {
