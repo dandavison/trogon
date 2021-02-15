@@ -375,10 +375,7 @@ export default Vue.extend({
     },
 
     isFamilyEnMatch(answer: string, species: EbirdSpecies): boolean {
-      return _includes(
-        species.familyComName.replace("-", " "),
-        answer.replace("-", " ")
-      );
+      return _includes(species.familyComName, answer);
     },
 
     isGenusMatch(answer: string, species: EbirdSpecies): boolean {
@@ -423,10 +420,7 @@ export default Vue.extend({
       if (this.answer.genus && !this.isGenusMatch(this.answer.genus, species)) {
         return false;
       }
-      return _includes(
-        ebirdSpecies.getSpeciesEn(species).replace("-", " "),
-        answer.replace("-", " ")
-      );
+      return _includes(ebirdSpecies.getSpeciesEn(species), answer);
     },
 
     // is*Correct
@@ -454,8 +448,8 @@ export default Vue.extend({
 });
 
 function _includes(truth: string, answer: string): boolean {
-  truth = truth.toLowerCase();
-  answer = answer.toLowerCase();
+  truth = _transform(truth);
+  answer = _transform(answer);
   if (answer.length > 1) {
     return truth.includes(answer);
   } else {
@@ -464,20 +458,19 @@ function _includes(truth: string, answer: string): boolean {
 }
 
 function _startsWith(truth: string, answer: string): boolean {
-  truth = truth.toLowerCase();
-  answer = answer.toLowerCase();
-  return truth.startsWith(answer);
+  return _transform(truth).startsWith(_transform(answer));
 }
 
 function _isCorrect(truth: string | undefined, answer: string): boolean {
   debug(["_isCorrect", JSON.stringify(truth), JSON.stringify(answer)]);
   if (truth) {
-    return (
-      truth.toLowerCase().replace("-", " ") ===
-      answer.toLowerCase().replace("-", " ")
-    );
+    return _transform(truth) === _transform(answer);
   }
   return false;
+}
+
+function _transform(value: string): string {
+  return value.replace("-", " ").toLowerCase();
 }
 </script>
 
