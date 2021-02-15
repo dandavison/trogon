@@ -55,7 +55,7 @@
 <script lang="ts">
 import Vue from "vue";
 
-import { debug } from "./utils";
+import { debug, transformTaxonName } from "./utils";
 
 export default Vue.extend({
   props: {
@@ -65,7 +65,6 @@ export default Vue.extend({
     label: String,
     filter: Function,
     truth: String,
-    isCorrect: Function,
     getImageURLs: Function,
     handler: Function,
   },
@@ -120,6 +119,10 @@ export default Vue.extend({
         this.$emit("select");
       }
       this.styleInputAccordingToAnswer();
+    },
+
+    isCorrect(): boolean {
+      return transformTaxonName(this.truth) === transformTaxonName(this.answer);
     },
 
     styleInputAccordingToAnswer() {

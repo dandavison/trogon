@@ -14,7 +14,6 @@
           :shouldShow="shouldShowScientificNames"
           :filter="filterFamilySci"
           :truth="truth.familySci"
-          :isCorrect="isFamilySciCorrect"
           :getImageURLs="getFamilySciImageURLs"
           :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
         />
@@ -35,7 +34,6 @@
           :shouldShow="shouldShowEnglishNames"
           :filter="filterFamilyEn"
           :truth="truth.familyEn"
-          :isCorrect="isFamilyEnCorrect"
           :getImageURLs="getFamilyEnImageURLs"
           :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
         />
@@ -56,7 +54,6 @@
           :shouldShow="true"
           :filter="filterGenus"
           :truth="truth.genus"
-          :isCorrect="isGenusCorrect"
           :getImageURLs="getGenusImageURLs"
           :label="'Genus'"
         />
@@ -77,7 +74,6 @@
           :shouldShow="shouldShowScientificNames"
           :filter="filterSpeciesSci"
           :truth="truth.speciesSci"
-          :isCorrect="isSpeciesSciCorrect"
           :getImageURLs="getSpeciesSciImageURLs"
           :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
         />
@@ -98,7 +94,6 @@
           :shouldShow="shouldShowEnglishNames"
           :filter="filterSpeciesEn"
           :truth="truth.speciesEn"
-          :isCorrect="isSpeciesEnCorrect"
           :getImageURLs="getSpeciesEnImageURLs"
           :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
         />
@@ -422,39 +417,6 @@ export default Vue.extend({
       }
       return _includes(ebirdSpecies.getSpeciesEn(species), answer);
     },
-
-    // is*Correct
-
-    isFamilySciCorrect(): boolean {
-      return _isCorrect(this.recording?.familySci, this.answer.familySci);
-    },
-
-    isFamilyEnCorrect(): boolean {
-      return _isCorrect(this.recording?.familyEn, this.answer.familyEn);
-    },
-
-    isGenusCorrect(): boolean {
-      return _isCorrect(this.recording?.genus, this.answer.genus);
-    },
-
-    isSpeciesSciCorrect(): boolean {
-      return _isCorrect(this.recording?.speciesSci, this.answer.speciesSci);
-    },
-
-    isSpeciesEnCorrect(): boolean {
-      return _isCorrect(this.recording?.speciesEn, this.answer.speciesEn);
-    },
-
-    _isCorrect(taxon: string): boolean {
-      if (this.recording) {
-        return _isCorrect(
-          this.recording[taxon] as string,
-          this.answer[taxon] as string
-        );
-      } else {
-        return false;
-      }
-    },
   },
 });
 
@@ -470,14 +432,6 @@ function _includes(truth: string, answer: string): boolean {
 
 function _startsWith(truth: string, answer: string): boolean {
   return transformTaxonName(truth).startsWith(transformTaxonName(answer));
-}
-
-function _isCorrect(truth: string | undefined, answer: string): boolean {
-  debug(["_isCorrect", JSON.stringify(truth), JSON.stringify(answer)]);
-  if (truth) {
-    return transformTaxonName(truth) === transformTaxonName(answer);
-  }
-  return false;
 }
 </script>
 
