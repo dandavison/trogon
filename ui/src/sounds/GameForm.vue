@@ -1,5 +1,6 @@
 <template>
   <form>
+    <b-loading v-model="isLoading"></b-loading>
     <game-form-field-container
       :isModal="settings.useFieldModals && isModal.familySci"
     >
@@ -133,6 +134,7 @@ export default Vue.extend({
     recording: Object as PropType<Recording | null>,
     image: String as PropType<string | null>,
     imageURLMaps: Object as PropType<ImageURLMaps>,
+    isLoading: Boolean,
     settings: Object as PropType<Settings>,
   },
   data() {
