@@ -221,71 +221,51 @@ export default Vue.extend({
   },
 
   methods: {
-    handleFamilySci(newVal: string): void {
-      debug(["handleFamilySci:", JSON.stringify(newVal)]);
-      this.answer.familySci = newVal;
+    handleFamilySci(value: string): void {
+      debug(["handleFamilySci:", JSON.stringify(value)]);
+      this.answer.familySci = value;
       // Autofill familyEn
-      if (!this.answer.familyEn) {
-        const familyEn = this.familySci2En.get(newVal);
-        if (familyEn) {
-          (this.$refs.familyEnField as any).answer = familyEn;
-        }
-      }
+      const familyEn = this.familySci2En.get(value) || "";
+      (this.$refs.familyEnField as any).answer = familyEn;
     },
 
-    handleFamilyEn(newVal: string): void {
-      debug(["handleFamilyEn:", JSON.stringify(newVal)]);
-      this.answer.familyEn = newVal;
+    handleFamilyEn(value: string): void {
+      debug(["handleFamilyEn:", JSON.stringify(value)]);
+      this.answer.familyEn = value;
       // Autofill familySci
-      if (!this.answer.familySci) {
-        const familySci = this.familyEn2Sci.get(newVal);
-        if (familySci) {
-          (this.$refs.familySciField as any).answer = familySci;
-        }
+      const familySci = this.familyEn2Sci.get(value) || "";
+      (this.$refs.familySciField as any).answer = familySci;
+    },
+
+    handleGenus(value: string): void {
+      debug(["handleGenus:", JSON.stringify(value)]);
+      this.answer.genus = value;
+      // Autofill familySci if the genus is valid
+      const familySci = this.genus2familySci.get(value);
+      if (familySci) {
+        (this.$refs.familySciField as any).answer = familySci;
       }
     },
 
-    handleGenus(newVal: string): void {
-      debug(["handleGenus:", JSON.stringify(newVal)]);
-      this.answer.genus = newVal;
-      // Autofill familySci
-      if (!this.answer.familySci) {
-        const familySci = this.genus2familySci.get(newVal);
-        if (familySci) {
-          (this.$refs.familySciField as any).answer = familySci;
-        }
-      }
-    },
-
-    handleSpeciesSci(newVal: string): void {
-      debug(["handleSpeciesSci:", JSON.stringify(newVal)]);
-      this.answer.speciesSci = newVal;
+    handleSpeciesSci(value: string): void {
+      debug(["handleSpeciesSci:", JSON.stringify(value)]);
+      this.answer.speciesSci = value;
       // Autofill speciesEn
-      if (!this.answer.speciesEn) {
-        const speciesEn = this.speciesSci2En.get(newVal);
-        if (speciesEn) {
-          (this.$refs.speciesEnField as any).answer = speciesEn;
-        }
-      }
-      // Autofill genus
-      if (!this.answer.genus) {
-        const genus = this.speciesSci2genus.get(newVal);
-        if (genus) {
-          (this.$refs.genusField as any).answer = genus;
-        }
+      const speciesEn = this.speciesSci2En.get(value) || "";
+      (this.$refs.speciesEnField as any).answer = speciesEn;
+      // Autofill genus if the species is valid
+      const genus = this.speciesSci2genus.get(value);
+      if (genus) {
+        (this.$refs.genusField as any).answer = genus;
       }
     },
 
-    handleSpeciesEn(newVal: string): void {
-      debug(["handleSpeciesEn:", JSON.stringify(newVal)]);
-      this.answer.speciesEn = newVal;
+    handleSpeciesEn(value: string): void {
+      debug(["handleSpeciesEn:", JSON.stringify(value)]);
+      this.answer.speciesEn = value;
       // Autofill speciesSci
-      if (!this.answer.speciesSci) {
-        const speciesSci = this.speciesEn2Sci.get(newVal);
-        if (speciesSci) {
-          (this.$refs.speciesSciField as any).answer = speciesSci;
-        }
-      }
+      const speciesSci = this.speciesEn2Sci.get(value) || "";
+      (this.$refs.speciesSciField as any).answer = speciesSci;
     },
 
     getSpeciesSciImageURLs(answer: string): string[] {
