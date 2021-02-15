@@ -5,11 +5,6 @@
         {{ $t("show-control-panel") }}
       </b-navbar-item>
 
-      <b-navbar-dropdown label="Account">
-        <b-navbar-item href="#"> Log in </b-navbar-item>
-        <b-navbar-item href="#"> Sign up </b-navbar-item>
-      </b-navbar-dropdown>
-
       <b-navbar-item>
         <locale-selector />
       </b-navbar-item>
