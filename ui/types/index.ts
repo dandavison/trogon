@@ -24,17 +24,6 @@ export interface Site {
   images: string[];
 }
 
-export interface EbirdHotspot {
-  locId: string;
-  locName: string;
-  countryCode: string;
-  subnational1Code: string;
-  lat: number;
-  lng: number;
-  latestObsDt: string | null;
-  numSpeciesAllTime: number | null;
-}
-
 export interface EbirdSpecies {
   sciName: string;
   comName: string;
@@ -45,14 +34,6 @@ export interface EbirdSpecies {
   familyComName: string;
   familySciName: string;
   images: string[];
-}
-
-export interface EbirdObservation {
-  sciName: string;
-  comName: string;
-  speciesCode: string;
-  locId: string;
-  locName: string;
 }
 
 export interface SiteDay {

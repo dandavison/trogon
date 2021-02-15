@@ -45,7 +45,6 @@
 import _ from "lodash";
 import Vue, { PropType } from "vue";
 
-import { EbirdHotspot, EbirdObservation } from "types";
 import {
   fetchEbirdHotspots,
   ebirdSpecies,
@@ -60,6 +59,8 @@ import RecordingPlayer from "./RecordingPlayer.vue";
 import {
   LocationRequest,
   ChallengeFamily,
+  EbirdHotspot,
+  EbirdObservation,
   EbirdSpecies,
   ImageURLMaps,
   Recording,

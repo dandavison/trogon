@@ -28,8 +28,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { EbirdHotspot } from "types";
-import { ChallengeFamily, EbirdSpecies, Recording } from "./types";
+import { ChallengeFamily, EbirdHotspot, EbirdSpecies, Recording } from "./types";
 import FamilySelector from "./FamilySelector.vue";
 
 export default Vue.extend({

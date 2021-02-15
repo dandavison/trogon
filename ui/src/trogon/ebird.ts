@@ -2,8 +2,7 @@ import _ from "lodash";
 import { LatLngLiteral } from "leaflet";
 
 import { fetchMultipleJSON } from "./utils";
-import { EbirdHotspot, EbirdObservation } from "types";
-import { EbirdSpecies, SpeciesImages } from "./types";
+import { EbirdHotspot, EbirdObservation, EbirdSpecies, SpeciesImages } from "./types";
 
 export const ebirdSpecies = {
   getGenus: function(species: EbirdSpecies): string {

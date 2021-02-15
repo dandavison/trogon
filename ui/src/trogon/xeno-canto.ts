@@ -1,7 +1,6 @@
 import _ from "lodash";
 import iso3311a2 from "iso-3166-1-alpha-2";
-import { EbirdHotspot } from "types";
-import { EbirdSpecies, Recording, XenoCantoRecording } from "./types";
+import { EbirdHotspot, EbirdSpecies, Recording, XenoCantoRecording } from "./types";
 import { ebirdSpecies } from "./ebird";
 
 export async function fetchAllRecordings(

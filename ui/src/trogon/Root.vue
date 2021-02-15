@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { EbirdHotspot } from "types";
+import { EbirdHotspot } from "./types";
 import Vue from "vue";
 
 import MapComponent from "./Map.vue";
