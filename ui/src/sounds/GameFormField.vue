@@ -99,6 +99,7 @@ export default Vue.extend({
       this.answer = "";
       this.handler(this.answer);
     },
+
     reveal(): void {
       debug([
         `GameFormField(${this.id}).reveal:`,
@@ -107,6 +108,7 @@ export default Vue.extend({
       ]);
       this.answer = this.truth;
     },
+
     handleSelect(answer: string) {
       debug([
         `GameFormField(${this.id}).handleSelect:`,
@@ -119,6 +121,7 @@ export default Vue.extend({
       }
       this.styleInputAccordingToAnswer();
     },
+
     styleInputAccordingToAnswer() {
       const autocomplete = this.$refs.autocomplete as any;
       const input = autocomplete?.$refs.input.$refs.input as HTMLElement;
@@ -136,6 +139,7 @@ export default Vue.extend({
         }
       }
     },
+
     dismissMobileKeyboardOnDropdownScroll(): void {
       const autocomplete = this.$refs.autocomplete as any;
       const input = autocomplete?.$refs.input.$refs.input as HTMLElement;

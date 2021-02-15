@@ -11,6 +11,10 @@ export async function fetchMultipleJSON(urls: string[]): Promise<Object[]> {
     .map((result: any) => result.value);
 }
 
+export function transformTaxonName(value: string): string {
+  return value.replace("-", " ").toLowerCase();
+}
+
 export function debug(msg: string[], force: boolean = false): void {
   var debug = false;
   if (debug || force) {

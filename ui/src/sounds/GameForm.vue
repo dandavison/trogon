@@ -6,7 +6,7 @@
       <template v-slot:form-field>
         <game-form-field
           ref="familySciField"
-          id="familySciField"
+          id="familySci"
           :initial="answer.familySci"
           :handler="handleFamilySci"
           @focus="isModal.familySci = true"
@@ -27,7 +27,7 @@
       <template v-slot:form-field>
         <game-form-field
           ref="familyEnField"
-          id="familyEnField"
+          id="familyEn"
           :initial="answer.familyEn"
           :handler="handleFamilyEn"
           @focus="isModal.familyEn = true"
@@ -48,7 +48,7 @@
       <template v-slot:form-field>
         <game-form-field
           ref="genusField"
-          id="genusField"
+          id="genus"
           :initial="answer.genus"
           :handler="handleGenus"
           @focus="isModal.genus = true"
@@ -69,7 +69,7 @@
       <template v-slot:form-field>
         <game-form-field
           ref="speciesSciField"
-          id="speciesSciField"
+          id="speciesSci"
           :initial="answer.speciesSci"
           :handler="handleSpeciesSci"
           @focus="isModal.speciesSci = true"
@@ -90,7 +90,7 @@
       <template v-slot:form-field>
         <game-form-field
           ref="speciesEnField"
-          id="speciesEnField"
+          id="speciesEn"
           :initial="answer.speciesEn"
           :handler="handleSpeciesEn"
           @focus="isModal.speciesEn = true"
@@ -111,7 +111,7 @@
 import _ from "lodash";
 import Vue, { PropType } from "vue";
 
-import { debug } from "./utils";
+import { debug, transformTaxonName } from "./utils";
 import { EbirdSpecies } from "./types";
 import { ebirdSpecies } from "./ebird";
 import {
@@ -444,12 +444,23 @@ export default Vue.extend({
     isSpeciesEnCorrect(): boolean {
       return _isCorrect(this.recording?.speciesEn, this.answer.speciesEn);
     },
+
+    _isCorrect(taxon: string): boolean {
+      if (this.recording) {
+        return _isCorrect(
+          this.recording[taxon] as string,
+          this.answer[taxon] as string
+        );
+      } else {
+        return false;
+      }
+    },
   },
 });
 
 function _includes(truth: string, answer: string): boolean {
-  truth = _transform(truth);
-  answer = _transform(answer);
+  truth = transformTaxonName(truth);
+  answer = transformTaxonName(answer);
   if (answer.length > 1) {
     return truth.includes(answer);
   } else {
@@ -458,19 +469,15 @@ function _includes(truth: string, answer: string): boolean {
 }
 
 function _startsWith(truth: string, answer: string): boolean {
-  return _transform(truth).startsWith(_transform(answer));
+  return transformTaxonName(truth).startsWith(transformTaxonName(answer));
 }
 
 function _isCorrect(truth: string | undefined, answer: string): boolean {
   debug(["_isCorrect", JSON.stringify(truth), JSON.stringify(answer)]);
   if (truth) {
-    return _transform(truth) === _transform(answer);
+    return transformTaxonName(truth) === transformTaxonName(answer);
   }
   return false;
-}
-
-function _transform(value: string): string {
-  return value.replace("-", " ").toLowerCase();
 }
 </script>
 

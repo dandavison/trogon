@@ -39,6 +39,7 @@ export interface Recording {
   speciesEn: string;
   speciesSci: string;
   raw: XenoCantoRecording;
+  [index: string]: string | XenoCantoRecording;
 }
 
 export interface XenoCantoRecording {
@@ -57,6 +58,7 @@ export interface Answer {
   genus: string;
   speciesSci: string;
   speciesEn: string;
+  [index: string]: string;
 }
 
 export interface SpeciesImages {
