@@ -20,11 +20,6 @@
               common species only
             </b-switch>
             <b-switch v-model="newSettings.songsOnly">Songs only</b-switch>
-
-            <b-menu-item label="Appearance" class="menu-item"></b-menu-item>
-            <b-switch v-model="newSettings.useFieldModals">
-              Full-screen dropdowns
-            </b-switch>
           </b-menu-list>
         </b-menu>
       </div>
@@ -67,9 +62,6 @@ export default Vue.extend({
     },
     "newSettings.promptIncludesRecording": function (newVal) {
       eventBus.$emit("settings:change:promptIncludesRecording", newVal);
-    },
-    "newSettings.useFieldModals": function (newVal) {
-      eventBus.$emit("settings:change:useFieldModals", newVal);
     },
   },
 

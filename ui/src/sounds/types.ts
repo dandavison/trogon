@@ -6,7 +6,6 @@ export interface Settings {
   songsOnly: boolean;
   promptIncludesImages: boolean;
   promptIncludesRecording: boolean;
-  useFieldModals: boolean;
 }
 
 export enum NamesLanguage {
