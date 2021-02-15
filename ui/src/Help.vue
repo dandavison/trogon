@@ -1,32 +1,34 @@
 <template>
-  <section class="section">
+  <section class="section has-text-grey-light">
     <div class="p-3">
-      <em>Trogon</em> is a work-in-progress. Currently, there is a
-      <router-link to="/trogon"> map view </router-link> which you use to select
-      a location. This takes you to an identification challenge page.
+      <em>Trogon</em> is a tool for learning to identify birds. You select a
+      location anywhere in the world on the map, and are taken to an
+      identification challenge (audio or visual) featuring bird species
+      occurring at that location.
     </div>
 
     <div class="p-3">
       To select a location:
       <ol class="p-3">
         <li>
-          Zoom in on an area on the
-          <router-link to="/trogon"> map </router-link>
+          Zoom in on some area of the world.
         </li>
         <li>
-          Right click / long press (phone) on the map to load nearby Ebird
-          locations (red)
+          Right click / long press (phone) to load nearby Ebird locations (red).
+          If no red circles appear then there are no Ebird locations nearby.
         </li>
         <li>
           Click on the map marker, or on an individual Ebird location, to select
-          that location for the identification challenge
+          that location for the identification challenge.
         </li>
       </ol>
     </div>
 
     <div class="p-3">
-      If no red circles appear then there may simply be no Ebird locations
-      nearby.
+      Feedback appreciated! Please send comments, suggestions, etc to
+      <tt>dandavison7@gmail.com</tt>, or
+      <a href="https://github.com/dandavison/trogon/issues">open an issue</a>
+      on the Github page.
     </div>
 
     <div class="p-3">
