@@ -8,7 +8,6 @@
             v-model="answer"
             ref="autocomplete"
             :placeholder="label"
-            :class="{ 'is-success': isCorrect() }"
             :data="filteredCandidates"
             :open-on-focus="true"
             @focus="$emit('focus')"
