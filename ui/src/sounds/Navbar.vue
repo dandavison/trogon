@@ -1,6 +1,10 @@
 <template>
   <b-navbar>
     <template slot="end">
+      <b-navbar-item tag="div">
+        <router-link to="/sounds">Location</router-link>
+      </b-navbar-item>
+
       <b-navbar-item href="#" @click="showControlPanel">
         {{ $t("show-control-panel") }}
       </b-navbar-item>
