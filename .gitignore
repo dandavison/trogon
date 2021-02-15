@@ -6,7 +6,6 @@ ui/cypress/plugins
 ui/cypress/screenshots
 ui/cypress/support
 ui/cypress/videos
-ui/dist
 ui/node_modules
 /.venv
 /target
