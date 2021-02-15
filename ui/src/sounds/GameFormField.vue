@@ -1,42 +1,51 @@
 <template>
-  <b-field v-if="shouldShow" :label="label" :id="id">
-    <span>
-      <b-autocomplete
-        type="text"
-        v-model="answer"
-        ref="autocomplete"
-        :class="{ 'is-success': isCorrect() }"
-        :data="filteredCandidates"
-        :open-on-focus="true"
-        @focus="$emit('focus')"
-        @select="handleSelect"
-        dropdown-position="bottom"
-        max-height="100%"
-        autocomplete="off"
-        autocorrect="off"
-        autocapitalize="off"
-        spellcheck="false"
-      >
-        <template slot-scope="props">
-          <div class="level">
-            <div class="level-left">
-              <div class="level-item">{{ props.option }}</div>
-            </div>
-            <div class="level-right">
-              <div class="level-item">
-                <img
-                  v-for="url in getImageURLs(props.option)"
-                  :key="url"
-                  :src="url"
-                />
+  <div v-if="shouldShow" class="level" :id="id">
+    <div class="level-item">
+      <p class="label">{{ label }}</p>
+    </div>
+    <div class="level-item">
+      <div class="field has-addons">
+        <p class="control">
+          <b-autocomplete
+            type="text"
+            v-model="answer"
+            ref="autocomplete"
+            :class="{ 'is-success': isCorrect() }"
+            :data="filteredCandidates"
+            :open-on-focus="true"
+            @focus="$emit('focus')"
+            @select="handleSelect"
+            dropdown-position="bottom"
+            max-height="100%"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+          >
+            <template slot-scope="props">
+              <div class="level">
+                <div class="level-left">
+                  <div class="level-item">{{ props.option }}</div>
+                </div>
+                <div class="level-right">
+                  <div class="level-item">
+                    <img
+                      v-for="url in getImageURLs(props.option)"
+                      :key="url"
+                      :src="url"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </template>
-      </b-autocomplete>
-      <b-button v-if="answer != truth" @click="reveal">Reveal</b-button>
-    </span>
-  </b-field>
+            </template>
+          </b-autocomplete>
+        </p>
+        <p class="control">
+          <b-button v-if="answer != truth" @click="reveal">Reveal</b-button>
+        </p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
