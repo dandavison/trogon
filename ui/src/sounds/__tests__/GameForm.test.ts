@@ -49,8 +49,8 @@ describe("GameForm fixtures", () => {
   });
 });
 
-describe("GameForm misc", () => {
-  test("clear works", () => {
+describe("Clear", () => {
+  test("Clear form works", () => {
     const vm: GameFormInstance = factory().vm;
     vm.answer.familySci = "xxx";
     vm.answer.familyEn = "xxx";
@@ -58,6 +58,21 @@ describe("GameForm misc", () => {
     vm.answer.speciesSci = "xxx";
     vm.answer.speciesEn = "xxx";
     vm.clear();
+    expect(vm.answer.familySci).toEqual("");
+    expect(vm.answer.familyEn).toEqual("");
+    expect(vm.answer.genus).toEqual("");
+    expect(vm.answer.speciesSci).toEqual("");
+    expect(vm.answer.speciesEn).toEqual("");
+  });
+
+  test("clear familySci works", () => {
+    const vm: GameFormInstance = factory().vm;
+    vm.answer.familySci = "xxx";
+    vm.answer.familyEn = "xxx";
+    vm.answer.genus = "xxx";
+    vm.answer.speciesSci = "xxx";
+    vm.answer.speciesEn = "xxx";
+    vm.familySciField.clear();
     expect(vm.answer.familySci).toEqual("");
     expect(vm.answer.familyEn).toEqual("");
     expect(vm.answer.genus).toEqual("");
