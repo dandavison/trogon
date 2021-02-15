@@ -12,6 +12,11 @@
     </template>
 
     <template slot="end">
+      <b-navbar-item href="#" @click="showHelp = true">
+        <i class="fas fa-question"></i>
+        <b-modal v-model="showHelp"><help /></b-modal>
+      </b-navbar-item>
+
       <b-navbar-item tag="div">
         <router-link to="/trogon">
           <i class="fas fa-globe-americas"></i>
@@ -30,7 +35,16 @@
 import Vue from "vue";
 import eventBus from "./event-bus";
 
+import Help from "./Help.vue";
+
 export default Vue.extend({
+  components: { Help },
+  data() {
+    return {
+      showHelp: false,
+    };
+  },
+
   methods: {
     showControlPanel(): void {
       eventBus.$emit("control-panel:show");
