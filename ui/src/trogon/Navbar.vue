@@ -2,11 +2,13 @@
   <b-navbar>
     <template slot="end">
       <b-navbar-item tag="div">
-        <router-link to="/trogon">Location</router-link>
+        <router-link to="/trogon">
+          <i class="fas fa-globe-americas"></i>
+        </router-link>
       </b-navbar-item>
 
       <b-navbar-item href="#" @click="showControlPanel">
-        {{ $t("show-control-panel") }}
+        <i class="fas fa-cog"></i>
       </b-navbar-item>
 
       <b-navbar-item>
@@ -18,12 +20,8 @@
 
 <i18n>
 {
-  "en": {
-          "show-control-panel": "Settings"
-        },
-  "es": {
-          "show-control-panel": "Controles"
-        }
+  "en": {},
+  "es": {}
 }
 </i18n>
 

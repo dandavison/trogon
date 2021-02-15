@@ -12,11 +12,9 @@
       <li>{{ challengeRecordings.length }} species in current challenge</li>
       <li>
         <div class="buttons">
-          <b-button
-            label="Select families"
-            @click="isFamilyModalActive = true"
-            class="light"
-          />
+          <b-button @click="isFamilyModalActive = true" class="light">
+            <i class="fas fa-cog"></i> Families
+          </b-button>
         </div>
         <b-modal v-model="isFamilyModalActive" full-screen>
           <section class="section">

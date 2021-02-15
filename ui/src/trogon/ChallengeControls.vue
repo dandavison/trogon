@@ -4,7 +4,9 @@
       <div class="level-item">
         <div class="field">
           <p class="control">
-            <b-button @click="setNextRecording" class="light">Start</b-button>
+            <b-button @click="setNextRecording" class="light is-large">
+              <i class="fas fa-play"></i>
+            </b-button>
           </p>
         </div>
       </div>
@@ -16,7 +18,7 @@
             <div class="field">
               <p class="control">
                 <b-button @click="setNextRecording" class="light">
-                  Next
+                  <i class="fas fa-step-forward"></i>
                 </b-button>
               </p>
             </div>
