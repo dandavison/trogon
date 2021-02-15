@@ -371,11 +371,11 @@ export default Vue.extend({
     // is*Match
 
     isFamilySciMatch(answer: string, species: EbirdSpecies): boolean {
-      return this._startsWith(species.familySciName, answer);
+      return _startsWith(species.familySciName, answer);
     },
 
     isFamilyEnMatch(answer: string, species: EbirdSpecies): boolean {
-      return this._includes(
+      return _includes(
         species.familyComName.replace("-", " "),
         answer.replace("-", " ")
       );
@@ -394,7 +394,7 @@ export default Vue.extend({
       ) {
         return false;
       }
-      return this._startsWith(ebirdSpecies.getGenus(species), answer);
+      return _startsWith(ebirdSpecies.getGenus(species), answer);
     },
 
     isSpeciesSciMatch(answer: string, species: EbirdSpecies): boolean {
@@ -408,8 +408,8 @@ export default Vue.extend({
         return false;
       }
       return (
-        this._startsWith(ebirdSpecies.getSpeciesSciSp(species), answer) ||
-        this._startsWith(ebirdSpecies.getSpeciesSci(species), answer)
+        _startsWith(ebirdSpecies.getSpeciesSciSp(species), answer) ||
+        _startsWith(ebirdSpecies.getSpeciesSci(species), answer)
       );
     },
 
@@ -423,26 +423,10 @@ export default Vue.extend({
       if (this.answer.genus && !this.isGenusMatch(this.answer.genus, species)) {
         return false;
       }
-      return this._includes(
+      return _includes(
         ebirdSpecies.getSpeciesEn(species).replace("-", " "),
         answer.replace("-", " ")
       );
-    },
-
-    _includes(truth: string, answer: string): boolean {
-      truth = truth.toLowerCase();
-      answer = answer.toLowerCase();
-      if (answer.length > 1) {
-        return truth.includes(answer);
-      } else {
-        return truth.startsWith(answer);
-      }
-    },
-
-    _startsWith(truth: string, answer: string): boolean {
-      truth = truth.toLowerCase();
-      answer = answer.toLowerCase();
-      return truth.startsWith(answer);
     },
 
     // is*Correct
@@ -468,6 +452,22 @@ export default Vue.extend({
     },
   },
 });
+
+function _includes(truth: string, answer: string): boolean {
+  truth = truth.toLowerCase();
+  answer = answer.toLowerCase();
+  if (answer.length > 1) {
+    return truth.includes(answer);
+  } else {
+    return truth.startsWith(answer);
+  }
+}
+
+function _startsWith(truth: string, answer: string): boolean {
+  truth = truth.toLowerCase();
+  answer = answer.toLowerCase();
+  return truth.startsWith(answer);
+}
 
 function _isCorrect(truth: string | undefined, answer: string): boolean {
   debug(["_isCorrect", JSON.stringify(truth), JSON.stringify(answer)]);
