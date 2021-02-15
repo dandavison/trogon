@@ -19,7 +19,9 @@
           />
         </div>
         <b-modal v-model="isFamilyModalActive" full-screen>
-          <family-selector :challengeFamilies="challengeFamilies" />
+          <section class="section">
+            <family-selector :challengeFamilies="challengeFamilies" />
+          </section>
         </b-modal>
       </li>
     </ul>
