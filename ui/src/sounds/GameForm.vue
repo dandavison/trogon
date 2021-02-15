@@ -1,79 +1,109 @@
 <template>
   <table class="table is-fullwidth">
-    <game-form-field
-      ref="familySciField"
-      id="familySciField"
-      :initial="answer.familySci"
-      :handler="handleFamilySci"
-      @focus="isModal.familySci = true"
-      @select="isModal.familySci = false"
-      :shouldShow="shouldShowScientificNames"
-      :filter="filterFamilySci"
-      :truth="truth.familySci"
-      :isCorrect="isFamilySciCorrect"
-      :getImageURLs="getFamilySciImageURLs"
-      :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
-    />
+    <game-form-field-container
+      :isModal="settings.useFieldModals && isModal.familySci"
+    >
+      <template v-slot:form-field>
+        <game-form-field
+          ref="familySciField"
+          id="familySciField"
+          :initial="answer.familySci"
+          :handler="handleFamilySci"
+          @focus="isModal.familySci = true"
+          @select="isModal.familySci = false"
+          :shouldShow="shouldShowScientificNames"
+          :filter="filterFamilySci"
+          :truth="truth.familySci"
+          :isCorrect="isFamilySciCorrect"
+          :getImageURLs="getFamilySciImageURLs"
+          :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
+        />
+      </template>
+    </game-form-field-container>
 
-    <game-form-field
-      ref="familyEnField"
-      id="familyEnField"
-      :initial="answer.familyEn"
-      :handler="handleFamilyEn"
-      @focus="isModal.familyEn = true"
-      @select="isModal.familyEn = false"
-      :shouldShow="shouldShowEnglishNames"
-      :filter="filterFamilyEn"
-      :truth="truth.familyEn"
-      :isCorrect="isFamilyEnCorrect"
-      :getImageURLs="getFamilyEnImageURLs"
-      :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
-    />
+    <game-form-field-container
+      :isModal="settings.useFieldModals && isModal.familyEn"
+    >
+      <template v-slot:form-field>
+        <game-form-field
+          ref="familyEnField"
+          id="familyEnField"
+          :initial="answer.familyEn"
+          :handler="handleFamilyEn"
+          @focus="isModal.familyEn = true"
+          @select="isModal.familyEn = false"
+          :shouldShow="shouldShowEnglishNames"
+          :filter="filterFamilyEn"
+          :truth="truth.familyEn"
+          :isCorrect="isFamilyEnCorrect"
+          :getImageURLs="getFamilyEnImageURLs"
+          :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
+        />
+      </template>
+    </game-form-field-container>
 
-    <game-form-field
-      ref="genusField"
-      id="genusField"
-      :initial="answer.genus"
-      :handler="handleGenus"
-      @focus="isModal.genus = true"
-      @select="isModal.genus = false"
-      :shouldShow="true"
-      :filter="filterGenus"
-      :truth="truth.genus"
-      :isCorrect="isGenusCorrect"
-      :getImageURLs="getGenusImageURLs"
-      :label="'Genus'"
-    />
+    <game-form-field-container
+      :isModal="settings.useFieldModals && isModal.genus"
+    >
+      <template v-slot:form-field>
+        <game-form-field
+          ref="genusField"
+          id="genusField"
+          :initial="answer.genus"
+          :handler="handleGenus"
+          @focus="isModal.genus = true"
+          @select="isModal.genus = false"
+          :shouldShow="true"
+          :filter="filterGenus"
+          :truth="truth.genus"
+          :isCorrect="isGenusCorrect"
+          :getImageURLs="getGenusImageURLs"
+          :label="'Genus'"
+        />
+      </template>
+    </game-form-field-container>
 
-    <game-form-field
-      ref="speciesSciField"
-      id="speciesSciField"
-      :initial="answer.speciesSci"
-      :handler="handleSpeciesSci"
-      @focus="isModal.speciesSci = true"
-      @select="isModal.speciesSci = false"
-      :shouldShow="shouldShowScientificNames"
-      :filter="filterSpeciesSci"
-      :truth="truth.speciesSci"
-      :isCorrect="isSpeciesSciCorrect"
-      :getImageURLs="getSpeciesSciImageURLs"
-      :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
-    />
+    <game-form-field-container
+      :isModal="settings.useFieldModals && isModal.speciesSci"
+    >
+      <template v-slot:form-field>
+        <game-form-field
+          ref="speciesSciField"
+          id="speciesSciField"
+          :initial="answer.speciesSci"
+          :handler="handleSpeciesSci"
+          @focus="isModal.speciesSci = true"
+          @select="isModal.speciesSci = false"
+          :shouldShow="shouldShowScientificNames"
+          :filter="filterSpeciesSci"
+          :truth="truth.speciesSci"
+          :isCorrect="isSpeciesSciCorrect"
+          :getImageURLs="getSpeciesSciImageURLs"
+          :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
+        />
+      </template>
+    </game-form-field-container>
 
-    <game-form-field
-      ref="speciesEnField"
-      id="speciesEnField"
-      :initial="answer.speciesEn"
-      :handler="handleSpeciesEn"
-      @focus="isModal.speciesEn = true"
-      @select="isModal.speciesEn = false"
-      :shouldShow="shouldShowEnglishNames"
-      :filter="filterSpeciesEn"
-      :truth="truth.speciesEn"
-      :isCorrect="isSpeciesEnCorrect"
-      :getImageURLs="getSpeciesEnImageURLs"
-      :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
-    />
+    <game-form-field-container
+      :isModal="settings.useFieldModals && isModal.speciesEn"
+    >
+      <template v-slot:form-field>
+        <game-form-field
+          ref="speciesEnField"
+          id="speciesEnField"
+          :initial="answer.speciesEn"
+          :handler="handleSpeciesEn"
+          @focus="isModal.speciesEn = true"
+          @select="isModal.speciesEn = false"
+          :shouldShow="shouldShowEnglishNames"
+          :filter="filterSpeciesEn"
+          :truth="truth.speciesEn"
+          :isCorrect="isSpeciesEnCorrect"
+          :getImageURLs="getSpeciesEnImageURLs"
+          :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
+        />
+      </template>
+    </game-form-field-container>
   </table>
 </template>
 
@@ -92,9 +122,10 @@ import {
   Settings,
 } from "./types";
 import GameFormField from "./GameFormField.vue";
+import GameFormFieldContainer from "./GameFormFieldContainer.vue";
 
 export default Vue.extend({
-  components: { GameFormField },
+  components: { GameFormFieldContainer, GameFormField },
   props: {
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     recording: Object as PropType<Recording | null>,

@@ -27,6 +27,7 @@ export default Vue.extend({
         promptIncludesRecording: true,
         commonSpeciesOnly: false,
         songsOnly: true,
+        useFieldModals: false,
       } as Settings,
       controlPanelOpen: false,
     };
@@ -50,6 +51,9 @@ export default Vue.extend({
         this.settings.promptIncludesRecording = newVal;
       }
     );
+    eventBus.$on("settings:change:useFieldModals", (newVal: boolean) => {
+      this.settings.useFieldModals = newVal;
+    });
   },
 });
 </script>
