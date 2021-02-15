@@ -7,15 +7,16 @@
 <script lang="ts">
 import { EbirdHotspot } from "types";
 import Vue from "vue";
+
 import MapComponent from "./Map.vue";
 
 export default Vue.extend({
   components: { MapComponent },
   data() {
     return {
-      ebirdHotSpots: [] as EbirdHotspot[]
+      ebirdHotSpots: [] as EbirdHotspot[],
     };
   },
-  created: function(): void {}
+  created: function (): void {},
 });
 </script>
