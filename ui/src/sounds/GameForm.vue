@@ -241,15 +241,16 @@ export default Vue.extend({
     handleFamilySci(value: string): void {
       debug(["handleFamilySci:", JSON.stringify(value)]);
       this.answer.familySci = value;
-      // Autofill familyEn
       const familyEn = this.familySci2En.get(value) || "";
       this.familyEnField.answer = familyEn;
+      if (!familyEn) {
+        this.genusField.answer = "";
+      }
     },
 
     handleFamilyEn(value: string): void {
       debug(["handleFamilyEn:", JSON.stringify(value)]);
       this.answer.familyEn = value;
-      // Autofill familySci
       const familySci = this.familyEn2Sci.get(value) || "";
       this.familySciField.answer = familySci;
     },
@@ -257,10 +258,11 @@ export default Vue.extend({
     handleGenus(value: string): void {
       debug(["handleGenus:", JSON.stringify(value)]);
       this.answer.genus = value;
-      // Autofill familySci if the genus is valid
       const familySci = this.genus2familySci.get(value);
       if (familySci) {
         this.familySciField.answer = familySci;
+      } else {
+        this.speciesSciField.answer = "";
       }
     },
 
