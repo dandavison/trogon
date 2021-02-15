@@ -1,17 +1,34 @@
 <template>
   <section class="section">
-    <ul v-if="recording" class="box has-text-centered">
+    <nav v-if="!recording" class="level">
+      <div class="level-item">
+        <div class="field">
+          <p class="control">
+            <b-button @click="setNextRecording" class="light">Start</b-button>
+          </p>
+        </div>
+      </div>
+    </nav>
+    <ul v-else class="box has-text-centered">
       <li>
         <nav class="level">
           <div class="level-item">
-            <div class="field has-addons">
-              <p class="control">
-                <recording-player :recording="recording" />
-              </p>
+            <div class="field">
               <p class="control">
                 <b-button @click="setNextRecording" class="light">
-                  {{ recording ? "Next" : "Start" }}
+                  Next
                 </b-button>
+              </p>
+            </div>
+          </div>
+        </nav>
+      </li>
+      <li>
+        <nav class="level">
+          <div class="level-item">
+            <div class="field">
+              <p class="control">
+                <recording-player :recording="recording" />
               </p>
             </div>
           </div>
@@ -28,15 +45,6 @@
         </ul>
       </li>
     </ul>
-    <nav v-else class="level">
-      <div class="level-item">
-        <div class="field">
-          <p class="control">
-            <b-button @click="setNextRecording" class="light">Start</b-button>
-          </p>
-        </div>
-      </div>
-    </nav>
   </section>
 </template>
 

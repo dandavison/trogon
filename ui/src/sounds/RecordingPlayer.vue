@@ -1,6 +1,7 @@
 <template>
   <audio
     controls
+    class="mt-3"
     :src="recording.url"
     :preload="preload"
     @canplaythrough="
