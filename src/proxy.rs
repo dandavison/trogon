@@ -5,7 +5,6 @@ use reqwest::Method;
 use rocket::response::content;
 
 use crate::db;
-use crate::ebird::get_ebird_api_token;
 
 #[derive(Debug)]
 pub struct Query<'q> {
@@ -20,6 +19,13 @@ impl<'q> rocket::request::FromQuery<'q> for Query<'q> {
             params: query.map(|param| param.raw.as_str()).collect(),
         })
     }
+}
+
+pub fn get_ebird_api_token() -> String {
+    std::env::var("EBIRD_API_TOKEN").unwrap_or_else(|_| {
+        eprintln!("EBIRD_API_TOKEN environment variable is not set.");
+        std::process::exit(1);
+    })
 }
 
 #[get("/ebird/<path..>?<query..>")]

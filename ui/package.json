@@ -76,7 +76,7 @@
       }
     },
     "setupFiles": [
-      "./src/trogon/__tests__/setup.js"
+      "./src/__tests__/setup.js"
     ],
     "testMatch": [
       "**/__tests__/*.test.[jt]s"

@@ -2091,20 +2091,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e81da0851ada1f3e9d4312c704aa4f8806f0f9d69faaf8df2f3464b4a9437c2"
 
 [[package]]
-name = "sylph"
-version = "0.1.0"
-dependencies = [
- "postgres",
- "reqwest",
- "rocket",
- "rocket_contrib",
- "scraper",
- "serde",
- "serde_json",
- "structopt",
-]
-
-[[package]]
 name = "syn"
 version = "0.15.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2349,6 +2335,20 @@ name = "traitobject"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "efd1f82c56340fdf16f2a953d7bda4f8fdffba13d93b00844c25572110b26079"
+
+[[package]]
+name = "trogon"
+version = "0.1.0"
+dependencies = [
+ "postgres",
+ "reqwest",
+ "rocket",
+ "rocket_contrib",
+ "scraper",
+ "serde",
+ "serde_json",
+ "structopt",
+]
 
 [[package]]
 name = "try-lock"

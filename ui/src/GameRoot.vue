@@ -1,6 +1,5 @@
 <template>
   <section class="section">
-    <navbar />
     <control-panel :open="controlPanelOpen" :settings="settings" />
     <game :settings="settings" :locationRequest="locationRequest" />
   </section>
@@ -11,14 +10,13 @@ import Vue, { PropType } from "vue";
 
 import eventBus from "./event-bus";
 import ControlPanel from "./ControlPanel.vue";
-import Navbar from "./Navbar.vue";
 import Game from "./Game.vue";
 import { LocationRequest, NamesLanguage, Settings } from "./types";
 
 export default Vue.extend({
   name: "GameRoot",
   props: { locationRequest: Object as PropType<LocationRequest> },
-  components: { Navbar, ControlPanel, Game },
+  components: { ControlPanel, Game },
   data() {
     return {
       settings: {

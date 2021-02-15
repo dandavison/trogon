@@ -1,20 +1,23 @@
-import { Site, Trip, EbirdHotspot, EbirdSpecies, EbirdObservation } from "types";
-
-export function fetchJSONObjectSynchronously(url: string, headers: object = {}) {
-  var request = new XMLHttpRequest();
-  request.open("GET", url, false);
-  for (const [key, value] of Object.entries(headers)) {
-    request.setRequestHeader(key, value)
-  }
-  request.send(null);
-  if (request.status !== 200) {
-    return {};
-  }
-  return JSON.parse(request.responseText);
+export async function fetchMultipleJSON(urls: string[]): Promise<Object[]> {
+  const settledPromises = await Promise.allSettled(
+    urls.map(url =>
+      fetch(url)
+        .then(resp => resp.json())
+        .catch(error => console.log(`Error: fetchJSONParallel: ${error}`))
+    )
+  );
+  return settledPromises
+    .filter(result => result.status === "fulfilled")
+    .map((result: any) => result.value);
 }
 
-export function fetchJSONArraySynchronously(
-  url: string, headers: object = {}
-): Site[] | Trip[] | EbirdHotspot[] | EbirdSpecies[] | EbirdObservation[] {
-  return fetchJSONObjectSynchronously(url, headers) || [];
+export function transformTaxonName(value: string): string {
+  return value.replace("-", " ").toLowerCase();
+}
+
+export function debug(msg: string[], force: boolean = false): void {
+  var debug = false;
+  if (debug || force) {
+    console.log.apply(null, msg);
+  }
 }

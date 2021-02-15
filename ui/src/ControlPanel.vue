@@ -2,41 +2,29 @@
   <section>
     <b-sidebar type="is-light" v-bind="sidebarAttributes" v-model="open">
       <div class="p-1">
-        <table>
-          <tr>
-            <td>
-              <img
-                src="https://user-images.githubusercontent.com/52205/74552822-b0f85f00-4f1b-11ea-908d-48d4f301b6a3.png"
-                alt="Sylph"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td
-              style="display: table-cell; vertical-align: middle; padding: 10px"
-            >
-              <b>Sylph</b>
-            </td>
-          </tr>
-        </table>
-
         <b-menu>
-          <b-menu-list label="Menu">
-            <b-menu-item v-on:click="$emit('click:trips')" icon="settings">
-              <template slot="label" slot-scope="props">
-                {{ $t("trips") }}
-                <b-icon
-                  class="is-pulled-right"
-                  :icon="props.expanded ? 'menu-down' : 'menu-up'"
-                ></b-icon>
-              </template>
-              <trip-switches :trips="trips" />
-            </b-menu-item>
-            <site-switch />
-            <hotspots-switch />
-          </b-menu-list>
-          <b-menu-list label="Actions">
-            <b-menu-item label="Logout"></b-menu-item>
+          <b-menu-list>
+            <b-menu-item label="Prompt" class="menu-item"></b-menu-item>
+            <b-switch v-model="newSettings.promptIncludesImages">
+              Images
+            </b-switch>
+            <b-switch v-model="newSettings.promptIncludesRecording">
+              Audio
+            </b-switch>
+
+            <b-menu-item label="Names" class="menu-item"></b-menu-item>
+            <names-selector :settings="settings" />
+
+            <b-menu-item label="Recordings" class="menu-item"></b-menu-item>
+            <b-switch v-model="newSettings.commonSpeciesOnly">
+              common species only
+            </b-switch>
+            <b-switch v-model="newSettings.songsOnly">Songs only</b-switch>
+
+            <b-menu-item label="Appearance" class="menu-item"></b-menu-item>
+            <b-switch v-model="newSettings.useFieldModals">
+              Full-screen dropdowns
+            </b-switch>
           </b-menu-list>
         </b-menu>
       </div>
@@ -46,47 +34,55 @@
 </template>
 
 <script lang="ts">
-import { Trip } from "types";
 import Vue, { PropType } from "vue";
-import VueI18n from "vue-i18n";
-Vue.use(VueI18n);
-
 import eventBus from "./event-bus";
-import HotspotsSwitch from "./HotspotsSwitch.vue";
-import SiteSwitch from "./SiteSwitch.vue";
-import TripSwitches from "./TripSwitches.vue";
+import NamesSelector from "./NamesSelector.vue";
+import { Settings } from "./types";
 
 export default Vue.extend({
+  components: { NamesSelector },
+  props: { settings: Object as PropType<Settings> },
   data() {
     return {
+      newSettings: Object.assign({}, this.settings) as Settings,
       sidebarAttributes: {
         overlay: false,
         fullheight: true,
         fullwidth: false,
-        right: false
+        right: true,
       },
-      open: false
+      open: false,
     };
   },
-  components: { HotspotsSwitch, SiteSwitch, TripSwitches },
-  props: { trips: Array as PropType<Trip[]> },
-  mounted: function (): void {
-    eventBus.$on("show:control-panel", this.showControlPanel);
-  },
-  methods: {
-    showControlPanel: function (): void {
-      this.open = true;
+
+  watch: {
+    "newSettings.commonSpeciesOnly": function (newVal) {
+      eventBus.$emit("settings:change:commonSpeciesOnly", newVal);
     },
+    "newSettings.songsOnly": function (newVal) {
+      eventBus.$emit("settings:change:songsOnly", newVal);
+    },
+    "newSettings.promptIncludesImages": function (newVal) {
+      eventBus.$emit("settings:change:promptIncludesImages", newVal);
+    },
+    "newSettings.promptIncludesRecording": function (newVal) {
+      eventBus.$emit("settings:change:promptIncludesRecording", newVal);
+    },
+    "newSettings.useFieldModals": function (newVal) {
+      eventBus.$emit("settings:change:useFieldModals", newVal);
+    },
+  },
+
+  mounted: function (): void {
+    eventBus.$on("control-panel:show", () => {
+      this.open = true;
+    });
   },
 });
 </script>
 
-<style>
-.p-1 {
-  padding: 1em;
-  z-index: 2;
-}
-button.show {
-  height: fit-content;
+<style scoped>
+.menu-item {
+  margin-top: 20px;
 }
 </style>
