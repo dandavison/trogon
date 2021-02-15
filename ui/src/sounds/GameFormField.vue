@@ -1,15 +1,13 @@
 <template>
   <tr v-if="shouldShow" :id="id">
     <td>
-      {{ label }}
-    </td>
-    <td>
       <div class="field has-addons">
-        <p class="control">
+        <p class="control" style="width: 100%">
           <b-autocomplete
             type="text"
             v-model="answer"
             ref="autocomplete"
+            :placeholder="label"
             :class="{ 'is-success': isCorrect() }"
             :data="filteredCandidates"
             :open-on-focus="true"
@@ -41,7 +39,14 @@
           </b-autocomplete>
         </p>
         <p class="control">
-          <b-button v-if="answer != truth" @click="reveal">Reveal</b-button>
+          <b-button v-if="answer != truth" @click="reveal"
+            ><i class="fas fa-eye"></i
+          ></b-button>
+        </p>
+        <p class="control">
+          <b-button v-if="answer" @click="clear"
+            ><i class="fas fa-eraser"></i
+          ></b-button>
         </p>
       </div>
     </td>
@@ -151,3 +156,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+td {
+  border-width: 0px;
+}
+</style>

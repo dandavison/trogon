@@ -74,8 +74,6 @@
       :getImageURLs="getSpeciesEnImageURLs"
       :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
     />
-
-    <b-button @click="clear">Clear</b-button>
   </table>
 </template>
 
