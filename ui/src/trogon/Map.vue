@@ -1,6 +1,7 @@
 <template>
   <div>
     <l-map
+      v-if="!showHelp"
       style="height: 800px"
       v-bind="map"
       :center="center"
@@ -46,7 +47,9 @@
       </l-marker>
       <b-loading v-model="isLoading"></b-loading>
     </l-map>
-    <b-modal v-model="showHelp"><help /></b-modal>
+    <b-modal v-else v-model="showHelp" width="320px" full-screen>
+      <help />
+    </b-modal>
   </div>
 </template>
 
