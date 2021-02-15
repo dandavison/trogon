@@ -20,7 +20,6 @@
     <game-form
       v-if="recording"
       ref="gameForm"
-      :isLoading="!challengeActive"
       :locationSpecies="locationSpecies"
       :recording="recording"
       :image="image"
