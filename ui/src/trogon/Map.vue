@@ -46,6 +46,7 @@
       </l-marker>
       <b-loading v-model="isLoading"></b-loading>
     </l-map>
+    <b-modal v-model="showHelp"><help /></b-modal>
   </div>
 </template>
 
@@ -66,12 +67,15 @@ import {
   LLayerGroup,
 } from "vue2-leaflet";
 import { EbirdHotspot } from "types";
+import eventBus from "./event-bus";
+import Help from "./Help.vue";
 import { fetchEbirdHotspotsByLatLng } from "./ebird";
 import { LatLngLiteral } from "leaflet";
 import { LeafletMapEvent } from "./types";
 
 export default Vue.extend({
   components: {
+    Help,
     LMap,
     LTileLayer,
     LCircle,
@@ -101,8 +105,16 @@ export default Vue.extend({
       },
       ebirdHotspots: [] as EbirdHotspot[],
       isLoading: false,
+      showHelp: false,
     };
   },
+
+  mounted: function (): void {
+    eventBus.$on("show:help", () => {
+      this.showHelp = true;
+    });
+  },
+
   methods: {
     showCoordinatesPopup(event: LeafletMapEvent): void {
       this.popup.latlng = event.latlng as any; // TODO
