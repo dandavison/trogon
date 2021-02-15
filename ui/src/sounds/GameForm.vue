@@ -448,36 +448,37 @@ export default Vue.extend({
     // is*Correct
 
     isFamilySciCorrect(): boolean {
-      return this.recording?.familySci === this.answer.familySci;
+      return _isCorrect(this.recording?.familySci, this.answer.familySci);
     },
 
     isFamilyEnCorrect(): boolean {
-      return this.recording?.familyEn === this.answer.familyEn;
+      return _isCorrect(this.recording?.familyEn, this.answer.familyEn);
     },
 
     isGenusCorrect(): boolean {
-      return this.recording?.genus === this.answer.genus;
+      return _isCorrect(this.recording?.genus, this.answer.genus);
     },
 
     isSpeciesSciCorrect(): boolean {
-      debug([
-        "isSpeciesSciCorrect",
-        JSON.stringify(this.recording?.speciesSci),
-        JSON.stringify(this.answer.speciesSci),
-      ]);
-      return this.recording?.speciesSci === this.answer.speciesSci;
+      return _isCorrect(this.recording?.speciesSci, this.answer.speciesSci);
     },
 
     isSpeciesEnCorrect(): boolean {
-      debug([
-        "isSpeciesEnCorrect",
-        JSON.stringify(this.recording?.speciesEn),
-        JSON.stringify(this.answer.speciesEn),
-      ]);
-      return this.recording?.speciesEn === this.answer.speciesEn;
+      return _isCorrect(this.recording?.speciesEn, this.answer.speciesEn);
     },
   },
 });
+
+function _isCorrect(truth: string | undefined, answer: string): boolean {
+  debug(["_isCorrect", JSON.stringify(truth), JSON.stringify(answer)]);
+  if (truth) {
+    return (
+      truth.toLowerCase().replace("-", " ") ===
+      answer.toLowerCase().replace("-", " ")
+    );
+  }
+  return false;
+}
 </script>
 
 <style scoped>
