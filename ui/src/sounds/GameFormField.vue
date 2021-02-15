@@ -89,6 +89,7 @@ export default Vue.extend({
       handler: function (value: string): void {
         debug([`${this.id}: watch: answer:`, JSON.stringify(value)]);
         this.handler(value);
+        this.styleInputAccordingToAnswer();
       },
     } as any, // sync is private
   },
