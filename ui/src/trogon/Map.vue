@@ -44,6 +44,7 @@
           </b-button>
         </l-popup>
       </l-marker>
+      <b-loading v-model="isLoading"></b-loading>
     </l-map>
   </div>
 </template>
@@ -99,15 +100,17 @@ export default Vue.extend({
         latlng: null as LatLngLiteral | null,
       },
       ebirdHotspots: [] as EbirdHotspot[],
+      isLoading: false,
     };
   },
   methods: {
     showCoordinatesPopup(event: LeafletMapEvent): void {
       this.popup.latlng = event.latlng as any; // TODO
       if (this.popup.latlng) {
-        fetchEbirdHotspotsByLatLng(this.popup.latlng).then(
-          (data) => (this.ebirdHotspots = data)
-        );
+        this.isLoading = true;
+        fetchEbirdHotspotsByLatLng(this.popup.latlng)
+          .then((data) => (this.ebirdHotspots = data))
+          .finally(() => (this.isLoading = false));
       }
     },
   },
