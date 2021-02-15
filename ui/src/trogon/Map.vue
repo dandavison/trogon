@@ -116,9 +116,3 @@ export default Vue.extend({
   },
 });
 </script>
-
-<style>
-#sylph-map {
-  z-index: 1;
-}
-</style>
