@@ -1,9 +1,9 @@
 <template>
-  <div v-if="shouldShow" class="level" :id="id">
-    <div class="level-item">
-      <p class="label">{{ label }}</p>
-    </div>
-    <div class="level-item">
+  <tr v-if="shouldShow" :id="id">
+    <td>
+      {{ label }}
+    </td>
+    <td>
       <div class="field has-addons">
         <p class="control">
           <b-autocomplete
@@ -44,8 +44,8 @@
           <b-button v-if="answer != truth" @click="reveal">Reveal</b-button>
         </p>
       </div>
-    </div>
-  </div>
+    </td>
+  </tr>
 </template>
 
 <script lang="ts">

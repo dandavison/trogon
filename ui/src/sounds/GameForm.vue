@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <table class="table is-fullwidth">
     <game-form-field-container
       :isModal="settings.useFieldModals && isModal.familySci"
     >
@@ -106,7 +106,7 @@
     </game-form-field-container>
 
     <b-button @click="clear">Clear</b-button>
-  </form>
+  </table>
 </template>
 
 <script lang="ts">
