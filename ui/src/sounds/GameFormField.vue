@@ -1,7 +1,7 @@
 <template>
-  <tr v-if="shouldShow" :id="id">
-    <td>
-      <div class="field has-addons">
+  <div class="level" v-if="shouldShow" :id="id">
+    <div class="level-item">
+      <div class="field has-addons" style="width: 100%">
         <p class="control" style="width: 100%">
           <b-autocomplete
             type="text"
@@ -49,8 +49,8 @@
           ></b-button>
         </p>
       </div>
-    </td>
-  </tr>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
