@@ -1,9 +1,10 @@
 <template>
   <b-navbar>
     <template slot="end">
-      <b-navbar-item href="#" @click="showControlPanel">{{
-        $t("show-control-panel")
-      }}</b-navbar-item>
+      <b-navbar-item href="#" @click="showControlPanel">
+        {{ $t("show-control-panel") }}
+      </b-navbar-item>
+
       <b-navbar-dropdown label="Account">
         <b-navbar-item href="#"> Log in </b-navbar-item>
         <b-navbar-item href="#"> Sign up </b-navbar-item>
