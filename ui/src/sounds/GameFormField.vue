@@ -39,14 +39,14 @@
           </b-autocomplete>
         </p>
         <p class="control">
-          <b-button v-if="answer != truth" @click="reveal"
-            ><i class="fas fa-eye"></i
-          ></b-button>
+          <b-button v-if="answer != truth" @click="reveal">
+            <i class="fas fa-eye" />
+          </b-button>
         </p>
         <p class="control">
-          <b-button v-if="answer" @click="clear"
-            ><i class="fas fa-eraser"></i
-          ></b-button>
+          <b-button v-if="answer" @click="clear">
+            <i class="fas fa-eraser" />
+          </b-button>
         </p>
       </div>
     </div>
