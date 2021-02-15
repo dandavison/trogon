@@ -26,7 +26,6 @@ test: test-ui
 
 test-ui:
 	cd ui && npm test
-	cd ui && $(WITH_ENV) npx cypress run
 
 test-ui-live:
 	cd ui && $(WITH_ENV_DEV) npx cypress open
