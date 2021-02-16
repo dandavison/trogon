@@ -25,6 +25,10 @@
       <b-navbar-item href="#" @click="showControlPanel">
         <i class="fas fa-cog"></i>
       </b-navbar-item>
+
+      <b-navbar-item href="https://github.com/dandavison/trogon">
+        <i class="fab fa-github"></i>
+      </b-navbar-item>
     </template>
   </b-navbar>
 </template>
