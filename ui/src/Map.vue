@@ -45,7 +45,7 @@
       </l-marker>
       <b-loading v-model="isLoading"></b-loading>
     </l-map>
-    <b-modal v-else v-model="showHelp" width="320px" full-screen>
+    <b-modal v-else v-model="showHelp">
       <help />
     </b-modal>
   </div>
