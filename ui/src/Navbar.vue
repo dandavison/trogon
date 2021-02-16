@@ -17,7 +17,7 @@
       </b-navbar-item>
 
       <b-navbar-item href="#" @click="showHelp">
-        <i class="fas fa-question"></i>
+        Help
       </b-navbar-item>
     </template>
 
