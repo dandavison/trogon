@@ -9,12 +9,6 @@
           />
         </router-link>
       </b-navbar-item>
-    </template>
-
-    <template slot="end">
-      <b-navbar-item href="#" @click="showHelp">
-        <i class="fas fa-question"></i>
-      </b-navbar-item>
 
       <b-navbar-item tag="div">
         <router-link to="/trogon">
@@ -22,13 +16,18 @@
         </router-link>
       </b-navbar-item>
 
+      <b-navbar-item href="#" @click="showHelp">
+        <i class="fas fa-question"></i>
+      </b-navbar-item>
+    </template>
+
+    <template slot="end">
       <b-navbar-item href="#" @click="showControlPanel">
         <i class="fas fa-cog"></i>
       </b-navbar-item>
     </template>
   </b-navbar>
 </template>
-
 
 <script lang="ts">
 import Vue from "vue";
@@ -42,7 +41,7 @@ export default Vue.extend({
 
     showHelp(): void {
       eventBus.$emit("show:help");
-    },
-  },
+    }
+  }
 });
 </script>
