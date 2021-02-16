@@ -6,7 +6,7 @@ WITH_ENV_PROD=env $$(xargs < .env.prod)
 build: build-ui build-backend
 
 build-ui:
-	cd ui && npm run build
+	cd ui && $(WITH_ENV_PROD) npm run build
 
 build-backend:
 	cargo build --release
