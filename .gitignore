@@ -9,5 +9,4 @@ ui/cypress/videos
 ui/dist
 ui/node_modules
 /.venv
-/data
 /target
