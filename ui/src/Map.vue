@@ -18,9 +18,7 @@
         <l-popup>
           <b-button
             class="is-success is-light"
-            @click="
-              () => $router.push(`/challenge?location=${hotspot.locId}`)
-            "
+            @click="() => $router.push(`/challenge?location=${hotspot.locId}`)"
           >
             {{ hotspot.locName }}
           </b-button>
@@ -67,7 +65,7 @@ import {
   LCircle,
   LMarker,
   LPopup,
-  LLayerGroup,
+  LLayerGroup
 } from "vue2-leaflet";
 import eventBus from "./event-bus";
 import Help from "./Help.vue";
@@ -83,35 +81,35 @@ export default Vue.extend({
     LCircle,
     LMarker,
     LPopup,
-    LLayerGroup,
+    LLayerGroup
   },
   props: {
-    center: Array as PropType<number[]>,
+    center: Array as PropType<number[]>
   },
   data() {
     return {
       map: {
         zoom: 2,
-        tap: true,
+        tap: true
       },
       tileLayer: {
-        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       },
       hotspotProps: {
         color: "#f03",
         fillOpacity: 0.5,
-        radius: 500,
+        radius: 500
       },
       popup: {
-        latlng: null as LatLngLiteral | null,
+        latlng: null as LatLngLiteral | null
       },
       ebirdHotspots: [] as EbirdHotspot[],
       isLoading: false,
-      showHelp: false,
+      showHelp: false
     };
   },
 
-  mounted: function (): void {
+  mounted: function(): void {
     eventBus.$on("show:help", () => {
       this.showHelp = true;
     });
@@ -123,10 +121,10 @@ export default Vue.extend({
       if (this.popup.latlng) {
         this.isLoading = true;
         fetchEbirdHotspotsByLatLng(this.popup.latlng)
-          .then((data) => (this.ebirdHotspots = data))
+          .then(data => (this.ebirdHotspots = data))
           .finally(() => (this.isLoading = false));
       }
-    },
-  },
+    }
+  }
 });
 </script>
