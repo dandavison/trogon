@@ -17,6 +17,7 @@ mod models;
 mod proxy;
 mod queries;
 mod species_images;
+mod utils;
 
 #[derive(StructOpt)]
 #[structopt(

@@ -1,8 +1,9 @@
 //! Load eBird API data into the database from JSON files on disk.
 
 use crate::db;
-use crate::ebird::{deserialize_json, get_species_file, read_to_string};
+use crate::ebird::get_species_file;
 use crate::models;
+use crate::utils::{deserialize_json, read_to_string};
 
 pub fn load_species() -> std::io::Result<i32> {
     let species: Vec<models::EbirdSpecies> =
