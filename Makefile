@@ -55,6 +55,9 @@ create-db-schema:
 load-ebird-species: build-backend
 	$(TROGON) --load-ebird-species
 
+fetch-species-images: build-backend
+	$(TROGON) --fetch-species-images
+
 delete-db:
 	@echo "echo 'drop database trogon' | $(PSQL)"
 

@@ -18,6 +18,18 @@ pub fn get_images(species: Vec<&str>, cached_only: bool) -> Vec<SpeciesImages> {
     }
 }
 
+pub fn fill_cache() {
+    let mut dbclient = db::get_client();
+    let rows = dbclient
+        .query(
+            "select sciname from ebird_species where sciname ~ '^[^/ ]+ [^/ ]+$'",
+            &[],
+        )
+        .unwrap();
+    let species: Vec<&str> = rows.iter().map(|row| row.get("sciname")).collect();
+    get_images_from_cache_or_scraper(species);
+}
+
 pub fn get_images_from_cache(species: Vec<&str>) -> Vec<SpeciesImages> {
     let keys2species: HashMap<String, &str> = species
         .into_iter()

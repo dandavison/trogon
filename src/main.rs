@@ -28,12 +28,17 @@ mod species_images;
 struct Opt {
     #[structopt(long)]
     load_ebird_species: bool,
+
+    #[structopt(long)]
+    fetch_species_images: bool,
 }
 
 fn main() -> std::io::Result<()> {
     let opt = Opt::from_args();
     if opt.load_ebird_species {
         std::process::exit(ebird::load::load_species()?)
+    } else if opt.fetch_species_images {
+        species_images::fill_cache();
     } else {
         rocket::ignite()
             .mount("/api", routes![api::ebird_species, api::species_images])
