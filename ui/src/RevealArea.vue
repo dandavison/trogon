@@ -10,17 +10,20 @@
 
     <b-dropdown v-if="settings.promptIncludesRecording && recording">
       <template #trigger="{ active }">
-        <b-button
-          label="Recordings"
-          icon-right="chevron-down"
-          icon-pack="fas"
-        />
+        <b-button icon-right="chevron-down" icon-pack="fas"
+          ><i class="fas fa-volume-up"></i
+        ></b-button>
       </template>
       <b-dropdown-item
-        v-for="rec in recordings.get(recording.sciName)"
+        v-for="rec in recordings.get(recording.speciesSci)"
         :key="rec.url"
       >
-        <recording-component :recording="rec" :preload="'none'" />
+        <ul>
+          <li>
+            <recording-player :recording="rec" :preload="'none'" />
+          </li>
+          <li>{{ rec.raw.loc }}, {{ rec.raw.cnt }}</li>
+        </ul>
       </b-dropdown-item>
     </b-dropdown>
 
