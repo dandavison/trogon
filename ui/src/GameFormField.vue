@@ -3,7 +3,7 @@
     <div class="level-item">
       <div class="field has-addons" style="width: 100%">
         <p class="control">
-          <b-button v-if="answer" @click="clear">
+          <b-button v-if="answer && answer != truth" @click="clear">
             <i class="fas fa-eraser" />
           </b-button>
         </p>
