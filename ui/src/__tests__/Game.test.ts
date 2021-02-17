@@ -12,8 +12,11 @@ describe("Game", () => {
   });
 });
 
+const fetchLocationData = jest.fn();
+
 function factory(): Wrapper<GameInstance> {
   return mount(Game, {
+    methods: { fetchLocationData },
     propsData: {
       locationRequest: { ebirdLocId: "L2697642" },
       settings: {}
