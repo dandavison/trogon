@@ -4,7 +4,10 @@
       <div class="p-1">
         <b-menu>
           <b-menu-list>
-            <b-menu-item label="Prompt" class="menu-item"></b-menu-item>
+            <b-menu-item
+              label="Prompt"
+              class="menu-item has-text-weight-semibold"
+            ></b-menu-item>
             <b-switch v-model="newSettings.promptIncludesImages">
               Images
             </b-switch>
@@ -12,10 +15,16 @@
               Audio
             </b-switch>
 
-            <b-menu-item label="Names" class="menu-item"></b-menu-item>
+            <b-menu-item
+              label="Names"
+              class="menu-item has-text-weight-semibold"
+            ></b-menu-item>
             <names-selector :settings="settings" />
 
-            <b-menu-item label="Recordings" class="menu-item"></b-menu-item>
+            <b-menu-item
+              label="Recordings"
+              class="menu-item has-text-weight-semibold"
+            ></b-menu-item>
             <b-switch v-model="newSettings.commonSpeciesOnly" class="p-1">
               common species only
             </b-switch>
@@ -37,7 +46,10 @@
               </section>
             </b-modal>
 
-            <b-menu-item label="Appearance" class="menu-item"></b-menu-item>
+            <b-menu-item
+              label="Appearance"
+              class="menu-item has-text-weight-semibold"
+            ></b-menu-item>
             <b-switch v-model="newSettings.useFieldModals">
               Full-screen dropdowns
             </b-switch>
