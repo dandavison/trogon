@@ -1,9 +1,9 @@
 #![feature(proc_macro_hygiene, decl_macro)]
-use std::path::PathBuf;
 
 #[macro_use]
 extern crate rocket;
 
+use rocket::response::content;
 use rocket::response::NamedFile;
 use rocket_contrib::serve::StaticFiles;
 use structopt::clap::AppSettings::{ColorAlways, ColoredHelp, DeriveDisplayOrder};
@@ -49,7 +49,7 @@ fn main() -> std::io::Result<()> {
     Ok(())
 }
 
-#[rocket::get("/<_path..>")]
-pub fn ui(_path: PathBuf) -> Option<NamedFile> {
-    NamedFile::open("ui/dist/index.html").ok()
+#[rocket::get("/")]
+pub fn ui() -> content::Html<Option<NamedFile>> {
+    content::Html(NamedFile::open("ui/dist/index.html").ok())
 }
