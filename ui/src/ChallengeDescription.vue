@@ -9,7 +9,6 @@
     </h1>
     <ul>
       <li>{{ locationSpecies.length }} species total</li>
-      <li>{{ challengeRecordings.length }} species in current challenge</li>
       <li>
         <div class="buttons">
           <b-button @click="isFamilyModalActive = true" class="light">
@@ -28,12 +27,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import {
-  ChallengeFamily,
-  EbirdHotspot,
-  EbirdSpecies,
-  Recording,
-} from "./types";
+import { ChallengeFamily, EbirdHotspot, EbirdSpecies } from "./types";
 import FamilySelector from "./FamilySelector.vue";
 
 export default Vue.extend({
@@ -42,7 +36,6 @@ export default Vue.extend({
     ebirdLocIds: Array as PropType<string[]>,
     ebirdHotspots: Array as PropType<EbirdHotspot[]>,
     locationSpecies: Array as PropType<EbirdSpecies[]>,
-    challengeRecordings: Array as PropType<Recording[]>,
     challengeFamilies: Map as PropType<Map<string, ChallengeFamily>>,
   },
   data() {

@@ -4,7 +4,6 @@
       :ebirdLocIds="ebirdLocIds"
       :ebirdHotspots="ebirdHotspots"
       :locationSpecies="locationSpecies"
-      :challengeRecordings="challengeRecordings"
       :challengeFamilies="challengeFamilies"
     />
 
@@ -50,7 +49,7 @@ import {
   fetchSpeciesImages,
   fetchEbirdHotspotsByLatLng,
 } from "./ebird";
-import { fetchAllRecordings, isSong } from "./xeno-canto";
+import { fetchRecordings, isSong } from "./xeno-canto";
 import { isDefaultSelectedFamily } from "./birds";
 import RecordingPlayer from "./RecordingPlayer.vue";
 import {
@@ -100,11 +99,7 @@ export default Vue.extend({
       selectedFamilies: new Set([]) as Set<string>,
       speciesImages: [] as SpeciesImages[],
       imageURLMaps: makeImageURLMaps([], []),
-      recordings: new Map([]) as Map<string, Recording[]>, // sciName
-      challengeRecordings: [] as Recording[],
-      challengeRecordingsIterator: makeRecordingsIterator(
-        []
-      ) as Iterator<Recording>,
+      challengeRecordingsIterator: makeEmptyRecordingsIterator() as AsyncGenerator<Recording>,
       recording: null as Recording | null,
       haveLocationData: false,
       challengeActive: false,
@@ -142,7 +137,7 @@ export default Vue.extend({
         .filter(([_, { selected }]) => selected)
         .map(([family, _]) => family)
     );
-    this.setChallengeRecordings();
+    this.challengeRecordingsIterator = this.makeChallengeRecordingsIterator();
   },
 
   mounted: function () {
@@ -153,21 +148,6 @@ export default Vue.extend({
     );
   },
 
-  watch: {
-    settings: {
-      deep: true,
-      handler: function (_newVal: Settings) {
-        this.setChallengeRecordings();
-      },
-    },
-    challengeFamilies: {
-      deep: true,
-      handler: function (_newVal: Map<string, ChallengeFamily>) {
-        this.setChallengeRecordings();
-      },
-    },
-  },
-
   computed: {
     isLoading(): Boolean {
       return !this.haveLocationData;
@@ -175,15 +155,6 @@ export default Vue.extend({
   },
 
   methods: {
-    setChallengeRecordings(): void {
-      this.challengeRecordings = this.makeChallengeRecordings(
-        this.locationSpecies
-      );
-      this.challengeRecordingsIterator = makeRecordingsIterator(
-        this.challengeRecordings
-      );
-    },
-
     handleFamilySelection(family: string, selected: boolean): void {
       var challengeFamily = this.challengeFamilies.get(family);
       if (challengeFamily) {
@@ -217,34 +188,28 @@ export default Vue.extend({
           fetchRecentObservations(this.ebirdLocIds),
         ]);
         // In parallel: given species list, fetch recording and image URLs
-        [this.recordings, this.speciesImages] = await Promise.all([
-          fetchAllRecordings(this.locationSpecies, this.ebirdHotspots),
-          fetchSpeciesImages(this.locationSpecies),
-        ]);
+        this.speciesImages = await fetchSpeciesImages(this.locationSpecies);
         console.log(`Fetched data for ${this.ebirdLocIds.length} locIds:`);
         console.log(`hotspots: ${this.ebirdHotspots.length}`);
         console.log(`species: ${this.locationSpecies.length}`);
         console.log(`images: ${this.speciesImages.length}`);
-        console.log(`recordings: ${this.recordings.size}`);
         console.log(`recent observations: ${this.recentObservations.length}`);
       } catch (err) {
         console.log("Error fetching location species and recordings: ", err);
       }
     },
 
-    makeChallengeRecordings: function (species: EbirdSpecies[]): Recording[] {
-      var challengeRecordings = [];
-      for (let sp of _.shuffle(species)) {
-        const recordings = this.recordings.get(sp.sciName) || [];
+    makeChallengeRecordingsIterator: async function* (): AsyncGenerator<Recording> {
+      for (let sp of _.shuffle(this.locationSpecies)) {
+        const recordings = await fetchRecordings(sp, this.ebirdHotspots);
         // TODO: type
         for (let recording of this.makeSpeciesRecordingsIterator(
           recordings
         ) as any) {
-          challengeRecordings.push(recording);
+          yield recording;
           break;
         }
       }
-      return challengeRecordings;
     },
 
     makeSpeciesRecordingsIterator: function* (
@@ -276,10 +241,10 @@ export default Vue.extend({
       return true;
     },
 
-    setNextRecording(): void {
+    async setNextRecording(): Promise<void> {
       (this.$refs.gameForm as any)?.clear();
       this.image = "";
-      const rec = this.challengeRecordingsIterator.next();
+      const rec = await this.challengeRecordingsIterator.next();
       if (!rec.done) {
         this.recording = rec.value;
         let images = this.imageURLMaps.speciesSciName2images.get(
@@ -369,9 +334,5 @@ function makeImageURLMaps(
   };
 }
 
-function* makeRecordingsIterator(recordings: Recording[]): Iterator<Recording> {
-  for (let rec of recordings) {
-    yield rec;
-  }
-}
+async function* makeEmptyRecordingsIterator(): AsyncGenerator<Recording> {}
 </script>
