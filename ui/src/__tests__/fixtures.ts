@@ -62,7 +62,8 @@ export const recording: Recording = {
     en: "fake-sp",
     type: "fake-type",
     loc: "fake-loc",
-    cnt: "fake-cnt"
+    cnt: "fake-cnt",
+    also: []
   }
 };
 

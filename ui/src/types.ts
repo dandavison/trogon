@@ -70,6 +70,7 @@ export interface XenoCantoRecording {
   type: string;
   loc: string;
   cnt: string;
+  also: string[];
 }
 
 export interface Answer {
