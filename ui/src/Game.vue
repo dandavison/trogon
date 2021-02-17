@@ -30,8 +30,8 @@
     <reveal-area
       v-if="
         $refs.gameForm &&
-        ($refs.gameForm.isSpeciesEnCorrect() ||
-          $refs.gameForm.isSpeciesSciCorrect())
+        ($refs.gameForm.speciesEnField.isCorrect() ||
+          $refs.gameForm.speciesSciField.isCorrect())
       "
       :image="image"
       :recording="recording"
