@@ -2,6 +2,7 @@ TROGON=./target/release/trogon
 PSQL=psql -v ON_ERROR_STOP=1
 WITH_ENV_DEV=env $$(xargs < .env)
 WITH_ENV_PROD=env $$(xargs < .env.prod)
+SHELL = bash -u
 
 build: build-ui build-backend
 
