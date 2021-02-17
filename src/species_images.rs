@@ -116,8 +116,8 @@ fn _scrape_wikipedia_image(html_url: &str) -> String {
         }
     };
     let mut url = img.value().attr("src").unwrap().to_string();
-    if !url.starts_with("http") {
-        url = format!("http:{}", url);
+    if url.starts_with("//") {
+        url = format!("https:{}", url);
     }
     println!("scraped image: {}", &url);
     url
