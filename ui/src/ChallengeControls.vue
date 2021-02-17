@@ -40,11 +40,15 @@
         </nav>
       </li>
       <li>{{ recording.raw.loc }}, {{ recording.raw.cnt }}</li>
-      <li v-if="recording.raw.also.length > 0">
-        Also:
-        <ul>
-          <li v-for="sp in recording.raw.also" :key="sp">{{ sp }}</li>
-        </ul>
+      <li v-if="recording.raw.also.filter(Boolean).length > 0">
+        <small>
+          Also in recording:
+          <ul>
+            <li v-for="sp in recording.raw.also" :key="sp">
+              <i>{{ sp }}</i>
+            </li>
+          </ul>
+        </small>
       </li>
     </ul>
   </section>
