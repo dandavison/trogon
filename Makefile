@@ -46,12 +46,14 @@ lint:
 format:
 	cd ui && zsh -c 'npx prettier --write * types/**/* src/**/*'
 
-db: build-backend
-	$(PSQL) "$$TROGON_DB" < db.sql > /dev/null
-	$(TROGON) --load-ebird-species
-
 create-db:
 	echo "create database trogon" | $(PSQL)
+
+create-db-schema:
+	$(PSQL) "$$TROGON_DB" < db.sql > /dev/null
+
+load-ebird-species: build-backend
+	$(TROGON) --load-ebird-species
 
 delete-db:
 	@echo "echo 'drop database trogon' | $(PSQL)"
