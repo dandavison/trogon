@@ -122,6 +122,11 @@ export default Vue.extend({
     },
 
     isCorrect(): boolean {
+      debug([
+        `${this.id}.isCorrect:`,
+        transformTaxonName(this.truth),
+        transformTaxonName(this.answer),
+      ]);
       return transformTaxonName(this.truth) === transformTaxonName(this.answer);
     },
 

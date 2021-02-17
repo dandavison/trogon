@@ -28,11 +28,7 @@
     />
 
     <reveal-area
-      v-if="
-        $refs.gameForm &&
-        ($refs.gameForm.speciesEnField.isCorrect() ||
-          $refs.gameForm.speciesSciField.isCorrect())
-      "
+      v-if="answerIsCorrectSpecies"
       :image="image"
       :recording="recording"
       :recordings="recordings"
@@ -69,6 +65,7 @@ import {
   XenoCantoRecording,
 } from "./types";
 import GameForm from "./GameForm.vue";
+
 import eventBus from "./event-bus";
 import RevealArea from "./RevealArea.vue";
 import ChallengeDescription from "./ChallengeDescription.vue";
@@ -172,6 +169,27 @@ export default Vue.extend({
   computed: {
     isLoading(): Boolean {
       return !this.haveLocationData;
+    },
+
+    answerIsCorrectSpecies(): boolean {
+      const gameForm = this.$refs.gameForm as GameFormInstance | null;
+      if (gameForm) {
+        debug(
+          [
+            `answerIsCorrectSpecies:`,
+            `${gameForm.speciesEnField.isCorrect()}`,
+            `${gameForm.speciesSciField.isCorrect()}`,
+          ],
+          true
+        );
+        return (
+          gameForm.speciesEnField.isCorrect() ||
+          gameForm.speciesSciField.isCorrect()
+        );
+      } else {
+        debug(["answerIsCorrectSpecies: (GameForm not available)"], true);
+        return false;
+      }
     },
   },
 
