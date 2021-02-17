@@ -31,6 +31,7 @@
       v-if="answerIsCorrectSpecies"
       :image="image"
       :recording="recording"
+      :recordings="otherRecordings"
       :settings="settings"
     />
   </section>
@@ -98,8 +99,11 @@ export default Vue.extend({
       selectedFamilies: new Set([]) as Set<string>,
       speciesImages: [] as SpeciesImages[],
       imageURLMaps: makeImageURLMaps([], []),
-      challengeRecordingsIterator: makeEmptyRecordingsIterator() as AsyncGenerator<Recording>,
+      challengeRecordingsIterator: makeEmptyRecordingsIterator() as AsyncGenerator<
+        [Recording, Recording[]]
+      >,
       recording: null as Recording | null,
+      otherRecordings: [] as Recording[],
       haveLocationData: false,
       challengeActive: false,
       image: "",
@@ -198,14 +202,16 @@ export default Vue.extend({
       }
     },
 
-    makeChallengeRecordingsIterator: async function* (): AsyncGenerator<Recording> {
+    makeChallengeRecordingsIterator: async function* (): AsyncGenerator<
+      [Recording, Recording[]]
+    > {
       for (let sp of _.shuffle(this.locationSpecies)) {
         const recordings = await fetchRecordings(sp, this.ebirdHotspots);
         // TODO: type
         for (let recording of this.makeSpeciesRecordingsIterator(
           recordings
         ) as any) {
-          yield recording;
+          yield [recording, recordings];
           break;
         }
       }
@@ -245,7 +251,7 @@ export default Vue.extend({
       this.image = "";
       const rec = await this.challengeRecordingsIterator.next();
       if (!rec.done) {
-        this.recording = rec.value;
+        [this.recording, this.otherRecordings] = rec.value;
         let images = this.imageURLMaps.speciesSciName2images.get(
           this.recording.speciesSci
         );
@@ -333,5 +339,7 @@ function makeImageURLMaps(
   };
 }
 
-async function* makeEmptyRecordingsIterator(): AsyncGenerator<Recording> {}
+async function* makeEmptyRecordingsIterator(): AsyncGenerator<
+  [Recording, Recording[]]
+> {}
 </script>
