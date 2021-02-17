@@ -277,6 +277,7 @@ export default Vue.extend({
       if (genus) {
         this.genusField.answer = genus;
       }
+      this.$emit("answer:species-correct", this.speciesSciField.isCorrect());
     },
 
     handleSpeciesEn(value: string): void {
@@ -285,6 +286,7 @@ export default Vue.extend({
       // Autofill speciesSci
       const speciesSci = this.speciesEn2Sci.get(value) || "";
       this.speciesSciField.answer = speciesSci;
+      this.$emit("answer:species-correct", this.speciesEnField.isCorrect());
     },
 
     getSpeciesSciImageURLs(answer: string): string[] {

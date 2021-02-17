@@ -25,6 +25,7 @@
       :image="image"
       :imageURLMaps="imageURLMaps"
       :settings="settings"
+      @answer:species-correct="(value) => (answerIsCorrectSpecies = value)"
     />
 
     <reveal-area
@@ -108,6 +109,7 @@ export default Vue.extend({
       haveLocationData: false,
       challengeActive: false,
       image: "",
+      answerIsCorrectSpecies: false,
     };
   },
 
@@ -169,27 +171,6 @@ export default Vue.extend({
   computed: {
     isLoading(): Boolean {
       return !this.haveLocationData;
-    },
-
-    answerIsCorrectSpecies(): boolean {
-      const gameForm = this.$refs.gameForm as GameFormInstance | null;
-      if (gameForm) {
-        debug(
-          [
-            `answerIsCorrectSpecies:`,
-            `${gameForm.speciesEnField.isCorrect()}`,
-            `${gameForm.speciesSciField.isCorrect()}`,
-          ],
-          true
-        );
-        return (
-          gameForm.speciesEnField.isCorrect() ||
-          gameForm.speciesSciField.isCorrect()
-        );
-      } else {
-        debug(["answerIsCorrectSpecies: (GameForm not available)"], true);
-        return false;
-      }
     },
   },
 
