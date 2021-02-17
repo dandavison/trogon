@@ -8,38 +8,20 @@
       }}
     </h1>
     <ul>
-      <li>{{ locationSpecies.length }} species total</li>
-      <li>
-        <div class="buttons">
-          <b-button @click="isFamilyModalActive = true" class="light">
-            <i class="fas fa-cog"></i> Families
-          </b-button>
-        </div>
-        <b-modal v-model="isFamilyModalActive" full-screen>
-          <section class="section">
-            <family-selector :challengeFamilies="challengeFamilies" />
-          </section>
-        </b-modal>
-      </li>
+      <li>{{ locationSpecies.length }} species</li>
     </ul>
   </section>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { ChallengeFamily, EbirdHotspot, EbirdSpecies } from "./types";
-import FamilySelector from "./FamilySelector.vue";
+import { EbirdHotspot, EbirdSpecies } from "./types";
 
 export default Vue.extend({
-  components: { FamilySelector },
   props: {
     ebirdLocIds: Array as PropType<string[]>,
     ebirdHotspots: Array as PropType<EbirdHotspot[]>,
     locationSpecies: Array as PropType<EbirdSpecies[]>,
-    challengeFamilies: Map as PropType<Map<string, ChallengeFamily>>,
-  },
-  data() {
-    return { isFamilyModalActive: false };
   },
 });
 </script>

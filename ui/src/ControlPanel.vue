@@ -16,10 +16,26 @@
             <names-selector :settings="settings" />
 
             <b-menu-item label="Recordings" class="menu-item"></b-menu-item>
-            <b-switch v-model="newSettings.commonSpeciesOnly">
+            <b-switch v-model="newSettings.commonSpeciesOnly" class="p-1">
               common species only
             </b-switch>
-            <b-switch v-model="newSettings.songsOnly">Songs only</b-switch>
+            <b-switch v-model="newSettings.songsOnly" class="p-1">
+              Songs only
+            </b-switch>
+
+            <div class="level p-1">
+              <div class="level-left">
+                <b-button @click="isFamilyModalActive = true" class="light">
+                  <i class="fas fa-dna"></i>
+                </b-button>
+                <span class="pl-2">Select Families</span>
+              </div>
+            </div>
+            <b-modal v-model="isFamilyModalActive" full-screen>
+              <section class="section">
+                <family-selector :challengeFamilies="challengeFamilies" />
+              </section>
+            </b-modal>
 
             <b-menu-item label="Appearance" class="menu-item"></b-menu-item>
             <b-switch v-model="newSettings.useFieldModals">
@@ -36,12 +52,16 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import eventBus from "./event-bus";
+import FamilySelector from "./FamilySelector.vue";
 import NamesSelector from "./NamesSelector.vue";
-import { Settings } from "./types";
+import { ChallengeFamily, Settings } from "./types";
 
 export default Vue.extend({
-  components: { NamesSelector },
-  props: { settings: Object as PropType<Settings> },
+  components: { FamilySelector, NamesSelector },
+  props: {
+    challengeFamilies: Map as PropType<Map<string, ChallengeFamily>>,
+    settings: Object as PropType<Settings>,
+  },
   data() {
     return {
       newSettings: Object.assign({}, this.settings) as Settings,
@@ -52,6 +72,7 @@ export default Vue.extend({
         right: true,
       },
       open: false,
+      isFamilyModalActive: false,
     };
   },
 

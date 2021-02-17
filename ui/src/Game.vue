@@ -4,7 +4,6 @@
       :ebirdLocIds="ebirdLocIds"
       :ebirdHotspots="ebirdHotspots"
       :locationSpecies="locationSpecies"
-      :challengeFamilies="challengeFamilies"
     />
 
     <b-loading v-model="isLoading"></b-loading>
@@ -129,6 +128,7 @@ export default Vue.extend({
         .filter(Boolean) as any
     );
     this.challengeFamilies = makeChallengeFamilies(this.locationSpecies);
+    eventBus.$emit("set:challenge-families", this.challengeFamilies);
     this.selectedFamilies = new Set(
       Array.from(this.challengeFamilies.entries())
         .filter(([_, { selected }]) => selected)

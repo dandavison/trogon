@@ -1,6 +1,10 @@
 <template>
   <section class="section">
-    <control-panel :open="controlPanelOpen" :settings="settings" />
+    <control-panel
+      :open="controlPanelOpen"
+      :challengeFamilies="challengeFamilies"
+      :settings="settings"
+    />
     <game :settings="settings" :locationRequest="locationRequest" />
   </section>
 </template>
@@ -11,7 +15,12 @@ import Vue, { PropType } from "vue";
 import eventBus from "./event-bus";
 import ControlPanel from "./ControlPanel.vue";
 import Game from "./Game.vue";
-import { LocationRequest, NamesLanguage, Settings } from "./types";
+import {
+  ChallengeFamily,
+  LocationRequest,
+  NamesLanguage,
+  Settings,
+} from "./types";
 
 export default Vue.extend({
   name: "GameRoot",
@@ -29,6 +38,7 @@ export default Vue.extend({
         disableNetworkRequests: false,
       } as Settings,
       controlPanelOpen: false,
+      challengeFamilies: new Map() as Map<string, ChallengeFamily>,
     };
   },
   mounted: function (): void {
@@ -53,6 +63,12 @@ export default Vue.extend({
     eventBus.$on("settings:change:useFieldModals", (newVal: boolean) => {
       this.settings.useFieldModals = newVal;
     });
+    eventBus.$on(
+      "set:challenge-families",
+      (newVal: Map<string, ChallengeFamily>) => {
+        this.challengeFamilies = newVal;
+      }
+    );
   },
 });
 </script>
