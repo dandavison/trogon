@@ -2,6 +2,11 @@
   <div class="level" v-if="shouldShow" :id="id">
     <div class="level-item">
       <div class="field has-addons" style="width: 100%">
+        <p class="control">
+          <b-button v-if="answer" @click="clear">
+            <i class="fas fa-eraser" />
+          </b-button>
+        </p>
         <p class="control" style="width: 100%">
           <b-autocomplete
             type="text"
@@ -36,11 +41,6 @@
               </div>
             </template>
           </b-autocomplete>
-        </p>
-        <p class="control">
-          <b-button v-if="answer" @click="clear">
-            <i class="fas fa-eraser" />
-          </b-button>
         </p>
         <p class="control">
           <b-button v-if="answer != truth" @click="reveal">
