@@ -26,8 +26,6 @@
         </ul>
       </b-dropdown-item>
     </b-dropdown>
-
-    <p v-if="settings.promptIncludesRecording && recording"></p>
   </section>
 </template>
 
