@@ -13,6 +13,7 @@
       :image="image"
       :recording="recording"
       :setNextRecording="setNextRecording"
+      :taxonMaps="taxonMaps"
       :settings="settings"
     />
 

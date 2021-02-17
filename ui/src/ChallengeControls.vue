@@ -43,11 +43,17 @@
       <li v-if="recording.raw.also.filter(Boolean).length > 0">
         <small>
           Also in recording:
-          <ul>
-            <li v-for="sp in recording.raw.also" :key="sp">
-              <i>{{ sp }}</i>
-            </li>
-          </ul>
+          <span v-for="(sp, index) in recording.raw.also" :key="sp">
+            <i v-if="settings.names === NamesLanguage.Scientific">{{ sp }}</i>
+            <span v-else>
+              {{ taxonMaps.speciesSci2En.get(sp) || "" }}
+              <span v-if="settings.names === NamesLanguage.Both">
+                (<i>{{ sp }}</i
+                >)</span
+              >
+            </span>
+            <span v-if="index + 1 < recording.raw.also.length">, </span>
+          </span>
         </small>
       </li>
     </ul>
@@ -56,7 +62,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { Recording, Settings } from "./types";
+import { NamesLanguage, Recording, Settings, TaxonMaps } from "./types";
 
 import RecordingPlayer from "./RecordingPlayer.vue";
 
@@ -66,7 +72,11 @@ export default Vue.extend({
     image: String,
     recording: Object as PropType<Recording | null>,
     setNextRecording: Function,
+    taxonMaps: Object as PropType<TaxonMaps>,
     settings: Object as PropType<Settings>,
+  },
+  data() {
+    return { NamesLanguage };
   },
 });
 </script>
