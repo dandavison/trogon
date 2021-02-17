@@ -23,6 +23,7 @@
       :recording="recording"
       :image="image"
       :imageURLMaps="imageURLMaps"
+      :taxonMaps="taxonMaps"
       :settings="settings"
       @answer:species-correct="(value) => (answerIsCorrectSpecies = value)"
     />
@@ -58,6 +59,7 @@ import {
   EbirdHotspot,
   EbirdObservation,
   EbirdSpecies,
+  TaxonMaps,
   ImageURLMaps,
   Recording,
   Settings,
@@ -91,13 +93,12 @@ export default Vue.extend({
       ebirdHotspots: [] as EbirdHotspot[],
       locationSpecies: [] as EbirdSpecies[],
       speciesCode2SciName: new Map([]) as Map<string, string>,
-      species2familySci: new Map([]) as Map<string, string>,
-      species2familyEn: new Map([]) as Map<string, string>,
       commonSpecies: new Set([]) as Set<string>,
       recentObservations: [] as EbirdObservation[],
       challengeFamilies: new Map([]) as Map<string, ChallengeFamily>,
       selectedFamilies: new Set([]) as Set<string>,
       speciesImages: [] as SpeciesImages[],
+      taxonMaps: makeTaxonMaps([]),
       imageURLMaps: makeImageURLMaps([], []),
       challengeRecordingsIterator: makeEmptyRecordingsIterator() as AsyncGenerator<
         [Recording, Recording[]]
@@ -120,15 +121,7 @@ export default Vue.extend({
       this.speciesImages,
       this.locationSpecies
     );
-    this.speciesCode2SciName = new Map(
-      this.locationSpecies.map((sp) => [sp.speciesCode, sp.sciName])
-    );
-    this.species2familySci = new Map(
-      this.locationSpecies.map((sp) => [sp.sciName, sp.familySciName])
-    );
-    this.species2familyEn = new Map(
-      this.locationSpecies.map((sp) => [sp.sciName, sp.familyComName])
-    );
+    this.taxonMaps = makeTaxonMaps(this.locationSpecies);
     this.commonSpecies = new Set(
       this.recentObservations
         .map((obs) => this.speciesCode2SciName.get(obs.speciesCode))
@@ -239,7 +232,9 @@ export default Vue.extend({
         return false;
       }
       if (
-        !this.selectedFamilies.has(this.species2familyEn.get(species) || "")
+        !this.selectedFamilies.has(
+          this.taxonMaps.species2familyEn.get(species) || ""
+        )
       ) {
         return false;
       }
@@ -288,6 +283,43 @@ function makeChallengeFamilies(
       ]
     )
   );
+}
+
+export function makeTaxonMaps(species: EbirdSpecies[]): TaxonMaps {
+  const speciesCode2SciName = new Map(
+    species.map((sp) => [sp.speciesCode, sp.sciName])
+  );
+  const species2familySci = new Map(
+    species.map((sp) => [sp.sciName, sp.familySciName])
+  );
+  const species2familyEn = new Map(
+    species.map((sp) => [sp.sciName, sp.familyComName])
+  );
+  const familyEn2Sci = new Map(
+    species.map((sp) => [sp.familyComName, sp.familySciName])
+  );
+  const familySci2En = new Map(
+    species.map((sp) => [sp.familySciName, sp.familyComName])
+  );
+  const genus2familySci = new Map(
+    species.map((sp) => [ebirdSpecies.getGenus(sp), sp.familySciName])
+  );
+  const speciesSci2genus = new Map(
+    species.map((sp) => [sp.sciName, ebirdSpecies.getGenus(sp)])
+  );
+  const speciesSci2En = new Map(species.map((sp) => [sp.sciName, sp.comName]));
+  const speciesEn2Sci = new Map(species.map((sp) => [sp.comName, sp.sciName]));
+  return {
+    speciesCode2SciName,
+    species2familySci,
+    species2familyEn,
+    familyEn2Sci,
+    familySci2En,
+    genus2familySci,
+    speciesSci2genus,
+    speciesSci2En,
+    speciesEn2Sci,
+  };
 }
 
 function makeImageURLMaps(

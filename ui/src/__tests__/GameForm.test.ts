@@ -2,6 +2,7 @@ import { mount } from "@vue/test-utils";
 
 import GameForm from "../GameForm.vue";
 type GameFormInstance = InstanceType<typeof GameForm>;
+import { makeTaxonMaps } from "../Game.vue";
 
 import { ebirdSpecies as ES } from "../ebird";
 import {
@@ -224,6 +225,7 @@ function factory() {
       locationSpecies,
       recording,
       image: "fake-image-url",
+      taxonMaps: makeTaxonMaps(locationSpecies),
       imageURLMaps,
       settings: {}
     }

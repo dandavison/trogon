@@ -115,6 +115,7 @@ import {
   NamesLanguage,
   Recording,
   Settings,
+  TaxonMaps,
 } from "./types";
 import GameFormField from "./GameFormField.vue";
 import GameFormFieldContainer from "./GameFormFieldContainer.vue";
@@ -128,36 +129,10 @@ export default Vue.extend({
     recording: Object as PropType<Recording | null>,
     image: String as PropType<string | null>,
     imageURLMaps: Object as PropType<ImageURLMaps>,
+    taxonMaps: Object as PropType<TaxonMaps>,
     settings: Object as PropType<Settings>,
   },
   data() {
-    const familyEn2Sci = new Map(
-      this.locationSpecies.map((sp) => [sp.familyComName, sp.familySciName])
-    );
-
-    const familySci2En = new Map(
-      this.locationSpecies.map((sp) => [sp.familySciName, sp.familyComName])
-    );
-
-    const genus2familySci = new Map(
-      this.locationSpecies.map((sp) => [
-        ebirdSpecies.getGenus(sp),
-        sp.familySciName,
-      ])
-    );
-
-    const speciesSci2genus = new Map(
-      this.locationSpecies.map((sp) => [sp.sciName, ebirdSpecies.getGenus(sp)])
-    );
-
-    const speciesSci2En = new Map(
-      this.locationSpecies.map((sp) => [sp.sciName, sp.comName])
-    );
-
-    const speciesEn2Sci = new Map(
-      this.locationSpecies.map((sp) => [sp.comName, sp.sciName])
-    );
-
     return {
       answer: {
         familySci: "",
@@ -166,12 +141,6 @@ export default Vue.extend({
         speciesSci: "",
         speciesEn: "",
       } as Answer,
-      familyEn2Sci,
-      familySci2En,
-      genus2familySci,
-      speciesSci2genus,
-      speciesSci2En,
-      speciesEn2Sci,
       isModal: {
         familySci: false,
         familyEn: false,
@@ -241,7 +210,7 @@ export default Vue.extend({
     handleFamilySci(value: string): void {
       debug(["handleFamilySci:", JSON.stringify(value)]);
       this.answer.familySci = value;
-      const familyEn = this.familySci2En.get(value) || "";
+      const familyEn = this.taxonMaps.familySci2En.get(value) || "";
       this.familyEnField.answer = familyEn;
       if (!familyEn) {
         this.genusField.answer = "";
@@ -251,14 +220,14 @@ export default Vue.extend({
     handleFamilyEn(value: string): void {
       debug(["handleFamilyEn:", JSON.stringify(value)]);
       this.answer.familyEn = value;
-      const familySci = this.familyEn2Sci.get(value) || "";
+      const familySci = this.taxonMaps.familyEn2Sci.get(value) || "";
       this.familySciField.answer = familySci;
     },
 
     handleGenus(value: string): void {
       debug(["handleGenus:", JSON.stringify(value)]);
       this.answer.genus = value;
-      const familySci = this.genus2familySci.get(value);
+      const familySci = this.taxonMaps.genus2familySci.get(value);
       if (familySci) {
         this.familySciField.answer = familySci;
       } else {
@@ -270,10 +239,10 @@ export default Vue.extend({
       debug(["handleSpeciesSci:", JSON.stringify(value)]);
       this.answer.speciesSci = value;
       // Autofill speciesEn
-      const speciesEn = this.speciesSci2En.get(value) || "";
+      const speciesEn = this.taxonMaps.speciesSci2En.get(value) || "";
       (this.$refs.speciesEnField as any).answer = speciesEn;
       // Autofill genus if the species is valid
-      const genus = this.speciesSci2genus.get(value);
+      const genus = this.taxonMaps.speciesSci2genus.get(value);
       if (genus) {
         this.genusField.answer = genus;
       }
@@ -284,7 +253,7 @@ export default Vue.extend({
       debug(["handleSpeciesEn:", JSON.stringify(value)]);
       this.answer.speciesEn = value;
       // Autofill speciesSci
-      const speciesSci = this.speciesEn2Sci.get(value) || "";
+      const speciesSci = this.taxonMaps.speciesEn2Sci.get(value) || "";
       this.speciesSciField.answer = speciesSci;
       this.$emit("answer:species-correct", this.speciesEnField.isCorrect());
     },
@@ -304,7 +273,7 @@ export default Vue.extend({
         return [];
       }
       return this._getImageURLs(
-        this.speciesEn2Sci.get(answer) || "",
+        this.taxonMaps.speciesEn2Sci.get(answer) || "",
         this.imageURLMaps.speciesSciName2images
       );
     },

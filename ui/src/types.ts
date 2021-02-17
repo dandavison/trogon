@@ -87,6 +87,18 @@ export interface SpeciesImages {
   urls: string[];
 }
 
+export interface TaxonMaps {
+  speciesCode2SciName: Map<string, string>;
+  species2familySci: Map<string, string>;
+  species2familyEn: Map<string, string>;
+  familyEn2Sci: Map<string, string>;
+  familySci2En: Map<string, string>;
+  genus2familySci: Map<string, string>;
+  speciesSci2genus: Map<string, string>;
+  speciesSci2En: Map<string, string>;
+  speciesEn2Sci: Map<string, string>;
+}
+
 export interface ImageURLMaps {
   speciesSciName2images: Map<string, Set<string>>;
   genus2images: Map<string, Set<string>>;
