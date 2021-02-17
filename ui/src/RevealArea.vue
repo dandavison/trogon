@@ -7,25 +7,6 @@
     </p>
 
     <img v-if="image && !settings.promptIncludesImages" :src="image" />
-
-    <b-dropdown v-if="settings.promptIncludesRecording && recording">
-      <template #trigger="{ active }">
-        <b-button icon-right="chevron-down" icon-pack="fas"
-          ><i class="fas fa-volume-up"></i
-        ></b-button>
-      </template>
-      <b-dropdown-item
-        v-for="rec in recordings.get(recording.speciesSci)"
-        :key="rec.url"
-      >
-        <ul>
-          <li>
-            <recording-player :recording="rec" :preload="'none'" />
-          </li>
-          <li>{{ rec.raw.loc }}, {{ rec.raw.cnt }}</li>
-        </ul>
-      </b-dropdown-item>
-    </b-dropdown>
   </section>
 </template>
 
@@ -39,7 +20,6 @@ export default Vue.extend({
   props: {
     image: String,
     recording: Object as PropType<Recording>,
-    recordings: Map as PropType<Map<string, Recording[]>>,
     settings: Object as PropType<Settings>,
   },
   methods: {

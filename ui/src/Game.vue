@@ -31,7 +31,6 @@
       v-if="answerIsCorrectSpecies"
       :image="image"
       :recording="recording"
-      :recordings="recordings"
       :settings="settings"
     />
   </section>
