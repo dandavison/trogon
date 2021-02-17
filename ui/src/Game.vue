@@ -115,7 +115,9 @@ export default Vue.extend({
   },
 
   created: async function () {
-    await this.fetchLocationData();
+    if (!this.settings.disableNetworkRequests) {
+      await this.fetchLocationData();
+    }
     this.haveLocationData = true;
     this.imageURLMaps = makeImageURLMaps(
       this.speciesImages,

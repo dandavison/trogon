@@ -7,6 +7,7 @@ export interface Settings {
   promptIncludesImages: boolean;
   promptIncludesRecording: boolean;
   useFieldModals: boolean;
+  disableNetworkRequests: boolean;
 }
 
 export enum NamesLanguage {

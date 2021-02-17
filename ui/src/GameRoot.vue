@@ -26,6 +26,7 @@ export default Vue.extend({
         commonSpeciesOnly: false,
         songsOnly: true,
         useFieldModals: false,
+        disableNetworkRequests: false,
       } as Settings,
       controlPanelOpen: false,
     };

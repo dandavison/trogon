@@ -16,7 +16,7 @@ function factory(): Wrapper<GameInstance> {
   return mount(Game, {
     propsData: {
       locationRequest: { ebirdLocId: "L2697642" },
-      settings: {}
+      settings: { disableNetworkRequests: true }
     }
   });
 }
