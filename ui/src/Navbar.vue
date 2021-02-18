@@ -16,9 +16,7 @@
         </router-link>
       </b-navbar-item>
 
-      <b-navbar-item href="#" @click="showHelp">
-        Help
-      </b-navbar-item>
+      <b-navbar-item href="#" @click="showHelp"> Help </b-navbar-item>
     </template>
 
     <template slot="end">
@@ -45,7 +43,7 @@ export default Vue.extend({
 
     showHelp(): void {
       eventBus.$emit("show:help");
-    }
-  }
+    },
+  },
 });
 </script>
