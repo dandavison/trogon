@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
+import { isMobile } from "mobile-device-detect";
 
 import eventBus from "./event-bus";
 import ControlPanel from "./ControlPanel.vue";
@@ -34,7 +35,7 @@ export default Vue.extend({
         promptIncludesRecording: true,
         commonSpeciesOnly: false,
         songsOnly: true,
-        useFieldModals: false,
+        useFieldModals: isMobile,
         disableNetworkRequests: false,
       } as Settings,
       controlPanelOpen: false,
