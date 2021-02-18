@@ -3,7 +3,10 @@
     <div class="level-item">
       <div class="field has-addons" style="width: 100%">
         <p class="control">
-          <b-button v-if="answer && answer != truth" @click="clear">
+          <b-button
+            v-if="answer && answer != truth && showInputButtons"
+            @click="clear"
+          >
             <i class="fas fa-eraser" />
           </b-button>
         </p>
@@ -15,8 +18,9 @@
             :placeholder="label"
             :data="filteredCandidates"
             :open-on-focus="true"
-            @focus="$emit('focus')"
+            @focus="handleFocus"
             @select="handleSelect"
+            @blur="handleBlur"
             dropdown-position="bottom"
             max-height="100vh"
             autocomplete="off"
@@ -43,7 +47,7 @@
           </b-autocomplete>
         </p>
         <p class="control">
-          <b-button v-if="answer != truth" @click="reveal">
+          <b-button v-if="answer != truth && showInputButtons" @click="reveal">
             <i class="fas fa-eye" />
           </b-button>
         </p>
@@ -74,6 +78,7 @@ export default Vue.extend({
   data() {
     return {
       answer: this.initial,
+      showInputButtons: true,
     };
   },
   computed: {
@@ -108,11 +113,21 @@ export default Vue.extend({
       this.answer = this.truth;
     },
 
+    handleFocus() {
+      this.showInputButtons = false;
+      this.$emit("focus");
+    },
+
+    handleBlur() {
+      this.showInputButtons = true;
+    },
+
     handleSelect(answer: string) {
       debug([
         `GameFormField(${this.id}).handleSelect:`,
         JSON.stringify(answer),
       ]);
+      this.showInputButtons = true;
       if (answer) {
         this.answer = answer;
         this.handler(this.answer);
