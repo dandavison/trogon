@@ -21,29 +21,16 @@
             spellcheck="false"
           >
             <template slot-scope="props">
-              <div v-if="isMobile" class="mt-4">
-                <b>{{ props.option }}</b>
-              </div>
-              <div class="level">
-                <div v-if="!isMobile" class="level-left">
-                  <div
-                    class="level-item has-text-left ml-2"
-                    style="width: 220px"
-                  >
-                    <b>{{ props.option }}</b>
-                  </div>
-                </div>
-                <div class="level-right">
-                  <div class="level-item">
-                    <img
-                      v-for="url in getImageURLs(props.option)"
-                      :key="url"
-                      :src="url"
-                      style="height: 160px"
-                    />
-                  </div>
-                </div>
-              </div>
+              <game-form-field-dropdown-row-mobile
+                v-if="isMobile"
+                :images="getImageURLs(props.option)"
+                :option="props.option"
+              />
+              <game-form-field-dropdown-row
+                v-else
+                :images="getImageURLs(props.option)"
+                :option="props.option"
+              />
             </template>
           </b-autocomplete>
         </p>
@@ -70,8 +57,11 @@ import Vue from "vue";
 import { isMobile } from "mobile-device-detect";
 
 import { debug, transformTaxonName } from "./utils";
+import GameFormFieldDropdownRow from "./GameFormFieldDropdownRow.vue";
+import GameFormFieldDropdownRowMobile from "./GameFormFieldDropdownRowMobile.vue";
 
 export default Vue.extend({
+  components: { GameFormFieldDropdownRow, GameFormFieldDropdownRowMobile },
   props: {
     initial: String,
     shouldShow: Boolean,
