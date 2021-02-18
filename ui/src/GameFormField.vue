@@ -173,6 +173,7 @@ export default Vue.extend({
       if (input && dropdownContent) {
         dropdownContent.onscroll = () => {
           input.blur();
+          this.showInputButtons = false;
         };
       } else {
         debug([
