@@ -172,8 +172,19 @@ export default Vue.extend({
       ) as HTMLElement;
       if (input && dropdownContent) {
         dropdownContent.onscroll = () => {
-          input.blur();
-          this.showInputButtons = false;
+          // The purpose of this handler is to cause the soft keyboard of
+          // mobile devices to be dismissed when the user starts scrolling.
+
+          // On iOS and Safari, a single onscroll event is emitted
+          // *after* selecting a dropdown item. Since at that point the
+          // dropdown is closed, we do not want this handler to run.
+          if (autocomplete.isActive) {
+            input.blur();
+            // If the input is focused, scrolling will emit a single blur event.
+            // Since we have arranged for blur events to show the buttons,
+            // we counteract this here.
+            this.showInputButtons = false;
+          }
         };
       } else {
         debug([
