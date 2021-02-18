@@ -31,6 +31,7 @@
                       v-for="url in getImageURLs(props.option)"
                       :key="url"
                       :src="url"
+                      style="height: 160px"
                     />
                   </div>
                 </div>
