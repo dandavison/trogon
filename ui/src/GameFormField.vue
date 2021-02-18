@@ -18,7 +18,7 @@
             @focus="$emit('focus')"
             @select="handleSelect"
             dropdown-position="bottom"
-            max-height="100%"
+            max-height="100vh"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
