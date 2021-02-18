@@ -21,8 +21,11 @@
             spellcheck="false"
           >
             <template slot-scope="props">
+              <div v-if="isMobile" class="mt-4">
+                <b>{{ props.option }}</b>
+              </div>
               <div class="level">
-                <div class="level-left">
+                <div v-if="!isMobile" class="level-left">
                   <div
                     class="level-item has-text-left ml-2"
                     style="width: 220px"
@@ -64,6 +67,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { isMobile } from "mobile-device-detect";
 
 import { debug, transformTaxonName } from "./utils";
 
@@ -85,6 +89,7 @@ export default Vue.extend({
     return {
       answer: this.initial,
       showInputButtons: true,
+      isMobile,
     };
   },
   computed: {
