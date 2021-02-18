@@ -23,7 +23,12 @@
             <template slot-scope="props">
               <div class="level">
                 <div class="level-left">
-                  <div class="level-item">{{ props.option }}</div>
+                  <div
+                    class="level-item has-text-left ml-2"
+                    style="width: 220px"
+                  >
+                    <b>{{ props.option }}</b>
+                  </div>
                 </div>
                 <div class="level-right">
                   <div class="level-item">
