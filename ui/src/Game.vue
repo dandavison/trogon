@@ -4,6 +4,7 @@
       :ebirdLocIds="ebirdLocIds"
       :ebirdHotspots="ebirdHotspots"
       :locationSpecies="locationSpecies"
+      :challengeFamilies="challengeFamilies"
     />
 
     <b-loading v-model="isLoading"></b-loading>
