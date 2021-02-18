@@ -20,7 +20,7 @@ Vue.use(Buefy, {
 });
 
 const routes = [
-  { path: "/", component: Root, name: "trogon-root" },
+  { path: "/", component: Root },
   {
     path: "/challenge/",
     component: GameRoot,
@@ -31,9 +31,8 @@ const routes = [
           ? (_.zipObject(["lat", "lng"], route.query.coords.split(",")) as any)
           : null
       } as LocationRequest
-    }),
-    name: "trogon-game-root"
-  },
+    })
+  }
 ];
 
 const router = new VueRouter({ mode: "history", routes });
