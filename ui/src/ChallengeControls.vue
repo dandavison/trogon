@@ -43,7 +43,7 @@
       <li v-if="recording.raw.also.filter(Boolean).length > 0">
         <small>
           Also in recording:
-          <span v-for="(sp, index) in recording.raw.also" :key="sp">
+          <span v-for="(sp, index) in recording.raw.also" :key="index">
             <i v-if="settings.names === NamesLanguage.Scientific">{{ sp }}</i>
             <span v-else>
               {{ taxonMaps.speciesSci2En.get(sp) || "" }}
