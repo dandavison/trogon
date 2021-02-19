@@ -9,7 +9,11 @@
         ev.target.play();
       }
     "
-    @play="eventBus.$emit('ready:challenge-recording')"
+    @play="
+      (ev) => {
+        eventBus.$emit('ready:challenge-recording');
+      }
+    "
   ></audio>
 </template>
 
