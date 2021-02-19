@@ -6,13 +6,14 @@
       </div>
     </div>
     <div class="level-right">
-      <img
-        class="level-item"
-        v-for="im in images"
-        :key="im.urls[0]"
-        :src="im.urls[0]"
-        style="height: 160px"
-      />
+      <div v-for="(im, i) in images" :key="i" class="level-item">
+        <div class="field">
+          <img :src="im.urls[0]" style="height: 160px" />
+          <p class="help has-text-centered">
+            <i>{{ imageLabelFn(im) }}</i>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
