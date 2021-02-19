@@ -7,11 +7,10 @@
       <div width="100%">
         <div class="level-left">
           <div class="level-item">
-            <div v-for="(im, i) in images" :key="i" class="field">
-              <img :src="im.urls[0]" style="height: 160px" />
-              <p class="help has-text-centered">
-                <i>{{ imageLabelFn(im) }}</i>
-              </p>
+            <div>
+              <span v-for="(im, i) in images" :key="i">
+                <img :src="im.urls[0]" style="height: 160px" />
+              </span>
             </div>
           </div>
         </div>
