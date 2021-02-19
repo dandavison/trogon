@@ -17,6 +17,9 @@
       </b-navbar-item>
 
       <b-navbar-item href="#" @click="showHelp"> Help </b-navbar-item>
+      <b-modal v-model="helpModalActive">
+        <help />
+      </b-modal>
     </template>
 
     <template slot="end">
@@ -33,16 +36,32 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import eventBus from "./event-bus";
+import Help from "./Help.vue";
 
 export default Vue.extend({
+  components: { Help },
+  data() {
+    return { helpModalActive: false };
+  },
+
   methods: {
     showControlPanel(): void {
       eventBus.$emit("control-panel:show");
     },
 
     showHelp(): void {
-      eventBus.$emit("show:help");
+      if (this.$route.path === "/") {
+        // TODO: We should just be able to display the help modal
+        // as an element within the navbar. However, when we do that,
+        // the map component obscures the help modal, so there is a
+        // special implementation of the help modal in Map.vue
+        // triggered by this event.
+        eventBus.$emit("show:help");
+      } else {
+        this.helpModalActive = true;
+      }
     },
   },
 });

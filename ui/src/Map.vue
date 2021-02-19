@@ -1,7 +1,7 @@
 <template>
   <div>
     <l-map
-      v-if="!showHelp"
+      v-if="!helpModalActive"
       style="height: 800px"
       v-bind="map"
       :center="center"
