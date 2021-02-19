@@ -4,6 +4,11 @@
     class="mt-3"
     :src="recording.url"
     :preload="preload"
+    @loadedmetadata="
+      (ev) => {
+        ev.target.play();
+      }
+    "
     @canplaythrough="
       (ev) => {
         ev.target.play();
