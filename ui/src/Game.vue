@@ -150,13 +150,6 @@ export default Vue.extend({
   },
 
   methods: {
-    handleFamilySelection(family: string, selected: boolean): void {
-      var challengeFamily = this.challengeFamilies.get(family);
-      if (challengeFamily) {
-        challengeFamily.selected = selected;
-      }
-    },
-
     async fetchLocationData(): Promise<void> {
       try {
         // Determine locations from request parameters
@@ -191,6 +184,13 @@ export default Vue.extend({
         console.log(`recent observations: ${this.recentObservations.length}`);
       } catch (err) {
         console.log("Error fetching location species and recordings: ", err);
+      }
+    },
+
+    handleFamilySelection(family: string, selected: boolean): void {
+      var challengeFamily = this.challengeFamilies.get(family);
+      if (challengeFamily) {
+        challengeFamily.selected = selected;
       }
     },
 
