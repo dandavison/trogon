@@ -5,13 +5,15 @@
         <b>{{ option }}</b>
       </div>
     </div>
-    <div class="level-right">
-      <div v-for="(im, i) in images" :key="i" class="level-item">
-        <div class="field">
-          <img :src="im.urls[0]" style="height: 160px" />
-          <p class="help has-text-centered">
-            <i>{{ imageLabelFn(im) }}</i>
-          </p>
+    <div width="100%" class="x-scrollable">
+      <div class="level-left" style="overflow-x: hidden; width: 9999px">
+        <div v-for="(im, i) in images" :key="i" class="level-item">
+          <div class="field">
+            <img :src="im.urls[0]" style="height: 160px" />
+            <p class="help has-text-centered">
+              <i>{{ imageLabelFn(im) }}</i>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -31,3 +33,15 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.x-scrollable {
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.x-scrollable::-webkit-scrollbar {
+  display: none;
+}
+</style>
