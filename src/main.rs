@@ -17,6 +17,7 @@ mod models;
 mod proxy;
 mod queries;
 mod species_images;
+mod status;
 mod utils;
 
 #[derive(StructOpt)]
@@ -48,6 +49,7 @@ fn main() -> std::io::Result<()> {
                 routes![proxy::ebird, proxy::xeno_canto, proxy::xeno_canto_cached],
             )
             .mount("/challenge", routes![ui])
+            .mount("/status", routes![status::status])
             .mount("/", StaticFiles::from("ui/dist"))
             .attach(cors::CORS())
             .launch();
