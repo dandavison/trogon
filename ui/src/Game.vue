@@ -4,6 +4,7 @@
       :ebirdLocIds="ebirdLocIds"
       :ebirdHotspots="ebirdHotspots"
       :locationSpecies="locationSpecies"
+      :filteredLocationSpecies="filteredLocationSpecies"
       :challengeFamilies="challengeFamilies"
     />
 
@@ -20,7 +21,7 @@
     <game-form
       v-if="recording"
       ref="gameForm"
-      :locationSpecies="locationSpecies"
+      :locationSpecies="filteredLocationSpecies"
       :recording="recording"
       :image="image"
       :imageURLMaps="imageURLMaps"
@@ -93,6 +94,7 @@ export default Vue.extend({
       ebirdLocIds: [] as string[],
       ebirdHotspots: [] as EbirdHotspot[],
       locationSpecies: [] as EbirdSpecies[],
+      filteredLocationSpecies: [] as EbirdSpecies[],
       speciesCode2SciName: new Map([]) as Map<string, string>,
       commonSpecies: new Set([]) as Set<string>,
       recentObservations: [] as EbirdObservation[],
@@ -127,11 +129,7 @@ export default Vue.extend({
     );
     this.challengeFamilies = makeChallengeFamilies(this.locationSpecies);
     eventBus.$emit("set:challenge-families", this.challengeFamilies);
-    this.selectedFamilies = new Set(
-      Array.from(this.challengeFamilies.entries())
-        .filter(([_, { selected }]) => selected)
-        .map(([family, _]) => family)
-    );
+    this.applyFamilyFilter();
     this.challengeRecordingsIterator = this.makeChallengeRecordingsIterator();
   },
 
@@ -187,11 +185,25 @@ export default Vue.extend({
       }
     },
 
+    applyFamilyFilter(): void {
+      this.selectedFamilies = new Set(
+        Array.from(this.challengeFamilies.entries())
+          .filter(([_, { selected }]) => selected)
+          .map(([family, _]) => family)
+      );
+      this.filteredLocationSpecies = this.locationSpecies.filter((sp) =>
+        this.selectedFamilies.has(
+          this.taxonMaps.species2familyEn.get(sp.sciName) || ""
+        )
+      );
+    },
+
     handleFamilySelection(family: string, selected: boolean): void {
       var challengeFamily = this.challengeFamilies.get(family);
       if (challengeFamily) {
         challengeFamily.selected = selected;
       }
+      this.applyFamilyFilter();
     },
 
     makeChallengeRecordingsIterator: async function* (): AsyncGenerator<
@@ -231,8 +243,8 @@ export default Vue.extend({
         return false;
       }
       if (
-        !this.selectedFamilies.has(
-          this.taxonMaps.species2familyEn.get(species) || ""
+        !new Set(this.filteredLocationSpecies.map((sp) => sp.sciName)).has(
+          species
         )
       ) {
         return false;

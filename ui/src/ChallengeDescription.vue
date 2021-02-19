@@ -9,7 +9,7 @@
     </h1>
     <ul>
       <li>{{ locationSpecies.length }} species</li>
-      <li>{{ nSpecies }} species in challenge</li>
+      <li>{{ filteredLocationSpecies.length }} species in challenge</li>
     </ul>
   </section>
 </template>
@@ -23,15 +23,8 @@ export default Vue.extend({
     ebirdLocIds: Array as PropType<string[]>,
     ebirdHotspots: Array as PropType<EbirdHotspot[]>,
     locationSpecies: Array as PropType<EbirdSpecies[]>,
+    filteredLocationSpecies: Array as PropType<EbirdSpecies[]>,
     challengeFamilies: Map as PropType<Map<string, ChallengeFamily>>,
-  },
-  computed: {
-    nSpecies(): number {
-      return [...this.challengeFamilies.values()]
-        .filter(({ selected }) => selected)
-        .map(({ n }) => n)
-        .reduce((a, b) => a + b, 0);
-    },
   },
 });
 </script>
