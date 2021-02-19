@@ -34,17 +34,13 @@
 
             <div class="level p-1">
               <div class="level-left">
-                <b-button @click="isFamilyModalActive = true" class="light">
+                <b-button @click="showFamilyModal" class="light">
                   <i class="fas fa-dna"></i>
                 </b-button>
                 <span class="pl-2">Select Families</span>
               </div>
             </div>
-            <b-modal v-model="isFamilyModalActive" full-screen>
-              <section class="section">
-                <family-selector :challengeFamilies="challengeFamilies" />
-              </section>
-            </b-modal>
+            <family-selector :challengeFamilies="challengeFamilies" />
 
             <b-menu-item
               label="Appearance"
@@ -84,7 +80,6 @@ export default Vue.extend({
         right: true,
       },
       open: false,
-      isFamilyModalActive: false,
     };
   },
 
@@ -110,6 +105,12 @@ export default Vue.extend({
     eventBus.$on("control-panel:show", () => {
       this.open = true;
     });
+  },
+
+  methods: {
+    showFamilyModal() {
+      eventBus.$emit("show:family-selector");
+    },
   },
 });
 </script>
