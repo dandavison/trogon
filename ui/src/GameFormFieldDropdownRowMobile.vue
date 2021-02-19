@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-4">
+    <div class="mt-1">
       <b>{{ option }}</b>
     </div>
     <div class="level">
@@ -9,7 +9,7 @@
           <div class="level-item is-justify-content-left">
             <div>
               <span v-for="(im, i) in images" :key="i">
-                <img :src="im.urls[0]" style="height: 160px" />
+                <img :src="im.urls[0]" style="height: 100px" />
               </span>
             </div>
           </div>
