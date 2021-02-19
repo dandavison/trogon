@@ -45,7 +45,7 @@
       </l-marker>
       <b-loading v-model="isLoading"></b-loading>
     </l-map>
-    <b-modal v-else v-model="showHelp">
+    <b-modal v-else v-model="helpModalActive">
       <help />
     </b-modal>
   </div>
@@ -105,13 +105,13 @@ export default Vue.extend({
       },
       ebirdHotspots: [] as EbirdHotspot[],
       isLoading: false,
-      showHelp: false
+      helpModalActive: false,
     };
   },
 
   mounted: function(): void {
     eventBus.$on("show:help", () => {
-      this.showHelp = true;
+      this.helpModalActive = true;
     });
   },
 
