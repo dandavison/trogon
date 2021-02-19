@@ -1,6 +1,6 @@
 <template>
-  <b-modal v-model="isModalActive" full-screen>
-    <section class="section">
+  <b-modal v-model="isModalActive">
+    <section class="section has-text-grey-light">
       <ul>
         <li v-for="[family, data] of challengeFamilies.entries()" :key="family">
           <b-checkbox
