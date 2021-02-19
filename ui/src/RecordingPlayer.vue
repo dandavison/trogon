@@ -6,16 +6,34 @@
     :preload="preload"
     @loadedmetadata="
       (ev) => {
+        debug(['loadedmetadata']);
         ev.target.play();
+      }
+    "
+    @loadeddata="
+      (ev) => {
+        debug(['loadeddata']);
+      }
+    "
+    @canplay="
+      (ev) => {
+        debug(['canplay']);
       }
     "
     @canplaythrough="
       (ev) => {
+        debug(['canplaythrough']);
         ev.target.play();
+      }
+    "
+    @playing="
+      (ev) => {
+        debug(['playing']);
       }
     "
     @play="
       (ev) => {
+        debug(['play']);
         eventBus.$emit('ready:challenge-recording');
       }
     "
@@ -25,6 +43,7 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 
+import { debug } from "./utils";
 import eventBus from "./event-bus";
 import { Recording } from "./types";
 
@@ -36,6 +55,7 @@ export default Vue.extend({
   data() {
     return {
       eventBus,
+      debug,
     };
   },
 });
