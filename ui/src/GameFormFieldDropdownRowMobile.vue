@@ -8,8 +8,11 @@
         <div class="level-left">
           <div class="level-item">
             <div>
-              <span v-for="(im, i) in images" :key="i">
+              <span v-for="(im, i) in images" :key="i" class="field">
                 <img :src="im.urls[0]" style="height: 160px" />
+                <span class="help has-text-centered">
+                  <i>{{ imageLabelFn(im) }}</i>
+                </span>
               </span>
             </div>
           </div>
