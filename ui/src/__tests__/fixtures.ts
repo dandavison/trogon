@@ -1,4 +1,4 @@
-import { EbirdSpecies, ImageURLMaps, Recording } from "../types";
+import { EbirdSpecies, ImageMaps, Recording } from "../types";
 
 export const locationSpecies: EbirdSpecies[] = [
   {
@@ -67,7 +67,7 @@ export const recording: Recording = {
   }
 };
 
-export const imageURLMaps: ImageURLMaps = {
+export const imageURLMaps: ImageMaps = {
   speciesSciName2images: new Map(),
   genus2images: new Map(),
   familySci2images: new Map(),

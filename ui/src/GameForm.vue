@@ -15,6 +15,7 @@
           :filter="filterFamilySci"
           :truth="truth.familySci"
           :getImageURLs="getFamilySciImageURLs"
+          :imageLabelFn="(im) => im.species.split(' ')[0]"
           :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
         />
       </template>
@@ -35,6 +36,7 @@
           :filter="filterFamilyEn"
           :truth="truth.familyEn"
           :getImageURLs="getFamilyEnImageURLs"
+          :imageLabelFn="(im) => im.species.split(' ')[0]"
           :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
         />
       </template>
@@ -55,6 +57,7 @@
           :filter="filterGenus"
           :truth="truth.genus"
           :getImageURLs="getGenusImageURLs"
+          :imageLabelFn="(im) => im.species.split(' ')[1]"
           :label="'Genus'"
         />
       </template>
@@ -75,6 +78,7 @@
           :filter="filterSpeciesSci"
           :truth="truth.speciesSci"
           :getImageURLs="getSpeciesSciImageURLs"
+          :imageLabelFn="(im) => ''"
           :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
         />
       </template>
@@ -95,6 +99,7 @@
           :filter="filterSpeciesEn"
           :truth="truth.speciesEn"
           :getImageURLs="getSpeciesEnImageURLs"
+          :imageLabelFn="(im) => ''"
           :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
         />
       </template>
@@ -111,10 +116,11 @@ import { EbirdSpecies } from "./types";
 import { ebirdSpecies } from "./ebird";
 import {
   Answer,
-  ImageURLMaps,
+  ImageMaps,
   NamesLanguage,
   Recording,
   Settings,
+  SpeciesImages,
   TaxonMaps,
 } from "./types";
 import GameFormField from "./GameFormField.vue";
@@ -128,7 +134,7 @@ export default Vue.extend({
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     recording: Object as PropType<Recording | null>,
     image: String as PropType<string | null>,
-    imageURLMaps: Object as PropType<ImageURLMaps>,
+    imageURLMaps: Object as PropType<ImageMaps>,
     taxonMaps: Object as PropType<TaxonMaps>,
     settings: Object as PropType<Settings>,
   },
@@ -258,7 +264,7 @@ export default Vue.extend({
       this.$emit("answer:species-correct", this.speciesEnField.isCorrect());
     },
 
-    getSpeciesSciImageURLs(answer: string): string[] {
+    getSpeciesSciImageURLs(answer: string): SpeciesImages[] {
       if (this.settings.promptIncludesImages) {
         return [];
       }
@@ -268,7 +274,7 @@ export default Vue.extend({
       );
     },
 
-    getSpeciesEnImageURLs(answer: string): string[] {
+    getSpeciesEnImageURLs(answer: string): SpeciesImages[] {
       if (this.settings.promptIncludesImages) {
         return [];
       }
@@ -278,25 +284,25 @@ export default Vue.extend({
       );
     },
 
-    getGenusImageURLs(answer: string): string[] {
+    getGenusImageURLs(answer: string): SpeciesImages[] {
       return this._getImageURLs(answer, this.imageURLMaps.genus2images);
     },
 
-    getFamilySciImageURLs(answer: string): string[] {
+    getFamilySciImageURLs(answer: string): SpeciesImages[] {
       return this._getImageURLs(answer, this.imageURLMaps.familySci2images);
     },
 
-    getFamilyEnImageURLs(answer: string): string[] {
+    getFamilyEnImageURLs(answer: string): SpeciesImages[] {
       return this._getImageURLs(answer, this.imageURLMaps.familyEn2images);
     },
 
     _getImageURLs(
       answer: string,
-      imageURLMap: Map<string, Set<string>>
-    ): string[] {
-      var images = imageURLMap.get(answer) || new Set();
+      imageURLMap: Map<string, SpeciesImages[]>
+    ): SpeciesImages[] {
+      var images = imageURLMap.get(answer) || [];
       if (this.settings.promptIncludesImages && this.image) {
-        images.delete(this.image);
+        images = images.filter((im) => !new Set(im.urls).has(this.image || "")); // TODO
       }
       return Array.from(images);
     },

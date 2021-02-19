@@ -99,11 +99,11 @@ export interface TaxonMaps {
   speciesEn2Sci: Map<string, string>;
 }
 
-export interface ImageURLMaps {
-  speciesSciName2images: Map<string, Set<string>>;
-  genus2images: Map<string, Set<string>>;
-  familySci2images: Map<string, Set<string>>;
-  familyEn2images: Map<string, Set<string>>;
+export interface ImageMaps {
+  speciesSciName2images: Map<string, SpeciesImages[]>;
+  genus2images: Map<string, SpeciesImages[]>;
+  familySci2images: Map<string, SpeciesImages[]>;
+  familyEn2images: Map<string, SpeciesImages[]>;
 }
 
 export interface ChallengeFamily {

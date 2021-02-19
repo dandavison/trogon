@@ -24,11 +24,13 @@
               <game-form-field-dropdown-row-mobile
                 v-if="isMobile"
                 :images="getImageURLs(props.option)"
+                :imageLabelFn="imageLabelFn"
                 :option="props.option"
               />
               <game-form-field-dropdown-row
                 v-else
                 :images="getImageURLs(props.option)"
+                :imageLabelFn="imageLabelFn"
                 :option="props.option"
               />
             </template>
@@ -70,6 +72,7 @@ export default Vue.extend({
     filter: Function,
     truth: String,
     getImageURLs: Function,
+    imageLabelFn: Function,
     handler: Function,
   },
   mounted() {
