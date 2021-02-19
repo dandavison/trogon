@@ -40,7 +40,6 @@
                 <span class="pl-2">Select Families</span>
               </div>
             </div>
-            <family-selector :challengeFamilies="challengeFamilies" />
 
             <b-menu-item
               label="Appearance"
@@ -59,13 +58,13 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
+
 import eventBus from "./event-bus";
-import FamilySelector from "./FamilySelector.vue";
 import NamesSelector from "./NamesSelector.vue";
 import { ChallengeFamily, Settings } from "./types";
 
 export default Vue.extend({
-  components: { FamilySelector, NamesSelector },
+  components: { NamesSelector },
   props: {
     challengeFamilies: Map as PropType<Map<string, ChallengeFamily>>,
     settings: Object as PropType<Settings>,

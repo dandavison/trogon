@@ -5,6 +5,7 @@
       :challengeFamilies="challengeFamilies"
       :settings="settings"
     />
+    <family-selector :challengeFamilies="challengeFamilies" />
     <game :settings="settings" :locationRequest="locationRequest" />
   </section>
 </template>
@@ -14,6 +15,7 @@ import Vue, { PropType } from "vue";
 import { isMobile } from "mobile-device-detect";
 
 import eventBus from "./event-bus";
+import FamilySelector from "./FamilySelector.vue";
 import ControlPanel from "./ControlPanel.vue";
 import Game from "./Game.vue";
 import {
@@ -26,7 +28,7 @@ import {
 export default Vue.extend({
   name: "GameRoot",
   props: { locationRequest: Object as PropType<LocationRequest> },
-  components: { ControlPanel, Game },
+  components: { ControlPanel, FamilySelector, Game },
   data() {
     return {
       settings: {
