@@ -80,6 +80,54 @@ describe("Clear", () => {
       expect(vm.answer[name]).toEqual("");
     }
   });
+
+  test("clear genus works", () => {
+    const vm: GameFormInstance = factory().vm;
+    initializeWithIncorrectSpecies(vm);
+    vm.genusField.clear();
+    for (let name of [TaxonName.FamilySci, TaxonName.FamilyEn]) {
+      expect(vm.answer[name]).toEqual(ES.getName(name, incorrectFamily));
+    }
+    for (let name of [
+      TaxonName.Genus,
+      TaxonName.SpeciesSci,
+      TaxonName.SpeciesEn
+    ]) {
+      expect(vm.answer[name]).toEqual("");
+    }
+  });
+
+  test("clear speciesSci works", () => {
+    const vm: GameFormInstance = factory().vm;
+    initializeWithIncorrectSpecies(vm);
+    vm.speciesSciField.clear();
+    for (let name of [
+      TaxonName.FamilySci,
+      TaxonName.FamilyEn,
+      TaxonName.Genus
+    ]) {
+      expect(vm.answer[name]).toEqual(ES.getName(name, incorrectFamily));
+    }
+    for (let name of [TaxonName.SpeciesSci, TaxonName.SpeciesEn]) {
+      expect(vm.answer[name]).toEqual("");
+    }
+  });
+
+  test("clear speciesEn works", () => {
+    const vm: GameFormInstance = factory().vm;
+    initializeWithIncorrectSpecies(vm);
+    vm.speciesEnField.clear();
+    for (let name of [
+      TaxonName.FamilySci,
+      TaxonName.FamilyEn,
+      TaxonName.Genus
+    ]) {
+      expect(vm.answer[name]).toEqual(ES.getName(name, incorrectFamily));
+    }
+    for (let name of [TaxonName.SpeciesSci, TaxonName.SpeciesEn]) {
+      expect(vm.answer[name]).toEqual("");
+    }
+  });
 });
 
 function initializeWithIncorrectSpecies(vm: GameFormInstance) {
