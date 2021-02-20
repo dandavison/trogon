@@ -3,38 +3,40 @@
     <div class="level-item">
       <div class="field has-addons" style="width: 100%">
         <p class="control" style="width: 100%">
-          <b-autocomplete
-            type="text"
-            v-model="answer"
-            ref="autocomplete"
-            :placeholder="label"
-            :data="filteredCandidates"
-            :open-on-focus="true"
-            @focus="handleFocus"
-            @select="handleSelect"
-            @blur="handleBlur"
-            dropdown-position="bottom"
-            max-height="100vh"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-          >
-            <template slot-scope="props">
-              <game-form-field-dropdown-row-mobile
-                v-if="isMobile"
-                :images="getImageURLs(props.option)"
-                :imageLabelFn="imageLabelFn"
-                :option="props.option"
-              />
-              <game-form-field-dropdown-row
-                v-else
-                :images="getImageURLs(props.option)"
-                :imageLabelFn="imageLabelFn"
-                :option="props.option"
-              />
-            </template>
-          </b-autocomplete>
+          <b-field :type="fieldType">
+            <b-autocomplete
+              type="text"
+              v-model="answer"
+              ref="autocomplete"
+              :placeholder="label"
+              :data="filteredCandidates"
+              :open-on-focus="true"
+              @focus="handleFocus"
+              @select="handleSelect"
+              @blur="handleBlur"
+              dropdown-position="bottom"
+              max-height="100vh"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+            >
+              <template slot-scope="props">
+                <game-form-field-dropdown-row-mobile
+                  v-if="isMobile"
+                  :images="getImageURLs(props.option)"
+                  :imageLabelFn="imageLabelFn"
+                  :option="props.option"
+                />
+                <game-form-field-dropdown-row
+                  v-else
+                  :images="getImageURLs(props.option)"
+                  :imageLabelFn="imageLabelFn"
+                  :option="props.option"
+                />
+              </template>
+            </b-autocomplete>
+          </b-field>
         </p>
         <p class="control">
           <b-button
@@ -77,10 +79,6 @@ export default Vue.extend({
   },
   mounted() {
     this.dismissMobileKeyboardOnDropdownScroll();
-    // The following call is needed in the case where
-    // this component is being mounted in its non-modal form,
-    // after a value has been entered in a modal instance of this component.
-    this.styleInputAccordingToAnswer();
   },
   data() {
     return {
@@ -94,6 +92,14 @@ export default Vue.extend({
       debug([`${this.id}.filteredCandidates:`, JSON.stringify(this.answer)]);
       return this.filter(this.answer);
     },
+
+    fieldType(): string {
+      if (this.answer && this.truth) {
+        return this.isCorrect() ? "is-success" : "is-danger";
+      } else {
+        return "";
+      }
+    },
   },
   watch: {
     answer: {
@@ -101,7 +107,6 @@ export default Vue.extend({
       handler: function (value: string): void {
         debug([`${this.id}: watch: answer:`, JSON.stringify(value)]);
         this.handler(value);
-        this.styleInputAccordingToAnswer();
       },
     } as any, // sync is private
   },
@@ -141,7 +146,6 @@ export default Vue.extend({
         this.handler(this.answer);
         this.$emit("select");
       }
-      this.styleInputAccordingToAnswer();
     },
 
     isCorrect(): boolean {
@@ -151,24 +155,6 @@ export default Vue.extend({
         transformTaxonName(this.answer),
       ]);
       return transformTaxonName(this.truth) === transformTaxonName(this.answer);
-    },
-
-    styleInputAccordingToAnswer() {
-      const autocomplete = this.$refs.autocomplete as any;
-      const input = autocomplete?.$refs.input.$refs.input as HTMLElement;
-      debug([
-        `${this.id}.styleInputAccordingToAnswer:`,
-        `${input}`,
-        JSON.stringify(this.answer),
-        JSON.stringify(this.truth),
-      ]);
-      if (input) {
-        input.classList.remove("is-danger");
-        input.classList.remove("is-success");
-        if (this.answer && this.truth) {
-          input.classList.add(this.isCorrect() ? "is-success" : "is-danger");
-        }
-      }
     },
 
     dismissMobileKeyboardOnDropdownScroll(): void {
