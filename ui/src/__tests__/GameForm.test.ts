@@ -54,51 +54,51 @@ describe("GameForm fixtures", () => {
 describe("Clear", () => {
   test("Clear form works", () => {
     const vm: GameFormInstance = factory().vm;
-    vm.answer.familySci = "xxx";
-    vm.answer.familyEn = "xxx";
-    vm.answer.genus = "xxx";
-    vm.answer.speciesSci = "xxx";
-    vm.answer.speciesEn = "xxx";
+    for (let name of Object.values(TaxonName)) {
+      vm.answer[name] = "xxx";
+    }
     vm.clear();
-    expect(vm.answer.familySci).toEqual("");
-    expect(vm.answer.familyEn).toEqual("");
-    expect(vm.answer.genus).toEqual("");
-    expect(vm.answer.speciesSci).toEqual("");
-    expect(vm.answer.speciesEn).toEqual("");
+    for (let name of Object.values(TaxonName)) {
+      expect(vm.answer[name]).toEqual("");
+    }
   });
 
   test("clear familySci works", () => {
     const vm: GameFormInstance = factory().vm;
-    vm.familySciField.answer = ES.getFamilySci(incorrectFamily);
-    vm.familyEnField.answer = ES.getFamilyEn(incorrectFamily);
-    vm.genusField.answer = ES.getGenus(incorrectFamily);
-    vm.speciesSciField.answer = ES.getSpeciesSci(incorrectFamily);
-    vm.speciesEnField.answer = ES.getSpeciesEn(incorrectFamily);
-    for (let name of Object.values(TaxonName)) {
-      expect(vm.answer[name]).toEqual(vm[name + "Field"].answer);
-    }
+    initializeWithIncorrectSpecies(vm);
     vm.familySciField.clear();
-    expect(vm.answer.familySci).toEqual("");
-    expect(vm.answer.familyEn).toEqual("");
-    expect(vm.answer.genus).toEqual("");
-    expect(vm.answer.speciesSci).toEqual("");
-    expect(vm.answer.speciesEn).toEqual("");
+    for (let name of Object.values(TaxonName)) {
+      expect(vm.answer[name]).toEqual("");
+    }
+  });
+
+  test("clear familyEn works", () => {
+    const vm: GameFormInstance = factory().vm;
+    initializeWithIncorrectSpecies(vm);
+    vm.familyEnField.clear();
+    for (let name of Object.values(TaxonName)) {
+      expect(vm.answer[name]).toEqual("");
+    }
   });
 });
+
+function initializeWithIncorrectSpecies(vm: GameFormInstance) {
+  for (let name of Object.values(TaxonName)) {
+    vm[name + "Field"].answer = ES.getName(name, incorrectFamily);
+  }
+  for (let name of Object.values(TaxonName)) {
+    expect(vm.answer[name]).toEqual(vm[name + "Field"].answer);
+  }
+}
 
 describe("GameForm autofill and isCorrect", () => {
   test("preconditions", () => {
     const vm: GameFormInstance = factory().vm;
-    expect(vm.familySciField.answer).toEqual("");
-    expect(vm.familyEnField.answer).toEqual("");
-    expect(vm.genusField.answer).toEqual("");
-    expect(vm.speciesSciField.answer).toEqual("");
-    expect(vm.speciesEnField.answer).toEqual("");
-    expect(vm.familySciField.isCorrect()).toEqual(false);
-    expect(vm.familyEnField.isCorrect()).toEqual(false);
-    expect(vm.genusField.isCorrect()).toEqual(false);
-    expect(vm.speciesSciField.isCorrect()).toEqual(false);
-    expect(vm.speciesEnField.isCorrect()).toEqual(false);
+    for (let name of Object.values(TaxonName)) {
+      let fieldName = name + "Field";
+      expect(vm[fieldName].answer).toEqual("");
+      expect(vm[fieldName].isCorrect()).toEqual(false);
+    }
   });
 
   test("familySci input works", () => {
