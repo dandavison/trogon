@@ -77,6 +77,10 @@ export default Vue.extend({
   },
   mounted() {
     this.dismissMobileKeyboardOnDropdownScroll();
+    // The following call is needed in the case where
+    // this component is being mounted in its non-modal form,
+    // after a value has been entered in a modal instance of this component.
+    this.styleInputAccordingToAnswer();
   },
   data() {
     return {
