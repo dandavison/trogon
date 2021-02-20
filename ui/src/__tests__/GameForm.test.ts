@@ -68,11 +68,20 @@ describe("Clear", () => {
 
   test("clear familySci works", () => {
     const vm: GameFormInstance = factory().vm;
-    vm.answer.familySci = "xxx";
-    vm.answer.familyEn = "xxx";
-    vm.answer.genus = "xxx";
-    vm.answer.speciesSci = "xxx";
-    vm.answer.speciesEn = "xxx";
+    vm.familySciField.answer = ES.getFamilySci(incorrectFamily);
+    vm.familyEnField.answer = ES.getFamilyEn(incorrectFamily);
+    vm.genusField.answer = ES.getGenus(incorrectFamily);
+    vm.speciesSciField.answer = ES.getSpeciesSci(incorrectFamily);
+    vm.speciesEnField.answer = ES.getSpeciesEn(incorrectFamily);
+    for (let name of [
+      "familySci",
+      "familyEn",
+      "genus",
+      "speciesSci",
+      "speciesEn"
+    ]) {
+      expect(vm.answer[name]).toEqual(vm[name + "Field"].answer);
+    }
     vm.familySciField.clear();
     expect(vm.answer.familySci).toEqual("");
     expect(vm.answer.familyEn).toEqual("");
