@@ -10,9 +10,9 @@
 
     <b-dropdown v-if="settings.promptIncludesRecording && recording">
       <template #trigger="{ active }">
-        <b-button icon-right="chevron-down" icon-pack="fas"
-          ><i class="fas fa-volume-up"></i
-        ></b-button>
+        <b-button icon-right="chevron-down" icon-pack="fas">
+          <i class="fas fa-volume-up"></i>
+        </b-button>
       </template>
       <b-dropdown-item v-for="rec in recordings" :key="rec.url">
         <ul>
