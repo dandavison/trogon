@@ -194,4 +194,7 @@ export default Vue.extend({
 td {
   border-width: 0px;
 }
+.icon.has-text-danger {
+  display: none;
+}
 </style>
