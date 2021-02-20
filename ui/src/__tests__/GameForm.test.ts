@@ -132,10 +132,10 @@ describe("Clear", () => {
 
 function initializeWithIncorrectSpecies(vm: GameFormInstance) {
   for (let name of Object.values(TaxonName)) {
-    vm[name + "Field"].answer = ES.getName(name, incorrectFamily);
+    (vm as any)[name + "Field"].answer = ES.getName(name, incorrectFamily);
   }
   for (let name of Object.values(TaxonName)) {
-    expect(vm.answer[name]).toEqual(vm[name + "Field"].answer);
+    expect(vm.answer[name]).toEqual((vm as any)[name + "Field"].answer);
   }
 }
 
@@ -144,8 +144,8 @@ describe("GameForm autofill and isCorrect", () => {
     const vm: GameFormInstance = factory().vm;
     for (let name of Object.values(TaxonName)) {
       let fieldName = name + "Field";
-      expect(vm[fieldName].answer).toEqual("");
-      expect(vm[fieldName].isCorrect()).toEqual(false);
+      expect((vm as any)[fieldName].answer).toEqual("");
+      expect((vm as any)[fieldName].isCorrect()).toEqual(false);
     }
   });
 
