@@ -16,6 +16,14 @@ export enum NamesLanguage {
   Both = "both"
 }
 
+export enum TaxonName {
+  FamilySci = "familySci",
+  FamilyEn = "familyEn",
+  Genus = "genus",
+  SpeciesSci = "speciesSci",
+  SpeciesEn = "speciesEn"
+}
+
 export interface LocationRequest {
   ebirdLocId?: string;
   latlng?: LatLngLiteral;

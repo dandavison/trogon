@@ -1,5 +1,6 @@
 import { mount } from "@vue/test-utils";
 
+import { TaxonName } from "../types";
 import GameForm from "../GameForm.vue";
 type GameFormInstance = InstanceType<typeof GameForm>;
 import { makeTaxonMaps } from "../Game.vue";
@@ -73,13 +74,7 @@ describe("Clear", () => {
     vm.genusField.answer = ES.getGenus(incorrectFamily);
     vm.speciesSciField.answer = ES.getSpeciesSci(incorrectFamily);
     vm.speciesEnField.answer = ES.getSpeciesEn(incorrectFamily);
-    for (let name of [
-      "familySci",
-      "familyEn",
-      "genus",
-      "speciesSci",
-      "speciesEn"
-    ]) {
+    for (let name of Object.values(TaxonName)) {
       expect(vm.answer[name]).toEqual(vm[name + "Field"].answer);
     }
     vm.familySciField.clear();
