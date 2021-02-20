@@ -50,6 +50,7 @@ export default Vue.extend({
     });
     eventBus.$on("settings:change:commonSpeciesOnly", (newVal: boolean) => {
       this.settings.commonSpeciesOnly = newVal;
+      eventBus.$emit("change:species-filters");
     });
     eventBus.$on("settings:change:songsOnly", (newVal: boolean) => {
       this.settings.songsOnly = newVal;

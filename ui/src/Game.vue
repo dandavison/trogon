@@ -6,6 +6,9 @@
       :locationSpecies="locationSpecies"
       :filteredLocationSpecies="filteredLocationSpecies"
       :challengeFamilies="challengeFamilies"
+      :commonSpecies="commonSpecies"
+      :recentObservations="recentObservations"
+      :settings="settings"
     />
 
     <b-loading v-model="isLoading"></b-loading>
@@ -95,7 +98,6 @@ export default Vue.extend({
       ebirdHotspots: [] as EbirdHotspot[],
       locationSpecies: [] as EbirdSpecies[],
       filteredLocationSpecies: [] as EbirdSpecies[],
-      speciesCode2SciName: new Map([]) as Map<string, string>,
       commonSpecies: new Set([]) as Set<string>,
       recentObservations: [] as EbirdObservation[],
       challengeFamilies: new Map([]) as Map<string, ChallengeFamily>,
@@ -124,17 +126,18 @@ export default Vue.extend({
     this.taxonMaps = makeTaxonMaps(this.locationSpecies);
     this.commonSpecies = new Set(
       this.recentObservations
-        .map((obs) => this.speciesCode2SciName.get(obs.speciesCode))
+        .map((obs) => this.taxonMaps.speciesCode2SciName.get(obs.speciesCode))
         .filter(Boolean) as any
     );
     this.challengeFamilies = makeChallengeFamilies(this.locationSpecies);
     eventBus.$emit("set:challenge-families", this.challengeFamilies);
-    this.applyFamilyFilter();
+    this.filterSpecies();
     this.challengeRecordingsIterator = this.makeChallengeRecordingsIterator();
   },
 
   mounted: function () {
     eventBus.$on("family:select", this.handleFamilySelection);
+    eventBus.$on("change:species-filters", this.filterSpecies);
     eventBus.$on(
       "ready:challenge-recording",
       () => (this.challengeActive = true)
@@ -185,25 +188,31 @@ export default Vue.extend({
       }
     },
 
-    applyFamilyFilter(): void {
+    filterSpecies(): void {
       this.selectedFamilies = new Set(
         Array.from(this.challengeFamilies.entries())
           .filter(([_, { selected }]) => selected)
           .map(([family, _]) => family)
       );
-      this.filteredLocationSpecies = this.locationSpecies.filter((sp) =>
+      var species = this.locationSpecies.filter((sp) =>
         this.selectedFamilies.has(
           this.taxonMaps.species2familyEn.get(sp.sciName) || ""
         )
       );
+      if (this.settings.commonSpeciesOnly) {
+        species = species.filter((sp) => this.commonSpecies.has(sp.sciName));
+      }
+      this.filteredLocationSpecies = species;
     },
 
     handleFamilySelection(family: string, selected: boolean): void {
       var challengeFamily = this.challengeFamilies.get(family);
       if (challengeFamily) {
         challengeFamily.selected = selected;
+        // HACK: force re-evaluation of computed properties depending on this
+        this.challengeFamilies = new Map(this.challengeFamilies);
       }
-      this.applyFamilyFilter();
+      this.filterSpecies();
     },
 
     makeChallengeRecordingsIterator: async function* (): AsyncGenerator<

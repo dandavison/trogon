@@ -9,14 +9,38 @@
     </h1>
     <ul>
       <li>{{ locationSpecies.length }} species</li>
-      <li>{{ filteredLocationSpecies.length }} species in challenge</li>
+      <li>
+        <b-dropdown>
+          <template #trigger>
+            <a role="button">
+              <span>
+                {{ filteredLocationSpecies.length }} species in challenge
+              </span>
+              <i class="fas fa-chevron-down"></i>
+            </a>
+          </template>
+          <b-dropdown-item>
+            {{ nSelectedFamilies }} / {{ challengeFamilies.size }} families
+            selected
+          </b-dropdown-item>
+          <b-dropdown-item v-if="settings.commonSpeciesOnly">
+            Restricting to {{ commonSpecies.size }} recently observed species.
+          </b-dropdown-item>
+        </b-dropdown>
+      </li>
     </ul>
   </section>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { ChallengeFamily, EbirdHotspot, EbirdSpecies } from "./types";
+import {
+  ChallengeFamily,
+  EbirdHotspot,
+  EbirdObservation,
+  EbirdSpecies,
+  Settings,
+} from "./types";
 
 export default Vue.extend({
   props: {
@@ -25,6 +49,16 @@ export default Vue.extend({
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     filteredLocationSpecies: Array as PropType<EbirdSpecies[]>,
     challengeFamilies: Map as PropType<Map<string, ChallengeFamily>>,
+    commonSpecies: Set as PropType<Set<string>>,
+    recentObservations: Array as PropType<EbirdObservation[]>,
+    settings: Object as PropType<Settings>,
+  },
+  computed: {
+    nSelectedFamilies(): number {
+      return [...this.challengeFamilies.values()].filter(
+        ({ selected }) => selected
+      ).length;
+    },
   },
 });
 </script>
