@@ -297,29 +297,28 @@ function makeChallengeFamilies(
 }
 
 export function makeTaxonMaps(species: EbirdSpecies[]): TaxonMaps {
-  const speciesCode2SciName = new Map(
-    species.map((sp) => [sp.speciesCode, sp.sciName])
-  );
-  const species2familySci = new Map(
-    species.map((sp) => [sp.sciName, sp.familySciName])
-  );
-  const species2familyEn = new Map(
-    species.map((sp) => [sp.sciName, sp.familyComName])
-  );
-  const familyEn2Sci = new Map(
-    species.map((sp) => [sp.familyComName, sp.familySciName])
-  );
-  const familySci2En = new Map(
-    species.map((sp) => [sp.familySciName, sp.familyComName])
-  );
-  const genus2familySci = new Map(
-    species.map((sp) => [ebirdSpecies.getGenus(sp), sp.familySciName])
-  );
-  const speciesSci2genus = new Map(
-    species.map((sp) => [sp.sciName, ebirdSpecies.getGenus(sp)])
-  );
-  const speciesSci2En = new Map(species.map((sp) => [sp.sciName, sp.comName]));
-  const speciesEn2Sci = new Map(species.map((sp) => [sp.comName, sp.sciName]));
+  const speciesCode2SciName = new Map();
+  const species2familySci = new Map();
+  const species2familyEn = new Map();
+  const familyEn2Sci = new Map();
+  const familySci2En = new Map();
+  const genus2familySci = new Map();
+  const speciesSci2genus = new Map();
+  const speciesSci2En = new Map();
+  const speciesEn2Sci = new Map();
+
+  for (let sp of species) {
+    speciesCode2SciName.set(sp.speciesCode, sp.sciName);
+    species2familySci.set(sp.sciName, sp.familySciName);
+    species2familyEn.set(sp.sciName, sp.familyComName);
+    familyEn2Sci.set(sp.familyComName, sp.familySciName);
+    familySci2En.set(sp.familySciName, sp.familyComName);
+    genus2familySci.set(ebirdSpecies.getGenus(sp), sp.familySciName);
+    speciesSci2genus.set(sp.sciName, ebirdSpecies.getGenus(sp));
+    speciesSci2En.set(sp.sciName, sp.comName);
+    speciesEn2Sci.set(sp.comName, sp.sciName);
+  }
+
   return {
     speciesCode2SciName,
     species2familySci,
