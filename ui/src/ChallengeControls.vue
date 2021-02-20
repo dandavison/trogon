@@ -40,6 +40,7 @@
         </nav>
       </li>
       <li>{{ recording.raw.loc }}, {{ recording.raw.cnt }}</li>
+      <li>{{ recording.raw.type }}</li>
       <li v-if="recording.raw.also.filter(Boolean).length > 0">
         <small>
           Also in recording:
