@@ -17,9 +17,11 @@
       <b-dropdown-item v-for="rec in recordings" :key="rec.url">
         <ul>
           <li v-if="rec.url != recording.url">
-            <recording-player :recording="rec" :preload="'none'" />
+            <ul>
+              <li><recording-player :recording="rec" :preload="'none'" /></li>
+              <li>{{ rec.raw.loc }}, {{ rec.raw.cnt }}</li>
+            </ul>
           </li>
-          <li>{{ rec.raw.loc }}, {{ rec.raw.cnt }}</li>
         </ul>
       </b-dropdown-item>
     </b-dropdown>
