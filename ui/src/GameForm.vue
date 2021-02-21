@@ -3,7 +3,7 @@
     <game-form-field-container
       :isModal="settings.useFieldModals && isModal.familySci"
     >
-      <template v-slot:form-field>
+      <template>
         <game-form-field
           ref="familySciField"
           id="familySci"
@@ -24,7 +24,7 @@
     <game-form-field-container
       :isModal="settings.useFieldModals && isModal.familyEn"
     >
-      <template v-slot:form-field>
+      <template>
         <game-form-field
           ref="familyEnField"
           id="familyEn"
@@ -45,7 +45,7 @@
     <game-form-field-container
       :isModal="settings.useFieldModals && isModal.genus"
     >
-      <template v-slot:form-field>
+      <template>
         <game-form-field
           ref="genusField"
           id="genus"
@@ -66,7 +66,7 @@
     <game-form-field-container
       :isModal="settings.useFieldModals && isModal.speciesSci"
     >
-      <template v-slot:form-field>
+      <template>
         <game-form-field
           ref="speciesSciField"
           id="speciesSci"
@@ -87,7 +87,7 @@
     <game-form-field-container
       :isModal="settings.useFieldModals && isModal.speciesEn"
     >
-      <template v-slot:form-field>
+      <template>
         <game-form-field
           ref="speciesEnField"
           id="speciesEn"

@@ -1,9 +1,9 @@
 <template>
   <div>
     <b-modal v-if="isModal" :active="true" full-screen>
-      <slot name="form-field"></slot>
+      <slot></slot>
     </b-modal>
-    <div class="m-4" v-else><slot name="form-field"></slot></div>
+    <div class="m-4" v-else><slot></slot></div>
   </div>
 </template>
 
