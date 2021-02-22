@@ -10,8 +10,8 @@ import "../node_modules/@fortawesome/fontawesome-free/js/all.js";
 
 import { LocationRequest } from "./types";
 import App from "./App.vue";
-import Map from "./views/Map.vue";
-import Challenge from "./views/Challenge.vue";
+const Map = () => import("./views/Map.vue");
+const Challenge = () => import("./views/Challenge.vue");
 
 Vue.config.productionTip = false;
 Vue.use(Buefy, {
