@@ -1,15 +1,15 @@
 import { shallowMount } from "@vue/test-utils";
 
-import GameFormField from "../components/GameFormField.vue";
-type GameFormFieldInstance = InstanceType<typeof GameFormField>;
+import ChallengeFormField from "../components/ChallengeFormField.vue";
+type ChallengeFormFieldInstance = InstanceType<typeof ChallengeFormField>;
 
-describe("GameFormField", () => {
+describe("ChallengeFormField", () => {
   test("clear() works", () => {
     const initial = "initial-value";
-    const wrapper = shallowMount(GameFormField, {
+    const wrapper = shallowMount(ChallengeFormField, {
       propsData: { initial, handler: () => null, settings: {} }
     });
-    var vm: GameFormFieldInstance = wrapper.vm;
+    var vm: ChallengeFormFieldInstance = wrapper.vm;
     expect(vm.answer === initial);
     vm.clear();
     expect(vm.answer === "");

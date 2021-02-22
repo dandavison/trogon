@@ -123,9 +123,9 @@ export interface LeafletMapEvent {
   latlng: LatLngLiteral;
 }
 
-export enum GameState {
+export enum ChallengeState {
   Init,
   HaveLocationData,
-  StartedGame,
+  StartedChallenge,
   HaveRecording
 }

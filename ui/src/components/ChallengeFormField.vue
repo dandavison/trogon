@@ -22,13 +22,13 @@
               spellcheck="false"
             >
               <template slot-scope="props">
-                <game-form-field-dropdown-row-mobile
+                <challenge-form-field-dropdown-row-mobile
                   v-if="isMobile"
                   :images="getImageURLs(props.option)"
                   :imageLabelFn="imageLabelFn"
                   :option="props.option"
                 />
-                <game-form-field-dropdown-row
+                <challenge-form-field-dropdown-row
                   v-else
                   :images="getImageURLs(props.option)"
                   :imageLabelFn="imageLabelFn"
@@ -62,11 +62,14 @@ import { BModalComponent } from "buefy/types/components";
 import { isMobile } from "mobile-device-detect";
 
 import { debug, transformTaxonName } from "../utils";
-import GameFormFieldDropdownRow from "./GameFormFieldDropdownRow.vue";
-import GameFormFieldDropdownRowMobile from "./GameFormFieldDropdownRowMobile.vue";
+import ChallengeFormFieldDropdownRow from "./ChallengeFormFieldDropdownRow.vue";
+import ChallengeFormFieldDropdownRowMobile from "./ChallengeFormFieldDropdownRowMobile.vue";
 
-const GameFormField = Vue.extend({
-  components: { GameFormFieldDropdownRow, GameFormFieldDropdownRowMobile },
+const ChallengeFormField = Vue.extend({
+  components: {
+    ChallengeFormFieldDropdownRow,
+    ChallengeFormFieldDropdownRowMobile,
+  },
   props: {
     initial: String,
     shouldShow: Boolean,
@@ -124,14 +127,14 @@ const GameFormField = Vue.extend({
   },
   methods: {
     clear(): void {
-      debug([`GameFormField(${this.id}).clear`]);
+      debug([`ChallengeFormField(${this.id}).clear`]);
       this.answer = "";
       this.handler(this.answer);
     },
 
     reveal(): void {
       debug([
-        `GameFormField(${this.id}).reveal:`,
+        `ChallengeFormField(${this.id}).reveal:`,
         JSON.stringify(this.answer),
         JSON.stringify(this.truth),
       ]);
@@ -143,7 +146,7 @@ const GameFormField = Vue.extend({
         parent: this,
         fullScreen: true,
         animation: "",
-        component: GameFormField,
+        component: ChallengeFormField,
         props: {
           ...this.$props,
           useModal: false,
@@ -167,14 +170,14 @@ const GameFormField = Vue.extend({
 
     handleSelect(answer: string) {
       debug([
-        `GameFormField(${this.id}).handleSelect:`,
+        `ChallengeFormField(${this.id}).handleSelect:`,
         JSON.stringify(answer),
       ]);
       if (this.isModal) {
         if (answer) {
           this.answer = answer;
           let modal = this.$parent as BModalComponent;
-          let field = modal.$parent as GameFormFieldInstance;
+          let field = modal.$parent as ChallengeFormFieldInstance;
           field.handleSelect(this.answer);
           modal.close();
         }
@@ -229,8 +232,8 @@ const GameFormField = Vue.extend({
   },
 });
 
-export default GameFormField;
-type GameFormFieldInstance = InstanceType<typeof GameFormField>;
+export default ChallengeFormField;
+type ChallengeFormFieldInstance = InstanceType<typeof ChallengeFormField>;
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
   <form>
-    <game-form-field
+    <challenge-form-field
       ref="familySciField"
       id="familySci"
       :initial="answer.familySci"
@@ -14,7 +14,7 @@
       :useModal="settings.useFieldModals"
     />
 
-    <game-form-field
+    <challenge-form-field
       ref="familyEnField"
       id="familyEn"
       :initial="answer.familyEn"
@@ -28,7 +28,7 @@
       :useModal="settings.useFieldModals"
     />
 
-    <game-form-field
+    <challenge-form-field
       ref="genusField"
       id="genus"
       :initial="answer.genus"
@@ -42,7 +42,7 @@
       :useModal="settings.useFieldModals"
     />
 
-    <game-form-field
+    <challenge-form-field
       ref="speciesSciField"
       id="speciesSci"
       :initial="answer.speciesSci"
@@ -56,7 +56,7 @@
       :useModal="settings.useFieldModals"
     />
 
-    <game-form-field
+    <challenge-form-field
       ref="speciesEnField"
       id="speciesEn"
       :initial="answer.speciesEn"
@@ -88,12 +88,12 @@ import {
   SpeciesImages,
   TaxonMaps,
 } from "../types";
-import GameFormField from "./GameFormField.vue";
+import ChallengeFormField from "./ChallengeFormField.vue";
 
-type GameFormFieldInstance = InstanceType<typeof GameFormField>;
+type ChallengeFormFieldInstance = InstanceType<typeof ChallengeFormField>;
 
 export default Vue.extend({
-  components: { GameFormField },
+  components: { ChallengeFormField },
   props: {
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     recording: Object as PropType<Recording | null>,
@@ -128,7 +128,7 @@ export default Vue.extend({
     },
 
     truth(): Answer {
-      debug([`GameForm.truth:`, JSON.stringify(this.recording)]);
+      debug([`ChallengeForm.truth:`, JSON.stringify(this.recording)]);
       if (this.recording) {
         return {
           familySci: this.recording.familySci,
@@ -148,25 +148,25 @@ export default Vue.extend({
       }
     },
 
-    familySciField(): GameFormFieldInstance {
-      return this.$refs.familySciField as GameFormFieldInstance;
+    familySciField(): ChallengeFormFieldInstance {
+      return this.$refs.familySciField as ChallengeFormFieldInstance;
     },
 
-    familyEnField(): GameFormFieldInstance {
-      return this.$refs.familyEnField as GameFormFieldInstance;
+    familyEnField(): ChallengeFormFieldInstance {
+      return this.$refs.familyEnField as ChallengeFormFieldInstance;
     },
 
-    genusField(): GameFormFieldInstance {
-      return this.$refs.genusField as GameFormFieldInstance;
+    genusField(): ChallengeFormFieldInstance {
+      return this.$refs.genusField as ChallengeFormFieldInstance;
     },
 
-    speciesSciField(): GameFormFieldInstance {
-      return this.$refs.speciesSciField as GameFormFieldInstance;
+    speciesSciField(): ChallengeFormFieldInstance {
+      return this.$refs.speciesSciField as ChallengeFormFieldInstance;
       this.$buefy.modal.open;
     },
 
-    speciesEnField(): GameFormFieldInstance {
-      return this.$refs.speciesEnField as GameFormFieldInstance;
+    speciesEnField(): ChallengeFormFieldInstance {
+      return this.$refs.speciesEnField as ChallengeFormFieldInstance;
     },
   },
 

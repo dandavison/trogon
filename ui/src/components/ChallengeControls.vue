@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <nav v-if="state < GameState.StartedGame" class="level">
+    <nav v-if="state < ChallengeState.StartedChallenge" class="level">
       <div class="level-item">
         <div class="field">
           <p class="control">
@@ -64,7 +64,7 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import {
-  GameState,
+  ChallengeState,
   NamesLanguage,
   Recording,
   Settings,
@@ -78,12 +78,12 @@ export default Vue.extend({
   props: {
     image: String,
     recording: Object as PropType<Recording | null>,
-    state: Number as PropType<GameState>,
+    state: Number as PropType<ChallengeState>,
     taxonMaps: Object as PropType<TaxonMaps>,
     settings: Object as PropType<Settings>,
   },
   data() {
-    return { NamesLanguage, GameState };
+    return { NamesLanguage, ChallengeState };
   },
 });
 </script>

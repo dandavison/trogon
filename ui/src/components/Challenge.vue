@@ -23,9 +23,9 @@
       :settings="settings"
     />
 
-    <game-form
-      v-if="state >= GameState.StartedGame"
-      ref="gameForm"
+    <challenge-form
+      v-if="state >= ChallengeState.StartedChallenge"
+      ref="challengeForm"
       :locationSpecies="filteredLocationSpecies"
       :recording="recording"
       :image="image"
@@ -63,7 +63,7 @@ import RecordingPlayer from "./RecordingPlayer.vue";
 import {
   LocationRequest,
   ChallengeFamily,
-  GameState,
+  ChallengeState,
   EbirdHotspot,
   EbirdObservation,
   EbirdSpecies,
@@ -74,7 +74,7 @@ import {
   SpeciesImages,
   XenoCantoRecording,
 } from "../types";
-import GameForm from "./GameForm.vue";
+import ChallengeForm from "./ChallengeForm.vue";
 
 import eventBus from "../event-bus";
 import RevealArea from "./RevealArea.vue";
@@ -85,7 +85,7 @@ export default Vue.extend({
   name: "Home",
   components: {
     RecordingPlayer,
-    GameForm,
+    ChallengeForm,
     RevealArea,
     ChallengeDescription,
     ChallengeControls,
@@ -112,8 +112,8 @@ export default Vue.extend({
       >,
       recording: null as Recording | null,
       otherRecordings: [] as Recording[],
-      state: GameState.Init as GameState,
-      GameState,
+      state: ChallengeState.Init as ChallengeState,
+      ChallengeState,
       image: "",
       answerIsCorrectSpecies: false,
     };
@@ -123,7 +123,7 @@ export default Vue.extend({
     if (!this.settings.disableNetworkRequests) {
       await this.fetchLocationData();
     }
-    this.state = GameState.HaveLocationData;
+    this.state = ChallengeState.HaveLocationData;
     this.taxonMaps = makeTaxonMaps(this.locationSpecies);
     this.commonSpecies = new Set(
       this.recentObservations
@@ -140,14 +140,15 @@ export default Vue.extend({
     eventBus.$on("family:select", this.handleFamilySelection);
     eventBus.$on("change:species-filters", this.filterSpecies);
     eventBus.$on("challenge:have-recording", () => {
-      this.state = GameState.HaveRecording;
+      this.state = ChallengeState.HaveRecording;
     });
   },
 
   computed: {
     isLoading(): boolean {
       return (
-        this.state == GameState.Init || this.state == GameState.StartedGame
+        this.state == ChallengeState.Init ||
+        this.state == ChallengeState.StartedChallenge
       );
     },
   },
@@ -265,10 +266,10 @@ export default Vue.extend({
     },
 
     async nextPrompt(): Promise<void> {
-      this.state = GameState.StartedGame;
+      this.state = ChallengeState.StartedChallenge;
       this.recording = null;
       this.image = "";
-      (this.$refs.gameForm as any)?.clear();
+      (this.$refs.challengeForm as any)?.clear();
       const rec = await this.challengeRecordingsIterator.next();
       if (!rec.done) {
         [this.recording, this.otherRecordings] = rec.value;
