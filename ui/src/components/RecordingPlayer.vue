@@ -62,6 +62,9 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+audio {
+  outline: none;
+}
 audio::-webkit-media-controls-panel {
   background-color: white;
 }
