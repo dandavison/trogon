@@ -102,7 +102,6 @@ export default Vue.extend({
       recentObservations: [] as EbirdObservation[],
       challengeFamilies: new Map([]) as Map<string, ChallengeFamily>,
       selectedFamilies: new Set([]) as Set<string>,
-      speciesImages: [] as SpeciesImages[],
       taxonMaps: makeTaxonMaps([]),
       imageURLMaps: makeImageMaps([], []),
       challengeRecordingsIterator: makeEmptyRecordingsIterator() as AsyncGenerator<
@@ -122,7 +121,6 @@ export default Vue.extend({
       await this.fetchLocationData();
     }
     this.haveLocationData = true;
-    this.imageURLMaps = makeImageMaps(this.speciesImages, this.locationSpecies);
     this.taxonMaps = makeTaxonMaps(this.locationSpecies);
     this.commonSpecies = new Set(
       this.recentObservations
@@ -176,12 +174,13 @@ export default Vue.extend({
             : fetchEbirdHotspots(this.ebirdLocIds),
           fetchRecentObservations(this.ebirdLocIds),
         ]);
-        // In parallel: given species list, fetch recording and image URLs
-        this.speciesImages = await fetchSpeciesImages(this.locationSpecies);
+        fetchSpeciesImages(this.locationSpecies).then(
+          (images) =>
+            (this.imageURLMaps = makeImageMaps(images, this.locationSpecies))
+        );
         console.log(`Fetched data for ${this.ebirdLocIds.length} locIds:`);
         console.log(`hotspots: ${this.ebirdHotspots.length}`);
         console.log(`species: ${this.locationSpecies.length}`);
-        console.log(`images: ${this.speciesImages.length}`);
         console.log(`recent observations: ${this.recentObservations.length}`);
       } catch (err) {
         console.log("Error fetching location species and recordings: ", err);
