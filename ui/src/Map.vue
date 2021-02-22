@@ -20,7 +20,7 @@
             class="is-success is-light"
             @click="() => $router.push(`/challenge?location=${hotspot.locId}`)"
           >
-            {{ hotspot.locName }}
+            {{ hotspot.locName }} ({{ hotspot.numSpeciesAllTime }} species)
           </b-button>
         </l-popup>
       </l-circle>
