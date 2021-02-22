@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { NamesLanguage, Recording, Settings } from "./types";
+import { NamesLanguage, Recording, Settings } from "../types";
 import RecordingPlayer from "./RecordingPlayer.vue";
 
 export default Vue.extend({

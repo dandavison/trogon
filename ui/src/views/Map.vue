@@ -5,10 +5,10 @@
 </template>
 
 <script lang="ts">
-import { EbirdHotspot } from "./types";
 import Vue from "vue";
 
-import MapComponent from "./Map.vue";
+import { EbirdHotspot } from "../types";
+import MapComponent from "../components/Map.vue";
 
 export default Vue.extend({
   components: { MapComponent },

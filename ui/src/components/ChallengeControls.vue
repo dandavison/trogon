@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { NamesLanguage, Recording, Settings, TaxonMaps } from "./types";
+import { NamesLanguage, Recording, Settings, TaxonMaps } from "../types";
 
 import RecordingPlayer from "./RecordingPlayer.vue";
 

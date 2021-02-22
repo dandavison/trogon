@@ -14,16 +14,16 @@
 import Vue, { PropType } from "vue";
 import { isMobile } from "mobile-device-detect";
 
-import eventBus from "./event-bus";
-import FamilySelector from "./FamilySelector.vue";
-import ControlPanel from "./ControlPanel.vue";
-import Game from "./Game.vue";
+import eventBus from "../event-bus";
+import FamilySelector from "../components/FamilySelector.vue";
+import ControlPanel from "../components/ControlPanel.vue";
+import Game from "../components/Game.vue";
 import {
   ChallengeFamily,
   LocationRequest,
   NamesLanguage,
   Settings,
-} from "./types";
+} from "../types";
 
 export default Vue.extend({
   name: "GameRoot",

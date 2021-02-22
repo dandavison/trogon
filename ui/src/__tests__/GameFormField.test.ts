@@ -1,6 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 
-import GameFormField from "../GameFormField.vue";
+import GameFormField from "../components/GameFormField.vue";
 type GameFormFieldInstance = InstanceType<typeof GameFormField>;
 
 describe("GameFormField", () => {

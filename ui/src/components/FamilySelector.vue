@@ -15,9 +15,9 @@
 </template>
 
 <script lang="ts">
-import eventBus from "./event-bus";
+import eventBus from "../event-bus";
 import Vue, { PropType } from "vue";
-import { ChallengeFamily } from "./types";
+import { ChallengeFamily } from "../types";
 export default Vue.extend({
   props: {
     challengeFamilies: Map as PropType<Map<string, ChallengeFamily>>,

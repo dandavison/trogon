@@ -10,8 +10,8 @@ import "../node_modules/@fortawesome/fontawesome-free/js/all.js";
 
 import { LocationRequest } from "./types";
 import App from "./App.vue";
-import Root from "./Root.vue";
-import GameRoot from "./GameRoot.vue";
+import Map from "./views/Map.vue";
+import Challenge from "./views/Challenge.vue";
 
 Vue.config.productionTip = false;
 Vue.use(Buefy, {
@@ -20,10 +20,10 @@ Vue.use(Buefy, {
 });
 
 const routes = [
-  { path: "/", component: Root },
+  { path: "/", component: Map },
   {
     path: "/challenge/",
-    component: GameRoot,
+    component: Challenge,
     props: (route: any) => ({
       locationRequest: {
         ebirdLocId: route.query.location,

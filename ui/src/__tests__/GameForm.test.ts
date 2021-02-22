@@ -1,9 +1,9 @@
 import { mount } from "@vue/test-utils";
 
 import { TaxonName } from "../types";
-import GameForm from "../GameForm.vue";
+import GameForm from "../components/GameForm.vue";
 type GameFormInstance = InstanceType<typeof GameForm>;
-import { makeTaxonMaps } from "../Game.vue";
+import { makeTaxonMaps } from "../components/Game.vue";
 
 import { ebirdSpecies as ES } from "../ebird";
 import {

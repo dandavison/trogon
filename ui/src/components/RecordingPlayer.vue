@@ -43,9 +43,9 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 
-import { debug } from "./utils";
-import eventBus from "./event-bus";
-import { Recording } from "./types";
+import { debug } from "../utils";
+import eventBus from "../event-bus";
+import { Recording } from "../types";
 
 export default Vue.extend({
   props: {

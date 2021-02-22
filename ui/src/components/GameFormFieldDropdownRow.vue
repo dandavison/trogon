@@ -23,7 +23,7 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 
-import { SpeciesImages } from "./types";
+import { SpeciesImages } from "../types";
 
 export default Vue.extend({
   props: {

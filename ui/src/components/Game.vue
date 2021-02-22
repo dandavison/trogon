@@ -54,9 +54,9 @@ import {
   fetchRecentObservations,
   fetchSpeciesImages,
   fetchEbirdHotspotsByLatLng,
-} from "./ebird";
-import { fetchRecordings, isSong } from "./xeno-canto";
-import { isDefaultSelectedFamily } from "./birds";
+} from "../ebird";
+import { fetchRecordings, isSong } from "../xeno-canto";
+import { isDefaultSelectedFamily } from "../birds";
 import RecordingPlayer from "./RecordingPlayer.vue";
 import {
   LocationRequest,
@@ -70,10 +70,10 @@ import {
   Settings,
   SpeciesImages,
   XenoCantoRecording,
-} from "./types";
+} from "../types";
 import GameForm from "./GameForm.vue";
 
-import eventBus from "./event-bus";
+import eventBus from "../event-bus";
 import RevealArea from "./RevealArea.vue";
 import ChallengeDescription from "./ChallengeDescription.vue";
 import ChallengeControls from "./ChallengeControls.vue";

@@ -40,7 +40,7 @@ import {
   EbirdObservation,
   EbirdSpecies,
   Settings,
-} from "./types";
+} from "../types";
 
 export default Vue.extend({
   props: {

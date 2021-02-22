@@ -76,9 +76,9 @@
 import _ from "lodash";
 import Vue, { PropType } from "vue";
 
-import { debug, transformTaxonName } from "./utils";
-import { EbirdSpecies } from "./types";
-import { ebirdSpecies } from "./ebird";
+import { debug, transformTaxonName } from "../utils";
+import { EbirdSpecies } from "../types";
+import { ebirdSpecies } from "../ebird";
 import {
   Answer,
   ImageMaps,
@@ -87,7 +87,7 @@ import {
   Settings,
   SpeciesImages,
   TaxonMaps,
-} from "./types";
+} from "../types";
 import GameFormField from "./GameFormField.vue";
 
 type GameFormFieldInstance = InstanceType<typeof GameFormField>;

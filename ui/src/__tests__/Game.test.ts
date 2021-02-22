@@ -1,13 +1,13 @@
 import { mount, Wrapper } from "@vue/test-utils";
 
-import Game from "../Game.vue";
-import GameForm from "../GameForm.vue";
-import GameFormField from "../GameFormField.vue";
+import Game from "../components/Game.vue";
+import GameForm from "../components/GameForm.vue";
+import GameFormField from "../components/GameFormField.vue";
 type GameInstance = InstanceType<typeof Game>;
 type GameFormInstance = InstanceType<typeof GameForm>;
 type GameFormFieldInstance = InstanceType<typeof GameFormField>;
 
-import RevealArea from "../RevealArea.vue";
+import RevealArea from "../components/RevealArea.vue";
 import { ebirdSpecies as ES } from "../ebird";
 import { recording, correctSpecies, incorrectFamily } from "./fixtures";
 

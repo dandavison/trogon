@@ -59,9 +59,9 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 
-import eventBus from "./event-bus";
+import eventBus from "../event-bus";
 import NamesSelector from "./NamesSelector.vue";
-import { ChallengeFamily, Settings } from "./types";
+import { ChallengeFamily, Settings } from "../types";
 
 export default Vue.extend({
   components: { NamesSelector },

@@ -30,8 +30,8 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import eventBus from "./event-bus";
-import { Settings, NamesLanguage } from "./types";
+import eventBus from "../event-bus";
+import { Settings, NamesLanguage } from "../types";
 
 export default Vue.extend({
   props: { settings: Object as PropType<Settings> },

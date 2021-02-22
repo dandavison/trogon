@@ -67,11 +67,11 @@ import {
   LPopup,
   LLayerGroup,
 } from "vue2-leaflet";
-import eventBus from "./event-bus";
+import eventBus from "../event-bus";
 import Help from "./Help.vue";
-import { fetchEbirdHotspotsByLatLng } from "./ebird";
+import { fetchEbirdHotspotsByLatLng } from "../ebird";
 import { LatLngLiteral } from "leaflet";
-import { EbirdHotspot, LeafletMapEvent } from "./types";
+import { EbirdHotspot, LeafletMapEvent } from "../types";
 
 export default Vue.extend({
   components: {

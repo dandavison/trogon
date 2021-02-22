@@ -61,7 +61,7 @@ import Vue from "vue";
 import { BModalComponent } from "buefy/types/components";
 import { isMobile } from "mobile-device-detect";
 
-import { debug, transformTaxonName } from "./utils";
+import { debug, transformTaxonName } from "../utils";
 import GameFormFieldDropdownRow from "./GameFormFieldDropdownRow.vue";
 import GameFormFieldDropdownRowMobile from "./GameFormFieldDropdownRowMobile.vue";
 

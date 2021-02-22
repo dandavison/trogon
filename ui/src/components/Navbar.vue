@@ -37,7 +37,7 @@
 <script lang="ts">
 import Vue from "vue";
 
-import eventBus from "./event-bus";
+import eventBus from "../event-bus";
 import Help from "./Help.vue";
 
 export default Vue.extend({
