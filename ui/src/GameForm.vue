@@ -5,14 +5,13 @@
       id="familySci"
       :initial="answer.familySci"
       :handler="handleFamilySci"
-      @focus="isModal.familySci = true"
-      @select="isModal.familySci = false"
       :shouldShow="shouldShowScientificNames"
       :filter="filterFamilySci"
       :truth="truth.familySci"
       :getImageURLs="getFamilySciImageURLs"
       :imageLabelFn="(im) => im.species.split(' ')[0]"
       :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
+      :useModal="settings.useFieldModals"
     />
 
     <game-form-field
@@ -20,14 +19,13 @@
       id="familyEn"
       :initial="answer.familyEn"
       :handler="handleFamilyEn"
-      @focus="isModal.familyEn = true"
-      @select="isModal.familyEn = false"
       :shouldShow="shouldShowEnglishNames"
       :filter="filterFamilyEn"
       :truth="truth.familyEn"
       :getImageURLs="getFamilyEnImageURLs"
       :imageLabelFn="(im) => im.species.split(' ')[0]"
       :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
+      :useModal="settings.useFieldModals"
     />
 
     <game-form-field
@@ -35,14 +33,13 @@
       id="genus"
       :initial="answer.genus"
       :handler="handleGenus"
-      @focus="isModal.genus = true"
-      @select="isModal.genus = false"
       :shouldShow="true"
       :filter="filterGenus"
       :truth="truth.genus"
       :getImageURLs="getGenusImageURLs"
       :imageLabelFn="(im) => im.species.split(' ')[1]"
       :label="'Genus'"
+      :useModal="settings.useFieldModals"
     />
 
     <game-form-field
@@ -50,14 +47,13 @@
       id="speciesSci"
       :initial="answer.speciesSci"
       :handler="handleSpeciesSci"
-      @focus="isModal.speciesSci = true"
-      @select="isModal.speciesSci = false"
       :shouldShow="shouldShowScientificNames"
       :filter="filterSpeciesSci"
       :truth="truth.speciesSci"
       :getImageURLs="getSpeciesSciImageURLs"
       :imageLabelFn="(im) => ''"
       :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
+      :useModal="settings.useFieldModals"
     />
 
     <game-form-field
@@ -65,14 +61,13 @@
       id="speciesEn"
       :initial="answer.speciesEn"
       :handler="handleSpeciesEn"
-      @focus="isModal.speciesEn = true"
-      @select="isModal.speciesEn = false"
       :shouldShow="shouldShowEnglishNames"
       :filter="filterSpeciesEn"
       :truth="truth.speciesEn"
       :getImageURLs="getSpeciesEnImageURLs"
       :imageLabelFn="(im) => ''"
       :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
+      :useModal="settings.useFieldModals"
     />
   </form>
 </template>
@@ -116,13 +111,6 @@ export default Vue.extend({
         speciesSci: "",
         speciesEn: "",
       } as Answer,
-      isModal: {
-        familySci: false,
-        familyEn: false,
-        genus: false,
-        speciesSci: false,
-        speciesEn: false,
-      },
     };
   },
 
@@ -174,6 +162,7 @@ export default Vue.extend({
 
     speciesSciField(): GameFormFieldInstance {
       return this.$refs.speciesSciField as GameFormFieldInstance;
+      this.$buefy.modal.open;
     },
 
     speciesEnField(): GameFormFieldInstance {

@@ -10,7 +10,7 @@
               ref="autocomplete"
               :placeholder="label"
               :data="filteredCandidates"
-              :open-on-focus="true"
+              :open-on-focus="!useModal"
               @focus="handleFocus"
               @select="handleSelect"
               @blur="handleBlur"
@@ -58,13 +58,14 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { BModalComponent } from "buefy/types/components";
 import { isMobile } from "mobile-device-detect";
 
 import { debug, transformTaxonName } from "./utils";
 import GameFormFieldDropdownRow from "./GameFormFieldDropdownRow.vue";
 import GameFormFieldDropdownRowMobile from "./GameFormFieldDropdownRowMobile.vue";
 
-export default Vue.extend({
+const GameFormField = Vue.extend({
   components: { GameFormFieldDropdownRow, GameFormFieldDropdownRowMobile },
   props: {
     initial: String,
@@ -76,14 +77,25 @@ export default Vue.extend({
     getImageURLs: Function,
     imageLabelFn: Function,
     handler: Function,
+    useModal: Boolean,
+    isModal: {
+      type: Boolean,
+      default: false,
+    },
   },
   mounted() {
     this.dismissMobileKeyboardOnDropdownScroll();
+    if (this.isModal) {
+      let autocomplete = this.$refs.autocomplete as any;
+      autocomplete.focused(); // open-on-focus
+      this.$nextTick(() => autocomplete.$el.querySelector("input").select()); // actually focus
+    }
   },
   data() {
     return {
       answer: this.initial,
       showInputButtons: true,
+      modal: null as BModalComponent | null,
       isMobile,
     };
   },
@@ -126,7 +138,25 @@ export default Vue.extend({
       this.answer = this.truth;
     },
 
+    openModal(): BModalComponent {
+      return this.$buefy.modal.open({
+        parent: this,
+        fullScreen: true,
+        animation: "",
+        component: GameFormField,
+        props: {
+          ...this.$props,
+          useModal: false,
+          isModal: true,
+        },
+      });
+    },
+
     handleFocus() {
+      if (this.useModal) {
+        this.modal = this.openModal();
+        return;
+      }
       this.showInputButtons = false;
       this.$emit("focus");
     },
@@ -140,6 +170,16 @@ export default Vue.extend({
         `GameFormField(${this.id}).handleSelect:`,
         JSON.stringify(answer),
       ]);
+      if (this.isModal) {
+        if (answer) {
+          this.answer = answer;
+          let modal = this.$parent as BModalComponent;
+          let field = modal.$parent as GameFormFieldInstance;
+          field.handleSelect(this.answer);
+          modal.close();
+        }
+        return;
+      }
       this.showInputButtons = true;
       if (answer) {
         this.answer = answer;
@@ -188,6 +228,9 @@ export default Vue.extend({
     },
   },
 });
+
+export default GameFormField;
+type GameFormFieldInstance = InstanceType<typeof GameFormField>;
 </script>
 
 <style scoped>
