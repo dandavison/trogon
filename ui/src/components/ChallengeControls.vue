@@ -1,10 +1,10 @@
 <template>
   <section class="section">
-    <nav v-if="!recording" class="level">
+    <nav v-if="state < GameState.StartedGame" class="level">
       <div class="level-item">
         <div class="field">
           <p class="control">
-            <b-button @click="setNextRecording" class="light is-large">
+            <b-button @click="$emit('challenge:play')" class="light is-large">
               <i class="fas fa-play"></i>
             </b-button>
           </p>
@@ -17,7 +17,7 @@
           <div class="level-item">
             <div class="field">
               <p class="control">
-                <b-button @click="setNextRecording" class="light">
+                <b-button @click="$emit('challenge:next')" class="light">
                   <i class="fas fa-step-forward"></i>
                 </b-button>
               </p>
@@ -25,7 +25,7 @@
           </div>
         </nav>
       </li>
-      <li>
+      <li v-if="recording">
         <nav class="level">
           <div class="level-item">
             <div class="field">
@@ -39,9 +39,9 @@
           </p>
         </nav>
       </li>
-      <li>{{ recording.raw.loc }}, {{ recording.raw.cnt }}</li>
-      <li>{{ recording.raw.type }}</li>
-      <li v-if="recording.raw.also.filter(Boolean).length > 0">
+      <li v-if="recording">{{ recording.raw.loc }}, {{ recording.raw.cnt }}</li>
+      <li v-if="recording">{{ recording.raw.type }}</li>
+      <li v-if="recording && recording.raw.also.filter(Boolean).length > 0">
         <small>
           Also in recording:
           <span v-for="(sp, index) in recording.raw.also" :key="index">
@@ -63,7 +63,13 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { NamesLanguage, Recording, Settings, TaxonMaps } from "../types";
+import {
+  GameState,
+  NamesLanguage,
+  Recording,
+  Settings,
+  TaxonMaps,
+} from "../types";
 
 import RecordingPlayer from "./RecordingPlayer.vue";
 
@@ -72,12 +78,12 @@ export default Vue.extend({
   props: {
     image: String,
     recording: Object as PropType<Recording | null>,
-    setNextRecording: Function,
+    state: Number as PropType<GameState>,
     taxonMaps: Object as PropType<TaxonMaps>,
     settings: Object as PropType<Settings>,
   },
   data() {
-    return { NamesLanguage };
+    return { NamesLanguage, GameState };
   },
 });
 </script>

@@ -122,3 +122,10 @@ export interface ChallengeFamily {
 export interface LeafletMapEvent {
   latlng: LatLngLiteral;
 }
+
+export enum GameState {
+  Init,
+  HaveLocationData,
+  StartedGame,
+  HaveRecording
+}

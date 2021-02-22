@@ -34,7 +34,7 @@
     @play="
       (ev) => {
         debug(['play']);
-        eventBus.$emit('ready:challenge-recording');
+        eventBus.$emit('challenge:have-recording');
       }
     "
   ></audio>

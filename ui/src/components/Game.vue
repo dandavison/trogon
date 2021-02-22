@@ -11,18 +11,20 @@
       :settings="settings"
     />
 
-    <b-loading v-model="isLoading"></b-loading>
+    <b-loading :active="isLoading"></b-loading>
 
     <challenge-controls
       :image="image"
       :recording="recording"
-      :setNextRecording="setNextRecording"
+      :state="state"
+      @challenge:play="nextPrompt"
+      @challenge:next="nextPrompt"
       :taxonMaps="taxonMaps"
       :settings="settings"
     />
 
     <game-form
-      v-if="recording"
+      v-if="state >= GameState.StartedGame"
       ref="gameForm"
       :locationSpecies="filteredLocationSpecies"
       :recording="recording"
@@ -61,6 +63,7 @@ import RecordingPlayer from "./RecordingPlayer.vue";
 import {
   LocationRequest,
   ChallengeFamily,
+  GameState,
   EbirdHotspot,
   EbirdObservation,
   EbirdSpecies,
@@ -109,8 +112,8 @@ export default Vue.extend({
       >,
       recording: null as Recording | null,
       otherRecordings: [] as Recording[],
-      haveLocationData: false,
-      challengeActive: false,
+      state: GameState.Init as GameState,
+      GameState,
       image: "",
       answerIsCorrectSpecies: false,
     };
@@ -120,7 +123,7 @@ export default Vue.extend({
     if (!this.settings.disableNetworkRequests) {
       await this.fetchLocationData();
     }
-    this.haveLocationData = true;
+    this.state = GameState.HaveLocationData;
     this.taxonMaps = makeTaxonMaps(this.locationSpecies);
     this.commonSpecies = new Set(
       this.recentObservations
@@ -136,15 +139,16 @@ export default Vue.extend({
   mounted: function () {
     eventBus.$on("family:select", this.handleFamilySelection);
     eventBus.$on("change:species-filters", this.filterSpecies);
-    eventBus.$on(
-      "ready:challenge-recording",
-      () => (this.challengeActive = true)
-    );
+    eventBus.$on("challenge:have-recording", () => {
+      this.state = GameState.HaveRecording;
+    });
   },
 
   computed: {
-    isLoading(): Boolean {
-      return !this.haveLocationData;
+    isLoading(): boolean {
+      return (
+        this.state == GameState.Init || this.state == GameState.StartedGame
+      );
     },
   },
 
@@ -260,9 +264,11 @@ export default Vue.extend({
       return true;
     },
 
-    async setNextRecording(): Promise<void> {
-      (this.$refs.gameForm as any)?.clear();
+    async nextPrompt(): Promise<void> {
+      this.state = GameState.StartedGame;
+      this.recording = null;
       this.image = "";
+      (this.$refs.gameForm as any)?.clear();
       const rec = await this.challengeRecordingsIterator.next();
       if (!rec.done) {
         [this.recording, this.otherRecordings] = rec.value;
