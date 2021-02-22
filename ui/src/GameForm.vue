@@ -1,99 +1,79 @@
 <template>
   <form>
-    <game-form-field-container
-      :isModal="settings.useFieldModals && isModal.familySci"
-    >
-      <game-form-field
-        ref="familySciField"
-        id="familySci"
-        :initial="answer.familySci"
-        :handler="handleFamilySci"
-        @focus="isModal.familySci = true"
-        @select="isModal.familySci = false"
-        :shouldShow="shouldShowScientificNames"
-        :filter="filterFamilySci"
-        :truth="truth.familySci"
-        :getImageURLs="getFamilySciImageURLs"
-        :imageLabelFn="(im) => im.species.split(' ')[0]"
-        :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
-      />
-    </game-form-field-container>
+    <game-form-field
+      ref="familySciField"
+      id="familySci"
+      :initial="answer.familySci"
+      :handler="handleFamilySci"
+      @focus="isModal.familySci = true"
+      @select="isModal.familySci = false"
+      :shouldShow="shouldShowScientificNames"
+      :filter="filterFamilySci"
+      :truth="truth.familySci"
+      :getImageURLs="getFamilySciImageURLs"
+      :imageLabelFn="(im) => im.species.split(' ')[0]"
+      :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
+    />
 
-    <game-form-field-container
-      :isModal="settings.useFieldModals && isModal.familyEn"
-    >
-      <game-form-field
-        ref="familyEnField"
-        id="familyEn"
-        :initial="answer.familyEn"
-        :handler="handleFamilyEn"
-        @focus="isModal.familyEn = true"
-        @select="isModal.familyEn = false"
-        :shouldShow="shouldShowEnglishNames"
-        :filter="filterFamilyEn"
-        :truth="truth.familyEn"
-        :getImageURLs="getFamilyEnImageURLs"
-        :imageLabelFn="(im) => im.species.split(' ')[0]"
-        :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
-      />
-    </game-form-field-container>
+    <game-form-field
+      ref="familyEnField"
+      id="familyEn"
+      :initial="answer.familyEn"
+      :handler="handleFamilyEn"
+      @focus="isModal.familyEn = true"
+      @select="isModal.familyEn = false"
+      :shouldShow="shouldShowEnglishNames"
+      :filter="filterFamilyEn"
+      :truth="truth.familyEn"
+      :getImageURLs="getFamilyEnImageURLs"
+      :imageLabelFn="(im) => im.species.split(' ')[0]"
+      :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
+    />
 
-    <game-form-field-container
-      :isModal="settings.useFieldModals && isModal.genus"
-    >
-      <game-form-field
-        ref="genusField"
-        id="genus"
-        :initial="answer.genus"
-        :handler="handleGenus"
-        @focus="isModal.genus = true"
-        @select="isModal.genus = false"
-        :shouldShow="true"
-        :filter="filterGenus"
-        :truth="truth.genus"
-        :getImageURLs="getGenusImageURLs"
-        :imageLabelFn="(im) => im.species.split(' ')[1]"
-        :label="'Genus'"
-      />
-    </game-form-field-container>
+    <game-form-field
+      ref="genusField"
+      id="genus"
+      :initial="answer.genus"
+      :handler="handleGenus"
+      @focus="isModal.genus = true"
+      @select="isModal.genus = false"
+      :shouldShow="true"
+      :filter="filterGenus"
+      :truth="truth.genus"
+      :getImageURLs="getGenusImageURLs"
+      :imageLabelFn="(im) => im.species.split(' ')[1]"
+      :label="'Genus'"
+    />
 
-    <game-form-field-container
-      :isModal="settings.useFieldModals && isModal.speciesSci"
-    >
-      <game-form-field
-        ref="speciesSciField"
-        id="speciesSci"
-        :initial="answer.speciesSci"
-        :handler="handleSpeciesSci"
-        @focus="isModal.speciesSci = true"
-        @select="isModal.speciesSci = false"
-        :shouldShow="shouldShowScientificNames"
-        :filter="filterSpeciesSci"
-        :truth="truth.speciesSci"
-        :getImageURLs="getSpeciesSciImageURLs"
-        :imageLabelFn="(im) => ''"
-        :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
-      />
-    </game-form-field-container>
+    <game-form-field
+      ref="speciesSciField"
+      id="speciesSci"
+      :initial="answer.speciesSci"
+      :handler="handleSpeciesSci"
+      @focus="isModal.speciesSci = true"
+      @select="isModal.speciesSci = false"
+      :shouldShow="shouldShowScientificNames"
+      :filter="filterSpeciesSci"
+      :truth="truth.speciesSci"
+      :getImageURLs="getSpeciesSciImageURLs"
+      :imageLabelFn="(im) => ''"
+      :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
+    />
 
-    <game-form-field-container
-      :isModal="settings.useFieldModals && isModal.speciesEn"
-    >
-      <game-form-field
-        ref="speciesEnField"
-        id="speciesEn"
-        :initial="answer.speciesEn"
-        :handler="handleSpeciesEn"
-        @focus="isModal.speciesEn = true"
-        @select="isModal.speciesEn = false"
-        :shouldShow="shouldShowEnglishNames"
-        :filter="filterSpeciesEn"
-        :truth="truth.speciesEn"
-        :getImageURLs="getSpeciesEnImageURLs"
-        :imageLabelFn="(im) => ''"
-        :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
-      />
-    </game-form-field-container>
+    <game-form-field
+      ref="speciesEnField"
+      id="speciesEn"
+      :initial="answer.speciesEn"
+      :handler="handleSpeciesEn"
+      @focus="isModal.speciesEn = true"
+      @select="isModal.speciesEn = false"
+      :shouldShow="shouldShowEnglishNames"
+      :filter="filterSpeciesEn"
+      :truth="truth.speciesEn"
+      :getImageURLs="getSpeciesEnImageURLs"
+      :imageLabelFn="(im) => ''"
+      :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
+    />
   </form>
 </template>
 
@@ -114,12 +94,11 @@ import {
   TaxonMaps,
 } from "./types";
 import GameFormField from "./GameFormField.vue";
-import GameFormFieldContainer from "./GameFormFieldContainer.vue";
 
 type GameFormFieldInstance = InstanceType<typeof GameFormField>;
 
 export default Vue.extend({
-  components: { GameFormFieldContainer, GameFormField },
+  components: { GameFormField },
   props: {
     locationSpecies: Array as PropType<EbirdSpecies[]>,
     recording: Object as PropType<Recording | null>,
