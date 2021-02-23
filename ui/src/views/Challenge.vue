@@ -76,3 +76,10 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style>
+button.modal-close {
+  background-color: black;
+  z-index: 999;
+}
+</style>
