@@ -236,8 +236,9 @@ export default ChallengeFormField;
 type ChallengeFormFieldInstance = InstanceType<typeof ChallengeFormField>;
 </script>
 
-<style scoped>
-.icon.has-text-danger {
+<style>
+.autocomplete .icon.has-text-danger,
+.autocomplete .icon.has-text-success {
   display: none;
 }
 </style>
