@@ -12,7 +12,7 @@
       <li>
         <b-dropdown>
           <template #trigger>
-            <a role="button">
+            <a role="button" style="color: currentColor">
               <span>
                 {{ filteredLocationSpecies.length }} species in challenge
               </span>
