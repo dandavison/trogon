@@ -1,62 +1,76 @@
 <template>
-  <audio
-    controls
-    class="mt-3"
-    :src="recording.url"
-    :preload="preload"
-    @loadedmetadata="
-      (ev) => {
-        debug(['loadedmetadata']);
-        ev.target.play();
-      }
-    "
-    @loadeddata="
-      (ev) => {
-        debug(['loadeddata']);
-      }
-    "
-    @canplay="
-      (ev) => {
-        debug(['canplay']);
-      }
-    "
-    @canplaythrough="
-      (ev) => {
-        debug(['canplaythrough']);
-        ev.target.play();
-      }
-    "
-    @playing="
-      (ev) => {
-        debug(['playing']);
-      }
-    "
-    @play="
-      (ev) => {
-        debug(['play']);
-        eventBus.$emit('challenge:have-recording');
-      }
-    "
-  ></audio>
+  <div class="mt-3"></div>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
 
-import { debug } from "../utils";
 import eventBus from "../event-bus";
-import { Recording } from "../types";
+import { HTMLMediaElementReadyState, Recording } from "../types";
 
 export default Vue.extend({
   props: {
     recording: Object as PropType<Recording>,
-    preload: { type: String, default: "metadata" },
+    preload: {
+      type: String,
+      default: "metadata",
+    },
+    autoplay: {
+      type: Boolean,
+      default: false,
+    },
   },
-  data() {
-    return {
-      eventBus,
-      debug,
-    };
+  created() {
+    if (!this.recording.audio.src) {
+      this.recording.audio = new Audio(this.recording.url);
+    }
+    this.configureAudio(this.recording.audio);
+    this.configureAudioEventListeners(this.recording.audio);
+  },
+  mounted() {
+    this.mountAudio(this.recording.audio);
+  },
+  watch: {
+    recording(value: Recording) {
+      this.mountAudio(value.audio);
+    },
+  },
+  methods: {
+    configureAudio(audio: HTMLAudioElement): void {
+      audio.preload = this.preload;
+      audio.autoplay = this.autoplay;
+      audio.controls = true;
+    },
+
+    configureAudioEventListeners(audio: HTMLAudioElement): void {
+      audio.addEventListener("canplaythrough", () => {
+        console.log("@canplaythrough");
+        audio.play();
+      });
+      audio.addEventListener("play", () => {
+        console.log("@play");
+        eventBus.$emit("challenge:have-recording");
+      });
+    },
+
+    mountAudio(audio: HTMLAudioElement) {
+      if (audio.readyState === HTMLMediaElementReadyState.HAVE_ENOUGH_DATA) {
+        console.log("HAVE_ENOUGH_DATA already");
+        eventBus.$emit("challenge:have-recording");
+        audio.play();
+      }
+      console.log(audio.autoplay);
+      const shouldAutoplay = audio.autoplay;
+      this.$el.append(audio);
+      window.setTimeout(() => {
+        if (shouldAutoplay && !audio.autoplay) {
+          // desktop Chrome
+          console.log(
+            "WARNING: It looks like the browser is blocking audio play from javascript."
+          );
+        }
+      }, 0);
+    },
   },
 });
 </script>

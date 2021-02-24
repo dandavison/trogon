@@ -55,6 +55,7 @@ export const recording: Recording = {
   familySci: "Trogonidae",
   speciesEn: "Collared Trogon",
   url: "fake-url",
+  audio: new Audio(),
   raw: {
     file: "fake-file",
     gen: "fake-gen",

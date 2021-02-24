@@ -60,6 +60,7 @@ function makeRecording(
   const speciesEn = ebirdSpecies.getSpeciesEn(species);
   return {
     url: formatAudioDataURL(xcRecording),
+    audio: new Audio(),
     familySci,
     familyEn,
     genus,

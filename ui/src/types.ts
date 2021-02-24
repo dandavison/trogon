@@ -61,13 +61,22 @@ export interface EbirdObservation {
 
 export interface Recording {
   url: string;
+  audio: HTMLAudioElement;
   familyEn: string;
   familySci: string;
   genus: string;
   speciesEn: string;
   speciesSci: string;
   raw: XenoCantoRecording;
-  [index: string]: string | XenoCantoRecording;
+  [index: string]: string | XenoCantoRecording | HTMLAudioElement | null;
+}
+
+export enum HTMLMediaElementReadyState {
+  HAVE_NOTHING = 0,
+  HAVE_METADATA = 1,
+  HAVE_CURRENT_DATA = 2,
+  HAVE_FUTURE_DATA = 3,
+  HAVE_ENOUGH_DATA = 4
 }
 
 export interface XenoCantoRecording {

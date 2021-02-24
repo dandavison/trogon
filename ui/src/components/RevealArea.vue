@@ -18,7 +18,7 @@
         <ul>
           <li v-if="rec.url != recording.url">
             <ul>
-              <li><recording-player :recording="rec" :preload="'none'" /></li>
+              <li><recording-player :recording="rec" /></li>
               <li>{{ rec.raw.loc }}, {{ rec.raw.cnt }}</li>
             </ul>
           </li>

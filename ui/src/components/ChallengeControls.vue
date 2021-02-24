@@ -30,7 +30,7 @@
           <div class="level-item">
             <div class="field">
               <p class="control">
-                <recording-player :recording="recording" />
+                <recording-player :recording="recording" :autoplay="true" />
               </p>
             </div>
           </div>
