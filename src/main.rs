@@ -3,8 +3,11 @@
 #[macro_use]
 extern crate rocket;
 
+use rocket::fairing::{Fairing, Info, Kind};
+use rocket::http::Header;
 use rocket::response::content;
 use rocket::response::NamedFile;
+use rocket::{Request, Response};
 use rocket_contrib::serve::StaticFiles;
 use structopt::clap::AppSettings::{ColorAlways, ColoredHelp, DeriveDisplayOrder};
 use structopt::StructOpt;
@@ -51,6 +54,7 @@ fn main() -> std::io::Result<()> {
             .mount("/challenge", routes![ui])
             .mount("/status", routes![status::status])
             .mount("/", StaticFiles::from("ui/dist"))
+            .attach(Headers())
             .attach(cors::Headers())
             .launch();
     }
@@ -60,4 +64,19 @@ fn main() -> std::io::Result<()> {
 #[rocket::get("/")]
 pub fn ui() -> content::Html<Option<NamedFile>> {
     content::Html(NamedFile::open("ui/dist/index.html").ok())
+}
+
+pub struct Headers();
+
+impl Fairing for Headers {
+    fn info(&self) -> Info {
+        Info {
+            name: "Add headers",
+            kind: Kind::Response,
+        }
+    }
+
+    fn on_response(&self, _request: &Request, response: &mut Response) {
+        response.set_header(Header::new("Feature-Policy", "autoplay *"));
+    }
 }

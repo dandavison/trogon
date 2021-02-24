@@ -8,6 +8,9 @@ module.exports = {
     }
   },
   devServer: {
-    disableHostCheck: true
+    disableHostCheck: true,
+    headers: {
+      "Feature-Policy": "autoplay *"
+    }
   }
 };
