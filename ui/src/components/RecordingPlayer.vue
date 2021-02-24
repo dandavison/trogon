@@ -1,11 +1,11 @@
 <template>
   <div class="mt-3">
     <audio
-      v-if="!useProgrammaticallyCreatedAudioElement"
       :src="recording.url"
       id="audio-from-html-tag"
-      controls
-      autoplay
+      :autoplay="true"
+      :controls="true"
+      preload="none"
     />
   </div>
 </template>
@@ -21,18 +21,14 @@ export default Vue.extend({
     recording: Object as PropType<Recording>,
     preload: {
       type: String,
-      default: "metadata",
+      default: "none",
     },
     autoplay: {
       type: Boolean,
       default: false,
     },
   },
-  data() {
-    return {
-      useProgrammaticallyCreatedAudioElement: true,
-    };
-  },
+
   created() {
     if (!this.recording.audio.src) {
       this.recording.audio = new Audio(this.recording.url);
@@ -40,14 +36,17 @@ export default Vue.extend({
     this.configureAudio(this.recording.audio);
     this.configureAudioEventListeners(this.recording.audio);
   },
+
   mounted() {
     this.mountAudio(this.recording.audio);
   },
+
   watch: {
     recording(value: Recording) {
       this.mountAudio(value.audio);
     },
   },
+
   methods: {
     configureAudio(audio: HTMLAudioElement): void {
       audio.preload = this.preload;
@@ -57,53 +56,56 @@ export default Vue.extend({
 
     configureAudioEventListeners(audio: HTMLAudioElement): void {
       audio.addEventListener("canplaythrough", () => {
-        console.log("@canplaythrough");
         audio.play();
       });
       audio.addEventListener("play", () => {
-        console.log("@play");
         eventBus.$emit("challenge:have-recording");
       });
     },
 
-    mountAudio(audio: HTMLAudioElement) {
-      if (audio.readyState === HTMLMediaElementReadyState.HAVE_ENOUGH_DATA) {
-        console.log("HAVE_ENOUGH_DATA already");
+    mountAudio(programmaticAudio: HTMLAudioElement) {
+      if (
+        programmaticAudio.readyState ===
+        HTMLMediaElementReadyState.HAVE_ENOUGH_DATA
+      ) {
         eventBus.$emit("challenge:have-recording");
-        audio.play();
+        programmaticAudio.play();
       }
-      console.log(audio.autoplay);
-      const shouldAutoplay = audio.autoplay;
-      this.$el.append(audio);
+      const shouldAutoplay = programmaticAudio.autoplay;
+      this.$el.append(programmaticAudio);
       window.setTimeout(() => {
-        if (shouldAutoplay && !audio.autoplay) {
+        if (shouldAutoplay && !programmaticAudio.autoplay) {
           // desktop Chrome
           console.log(
             "WARNING: It looks like the browser is blocking audio play from javascript: using workaround."
           );
-          this.switchToAudioElementCreatedByHTMLTag(audio);
+          this.selectAudio(false, programmaticAudio);
+        } else {
+          this.selectAudio(true, programmaticAudio);
         }
       }, 0);
     },
 
-    switchToAudioElementCreatedByHTMLTag(
-      programmaticallyCreatedAudio: HTMLAudioElement
+    selectAudio(
+      useProgrammaticAudio: boolean,
+      programmaticAudio: HTMLAudioElement
     ): void {
-      this.useProgrammaticallyCreatedAudioElement = false;
-      programmaticallyCreatedAudio.hidden = true;
-      programmaticallyCreatedAudio.muted = true;
-      // TODO: careful, it still has URL and we don't want two audios playing. How do we destroy it?
-      this.$nextTick(() => {
-        const audio = this.$el.querySelector(
-          "audio#audio-from-html-tag"
-        ) as HTMLAudioElement;
-        if (!audio) {
-          console.log("ERROR: expected to find audio element in DOM");
-          return;
-        }
-        // this.configureAudio(audio);
-        this.configureAudioEventListeners(audio);
-      });
+      const HTMLAudio = this.$el.querySelector(
+        "audio#audio-from-html-tag"
+      ) as HTMLAudioElement;
+      if (useProgrammaticAudio) {
+        this.disableAudio(HTMLAudio);
+        this.configureAudioEventListeners(programmaticAudio);
+      } else {
+        this.disableAudio(programmaticAudio);
+        this.configureAudioEventListeners(HTMLAudio);
+      }
+    },
+
+    disableAudio(audio: HTMLAudioElement): void {
+      audio.hidden = true;
+      audio.muted = true;
+      audio.src = "";
     },
   },
 });
