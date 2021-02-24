@@ -50,7 +50,7 @@ export async function fetchRecordings(
 }
 
 function makeRecording(
-  xcRec: XenoCantoRecording,
+  xcRecording: XenoCantoRecording,
   species: EbirdSpecies
 ): Recording {
   const familySci = ebirdSpecies.getFamilySci(species);
@@ -59,14 +59,22 @@ function makeRecording(
   const speciesSci = ebirdSpecies.getSpeciesSci(species);
   const speciesEn = ebirdSpecies.getSpeciesEn(species);
   return {
-    url: xcRec.file,
-    familySci: familySci,
-    familyEn: familyEn,
-    genus: genus,
-    speciesSci: speciesSci,
-    speciesEn: speciesEn,
-    raw: xcRec
+    url: formatAudioDataURL(xcRecording),
+    familySci,
+    familyEn,
+    genus,
+    speciesSci,
+    speciesEn,
+    raw: xcRecording
   };
+}
+
+function formatAudioDataURL(xcRecording: XenoCantoRecording): string {
+  if (xcRecording.file.startsWith("//")) {
+    return `https:${xcRecording.file}`;
+  } else {
+    return xcRecording.file;
+  }
 }
 
 export function isSong(type: string): boolean {
