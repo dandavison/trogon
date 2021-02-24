@@ -1,5 +1,13 @@
 <template>
-  <div class="mt-3"></div>
+  <div class="mt-3">
+    <audio
+      v-if="!useProgrammaticallyCreatedAudioElement"
+      :src="recording.url"
+      id="audio-from-html-tag"
+      controls
+      autoplay
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -19,6 +27,11 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+  },
+  data() {
+    return {
+      useProgrammaticallyCreatedAudioElement: true,
+    };
   },
   created() {
     if (!this.recording.audio.src) {
@@ -66,10 +79,31 @@ export default Vue.extend({
         if (shouldAutoplay && !audio.autoplay) {
           // desktop Chrome
           console.log(
-            "WARNING: It looks like the browser is blocking audio play from javascript."
+            "WARNING: It looks like the browser is blocking audio play from javascript: using workaround."
           );
+          this.switchToAudioElementCreatedByHTMLTag(audio);
         }
       }, 0);
+    },
+
+    switchToAudioElementCreatedByHTMLTag(
+      programmaticallyCreatedAudio: HTMLAudioElement
+    ): void {
+      this.useProgrammaticallyCreatedAudioElement = false;
+      programmaticallyCreatedAudio.hidden = true;
+      programmaticallyCreatedAudio.muted = true;
+      // TODO: careful, it still has URL and we don't want two audios playing. How do we destroy it?
+      this.$nextTick(() => {
+        const audio = this.$el.querySelector(
+          "audio#audio-from-html-tag"
+        ) as HTMLAudioElement;
+        if (!audio) {
+          console.log("ERROR: expected to find audio element in DOM");
+          return;
+        }
+        // this.configureAudio(audio);
+        this.configureAudioEventListeners(audio);
+      });
     },
   },
 });
