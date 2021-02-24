@@ -8,11 +8,9 @@
     </div>
 
     <div class="p-3">
-      To select a location:
+      To select a location using the map:
       <ol class="p-3">
-        <li>
-          Zoom in on some area of the world.
-        </li>
+        <li>Zoom in on some area of the world.</li>
         <li>
           Right click / long press (phone) to load nearby Ebird locations (red).
           If no red circles appear then there are no Ebird locations nearby.
@@ -25,7 +23,33 @@
     </div>
 
     <div class="p-3">
-      Feedback appreciated! Please send comments, suggestions, etc to
+      Here are some direct links to identification challenges:
+      <ul class="p-3">
+        <li>
+          <a href="/challenge?location=L2697642">
+            Buena Vista, San José del Guaviare, Colombia
+          </a>
+        </li>
+        <li>
+          <a href="/challenge?location=L1158780">
+            Aberdare National Park, Nyandarua County / Nyeri County, Kenya
+          </a>
+        </li>
+        <li>
+          <a href="/challenge?location=L10473105">
+            Dunwich Forest, Suffolk, United Kingdom
+          </a>
+        </li>
+        <li>
+          <a href="/challenge?location=L998667">
+            Cherokee Park, Louisville, Kentucky, United States
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="p-3">
+      Please send suggestions for improvements etc to
       <tt>dandavison7@gmail.com</tt>, or
       <a href="https://github.com/dandavison/trogon/issues">open an issue</a>
       on the Github page.
