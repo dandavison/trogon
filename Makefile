@@ -31,6 +31,12 @@ test-ui:
 test-ui-live:
 	cd ui && $(WITH_ENV_DEV) npx cypress open
 
+deploy: build-ui
+	git checkout main
+	git add ui
+	git commit -m 'npm build'
+	git push
+
 clean:
 	rm -fr ui/dist
 
