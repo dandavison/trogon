@@ -237,9 +237,6 @@ type ChallengeFormFieldInstance = InstanceType<typeof ChallengeFormField>;
 </script>
 
 <style scoped>
-td {
-  border-width: 0px;
-}
 .icon.has-text-danger {
   display: none;
 }
