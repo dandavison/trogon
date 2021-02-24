@@ -4,9 +4,9 @@ use rocket::fairing::{Fairing, Info, Kind};
 use rocket::http::{ContentType, Header, Method};
 use rocket::{Request, Response};
 
-pub struct CORS();
+pub struct Headers();
 
-impl Fairing for CORS {
+impl Fairing for Headers {
     fn info(&self) -> Info {
         Info {
             name: "Add CORS headers to requests",

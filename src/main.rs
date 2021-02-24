@@ -51,7 +51,7 @@ fn main() -> std::io::Result<()> {
             .mount("/challenge", routes![ui])
             .mount("/status", routes![status::status])
             .mount("/", StaticFiles::from("ui/dist"))
-            .attach(cors::CORS())
+            .attach(cors::Headers())
             .launch();
     }
     Ok(())
