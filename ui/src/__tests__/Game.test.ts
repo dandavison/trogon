@@ -13,35 +13,35 @@ import { recording, correctSpecies, incorrectFamily } from "./fixtures";
 
 describe("Challenge", () => {
   test("Truth is not revealed on entering incorrect English species name", async () => {
-    const challengeWrapper: Wrapper<ChallengeInstance> = factory();
-    const challengeFormWrapper = challengeWrapper.findComponent(ChallengeForm) as Wrapper<
+    const challenge: Wrapper<ChallengeInstance> = factory();
+    const challengeForm = challenge.findComponent(ChallengeForm) as Wrapper<
       ChallengeFormInstance
     >;
-    expect(challengeFormWrapper.exists()).toBe(true);
-    const speciesEnFieldWrapper = challengeFormWrapper.findComponent({
+    expect(challengeForm.exists()).toBe(true);
+    const speciesEnField = challengeForm.findComponent({
       ref: "speciesEnField"
     }) as Wrapper<ChallengeFormFieldInstance>;
-    expect(speciesEnFieldWrapper.exists()).toBe(true);
-    expect(challengeWrapper.findComponent(RevealArea).exists()).toBe(false);
-    speciesEnFieldWrapper.setData({ answer: ES.getSpeciesEn(incorrectFamily) });
-    await challengeWrapper.vm.$nextTick();
-    expect(challengeWrapper.findComponent(RevealArea).exists()).toBe(false);
+    expect(speciesEnField.exists()).toBe(true);
+    expect(challenge.findComponent(RevealArea).exists()).toBe(false);
+    speciesEnField.setData({ answer: ES.getSpeciesEn(incorrectFamily) });
+    await challenge.vm.$nextTick();
+    expect(challenge.findComponent(RevealArea).exists()).toBe(false);
   });
 
   test("Truth is revealed on entering correct English species name", async () => {
-    const challengeWrapper: Wrapper<ChallengeInstance> = factory();
-    const challengeFormWrapper = challengeWrapper.findComponent(ChallengeForm) as Wrapper<
+    const challenge: Wrapper<ChallengeInstance> = factory();
+    const challengeForm = challenge.findComponent(ChallengeForm) as Wrapper<
       ChallengeFormInstance
     >;
-    expect(challengeFormWrapper.exists()).toBe(true);
-    const speciesEnFieldWrapper = challengeFormWrapper.findComponent({
+    expect(challengeForm.exists()).toBe(true);
+    const speciesEnField = challengeForm.findComponent({
       ref: "speciesEnField"
     }) as Wrapper<ChallengeFormFieldInstance>;
-    expect(speciesEnFieldWrapper.exists()).toBe(true);
-    expect(challengeWrapper.findComponent(RevealArea).exists()).toBe(false);
-    speciesEnFieldWrapper.setData({ answer: ES.getSpeciesEn(correctSpecies) });
-    await challengeWrapper.vm.$nextTick();
-    expect(challengeWrapper.findComponent(RevealArea).exists()).toBe(true);
+    expect(speciesEnField.exists()).toBe(true);
+    expect(challenge.findComponent(RevealArea).exists()).toBe(false);
+    speciesEnField.setData({ answer: ES.getSpeciesEn(correctSpecies) });
+    await challenge.vm.$nextTick();
+    expect(challenge.findComponent(RevealArea).exists()).toBe(true);
   });
 });
 
