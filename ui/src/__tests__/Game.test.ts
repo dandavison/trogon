@@ -13,41 +13,36 @@ import { recording, correctSpecies, incorrectFamily } from "./fixtures";
 
 describe("Challenge", () => {
   test("Truth is not revealed on entering incorrect English species name", async () => {
-    const challenge: Wrapper<ChallengeInstance> = factory();
-    challenge.setData({ state: ChallengeState.StartedChallenge });
-    await challenge.vm.$nextTick();
-    const challengeForm = challenge.findComponent({
-      ref: "challengeForm"
-    }) as Wrapper<ChallengeFormInstance>;
-    expect(challengeForm.exists()).toBe(true);
-    const speciesEnField = challengeForm.findComponent({
-      ref: "speciesEnField"
-    }) as Wrapper<ChallengeFormFieldInstance>;
-    expect(speciesEnField.exists()).toBe(true);
-    expect(challenge.findComponent(RevealArea).exists()).toBe(false);
+    const { challenge, speciesEnField } = (await getComponentWrappers()) as any;
     speciesEnField.setData({ answer: ES.getSpeciesEn(incorrectFamily) });
     await challenge.vm.$nextTick();
     expect(challenge.findComponent(RevealArea).exists()).toBe(false);
   });
 
   test("Truth is revealed on entering correct English species name", async () => {
-    const challenge: Wrapper<ChallengeInstance> = factory();
-    challenge.setData({ state: ChallengeState.StartedChallenge });
-    await challenge.vm.$nextTick();
-    const challengeForm = challenge.findComponent(ChallengeForm) as Wrapper<
-      ChallengeFormInstance
-    >;
-    expect(challengeForm.exists()).toBe(true);
-    const speciesEnField = challengeForm.findComponent({
-      ref: "speciesEnField"
-    }) as Wrapper<ChallengeFormFieldInstance>;
-    expect(speciesEnField.exists()).toBe(true);
-    expect(challenge.findComponent(RevealArea).exists()).toBe(false);
+    const { challenge, speciesEnField } = (await getComponentWrappers()) as any;
     speciesEnField.setData({ answer: ES.getSpeciesEn(correctSpecies) });
     await challenge.vm.$nextTick();
     expect(challenge.findComponent(RevealArea).exists()).toBe(true);
   });
 });
+
+async function getComponentWrappers(): Promise<Object> {
+  // assert challenge ready and truth not revealed
+  const challenge: Wrapper<ChallengeInstance> = factory();
+  challenge.setData({ state: ChallengeState.StartedChallenge });
+  await challenge.vm.$nextTick();
+  const challengeForm = challenge.findComponent(ChallengeForm) as Wrapper<
+    ChallengeFormInstance
+  >;
+  expect(challengeForm.exists()).toBe(true);
+  const speciesEnField = challengeForm.findComponent({
+    ref: "speciesEnField"
+  }) as Wrapper<ChallengeFormFieldInstance>;
+  expect(speciesEnField.exists()).toBe(true);
+  expect(challenge.findComponent(RevealArea).exists()).toBe(false);
+  return { challenge, speciesEnField };
+}
 
 function factory(): Wrapper<ChallengeInstance> {
   return mount(Challenge, {
