@@ -17,7 +17,13 @@
       </div>
       <div v-if="state > ChallengeState.StartedChallenge" class="level-right">
         <div class="level-item">
-          {{ score.correct.size }} / {{ score.nPrompts }}
+          <span
+            class="mr-1"
+            :style="score.correct.size > 0 ? 'color: #48c774' : ''"
+            >{{ score.correct.size }}</span
+          >
+          /
+          <span class="ml-1">{{ score.nPrompts }}</span>
         </div>
       </div>
     </div>
