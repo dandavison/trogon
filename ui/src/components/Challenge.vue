@@ -51,7 +51,6 @@ import Vue, { PropType } from "vue";
 
 import {
   fetchEbirdHotspots,
-  ebirdSpecies,
   fetchLocationSpecies,
   fetchRecentObservations,
   fetchSpeciesImages,
@@ -66,11 +65,11 @@ import {
   ChallengeState,
   EbirdHotspot,
   EbirdObservation,
-  EbirdSpecies,
   TaxonMaps,
   ImageMaps,
   Recording,
   Settings,
+  Species,
   SpeciesImages,
   XenoCantoRecording,
 } from "../types";
@@ -100,8 +99,8 @@ export default Vue.extend({
     return {
       ebirdLocIds: [] as string[],
       ebirdHotspots: [] as EbirdHotspot[],
-      locationSpecies: [] as EbirdSpecies[],
-      filteredLocationSpecies: [] as EbirdSpecies[],
+      locationSpecies: [] as Species[],
+      filteredLocationSpecies: [] as Species[],
       commonSpecies: new Set([]) as Set<string>,
       recentObservations: [] as EbirdObservation[],
       challengeFamilies: new Map([]) as Map<string, ChallengeFamily>,
@@ -127,7 +126,7 @@ export default Vue.extend({
     this.taxonMaps = makeTaxonMaps(this.locationSpecies);
     this.commonSpecies = new Set(
       this.recentObservations
-        .map((obs) => this.taxonMaps.speciesCode2SciName.get(obs.speciesCode))
+        .map((obs) => this.taxonMaps.speciesId2SciName.get(obs.speciesCode))
         .filter(Boolean) as any
     );
     this.challengeFamilies = makeChallengeFamilies(this.locationSpecies);
@@ -198,11 +197,11 @@ export default Vue.extend({
       );
       var species = this.locationSpecies.filter((sp) =>
         this.selectedFamilies.has(
-          this.taxonMaps.species2familyEn.get(sp.sciName) || ""
+          this.taxonMaps.species2familyEn.get(sp.speciesSci) || ""
         )
       );
       if (this.settings.commonSpeciesOnly) {
-        species = species.filter((sp) => this.commonSpecies.has(sp.sciName));
+        species = species.filter((sp) => this.commonSpecies.has(sp.speciesSci));
       }
       this.filteredLocationSpecies = species;
     },
@@ -224,9 +223,9 @@ export default Vue.extend({
     > {
       for (let species of _.shuffle(this.locationSpecies)) {
         let sppecies = new Set(
-          this.filteredLocationSpecies.map((sp) => sp.sciName)
+          this.filteredLocationSpecies.map((sp) => sp.speciesSci)
         );
-        if (sppecies.has(species.sciName)) {
+        if (sppecies.has(species.speciesSci)) {
           let recordings = await fetchRecordings(species, this.ebirdHotspots);
           for (let recording of recordings) {
             if (this.recordingMatchesFilters(recording.raw)) {
@@ -285,14 +284,14 @@ export default Vue.extend({
 });
 
 function makeChallengeFamilies(
-  challengeSpecies: EbirdSpecies[]
+  challengeSpecies: Species[]
 ): Map<string, ChallengeFamily> {
   const family2order = new Map(
-    challengeSpecies.map((sp) => [sp.familyComName, sp.order])
+    challengeSpecies.map((sp) => [sp.familyEn, sp.order])
   );
 
   return new Map(
-    Object.entries(_.groupBy(challengeSpecies, (sp) => sp.familyComName)).map(
+    Object.entries(_.groupBy(challengeSpecies, (sp) => sp.familyEn)).map(
       ([family, spp]) => [
         family,
         {
@@ -304,8 +303,8 @@ function makeChallengeFamilies(
   );
 }
 
-export function makeTaxonMaps(species: EbirdSpecies[]): TaxonMaps {
-  const speciesCode2SciName = new Map();
+export function makeTaxonMaps(species: Species[]): TaxonMaps {
+  const speciesId2SciName = new Map();
   const species2familySci = new Map();
   const species2familyEn = new Map();
   const familyEn2Sci = new Map();
@@ -316,19 +315,19 @@ export function makeTaxonMaps(species: EbirdSpecies[]): TaxonMaps {
   const speciesEn2Sci = new Map();
 
   for (let sp of species) {
-    speciesCode2SciName.set(sp.speciesCode, sp.sciName);
-    species2familySci.set(sp.sciName, sp.familySciName);
-    species2familyEn.set(sp.sciName, sp.familyComName);
-    familyEn2Sci.set(sp.familyComName, sp.familySciName);
-    familySci2En.set(sp.familySciName, sp.familyComName);
-    genus2familySci.set(ebirdSpecies.getGenus(sp), sp.familySciName);
-    speciesSci2genus.set(sp.sciName, ebirdSpecies.getGenus(sp));
-    speciesSci2En.set(sp.sciName, sp.comName);
-    speciesEn2Sci.set(sp.comName, sp.sciName);
+    speciesId2SciName.set(sp.id, sp.speciesSci);
+    species2familySci.set(sp.speciesSci, sp.familySci);
+    species2familyEn.set(sp.speciesSci, sp.familyEn);
+    familyEn2Sci.set(sp.familyEn, sp.familySci);
+    familySci2En.set(sp.familySci, sp.familyEn);
+    genus2familySci.set(sp.genus, sp.familySci);
+    speciesSci2genus.set(sp.speciesSci, sp.genus);
+    speciesSci2En.set(sp.speciesSci, sp.speciesEn);
+    speciesEn2Sci.set(sp.speciesEn, sp.speciesSci);
   }
 
   return {
-    speciesCode2SciName,
+    speciesId2SciName,
     species2familySci,
     species2familyEn,
     familyEn2Sci,
@@ -342,7 +341,7 @@ export function makeTaxonMaps(species: EbirdSpecies[]): TaxonMaps {
 
 function makeImageMaps(
   speciesImages: SpeciesImages[],
-  locationSpecies: EbirdSpecies[]
+  locationSpecies: Species[]
 ): ImageMaps {
   var speciesSciName2images: Map<string, SpeciesImages[]> = new Map();
   var genus2images: Map<string, SpeciesImages[]> = new Map();
@@ -354,29 +353,25 @@ function makeImageMaps(
   );
 
   for (let sp of locationSpecies) {
-    let genus = ebirdSpecies.getGenus(sp);
-    let speciesSci = ebirdSpecies.getSpeciesSci(sp);
     let haveSeenGenus = true;
-    let images = species2images.get(sp.sciName);
+    let images = species2images.get(sp.speciesSci);
     if (images) {
-      speciesSciName2images.set(speciesSci, [images]);
+      speciesSciName2images.set(sp.speciesSci, [images]);
 
-      if (!genus2images.has(genus)) {
-        genus2images.set(genus, []);
+      if (!genus2images.has(sp.genus)) {
+        genus2images.set(sp.genus, []);
         haveSeenGenus = false;
       }
-      genus2images.get(genus)?.push(images);
+      genus2images.get(sp.genus)?.push(images);
       if (!haveSeenGenus) {
-        let familySci = ebirdSpecies.getFamilySci(sp);
-        let familyEn = ebirdSpecies.getFamilyEn(sp);
-        if (!familySci2images.has(familySci)) {
-          familySci2images.set(familySci, []);
+        if (!familySci2images.has(sp.familySci)) {
+          familySci2images.set(sp.familySci, []);
         }
-        if (!familyEn2images.has(familyEn)) {
-          familyEn2images.set(familyEn, []);
+        if (!familyEn2images.has(sp.familyEn)) {
+          familyEn2images.set(sp.familyEn, []);
         }
-        familySci2images.get(familySci)?.push(images);
-        familyEn2images.get(familyEn)?.push(images);
+        familySci2images.get(sp.familySci)?.push(images);
+        familyEn2images.get(sp.familyEn)?.push(images);
       }
     }
   }

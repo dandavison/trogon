@@ -8,20 +8,19 @@ type ChallengeFormInstance = InstanceType<typeof ChallengeForm>;
 type ChallengeFormFieldInstance = InstanceType<typeof ChallengeFormField>;
 import RevealArea from "../components/RevealArea.vue";
 import { ChallengeState } from "../types";
-import { ebirdSpecies as ES } from "../ebird";
 import { recording, correctSpecies, incorrectFamily } from "./fixtures";
 
 describe("Challenge", () => {
   test("Truth is not revealed on entering incorrect English species name", async () => {
     const { challenge, speciesEnField } = (await getComponentWrappers()) as any;
-    speciesEnField.setData({ answer: ES.getSpeciesEn(incorrectFamily) });
+    speciesEnField.setData({ answer: incorrectFamily.speciesEn });
     await challenge.vm.$nextTick();
     expect(challenge.findComponent(RevealArea).exists()).toBe(false);
   });
 
   test("Truth is revealed on entering correct English species name", async () => {
     const { challenge, speciesEnField } = (await getComponentWrappers()) as any;
-    speciesEnField.setData({ answer: ES.getSpeciesEn(correctSpecies) });
+    speciesEnField.setData({ answer: correctSpecies.speciesEn });
     await challenge.vm.$nextTick();
     expect(challenge.findComponent(RevealArea).exists()).toBe(true);
   });

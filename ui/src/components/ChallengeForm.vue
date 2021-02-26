@@ -77,8 +77,7 @@ import _ from "lodash";
 import Vue, { PropType } from "vue";
 
 import { debug, transformTaxonName } from "../utils";
-import { EbirdSpecies } from "../types";
-import { ebirdSpecies as ES } from "../ebird";
+import { Species } from "../types";
 import {
   Answer,
   ImageMaps,
@@ -95,7 +94,7 @@ type ChallengeFormFieldInstance = InstanceType<typeof ChallengeFormField>;
 export default Vue.extend({
   components: { ChallengeFormField },
   props: {
-    locationSpecies: Array as PropType<EbirdSpecies[]>,
+    locationSpecies: Array as PropType<Species[]>,
     recording: Object as PropType<Recording | null>,
     image: String as PropType<string | null>,
     imageURLMaps: Object as PropType<ImageMaps>,
@@ -276,30 +275,34 @@ export default Vue.extend({
     // filter*
 
     filterFamilySci(answer: string): string[] {
-      return this._filter(answer, this.isFamilySciMatch, ES.getFamilySci);
+      return this._filter(answer, this.isFamilySciMatch, (sp) => sp.familySci);
     },
 
     filterFamilyEn(answer: string): string[] {
       debug(["filterFamilyEn:", JSON.stringify(answer)]);
-      return this._filter(answer, this.isFamilyEnMatch, ES.getFamilyEn);
+      return this._filter(answer, this.isFamilyEnMatch, (sp) => sp.familyEn);
     },
 
     filterGenus(answer: string): string[] {
-      return this._filter(answer, this.isGenusMatch, ES.getGenus);
+      return this._filter(answer, this.isGenusMatch, (sp) => sp.genus);
     },
 
     filterSpeciesSci(answer: string): string[] {
-      return this._filter(answer, this.isSpeciesSciMatch, ES.getSpeciesSci);
+      return this._filter(
+        answer,
+        this.isSpeciesSciMatch,
+        (sp) => sp.speciesSci
+      );
     },
 
     filterSpeciesEn(answer: string): string[] {
-      return this._filter(answer, this.isSpeciesEnMatch, ES.getSpeciesEn);
+      return this._filter(answer, this.isSpeciesEnMatch, (sp) => sp.speciesEn);
     },
 
     _filter(
       answer: string,
       matchFn: Function,
-      mapFn: (_: EbirdSpecies) => string
+      mapFn: (_: Species) => string
     ): string[] {
       return _.uniq(
         this.locationSpecies.filter((sp) => matchFn(answer, sp)).map(mapFn)
@@ -308,15 +311,15 @@ export default Vue.extend({
 
     // is*Match
 
-    isFamilySciMatch(answer: string, species: EbirdSpecies): boolean {
-      return _startsWith(species.familySciName, answer);
+    isFamilySciMatch(answer: string, species: Species): boolean {
+      return _startsWith(species.familySci, answer);
     },
 
-    isFamilyEnMatch(answer: string, species: EbirdSpecies): boolean {
-      return _includes(species.familyComName, answer);
+    isFamilyEnMatch(answer: string, species: Species): boolean {
+      return _includes(species.familyEn, answer);
     },
 
-    isGenusMatch(answer: string, species: EbirdSpecies): boolean {
+    isGenusMatch(answer: string, species: Species): boolean {
       if (
         this.answer.familySci &&
         !this.isFamilySciMatch(this.answer.familySci, species)
@@ -329,10 +332,10 @@ export default Vue.extend({
       ) {
         return false;
       }
-      return _startsWith(ES.getGenus(species), answer);
+      return _startsWith(species.genus, answer);
     },
 
-    isSpeciesSciMatch(answer: string, species: EbirdSpecies): boolean {
+    isSpeciesSciMatch(answer: string, species: Species): boolean {
       if (
         this.answer.familySci &&
         !this.isFamilySciMatch(this.answer.familySci, species)
@@ -343,12 +346,12 @@ export default Vue.extend({
         return false;
       }
       return (
-        _startsWith(ES.getSpeciesSciSp(species), answer) ||
-        _startsWith(ES.getSpeciesSci(species), answer)
+        _startsWith(species.speciesSciSp, answer) ||
+        _startsWith(species.speciesSci, answer)
       );
     },
 
-    isSpeciesEnMatch(answer: string, species: EbirdSpecies): boolean {
+    isSpeciesEnMatch(answer: string, species: Species): boolean {
       if (
         this.answer.familyEn &&
         !this.isFamilyEnMatch(this.answer.familyEn, species)
@@ -358,7 +361,7 @@ export default Vue.extend({
       if (this.answer.genus && !this.isGenusMatch(this.answer.genus, species)) {
         return false;
       }
-      return _includes(ES.getSpeciesEn(species), answer);
+      return _includes(species.speciesEn, answer);
     },
   },
 });

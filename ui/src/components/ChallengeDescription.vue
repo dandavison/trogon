@@ -38,16 +38,16 @@ import {
   ChallengeFamily,
   EbirdHotspot,
   EbirdObservation,
-  EbirdSpecies,
   Settings,
+  Species,
 } from "../types";
 
 export default Vue.extend({
   props: {
     ebirdLocIds: Array as PropType<string[]>,
     ebirdHotspots: Array as PropType<EbirdHotspot[]>,
-    locationSpecies: Array as PropType<EbirdSpecies[]>,
-    filteredLocationSpecies: Array as PropType<EbirdSpecies[]>,
+    locationSpecies: Array as PropType<Species[]>,
+    filteredLocationSpecies: Array as PropType<Species[]>,
     challengeFamilies: Map as PropType<Map<string, ChallengeFamily>>,
     commonSpecies: Set as PropType<Set<string>>,
     recentObservations: Array as PropType<EbirdObservation[]>,

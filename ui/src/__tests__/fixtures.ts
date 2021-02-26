@@ -1,52 +1,52 @@
-import { EbirdSpecies, ImageMaps, Recording } from "../types";
+import { ImageMaps, Recording, Species } from "../types";
 
-export const locationSpecies: EbirdSpecies[] = [
+export const locationSpecies: Species[] = [
   {
-    sciName: "Trogon collaris",
-    comName: "Collared Trogon",
-    speciesCode: "coltro1",
-    category: "species",
-    taxonOrder: 9003,
-    order: "Trogoniformes",
-    familyComName: "Trogons",
-    familySciName: "Trogonidae"
+    id: "coltro1",
+    speciesSci: "Trogon collaris",
+    speciesSciSp: "collaris",
+    speciesEn: "Collared Trogon",
+    genus: "Trogon",
+    familySci: "Trogonidae",
+    familyEn: "Trogons",
+    order: "Trogoniformes"
   },
   {
-    sciName: "Trogon viridis",
-    comName: "Green-backed Trogon",
-    speciesCode: "gnbtro1",
-    category: "species",
-    taxonOrder: 8963,
-    order: "Trogoniformes",
-    familyComName: "Trogons",
-    familySciName: "Trogonidae"
+    id: "gnbtro1",
+    speciesSci: "Trogon viridis",
+    speciesSciSp: "viridis",
+    speciesEn: "Green-backed Trogon",
+    genus: "Trogon",
+    familySci: "Trogonidae",
+    familyEn: "Trogons",
+    order: "Trogoniformes"
   },
   {
-    sciName: "Pharomachrus pavoninus",
-    comName: "Pavonine Quetzal",
-    speciesCode: "pavque1",
-    category: "species",
-    taxonOrder: 8926,
-    order: "Trogoniformes",
-    familyComName: "Trogons",
-    familySciName: "Trogonidae"
+    id: "pavque1",
+    speciesSci: "Pharomachrus pavoninus",
+    speciesSciSp: "pavoninus",
+    speciesEn: "Pavonine Quetzal",
+    genus: "Pharomachrus",
+    familySci: "Trogonidae",
+    familyEn: "Trogons",
+    order: "Trogoniformes"
   },
   {
-    sciName: "Phoenicircus nigricollis",
-    comName: "Black-necked Red-Cotinga",
-    speciesCode: "bnrcot1",
-    category: "species",
-    taxonOrder: 15138,
-    order: "Passeriformes",
-    familyComName: "Cotingas",
-    familySciName: "Cotingidae"
+    id: "bnrcot1",
+    speciesSci: "Phoenicircus nigricollis",
+    speciesSciSp: "nigricollis",
+    speciesEn: "Black-necked Red-Cotinga",
+    genus: "Phoenicircus",
+    familySci: "Cotingidae",
+    familyEn: "Cotingas",
+    order: "Passeriformes"
   }
 ];
 
-export const correctSpecies = locationSpecies[0] as EbirdSpecies;
-export const correctGenus = locationSpecies[1] as EbirdSpecies;
-export const correctFamily = locationSpecies[2] as EbirdSpecies;
-export const incorrectFamily = locationSpecies[3] as EbirdSpecies;
+export const correctSpecies = locationSpecies[0] as Species;
+export const correctGenus = locationSpecies[1] as Species;
+export const correctFamily = locationSpecies[2] as Species;
+export const incorrectFamily = locationSpecies[3] as Species;
 
 export const recording: Recording = {
   genus: "Trogon",

@@ -1,12 +1,6 @@
 import _ from "lodash";
 import iso3311a2 from "iso-3166-1-alpha-2";
-import {
-  EbirdHotspot,
-  EbirdSpecies,
-  Recording,
-  XenoCantoRecording
-} from "./types";
-import { ebirdSpecies } from "./ebird";
+import { EbirdHotspot, Recording, Species, XenoCantoRecording } from "./types";
 
 async function fetchXenoCantoRecordings(
   query: string
@@ -24,11 +18,8 @@ async function fetchXenoCantoRecordings(
   }
 }
 
-function makeQuery(species: EbirdSpecies, locations: EbirdHotspot[]): string {
-  const genus = ebirdSpecies.getGenus(species);
-  const speciesSci = ebirdSpecies.getSpeciesSci(species);
-
-  var query = `${speciesSci}+gen:${genus}`;
+function makeQuery(species: Species, locations: EbirdHotspot[]): string {
+  var query = `${species.speciesSci}+gen:${species.genus}`;
   const countryCodes = new Set(locations.map(loc => loc.countryCode));
   if (countryCodes.size === 1) {
     const [countryCode] = countryCodes;
@@ -41,7 +32,7 @@ function makeQuery(species: EbirdSpecies, locations: EbirdHotspot[]): string {
 }
 
 export async function fetchRecordings(
-  species: EbirdSpecies,
+  species: Species,
   locations: EbirdHotspot[]
 ): Promise<Recording[]> {
   const query = makeQuery(species, locations);
@@ -51,21 +42,16 @@ export async function fetchRecordings(
 
 function makeRecording(
   xcRecording: XenoCantoRecording,
-  species: EbirdSpecies
+  species: Species
 ): Recording {
-  const familySci = ebirdSpecies.getFamilySci(species);
-  const familyEn = ebirdSpecies.getFamilyEn(species);
-  const genus = ebirdSpecies.getGenus(species);
-  const speciesSci = ebirdSpecies.getSpeciesSci(species);
-  const speciesEn = ebirdSpecies.getSpeciesEn(species);
   return {
     url: formatAudioDataURL(xcRecording),
     audio: new Audio(),
-    familySci,
-    familyEn,
-    genus,
-    speciesSci,
-    speciesEn,
+    familySci: species.familySci,
+    familyEn: species.familyEn,
+    genus: species.genus,
+    speciesSci: species.speciesSci,
+    speciesEn: species.speciesEn,
     raw: xcRecording
   };
 }

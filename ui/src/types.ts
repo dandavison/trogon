@@ -29,15 +29,15 @@ export interface LocationRequest {
   latlng?: LatLngLiteral;
 }
 
-export interface EbirdSpecies {
-  sciName: string;
-  comName: string;
-  speciesCode: string;
-  category: string;
-  taxonOrder: number;
+export interface Species {
+  id: string;
+  speciesSci: string; // 'Trogon collaris'
+  speciesSciSp: string; // 'collaris'
+  speciesEn: string;
+  genus: string;
+  familyEn: string;
+  familySci: string;
   order: string;
-  familyComName: string;
-  familySciName: string;
 }
 
 export interface EbirdHotspot {
@@ -105,7 +105,7 @@ export interface SpeciesImages {
 }
 
 export interface TaxonMaps {
-  speciesCode2SciName: Map<string, string>;
+  speciesId2SciName: Map<string, string>;
   species2familySci: Map<string, string>;
   species2familyEn: Map<string, string>;
   familyEn2Sci: Map<string, string>;

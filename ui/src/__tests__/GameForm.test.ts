@@ -5,7 +5,6 @@ import ChallengeForm from "../components/ChallengeForm.vue";
 type ChallengeFormInstance = InstanceType<typeof ChallengeForm>;
 import { makeTaxonMaps } from "../components/Challenge.vue";
 
-import { ebirdSpecies as ES } from "../ebird";
 import {
   locationSpecies,
   imageURLMaps,
@@ -20,34 +19,34 @@ describe("ChallengeForm fixtures", () => {
   test("fixtures are coherent", () => {
     // FamilySci
     const trueFamilySci = recording.familySci;
-    expect(trueFamilySci).toEqual(ES.getFamilySci(correctSpecies));
-    expect(trueFamilySci).toEqual(ES.getFamilySci(correctGenus));
-    expect(trueFamilySci).toEqual(ES.getFamilySci(correctFamily));
-    expect(trueFamilySci).not.toEqual(ES.getFamilySci(incorrectFamily));
+    expect(trueFamilySci).toEqual(correctSpecies.familySci);
+    expect(trueFamilySci).toEqual(correctGenus.familySci);
+    expect(trueFamilySci).toEqual(correctFamily.familySci);
+    expect(trueFamilySci).not.toEqual(incorrectFamily.familySci);
     // FamilyEn
     const trueFamilyEn = recording.familyEn;
-    expect(trueFamilyEn).toEqual(ES.getFamilyEn(correctSpecies));
-    expect(trueFamilyEn).toEqual(ES.getFamilyEn(correctGenus));
-    expect(trueFamilyEn).toEqual(ES.getFamilyEn(correctFamily));
-    expect(trueFamilyEn).not.toEqual(ES.getFamilyEn(incorrectFamily));
+    expect(trueFamilyEn).toEqual(correctSpecies.familyEn);
+    expect(trueFamilyEn).toEqual(correctGenus.familyEn);
+    expect(trueFamilyEn).toEqual(correctFamily.familyEn);
+    expect(trueFamilyEn).not.toEqual(incorrectFamily.familyEn);
     // Genus
     const trueGenus = recording.genus;
-    expect(trueGenus).toEqual(ES.getGenus(correctSpecies));
-    expect(trueGenus).toEqual(ES.getGenus(correctGenus));
-    expect(trueGenus).not.toEqual(ES.getGenus(correctFamily));
-    expect(trueGenus).not.toEqual(ES.getGenus(incorrectFamily));
+    expect(trueGenus).toEqual(correctSpecies.genus);
+    expect(trueGenus).toEqual(correctGenus.genus);
+    expect(trueGenus).not.toEqual(correctFamily.genus);
+    expect(trueGenus).not.toEqual(incorrectFamily.genus);
     // speciesSci
     const trueSpeciesSci = recording.speciesSci;
-    expect(trueSpeciesSci).toEqual(ES.getSpeciesSci(correctSpecies));
-    expect(trueSpeciesSci).not.toEqual(ES.getSpeciesSci(correctGenus));
-    expect(trueSpeciesSci).not.toEqual(ES.getSpeciesSci(correctFamily));
-    expect(trueSpeciesSci).not.toEqual(ES.getSpeciesSci(incorrectFamily));
+    expect(trueSpeciesSci).toEqual(correctSpecies.speciesSci);
+    expect(trueSpeciesSci).not.toEqual(correctGenus.speciesSci);
+    expect(trueSpeciesSci).not.toEqual(correctFamily.speciesSci);
+    expect(trueSpeciesSci).not.toEqual(incorrectFamily.speciesSci);
     // speciesEn
     const trueSpeciesEn = recording.speciesEn;
-    expect(trueSpeciesEn).toEqual(ES.getSpeciesEn(correctSpecies));
-    expect(trueSpeciesEn).not.toEqual(ES.getSpeciesEn(correctGenus));
-    expect(trueSpeciesEn).not.toEqual(ES.getSpeciesEn(correctFamily));
-    expect(trueSpeciesEn).not.toEqual(ES.getSpeciesEn(incorrectFamily));
+    expect(trueSpeciesEn).toEqual(correctSpecies.speciesEn);
+    expect(trueSpeciesEn).not.toEqual(correctGenus.speciesEn);
+    expect(trueSpeciesEn).not.toEqual(correctFamily.speciesEn);
+    expect(trueSpeciesEn).not.toEqual(incorrectFamily.speciesEn);
   });
 });
 
@@ -86,7 +85,7 @@ describe("Clear", () => {
     initializeWithIncorrectSpecies(vm);
     vm.genusField.clear();
     for (let name of [TaxonName.FamilySci, TaxonName.FamilyEn]) {
-      expect(vm.answer[name]).toEqual(ES.getName(name, incorrectFamily));
+      expect(vm.answer[name]).toEqual(incorrectFamily[name]);
     }
     for (let name of [
       TaxonName.Genus,
@@ -106,7 +105,7 @@ describe("Clear", () => {
       TaxonName.FamilyEn,
       TaxonName.Genus
     ]) {
-      expect(vm.answer[name]).toEqual(ES.getName(name, incorrectFamily));
+      expect(vm.answer[name]).toEqual(incorrectFamily[name]);
     }
     for (let name of [TaxonName.SpeciesSci, TaxonName.SpeciesEn]) {
       expect(vm.answer[name]).toEqual("");
@@ -122,7 +121,7 @@ describe("Clear", () => {
       TaxonName.FamilyEn,
       TaxonName.Genus
     ]) {
-      expect(vm.answer[name]).toEqual(ES.getName(name, incorrectFamily));
+      expect(vm.answer[name]).toEqual(incorrectFamily[name]);
     }
     for (let name of [TaxonName.SpeciesSci, TaxonName.SpeciesEn]) {
       expect(vm.answer[name]).toEqual("");
@@ -132,7 +131,7 @@ describe("Clear", () => {
 
 function initializeWithIncorrectSpecies(vm: ChallengeFormInstance) {
   for (let name of Object.values(TaxonName)) {
-    (vm as any)[name + "Field"].answer = ES.getName(name, incorrectFamily);
+    (vm as any)[name + "Field"].answer = incorrectFamily[name];
   }
   for (let name of Object.values(TaxonName)) {
     expect(vm.answer[name]).toEqual((vm as any)[name + "Field"].answer);
@@ -151,58 +150,58 @@ describe("ChallengeForm autofill and isCorrect", () => {
 
   test("familySci input works", () => {
     const vm: ChallengeFormInstance = factory().vm;
-    vm.familySciField.answer = ES.getFamilySci(incorrectFamily);
+    vm.familySciField.answer = incorrectFamily.familySci;
     expect(vm.familySciField.isCorrect()).toEqual(false);
     expect(vm.familyEnField.isCorrect()).toEqual(false);
     vm.clear();
-    vm.familySciField.answer = ES.getFamilySci(correctFamily);
+    vm.familySciField.answer = correctFamily.familySci;
     expectCorrectFamilySciEntered(vm);
   });
 
   test("familyEn input works", () => {
     const vm: ChallengeFormInstance = factory().vm;
-    vm.familyEnField.answer = ES.getFamilyEn(incorrectFamily);
+    vm.familyEnField.answer = incorrectFamily.familyEn;
     expect(vm.familySciField.isCorrect()).toEqual(false);
     expect(vm.familyEnField.isCorrect()).toEqual(false);
     vm.clear();
-    vm.familyEnField.answer = ES.getFamilyEn(correctFamily);
+    vm.familyEnField.answer = correctFamily.familyEn;
     expectCorrectFamilyEnEntered(vm);
   });
 
   test("genus input works", () => {
     const vm: ChallengeFormInstance = factory().vm;
-    vm.genusField.answer = ES.getGenus(correctFamily);
+    vm.genusField.answer = correctFamily.genus;
     expect(vm.familySciField.isCorrect()).toEqual(true);
     expect(vm.familyEnField.isCorrect()).toEqual(true);
     expect(vm.genusField.isCorrect()).toEqual(false);
     vm.clear();
-    vm.genusField.answer = ES.getGenus(correctGenus);
+    vm.genusField.answer = correctGenus.genus;
     expectCorrectGenusEntered(vm);
   });
 
   test("speciesSci input works", () => {
     const vm: ChallengeFormInstance = factory().vm;
-    vm.speciesSciField.answer = ES.getSpeciesSci(correctGenus);
+    vm.speciesSciField.answer = correctGenus.speciesSci;
     expect(vm.familySciField.isCorrect()).toEqual(true);
     expect(vm.familyEnField.isCorrect()).toEqual(true);
     expect(vm.genusField.isCorrect()).toEqual(true);
     expect(vm.speciesSciField.isCorrect()).toEqual(false);
     expect(vm.speciesEnField.isCorrect()).toEqual(false);
     vm.clear();
-    vm.speciesSciField.answer = ES.getSpeciesSci(correctSpecies);
+    vm.speciesSciField.answer = correctSpecies.speciesSci;
     expectCorrectSpeciesSciEntered(vm);
   });
 
   test("speciesEn input works", () => {
     const vm: ChallengeFormInstance = factory().vm;
-    vm.speciesEnField.answer = ES.getSpeciesEn(correctGenus);
+    vm.speciesEnField.answer = correctGenus.speciesEn;
     expect(vm.familySciField.isCorrect()).toEqual(true);
     expect(vm.familyEnField.isCorrect()).toEqual(true);
     expect(vm.genusField.isCorrect()).toEqual(true);
     expect(vm.speciesSciField.isCorrect()).toEqual(false);
     expect(vm.speciesEnField.isCorrect()).toEqual(false);
     vm.clear();
-    vm.speciesEnField.answer = ES.getSpeciesEn(correctSpecies);
+    vm.speciesEnField.answer = correctSpecies.speciesEn;
     expectCorrectSpeciesEnEntered(vm);
   });
 });

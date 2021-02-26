@@ -5,12 +5,22 @@ import { fetchMultipleJSON } from "./utils";
 import {
   EbirdHotspot,
   EbirdObservation,
-  EbirdSpecies,
-  SpeciesImages,
-  TaxonName
+  Species,
+  SpeciesImages
 } from "./types";
 
-export const ebirdSpecies = {
+export interface EbirdSpecies {
+  sciName: string;
+  comName: string;
+  speciesCode: string;
+  category: string;
+  taxonOrder: number;
+  order: string;
+  familyComName: string;
+  familySciName: string;
+}
+
+const ES = {
   getGenus: function(species: EbirdSpecies): string {
     return species.sciName.split(" ")[0] || "";
   },
@@ -25,20 +35,16 @@ export const ebirdSpecies = {
   },
   getFamilyEn: function(species: EbirdSpecies): string {
     return (
-      taxonomy.genus2familyEn.get(ebirdSpecies.getGenus(species)) ||
+      taxonomy.genus2familyEn.get(ES.getGenus(species)) ||
       taxonomy.familyEn2familyEn.get(species.familyComName) ||
       species.familyComName
     );
   },
   getFamilySci: function(species: EbirdSpecies): string {
     return (
-      taxonomy.genus2familySci.get(ebirdSpecies.getGenus(species)) ||
+      taxonomy.genus2familySci.get(ES.getGenus(species)) ||
       species.familySciName
     );
-  },
-  getName: function(name: TaxonName, species: EbirdSpecies): string {
-    const fnName = "get" + name[0]?.toUpperCase() + name.slice(1, name.length);
-    return (ebirdSpecies as any)[fnName](species);
   }
 };
 
@@ -78,9 +84,22 @@ const taxonomy = {
   ])
 };
 
+function ebirdSpecies2Species(sp: EbirdSpecies): Species {
+  return {
+    id: sp.speciesCode,
+    speciesSci: ES.getSpeciesSci(sp),
+    speciesSciSp: ES.getSpeciesSciSp(sp),
+    speciesEn: ES.getSpeciesEn(sp),
+    genus: ES.getGenus(sp),
+    familyEn: ES.getFamilyEn(sp),
+    familySci: ES.getFamilySci(sp),
+    order: sp.order
+  };
+}
+
 export async function fetchLocationSpecies(
   locIds: string[]
-): Promise<EbirdSpecies[]> {
+): Promise<Species[]> {
   /// Fetch species lists for each location in parallel
   var speciesCodes = await fetchMultipleJSON(
     locIds.map(
@@ -100,11 +119,9 @@ export async function fetchLocationSpecies(
     }/api/ebird-species?species_codes=${speciesCodes.join(",")}`
   ).then(resp => resp.json());
   console.log(
-    `Fetched ${species.length} EbirdSpecies for ebird locations: ${locIds.join(
-      ","
-    )}`
+    `Fetched ${species.length} species for ebird locations: ${locIds.join(",")}`
   );
-  return species;
+  return species.map(ebirdSpecies2Species);
 }
 
 export async function fetchRecentObservations(
@@ -140,14 +157,14 @@ export async function fetchEbirdHotspotsByLatLng(
 }
 
 export async function fetchSpeciesImages(
-  species: EbirdSpecies[]
+  species: Species[]
 ): Promise<SpeciesImages[]> {
-  const speciesString = species.map(sp => sp.sciName).join(",");
+  const speciesString = species.map(sp => sp.speciesSci).join(",");
   const cachedSpeciesImages: SpeciesImages[] = await fetch(
     `${process.env.VUE_APP_SERVER_URL}/api/species-image-urls?species=${speciesString}&cached_only=true`
   ).then(resp => resp.json());
   const remainingSpeciesNames = _.difference(
-    species.map(ebirdSpecies.getSpeciesSci),
+    species.map(sp => sp.speciesSci),
     cachedSpeciesImages.map(si => si.species)
   );
   console.log(
