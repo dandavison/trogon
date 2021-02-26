@@ -8,6 +8,12 @@
     </div>
 
     <div class="p-3">
+      By default the challenge is audio-only, but this can be changed in the
+      settings (<i class="fas fa-cog"></i> at the top of the page), along with
+      English vs scientific name preferences, etc.
+    </div>
+
+    <div class="p-3">
       To select a location using the map:
       <ol class="p-3">
         <li>Zoom in on some area of the world.</li>

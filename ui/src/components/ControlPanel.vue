@@ -46,7 +46,7 @@
               class="menu-item has-text-weight-semibold"
             ></b-menu-item>
             <b-switch v-model="newSettings.useFieldModals">
-              Full-screen dropdowns
+              Full-screen menus
             </b-switch>
           </b-menu-list>
         </b-menu>
