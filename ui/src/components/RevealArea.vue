@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="section">
     <p>
       <a :href="recordingSpeciesWikipediaURL()" target="_blank">
         {{ recordingSpeciesSciName() }}
