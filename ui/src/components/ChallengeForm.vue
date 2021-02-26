@@ -380,9 +380,3 @@ function _startsWith(truth: string, answer: string): boolean {
   return transformTaxonName(truth).startsWith(transformTaxonName(answer));
 }
 </script>
-
-<style scoped>
-.is-success input {
-  border-color: #48c774;
-}
-</style>
