@@ -24,15 +24,58 @@ export const ebirdSpecies = {
     return species.comName;
   },
   getFamilyEn: function(species: EbirdSpecies): string {
-    return species.familyComName;
+    return (
+      taxonomy.genus2familyEn.get(ebirdSpecies.getGenus(species)) ||
+      taxonomy.familyEn2familyEn.get(species.familyComName) ||
+      species.familyComName
+    );
   },
   getFamilySci: function(species: EbirdSpecies): string {
-    return species.familySciName;
+    return (
+      taxonomy.genus2familySci.get(ebirdSpecies.getGenus(species)) ||
+      species.familySciName
+    );
   },
   getName: function(name: TaxonName, species: EbirdSpecies): string {
     const fnName = "get" + name[0]?.toUpperCase() + name.slice(1, name.length);
     return (ebirdSpecies as any)[fnName](species);
   }
+};
+
+const taxonomy = {
+  familyEn2familyEn: new Map([["Ovenbirds and Woodcreepers", "Ovenbirds"]]),
+  genus2familyEn: new Map([
+    ["Certhiasomus", "Woodcreepers"],
+    ["Sittasomus", "Woodcreepers"],
+    ["Deconychura", "Woodcreepers"],
+    ["Dendrocincla", "Woodcreepers"],
+    ["Glyphorynchus", "Woodcreepers"],
+    ["Dendrexetastes", "Woodcreepers"],
+    ["Nasica", "Woodcreepers"],
+    ["Dendrocolaptes", "Woodcreepers"],
+    ["Hylexetastes", "Woodcreepers"],
+    ["Xiphocolaptes", "Woodcreepers"],
+    ["Xiphorhynchus", "Woodcreepers"],
+    ["Dendroplex", "Woodcreepers"],
+    ["Drymornis", "Woodcreepers"],
+    ["Lepidocolaptes", "Woodcreepers"]
+  ]),
+  genus2familySci: new Map([
+    ["Certhiasomus", "Dendrocolaptinae"],
+    ["Sittasomus", "Dendrocolaptinae"],
+    ["Deconychura", "Dendrocolaptinae"],
+    ["Dendrocincla", "Dendrocolaptinae"],
+    ["Glyphorynchus", "Dendrocolaptinae"],
+    ["Dendrexetastes", "Dendrocolaptinae"],
+    ["Nasica", "Dendrocolaptinae"],
+    ["Dendrocolaptes", "Dendrocolaptinae"],
+    ["Hylexetastes", "Dendrocolaptinae"],
+    ["Xiphocolaptes", "Dendrocolaptinae"],
+    ["Xiphorhynchus", "Dendrocolaptinae"],
+    ["Dendroplex", "Dendrocolaptinae"],
+    ["Drymornis", "Dendrocolaptinae"],
+    ["Lepidocolaptes", "Dendrocolaptinae"]
+  ])
 };
 
 export async function fetchLocationSpecies(
