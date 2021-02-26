@@ -44,7 +44,6 @@
       :taxonMaps="taxonMaps"
       :settings="settings"
       @answer:species-correct="handleAnswerSpeciesCorrect"
-      @reveal-species="handleRevealSpecies"
     />
 
     <reveal-area
@@ -156,6 +155,7 @@ export default Vue.extend({
     eventBus.$on("challenge:have-recording", () => {
       this.state = ChallengeState.HaveRecording;
     });
+    eventBus.$on("reveal-field", this.handleReveal);
   },
 
   computed: {
@@ -310,7 +310,7 @@ export default Vue.extend({
       }
     },
 
-    handleRevealSpecies(): void {
+    handleReveal(): void {
       if (!this.recording) {
         return;
       }

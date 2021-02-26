@@ -61,6 +61,7 @@ import Vue from "vue";
 import { BModalComponent } from "buefy/types/components";
 import { isMobile } from "mobile-device-detect";
 
+import eventBus from "../event-bus";
 import { debug, transformTaxonName } from "../utils";
 import ChallengeFormFieldDropdownRow from "./ChallengeFormFieldDropdownRow.vue";
 import ChallengeFormFieldDropdownRowMobile from "./ChallengeFormFieldDropdownRowMobile.vue";
@@ -139,7 +140,7 @@ const ChallengeFormField = Vue.extend({
         JSON.stringify(this.truth),
       ]);
       this.answer = this.truth;
-      this.$emit("reveal-field");
+      eventBus.$emit("reveal-field");
     },
 
     openModal(): BModalComponent {
