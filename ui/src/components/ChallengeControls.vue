@@ -17,7 +17,10 @@
           <div class="level-item">
             <div class="field">
               <p class="control">
-                <b-button @click="$emit('challenge:next')" class="light">
+                <b-button
+                  @click="$emit('challenge:next')"
+                  class="light is-large"
+                >
                   <i class="fas fa-step-forward"></i>
                 </b-button>
               </p>
