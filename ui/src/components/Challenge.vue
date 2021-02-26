@@ -1,15 +1,26 @@
 <template>
   <section>
-    <challenge-description
-      :ebirdLocIds="ebirdLocIds"
-      :ebirdHotspots="ebirdHotspots"
-      :locationSpecies="locationSpecies"
-      :filteredLocationSpecies="filteredLocationSpecies"
-      :challengeFamilies="challengeFamilies"
-      :commonSpecies="commonSpecies"
-      :recentObservations="recentObservations"
-      :settings="settings"
-    />
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <challenge-description
+            :ebirdLocIds="ebirdLocIds"
+            :ebirdHotspots="ebirdHotspots"
+            :locationSpecies="locationSpecies"
+            :filteredLocationSpecies="filteredLocationSpecies"
+            :challengeFamilies="challengeFamilies"
+            :commonSpecies="commonSpecies"
+            :recentObservations="recentObservations"
+            :settings="settings"
+          />
+        </div>
+      </div>
+      <div v-if="state > ChallengeState.StartedChallenge" class="level-right">
+        <div class="level-item">
+          {{ score.correct.size }} / {{ score.nPrompts }}
+        </div>
+      </div>
+    </div>
 
     <b-loading :active="isLoading"></b-loading>
 
@@ -32,7 +43,8 @@
       :imageURLMaps="imageURLMaps"
       :taxonMaps="taxonMaps"
       :settings="settings"
-      @answer:species-correct="(value) => (answerIsCorrectSpecies = value)"
+      @answer:species-correct="handleAnswerSpeciesCorrect"
+      @reveal-species="handleRevealSpecies"
     />
 
     <reveal-area
@@ -115,6 +127,11 @@ export default Vue.extend({
       ChallengeState,
       image: "",
       answerIsCorrectSpecies: false,
+      score: {
+        correct: new Set() as Set<string>,
+        revealed: new Set() as Set<string>,
+        nPrompts: 0,
+      },
     };
   },
 
@@ -276,9 +293,30 @@ export default Vue.extend({
             alert("No images for species!");
           }
         }
+        this.score.nPrompts += 1;
       } else {
         alert("No more recordings!");
       }
+    },
+
+    handleAnswerSpeciesCorrect(isCorrect: boolean): void {
+      this.answerIsCorrectSpecies = isCorrect;
+      if (!this.recording) {
+        return;
+      }
+      const key = this.recording.url;
+      if (this.answerIsCorrectSpecies && !this.score.revealed.has(key)) {
+        this.score.correct.add(key);
+      }
+    },
+
+    handleRevealSpecies(): void {
+      if (!this.recording) {
+        return;
+      }
+      const key = this.recording.url;
+      this.score.revealed.add(key);
+      this.score.correct.delete(key);
     },
   },
 });

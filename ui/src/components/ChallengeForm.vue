@@ -54,6 +54,7 @@
       :imageLabelFn="(im) => ''"
       :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
       :useModal="settings.useFieldModals"
+      @reveal-field="$emit('reveal-species')"
     />
 
     <challenge-form-field
@@ -68,6 +69,7 @@
       :imageLabelFn="(im) => ''"
       :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
       :useModal="settings.useFieldModals"
+      @reveal-field="$emit('reveal-species')"
     />
   </form>
 </template>

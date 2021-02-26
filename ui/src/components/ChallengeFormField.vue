@@ -139,6 +139,7 @@ const ChallengeFormField = Vue.extend({
         JSON.stringify(this.truth),
       ]);
       this.answer = this.truth;
+      this.$emit("reveal-field");
     },
 
     openModal(): BModalComponent {
