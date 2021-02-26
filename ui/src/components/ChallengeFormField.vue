@@ -191,6 +191,7 @@ const ChallengeFormField = Vue.extend({
           let field = modal.$parent as ChallengeFormFieldInstance;
           field.handleSelect(this.answer);
           modal.close();
+          field.input.scrollIntoView();
         }
         return;
       }
