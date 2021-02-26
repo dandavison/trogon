@@ -5,31 +5,31 @@
         <b-menu>
           <b-menu-list>
             <b-menu-item
-              label="Prompt"
+              :label="$t('Prompt')"
               class="menu-item has-text-weight-semibold"
             ></b-menu-item>
             <b-switch v-model="newSettings.promptIncludesImages">
-              Images
+              {{ $t("Images") }}
             </b-switch>
             <b-switch v-model="newSettings.promptIncludesRecording">
-              Audio
+              {{ $t("Audio") }}
             </b-switch>
 
             <b-menu-item
-              label="Names"
+              :label="$t('Names')"
               class="menu-item has-text-weight-semibold"
             ></b-menu-item>
             <names-selector :settings="settings" />
 
             <b-menu-item
-              label="Recordings"
+              :label="$t('Recordings')"
               class="menu-item has-text-weight-semibold"
             ></b-menu-item>
             <b-switch v-model="newSettings.commonSpeciesOnly" class="p-1">
-              common species only
+              {{ $t("common species only") }}
             </b-switch>
             <b-switch v-model="newSettings.songsOnly" class="p-1">
-              Songs only
+              {{ $t("Songs only") }}
             </b-switch>
 
             <div class="level p-1">
@@ -37,16 +37,16 @@
                 <b-button @click="showFamilyModal" class="light">
                   <i class="fas fa-dna"></i>
                 </b-button>
-                <span class="pl-2">Select Families</span>
+                <span class="pl-2">{{ $t("Select Families") }}</span>
               </div>
             </div>
 
             <b-menu-item
-              label="Appearance"
+              :label="$t('Appearance')"
               class="menu-item has-text-weight-semibold"
             ></b-menu-item>
             <b-switch v-model="newSettings.useFieldModals">
-              Full-screen menus
+              {{ $t("Full-screen menus") }}
             </b-switch>
           </b-menu-list>
         </b-menu>
@@ -56,8 +56,29 @@
   </section>
 </template>
 
+<i18n>
+{
+  "en": {
+  },
+  "es": {
+    "Appearance": "Apariencia",
+    "Audio": "Audio",
+    "Full-screen menus": "Menús de pantalla completa",
+    "Images": "Imagenes",
+    "Names": "Nombres",
+    "Prompt": "Desafío",
+    "Recordings": "Grabaciones",
+    "Select Families": "Seleccionar familias",
+    "Songs only": "Solo cantos",
+    "common species only": "Solo especies comunes"
+  }
+}
+</i18n>
+
 <script lang="ts">
 import Vue, { PropType } from "vue";
+import VueI18n from "vue-i18n";
+Vue.use(VueI18n);
 
 import eventBus from "../event-bus";
 import NamesSelector from "./NamesSelector.vue";

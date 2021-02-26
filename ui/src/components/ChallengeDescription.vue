@@ -8,20 +8,21 @@
       }}
     </h1>
     <ul>
-      <li>{{ locationSpecies.length }} species</li>
+      <li>{{ locationSpecies.length }} {{ $t("species") }}</li>
       <li>
         <b-dropdown>
           <template #trigger>
             <a role="button" style="color: currentColor">
               <span>
-                {{ filteredLocationSpecies.length }} species in challenge
+                {{ filteredLocationSpecies.length }}
+                {{ $t("species in challenge") }}
               </span>
               <i class="fas fa-chevron-down"></i>
             </a>
           </template>
           <b-dropdown-item>
-            {{ nSelectedFamilies }} / {{ challengeFamilies.size }} families
-            selected
+            {{ nSelectedFamilies }} / {{ challengeFamilies.size }}
+            {{ $t("families selected") }}
           </b-dropdown-item>
           <b-dropdown-item v-if="settings.commonSpeciesOnly">
             Restricting to {{ commonSpecies.size }} recently observed species.
@@ -32,8 +33,22 @@
   </section>
 </template>
 
+<i18n>
+{
+  "en": {
+  },
+  "es": {
+    "families selected": "familias seleccionadas",
+    "species": "especies",
+    "species in challenge": "especies en el desafío"
+  }
+}
+</i18n>
+
 <script lang="ts">
 import Vue, { PropType } from "vue";
+import VueI18n from "vue-i18n";
+Vue.use(VueI18n);
 import {
   ChallengeFamily,
   EbirdHotspot,

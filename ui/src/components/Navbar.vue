@@ -16,7 +16,9 @@
         </router-link>
       </b-navbar-item>
 
-      <b-navbar-item href="#" @click="showHelp"> Help </b-navbar-item>
+      <b-navbar-item href="#" @click="showHelp">
+        {{ $t("Help") }}
+      </b-navbar-item>
       <b-modal v-model="helpModalActive">
         <help />
       </b-modal>
@@ -30,18 +32,32 @@
       <b-navbar-item href="https://github.com/dandavison/trogon">
         <i class="fab fa-github"></i>
       </b-navbar-item>
+
+      <b-navbar-item>
+        <locale-selector />
+      </b-navbar-item>
     </template>
   </b-navbar>
 </template>
 
+<i18n>
+{
+  "en": {},
+  "es": {"Help": "Asistencia"}
+}
+</i18n>
+
 <script lang="ts">
 import Vue from "vue";
+import VueI18n from "vue-i18n";
+Vue.use(VueI18n);
+import LocaleSelector from "../LocaleSelector.vue";
 
 import eventBus from "../event-bus";
 import Help from "./Help.vue";
 
 export default Vue.extend({
-  components: { Help },
+  components: { Help, LocaleSelector },
   data() {
     return { helpModalActive: false };
   },

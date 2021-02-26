@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 import _ from "lodash";
+import i18n from "./i18n";
 import Buefy from "buefy";
 import "buefy/dist/buefy.css";
 import "../node_modules/@fortawesome/fontawesome-free/js/all.js";
@@ -38,6 +39,7 @@ const routes = [
 const router = new VueRouter({ mode: "history", routes });
 
 new Vue({
+  i18n,
   router,
   render: h => h(App)
 }).$mount("#app");
