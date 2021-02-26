@@ -78,7 +78,7 @@ import Vue, { PropType } from "vue";
 
 import { debug, transformTaxonName } from "../utils";
 import { EbirdSpecies } from "../types";
-import { ebirdSpecies } from "../ebird";
+import { ebirdSpecies as ES } from "../ebird";
 import {
   Answer,
   ImageMaps,
@@ -276,40 +276,24 @@ export default Vue.extend({
     // filter*
 
     filterFamilySci(answer: string): string[] {
-      return this._filter(
-        answer,
-        this.isFamilySciMatch,
-        ebirdSpecies.getFamilySci
-      );
+      return this._filter(answer, this.isFamilySciMatch, ES.getFamilySci);
     },
 
     filterFamilyEn(answer: string): string[] {
       debug(["filterFamilyEn:", JSON.stringify(answer)]);
-      return this._filter(
-        answer,
-        this.isFamilyEnMatch,
-        ebirdSpecies.getFamilyEn
-      );
+      return this._filter(answer, this.isFamilyEnMatch, ES.getFamilyEn);
     },
 
     filterGenus(answer: string): string[] {
-      return this._filter(answer, this.isGenusMatch, ebirdSpecies.getGenus);
+      return this._filter(answer, this.isGenusMatch, ES.getGenus);
     },
 
     filterSpeciesSci(answer: string): string[] {
-      return this._filter(
-        answer,
-        this.isSpeciesSciMatch,
-        ebirdSpecies.getSpeciesSci
-      );
+      return this._filter(answer, this.isSpeciesSciMatch, ES.getSpeciesSci);
     },
 
     filterSpeciesEn(answer: string): string[] {
-      return this._filter(
-        answer,
-        this.isSpeciesEnMatch,
-        ebirdSpecies.getSpeciesEn
-      );
+      return this._filter(answer, this.isSpeciesEnMatch, ES.getSpeciesEn);
     },
 
     _filter(
@@ -345,7 +329,7 @@ export default Vue.extend({
       ) {
         return false;
       }
-      return _startsWith(ebirdSpecies.getGenus(species), answer);
+      return _startsWith(ES.getGenus(species), answer);
     },
 
     isSpeciesSciMatch(answer: string, species: EbirdSpecies): boolean {
@@ -359,8 +343,8 @@ export default Vue.extend({
         return false;
       }
       return (
-        _startsWith(ebirdSpecies.getSpeciesSciSp(species), answer) ||
-        _startsWith(ebirdSpecies.getSpeciesSci(species), answer)
+        _startsWith(ES.getSpeciesSciSp(species), answer) ||
+        _startsWith(ES.getSpeciesSci(species), answer)
       );
     },
 
@@ -374,7 +358,7 @@ export default Vue.extend({
       if (this.answer.genus && !this.isGenusMatch(this.answer.genus, species)) {
         return false;
       }
-      return _includes(ebirdSpecies.getSpeciesEn(species), answer);
+      return _includes(ES.getSpeciesEn(species), answer);
     },
   },
 });
