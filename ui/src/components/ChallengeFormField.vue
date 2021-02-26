@@ -59,6 +59,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { BModalComponent } from "buefy/types/components";
+import { BAutocomplete as BAutocompleteInstance } from "buefy/src/components/autocomplete";
+type BAutocomplete = InstanceType<typeof BAutocompleteInstance>;
 import { isMobile } from "mobile-device-detect";
 
 import eventBus from "../event-bus";
@@ -90,9 +92,8 @@ const ChallengeFormField = Vue.extend({
   mounted() {
     this.dismissMobileKeyboardOnDropdownScroll();
     if (this.isModal) {
-      let autocomplete = this.$refs.autocomplete as any;
-      autocomplete.focused(); // open-on-focus
-      this.$nextTick(() => autocomplete.$el.querySelector("input").select()); // actually focus
+      this.autocomplete.focused(); // open-on-focus
+      this.$nextTick(() => this.input.select()); // actually focus
     }
   },
   data() {
@@ -115,6 +116,14 @@ const ChallengeFormField = Vue.extend({
       } else {
         return "";
       }
+    },
+
+    autocomplete(): BAutocomplete {
+      return this.$refs.autocomplete;
+    },
+
+    input(): HTMLInputElement {
+      return this.autocomplete.$el.querySelector("input");
     },
   },
   watch: {
