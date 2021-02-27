@@ -1,6 +1,6 @@
 <template>
   <b-modal v-model="isModalActive">
-    <section class="section has-text-grey-light">
+    <section :class="classes">
       <ul>
         <li v-for="[family, data] of challengeFamilies.entries()" :key="family">
           <b-checkbox
@@ -24,14 +24,27 @@ export default Vue.extend({
     taxonMaps: Object as PropType<TaxonMaps>,
     settings: Object as PropType<Settings>,
   },
+
   data() {
     return {
       isModalActive: false,
     };
   },
+
   mounted() {
     eventBus.$on("show:family-selector", () => (this.isModalActive = true));
   },
+
+  computed: {
+    classes(): object {
+      return {
+        section: true,
+        "has-text-grey-light": true,
+        "is-size-7-mobile": this.settings.names == NamesLanguage.Both,
+      };
+    },
+  },
+
   methods: {
     selectFamily(family: string, val: boolean): void {
       eventBus.$emit("family:select", family, val);
