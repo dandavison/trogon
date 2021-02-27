@@ -8,7 +8,11 @@
 
     <img v-if="image && !settings.promptIncludesImages" :src="image" />
 
-    <b-dropdown v-if="settings.promptIncludesRecording && recording">
+    <b-dropdown
+      v-if="
+        settings.promptIncludesRecording && recording && recordings.length > 1
+      "
+    >
       <template #trigger="{ active }">
         <b-button icon-right="chevron-down" icon-pack="fas">
           <i class="fas fa-volume-up"></i>
