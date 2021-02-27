@@ -26,7 +26,10 @@ export default Vue.extend({
   data() {
     return {
       settings: {
-        names: NamesLanguage.Both,
+        names:
+          this.$i18n.locale == "en"
+            ? NamesLanguage.English
+            : NamesLanguage.Both,
         promptIncludesImages: false,
         promptIncludesRecording: true,
         commonSpeciesOnly: false,
