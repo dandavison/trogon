@@ -7,7 +7,7 @@
             @input="(val) => selectFamily(family, val)"
             :value="data.selected"
           ></b-checkbox>
-          {{ family }} ({{ data.n }})
+          {{ formatFamily(family) }} ({{ data.n }})
         </li>
       </ul>
     </section>
@@ -17,10 +17,12 @@
 <script lang="ts">
 import eventBus from "../event-bus";
 import Vue, { PropType } from "vue";
-import { ChallengeFamily } from "../types";
+import { ChallengeFamily, NamesLanguage, Settings, TaxonMaps } from "../types";
 export default Vue.extend({
   props: {
     challengeFamilies: Map as PropType<Map<string, ChallengeFamily>>,
+    taxonMaps: Object as PropType<TaxonMaps>,
+    settings: Object as PropType<Settings>,
   },
   data() {
     return {
@@ -33,6 +35,19 @@ export default Vue.extend({
   methods: {
     selectFamily(family: string, val: boolean): void {
       eventBus.$emit("family:select", family, val);
+    },
+
+    formatFamily(familySci: string): string {
+      if (this.settings.names == NamesLanguage.Scientific) {
+        return familySci;
+      } else {
+        const familyEn = this.taxonMaps.familySci2En.get(familySci) as string;
+        if (this.settings.names == NamesLanguage.Both)
+          return `${familySci} (${familyEn})`;
+        else {
+          return familyEn;
+        }
+      }
     },
   },
 });

@@ -82,12 +82,11 @@ Vue.use(VueI18n);
 
 import eventBus from "../event-bus";
 import NamesSelector from "./NamesSelector.vue";
-import { ChallengeFamily, Settings } from "../types";
+import { Settings } from "../types";
 
 export default Vue.extend({
   components: { NamesSelector },
   props: {
-    challengeFamilies: Map as PropType<Map<string, ChallengeFamily>>,
     settings: Object as PropType<Settings>,
   },
   data() {

@@ -59,6 +59,12 @@
       :recordings="otherRecordings"
       :settings="settings"
     />
+
+    <family-selector
+      :challengeFamilies="challengeFamilies"
+      :taxonMaps="taxonMaps"
+      :settings="settings"
+    />
   </section>
 </template>
 
@@ -96,12 +102,14 @@ import eventBus from "../event-bus";
 import RevealArea from "./RevealArea.vue";
 import ChallengeDescription from "./ChallengeDescription.vue";
 import ChallengeControls from "./ChallengeControls.vue";
+import FamilySelector from "../components/FamilySelector.vue";
 
 export default Vue.extend({
   name: "Home",
   components: {
     RecordingPlayer,
     ChallengeForm,
+    FamilySelector,
     RevealArea,
     ChallengeDescription,
     ChallengeControls,
@@ -152,7 +160,6 @@ export default Vue.extend({
         .filter(Boolean) as any
     );
     this.challengeFamilies = makeChallengeFamilies(this.locationSpecies);
-    eventBus.$emit("set:challenge-families", this.challengeFamilies);
     this.filterSpecies();
     this.challengeRecordingsIterator = this.makeChallengeRecordingsIterator();
     this._nextRecording = this.challengeRecordingsIterator.next();

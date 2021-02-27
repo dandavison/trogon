@@ -1,11 +1,6 @@
 <template>
   <section class="section">
-    <control-panel
-      :open="controlPanelOpen"
-      :challengeFamilies="challengeFamilies"
-      :settings="settings"
-    />
-    <family-selector :challengeFamilies="challengeFamilies" />
+    <control-panel :open="controlPanelOpen" :settings="settings" />
     <challenge :settings="settings" :locationRequest="locationRequest" />
   </section>
 </template>
@@ -15,7 +10,6 @@ import Vue, { PropType } from "vue";
 import { isMobile } from "mobile-device-detect";
 
 import eventBus from "../event-bus";
-import FamilySelector from "../components/FamilySelector.vue";
 import ControlPanel from "../components/ControlPanel.vue";
 import Challenge from "../components/Challenge.vue";
 import {
@@ -28,7 +22,7 @@ import {
 export default Vue.extend({
   name: "ChallengeRoot",
   props: { locationRequest: Object as PropType<LocationRequest> },
-  components: { ControlPanel, FamilySelector, Challenge },
+  components: { ControlPanel, Challenge },
   data() {
     return {
       settings: {
@@ -67,12 +61,6 @@ export default Vue.extend({
     eventBus.$on("settings:change:useFieldModals", (newVal: boolean) => {
       this.settings.useFieldModals = newVal;
     });
-    eventBus.$on(
-      "set:challenge-families",
-      (newVal: Map<string, ChallengeFamily>) => {
-        this.challengeFamilies = newVal;
-      }
-    );
   },
 });
 </script>
