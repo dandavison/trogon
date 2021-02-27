@@ -220,7 +220,7 @@ export default Vue.extend({
       );
       var species = this.locationSpecies.filter((sp) =>
         this.selectedFamilies.has(
-          this.taxonMaps.species2familyEn.get(sp.speciesSci) || ""
+          this.taxonMaps.species2familySci.get(sp.speciesSci) || ""
         )
       );
       if (this.settings.commonSpeciesOnly) {
@@ -331,11 +331,11 @@ function makeChallengeFamilies(
   challengeSpecies: Species[]
 ): Map<string, ChallengeFamily> {
   const family2order = new Map(
-    challengeSpecies.map((sp) => [sp.familyEn, sp.order])
+    challengeSpecies.map((sp) => [sp.familySci, sp.order])
   );
 
   return new Map(
-    Object.entries(_.groupBy(challengeSpecies, (sp) => sp.familyEn)).map(
+    Object.entries(_.groupBy(challengeSpecies, (sp) => sp.familySci)).map(
       ([family, spp]) => [
         family,
         {

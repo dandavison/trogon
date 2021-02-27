@@ -3,17 +3,17 @@ export function isDefaultSelectedFamily(
   family2order: Map<string, string>
 ): boolean {
   const nonPasserineDefaultSelectedFamilies = new Set([
-    "Tinamous",
-    "Screamers",
-    "Pigeons and Doves",
-    "Cuckoos",
-    "Trogons",
-    "Motmots",
-    "Puffbirds",
-    "Jacamars",
-    "New World Barbets",
-    "Toucans",
-    "Woodpeckers"
+    "Tinamidae",
+    "Anhimidae",
+    "Columbidae",
+    "Cuculidae",
+    "Trogonidae",
+    "Momotidae",
+    "Bucconidae",
+    "Galbulidae",
+    "Capitonidae",
+    "Ramphastidae",
+    "Picidae"
   ]);
   return (
     family2order.get(family) === "Passeriformes" ||
