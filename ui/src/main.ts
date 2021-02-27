@@ -20,18 +20,22 @@ Vue.use(Buefy, {
   defaultContainerElement: "#content"
 });
 
+function makeLocationRequest(route: any): LocationRequest {
+  return {
+    ebirdLocId: route.query.location,
+    latlng: route.query.coords
+      ? (_.zipObject(["lat", "lng"], route.query.coords.split(",")) as any)
+      : null
+  };
+}
+
 const routes = [
   { path: "/", component: Map },
   {
     path: "/challenge/",
     component: Challenge,
     props: (route: any) => ({
-      locationRequest: {
-        ebirdLocId: route.query.location,
-        latlng: route.query.coords
-          ? (_.zipObject(["lat", "lng"], route.query.coords.split(",")) as any)
-          : null
-      } as LocationRequest
+      locationRequest: makeLocationRequest(route)
     })
   }
 ];
