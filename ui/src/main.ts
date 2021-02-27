@@ -13,6 +13,7 @@ import { LocationRequest } from "./types";
 import App from "./App.vue";
 const Map = () => import("./views/MapView.vue");
 const Challenge = () => import("./views/ChallengeView.vue");
+const FieldGuide = () => import("./views/FieldGuideView.vue");
 
 Vue.config.productionTip = false;
 Vue.use(Buefy, {
@@ -34,6 +35,13 @@ const routes = [
   {
     path: "/challenge/",
     component: Challenge,
+    props: (route: any) => ({
+      locationRequest: makeLocationRequest(route)
+    })
+  },
+  {
+    path: "/field-guide/",
+    component: FieldGuide,
     props: (route: any) => ({
       locationRequest: makeLocationRequest(route)
     })
