@@ -12,6 +12,7 @@
       v-if="
         settings.promptIncludesRecording && recording && recordings.length > 1
       "
+      :mobile-modal="false"
     >
       <template #trigger="{ active }">
         <b-button icon-right="chevron-down" icon-pack="fas">
