@@ -3,7 +3,7 @@ import { mount } from "@vue/test-utils";
 import { TaxonName } from "../types";
 import ChallengeForm from "../components/ChallengeForm.vue";
 type ChallengeFormInstance = InstanceType<typeof ChallengeForm>;
-import { makeTaxonMaps } from "../components/Challenge.vue";
+import { makeTaxonMaps } from "../utils";
 
 import {
   locationSpecies,
