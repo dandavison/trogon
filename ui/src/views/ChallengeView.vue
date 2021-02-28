@@ -20,7 +20,6 @@ import {
 } from "../types";
 
 export default Vue.extend({
-  name: "ChallengeRoot",
   props: { locationRequest: Object as PropType<LocationRequest> },
   components: { ControlPanel, Challenge },
   data() {

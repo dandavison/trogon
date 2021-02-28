@@ -105,7 +105,6 @@ import ChallengeControls from "./ChallengeControls.vue";
 import FamilySelector from "../components/FamilySelector.vue";
 
 export default Vue.extend({
-  name: "Home",
   components: {
     RecordingPlayer,
     ChallengeForm,
