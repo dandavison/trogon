@@ -6,13 +6,23 @@
       :taxonMaps="taxonMaps"
       :settings="settings"
     />
-    <reveal-area
-      v-for="sp of selectedSpecies"
-      :key="sp.id"
-      :image="sp.images[0]"
-      :recordings="sp.recordings"
-      :settings="settings"
-    />
+    <section class="section">
+      <div class="tile is-ancestor" style="flex-wrap: wrap">
+        <div class="tile is-parent" style="flex-wrap: wrap">
+          <div
+            v-for="sp of selectedSpecies"
+            :key="sp.id"
+            class="tile is-child card is-1"
+          >
+            <reveal-area
+              :image="sp.images[0]"
+              :recordings="sp.recordings"
+              :settings="settings"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
   </section>
 </template>
 
@@ -77,3 +87,9 @@ FieldGuide = FieldGuide.extend(LocationSpeciesSelector);
 
 export default FieldGuide;
 </script>
+
+<style scoped>
+.tile.is-parent {
+  flex-wrap: wrap;
+}
+</style>
