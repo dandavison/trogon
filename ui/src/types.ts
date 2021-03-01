@@ -38,6 +38,12 @@ export interface Species {
   familyEn: string;
   familySci: string;
   order: string;
+  [index: string]: string | string[] | Recording[];
+}
+
+export interface FieldGuideSpecies extends Species {
+  images: string[];
+  recordings: Recording[];
 }
 
 export interface EbirdHotspot {

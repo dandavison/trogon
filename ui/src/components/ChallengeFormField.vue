@@ -199,7 +199,7 @@ const ChallengeFormField = Vue.extend({
       if (answer) {
         this.answer = answer;
         this.handler(this.answer);
-        this.$emit("select");
+        eventBus.$emit("select:form-field", this.id, answer);
       }
     },
 
