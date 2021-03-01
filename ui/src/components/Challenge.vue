@@ -52,13 +52,15 @@
       @answer:species-correct="handleAnswerSpeciesCorrect"
     />
 
-    <reveal-area
-      v-if="answerIsCorrectSpecies"
-      :image="image"
-      :recording="recording"
-      :recordings="otherRecordings"
-      :settings="settings"
-    />
+    <section class="section">
+      <reveal-area
+        v-if="answerIsCorrectSpecies"
+        :image="image"
+        :recording="recording"
+        :recordings="otherRecordings"
+        :settings="settings"
+      />
+    </section>
 
     <family-selector
       :challengeFamilies="challengeFamilies"

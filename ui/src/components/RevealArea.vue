@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <div>
     <p>
       <a :href="recordingSpeciesWikipediaURL()" target="_blank">
         {{ recordingSpeciesSciName() }}
@@ -30,7 +30,7 @@
         </ul>
       </b-dropdown-item>
     </b-dropdown>
-  </section>
+  </div>
 </template>
 
 <script lang="ts">
