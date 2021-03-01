@@ -25,7 +25,11 @@
     </template>
 
     <template slot="end">
-      <b-navbar-item href="#" @click="showControlPanel">
+      <b-navbar-item
+        v-if="$route.path.startsWith('/challenge')"
+        href="#"
+        @click="showControlPanel"
+      >
         <i class="fas fa-cog"></i>
       </b-navbar-item>
 
