@@ -47,7 +47,7 @@
 <i18n>
 {
   "en": {},
-  "es": {"Help": "Asistencia"}
+  "es": {"Help": "Ayuda"}
 }
 </i18n>
 
