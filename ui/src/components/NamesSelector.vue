@@ -30,8 +30,6 @@
 
 <i18n>
 {
-  "en": {
-  },
   "es": {
       "English": "Inglés"
     , "scientific": "científicos"

@@ -7,5 +7,7 @@ export default new VueI18n({
   locale:
     process.env.VUE_APP_I18N_LOCALE || navigator.language.split("-")[0] || "en",
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || "en",
-  messages: {}
+  formatFallbackMessages: true,
+  silentFallbackWarn: true,
+  silentTranslationWarn: true
 });

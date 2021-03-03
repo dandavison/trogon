@@ -35,8 +35,6 @@
 
 <i18n>
 {
-  "en": {
-  },
   "es": {
     "families selected": "familias seleccionadas",
     "species": "especies",

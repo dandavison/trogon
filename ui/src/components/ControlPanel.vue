@@ -58,8 +58,6 @@
 
 <i18n>
 {
-  "en": {
-  },
   "es": {
     "Appearance": "Apariencia",
     "Audio": "Audio",
