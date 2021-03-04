@@ -17,6 +17,7 @@ export enum NamesLanguage {
 }
 
 export enum TaxonField {
+  Class = "class",
   FamilySci = "familySci",
   FamilyEn = "familyEn",
   Genus = "genus",
@@ -38,6 +39,7 @@ export interface Species {
   familyEn: string;
   familySci: string;
   order: string;
+  class: string;
   [index: string]: string | string[] | Recording[];
 }
 

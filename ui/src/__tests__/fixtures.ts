@@ -9,7 +9,8 @@ export const locationSpecies: Species[] = [
     genus: "Trogon",
     familySci: "Trogonidae",
     familyEn: "Trogons",
-    order: "Trogoniformes"
+    order: "Trogoniformes",
+    class: "Aves"
   },
   {
     id: "gnbtro1",
@@ -19,7 +20,8 @@ export const locationSpecies: Species[] = [
     genus: "Trogon",
     familySci: "Trogonidae",
     familyEn: "Trogons",
-    order: "Trogoniformes"
+    order: "Trogoniformes",
+    class: "Aves"
   },
   {
     id: "pavque1",
@@ -29,7 +31,8 @@ export const locationSpecies: Species[] = [
     genus: "Pharomachrus",
     familySci: "Trogonidae",
     familyEn: "Trogons",
-    order: "Trogoniformes"
+    order: "Trogoniformes",
+    class: "Aves"
   },
   {
     id: "bnrcot1",
@@ -39,7 +42,8 @@ export const locationSpecies: Species[] = [
     genus: "Phoenicircus",
     familySci: "Cotingidae",
     familyEn: "Cotingas",
-    order: "Passeriformes"
+    order: "Passeriformes",
+    class: "Aves"
   }
 ];
 

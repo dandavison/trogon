@@ -93,7 +93,8 @@ function ebirdSpecies2Species(sp: EbirdSpecies): Species {
     genus: ES.getGenus(sp),
     familyEn: ES.getFamilyEn(sp),
     familySci: ES.getFamilySci(sp),
-    order: sp.order
+    order: sp.order,
+    class: "Aves"
   };
 }
 
