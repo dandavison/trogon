@@ -97,7 +97,7 @@ export default Vue.extend({
     locationSpecies: Array as PropType<Species[]>,
     recording: Object as PropType<Recording | null>,
     image: String as PropType<string | null>,
-    imageURLMaps: Object as PropType<ImageMaps>,
+    imageMaps: Object as PropType<ImageMaps>,
     taxonMaps: Object as PropType<TaxonMaps>,
     settings: Object as PropType<Settings>,
   },
@@ -227,7 +227,7 @@ export default Vue.extend({
       }
       return this._getImageURLs(
         answer,
-        this.imageURLMaps.speciesSci2images
+        this.imageMaps.speciesSci2images
       );
     },
 
@@ -237,20 +237,20 @@ export default Vue.extend({
       }
       return this._getImageURLs(
         this.taxonMaps.speciesEn2Sci.get(answer) || "",
-        this.imageURLMaps.speciesSci2images
+        this.imageMaps.speciesSci2images
       );
     },
 
     getGenusImageURLs(answer: string): SpeciesImages[] {
-      return this._getImageURLs(answer, this.imageURLMaps.genus2images);
+      return this._getImageURLs(answer, this.imageMaps.genus2images);
     },
 
     getFamilySciImageURLs(answer: string): SpeciesImages[] {
-      return this._getImageURLs(answer, this.imageURLMaps.familySci2images);
+      return this._getImageURLs(answer, this.imageMaps.familySci2images);
     },
 
     getFamilyEnImageURLs(answer: string): SpeciesImages[] {
-      return this._getImageURLs(answer, this.imageURLMaps.familyEn2images);
+      return this._getImageURLs(answer, this.imageMaps.familyEn2images);
     },
 
     _getImageURLs(

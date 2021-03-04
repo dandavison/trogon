@@ -7,7 +7,7 @@ import { makeTaxonMaps } from "../utils";
 
 import {
   locationSpecies,
-  imageURLMaps,
+  imageMaps,
   recording,
   correctSpecies,
   correctGenus,
@@ -277,7 +277,7 @@ function factory() {
       recording,
       image: "fake-image-url",
       taxonMaps: makeTaxonMaps(locationSpecies),
-      imageURLMaps,
+      imageMaps,
       settings: {}
     }
   });

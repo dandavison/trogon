@@ -28,7 +28,7 @@ export function makeLocationSpeciesSelectorData() {
     challengeFamilies: new Map([]) as Map<string, ChallengeFamily>,
     selectedFamilies: new Set([]) as Set<string>,
     taxonMaps: makeTaxonMaps([]),
-    imageURLMaps: makeImageMaps([], [])
+    imageMaps: makeImageMaps([], [])
   };
 }
 
@@ -97,7 +97,7 @@ async function fetchLocationData(_this: ChallengeType): Promise<void> {
     ]);
     fetchSpeciesImages(_this.locationSpecies).then(
       images =>
-        (_this.imageURLMaps = makeImageMaps(images, _this.locationSpecies))
+        (_this.imageMaps = makeImageMaps(images, _this.locationSpecies))
     );
     console.log(`Fetched data for ${_this.ebirdLocIds.length} locIds:`);
     console.log(`hotspots: ${_this.ebirdHotspots.length}`);

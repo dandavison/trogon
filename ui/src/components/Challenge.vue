@@ -46,7 +46,7 @@
       :locationSpecies="filteredLocationSpecies"
       :recording="recording"
       :image="image"
-      :imageURLMaps="imageURLMaps"
+      :imageMaps="imageMaps"
       :taxonMaps="taxonMaps"
       :settings="settings"
       @answer:species-correct="handleAnswerSpeciesCorrect"
@@ -196,7 +196,7 @@ var Challenge = Vue.extend({
 
       if (!result.done) {
         [this.recording, this.otherRecordings] = result.value;
-        let images = this.imageURLMaps.speciesSci2images.get(
+        let images = this.imageMaps.speciesSci2images.get(
           this.recording.speciesSci
         );
         if (images) {
