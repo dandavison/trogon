@@ -1,73 +1,38 @@
 <template>
   <form>
-    <challenge-form-field
+    <field-guide-form-field
       ref="familySciField"
       id="familySci"
-      :initial="answer.familySci"
-      :handler="handleFamilySci"
       :shouldShow="shouldShowScientificNames"
-      :filter="filterFamilySci"
-      :truth="truth.familySci"
-      :getImageURLs="getFamilySciImageURLs"
-      :imageLabelFn="(im) => im.species.split(' ')[0]"
       :label="shouldShowEnglishNames ? 'Family (scientific)' : 'Family'"
-      :useModal="settings.useFieldModals"
     />
 
-    <challenge-form-field
+    <field-guide-form-field
       ref="familyEnField"
       id="familyEn"
-      :initial="answer.familyEn"
-      :handler="handleFamilyEn"
-      :shouldShow="shouldShowEnglishNames"
-      :filter="filterFamilyEn"
-      :truth="truth.familyEn"
-      :getImageURLs="getFamilyEnImageURLs"
-      :imageLabelFn="(im) => im.species.split(' ')[0]"
-      :label="shouldShowScientificNames ? 'Family (English)' : 'Family'"
-      :useModal="settings.useFieldModals"
+      :shouldShow="shouldShowScientificNames"
+      :label="shouldShowEnglishNames ? 'Family (English)' : 'Family'"
     />
 
-    <challenge-form-field
+    <field-guide-form-field
       ref="genusField"
       id="genus"
-      :initial="answer.genus"
-      :handler="handleGenus"
-      :shouldShow="true"
-      :filter="filterGenus"
-      :truth="truth.genus"
-      :getImageURLs="getGenusImageURLs"
-      :imageLabelFn="(im) => im.species.split(' ')[1]"
-      :label="'Genus'"
-      :useModal="settings.useFieldModals"
+      :shouldShow="shouldShowScientificNames"
+      :label="Genus"
     />
 
-    <challenge-form-field
+    <field-guide-form-field
       ref="speciesSciField"
       id="speciesSci"
-      :initial="answer.speciesSci"
-      :handler="handleSpeciesSci"
       :shouldShow="shouldShowScientificNames"
-      :filter="filterSpeciesSci"
-      :truth="truth.speciesSci"
-      :getImageURLs="getSpeciesSciImageURLs"
-      :imageLabelFn="(im) => ''"
       :label="shouldShowEnglishNames ? 'Species (scientific)' : 'Species'"
-      :useModal="settings.useFieldModals"
     />
 
-    <challenge-form-field
+    <field-guide-form-field
       ref="speciesEnField"
       id="speciesEn"
-      :initial="answer.speciesEn"
-      :handler="handleSpeciesEn"
       :shouldShow="shouldShowEnglishNames"
-      :filter="filterSpeciesEn"
-      :truth="truth.speciesEn"
-      :getImageURLs="getSpeciesEnImageURLs"
-      :imageLabelFn="(im) => ''"
       :label="shouldShowScientificNames ? 'Species (English)' : 'Species'"
-      :useModal="settings.useFieldModals"
     />
   </form>
 </template>
