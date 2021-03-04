@@ -2,7 +2,7 @@
   <section>
     <challenge-form
       :locationSpecies="filteredLocationSpecies"
-      :imageURLMaps="imageURLMaps"
+      :imageMaps="imageMaps"
       :taxonMaps="taxonMaps"
       :settings="settings"
     />
@@ -14,20 +14,29 @@
       />
     </section>
     <section v-else-if="selected.genus" class="section">
-      <field-guide-genus-display
-        :genus="selected.genus"
+      <field-guide-taxon-display
+        taxonField="genus"
+        :taxon="selected.genus"
         :sppecies="filteredLocationSpecies"
-        :imageURLMaps="imageURLMaps"
+        :imageMaps="imageMaps"
       />
     </section>
     <section v-else-if="selected.familySci" class="section">
-      <field-guide-family-display
-        :familySci="selected.familySci"
+      <field-guide-taxon-display
+        taxonField="familySci"
+        :taxon="selected.familySci"
         :sppecies="filteredLocationSpecies"
-        :imageURLMaps="imageURLMaps"
+        :imageMaps="imageMaps"
       />
     </section>
-    <section v-else class="section">[display all families]</section>
+    <section v-else class="section">
+      <field-guide-taxon-display
+        taxonField="class"
+        taxon="Aves"
+        :sppecies="filteredLocationSpecies"
+        :imageMaps="imageMaps"
+      />
+    </section>
   </section>
 </template>
 
@@ -38,8 +47,7 @@ import Vue, { PropType } from "vue";
 import eventBus from "../event-bus";
 import { LocationRequest, Settings, Species } from "../types";
 import ChallengeForm from "./ChallengeForm.vue";
-import FieldGuideGenusDisplay from "./FieldGuideGenusDisplay.vue";
-import FieldGuideFamilyDisplay from "./FieldGuideFamilyDisplay.vue";
+import FieldGuideTaxonDisplay from "./FieldGuideTaxonDisplay.vue";
 import RevealArea from "./RevealArea.vue";
 
 import {
@@ -57,8 +65,7 @@ interface TaxonSelection {
 var FieldGuide = Vue.extend({
   components: {
     ChallengeForm,
-    FieldGuideGenusDisplay,
-    FieldGuideFamilyDisplay,
+    FieldGuideTaxonDisplay,
     RevealArea,
   },
 

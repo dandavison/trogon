@@ -129,6 +129,7 @@ export interface ImageMaps {
   genus2images: Map<string, SpeciesImages[]>;
   familySci2images: Map<string, SpeciesImages[]>;
   familyEn2images: Map<string, SpeciesImages[]>;
+  [index: string]: Map<string, SpeciesImages[]>;
 }
 
 export interface ChallengeFamily {
