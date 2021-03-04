@@ -139,6 +139,7 @@ const ChallengeFormField = Vue.extend({
     clear(): void {
       debug([`ChallengeFormField(${this.id}).clear`]);
       this.answer = "";
+      eventBus.$emit("clear:form-field", this.id);
       this.handler(this.answer);
     },
 

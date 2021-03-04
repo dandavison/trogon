@@ -6,23 +6,28 @@
       :taxonMaps="taxonMaps"
       :settings="settings"
     />
-    <section class="section">
-      <div class="tile is-ancestor" style="flex-wrap: wrap">
-        <div class="tile is-parent" style="flex-wrap: wrap">
-          <div
-            v-for="sp of selectedSpecies"
-            :key="sp.id"
-            class="tile is-child card is-1"
-          >
-            <reveal-area
-              :image="sp.images[0]"
-              :recordings="sp.recordings"
-              :settings="settings"
-            />
-          </div>
-        </div>
-      </div>
+    <section v-if="selected.speciesSci" class="section">
+      <reveal-area
+        :image="species.images[0]"
+        :recordings="[]"
+        :settings="settings"
+      />
     </section>
+    <section v-else-if="selected.genus" class="section">
+      <field-guide-genus-display
+        :genus="selected.genus"
+        :sppecies="filteredLocationSpecies"
+        :imageURLMaps="imageURLMaps"
+      />
+    </section>
+    <section v-else-if="selected.familySci" class="section">
+      <field-guide-family-display
+        :familySci="selected.familySci"
+        :sppecies="filteredLocationSpecies"
+        :imageURLMaps="imageURLMaps"
+      />
+    </section>
+    <section v-else class="section">[display all families]</section>
   </section>
 </template>
 
@@ -31,13 +36,10 @@ import _ from "lodash";
 import Vue, { PropType } from "vue";
 
 import eventBus from "../event-bus";
-import {
-  FieldGuideSpecies,
-  LocationRequest,
-  Settings,
-  SpeciesImages,
-} from "../types";
+import { LocationRequest, Settings, Species } from "../types";
 import ChallengeForm from "./ChallengeForm.vue";
+import FieldGuideGenusDisplay from "./FieldGuideGenusDisplay.vue";
+import FieldGuideFamilyDisplay from "./FieldGuideFamilyDisplay.vue";
 import RevealArea from "./RevealArea.vue";
 
 import {
@@ -45,9 +47,18 @@ import {
   makeLocationSpeciesSelectorData,
 } from "./mixins";
 
+interface TaxonSelection {
+  familySci: string | null;
+  genus: string | null;
+  speciesSci: string | null;
+  [index: string]: string | null;
+}
+
 var FieldGuide = Vue.extend({
   components: {
     ChallengeForm,
+    FieldGuideGenusDisplay,
+    FieldGuideFamilyDisplay,
     RevealArea,
   },
 
@@ -58,27 +69,36 @@ var FieldGuide = Vue.extend({
 
   data() {
     return Object.assign(makeLocationSpeciesSelectorData(), {
-      selectedSpecies: [] as FieldGuideSpecies[],
+      selected: {
+        familySci: null,
+        genus: null,
+        speciesSci: null,
+      } as TaxonSelection,
     });
+  },
+
+  computed: {
+    species(): Species {
+      return this.filteredLocationSpecies.filter(
+        (sp) => sp.speciesSci == this.selected.speciesSci
+      )[0] as Species;
+    },
   },
 
   methods: {
     postCreatedHook() {
       eventBus.$on("select:form-field", this.handleSelect);
+      eventBus.$on("clear:form-field", this.handleClear);
     },
 
     handleSelect(field: string, value: string): void {
-      const species = [] as FieldGuideSpecies[];
-      for (let sp of this.filteredLocationSpecies) {
-        if (sp[field] == value) {
-          let [speciesImages] = this.imageURLMaps.speciesSciName2images.get(
-            sp.speciesSci
-          ) as SpeciesImages[];
-          let images = (speciesImages as SpeciesImages).urls;
-          species.push(Object.assign(sp, { images, recordings: [] }));
-        }
-      }
-      this.selectedSpecies = species;
+      console.log("handleSelect: ", field, value);
+      this.selected[field] = value;
+    },
+
+    handleClear(field: string): void {
+      console.log("handleClear: ", field);
+      this.selected[field] = null;
     },
   },
 });
@@ -87,9 +107,3 @@ FieldGuide = FieldGuide.extend(LocationSpeciesSelector);
 
 export default FieldGuide;
 </script>
-
-<style scoped>
-.tile.is-parent {
-  flex-wrap: wrap;
-}
-</style>
