@@ -196,7 +196,7 @@ var Challenge = Vue.extend({
 
       if (!result.done) {
         [this.recording, this.otherRecordings] = result.value;
-        let images = this.imageURLMaps.speciesSciName2images.get(
+        let images = this.imageURLMaps.speciesSci2images.get(
           this.recording.speciesSci
         );
         if (images) {

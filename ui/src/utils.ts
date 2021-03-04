@@ -93,7 +93,7 @@ export function makeImageMaps(
   speciesImages: SpeciesImages[],
   locationSpecies: Species[]
 ): ImageMaps {
-  var speciesSciName2images: Map<string, SpeciesImages[]> = new Map();
+  var speciesSci2images: Map<string, SpeciesImages[]> = new Map();
   var genus2images: Map<string, SpeciesImages[]> = new Map();
   var familySci2images: Map<string, SpeciesImages[]> = new Map();
   var familyEn2images: Map<string, SpeciesImages[]> = new Map();
@@ -104,7 +104,7 @@ export function makeImageMaps(
     let haveSeenGenus = true;
     let images = species2images.get(sp.speciesSci);
     if (images) {
-      speciesSciName2images.set(sp.speciesSci, [images]);
+      speciesSci2images.set(sp.speciesSci, [images]);
 
       if (!genus2images.has(sp.genus)) {
         genus2images.set(sp.genus, []);
@@ -125,7 +125,7 @@ export function makeImageMaps(
   }
 
   return {
-    speciesSciName2images,
+    speciesSci2images,
     genus2images,
     familySci2images,
     familyEn2images

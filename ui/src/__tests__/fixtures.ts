@@ -69,7 +69,7 @@ export const recording: Recording = {
 };
 
 export const imageURLMaps: ImageMaps = {
-  speciesSciName2images: new Map(),
+  speciesSci2images: new Map(),
   genus2images: new Map(),
   familySci2images: new Map(),
   familyEn2images: new Map()

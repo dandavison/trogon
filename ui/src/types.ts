@@ -117,7 +117,7 @@ export interface TaxonMaps {
 }
 
 export interface ImageMaps {
-  speciesSciName2images: Map<string, SpeciesImages[]>;
+  speciesSci2images: Map<string, SpeciesImages[]>;
   genus2images: Map<string, SpeciesImages[]>;
   familySci2images: Map<string, SpeciesImages[]>;
   familyEn2images: Map<string, SpeciesImages[]>;

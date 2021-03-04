@@ -227,7 +227,7 @@ export default Vue.extend({
       }
       return this._getImageURLs(
         answer,
-        this.imageURLMaps.speciesSciName2images
+        this.imageURLMaps.speciesSci2images
       );
     },
 
@@ -237,7 +237,7 @@ export default Vue.extend({
       }
       return this._getImageURLs(
         this.taxonMaps.speciesEn2Sci.get(answer) || "",
-        this.imageURLMaps.speciesSciName2images
+        this.imageURLMaps.speciesSci2images
       );
     },
 
