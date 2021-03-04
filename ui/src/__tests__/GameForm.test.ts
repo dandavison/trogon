@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 
-import { TaxonName } from "../types";
+import { TaxonField } from "../types";
 import ChallengeForm from "../components/ChallengeForm.vue";
 type ChallengeFormInstance = InstanceType<typeof ChallengeForm>;
 import { makeTaxonMaps } from "../utils";
@@ -53,12 +53,12 @@ describe("ChallengeForm fixtures", () => {
 describe("Clear", () => {
   test("Clear form works", () => {
     const vm: ChallengeFormInstance = factory().vm;
-    for (let name of Object.values(TaxonName)) {
-      vm.answer[name] = "xxx";
+    for (let field of Object.values(TaxonField)) {
+      vm.answer[field] = "xxx";
     }
     vm.clear();
-    for (let name of Object.values(TaxonName)) {
-      expect(vm.answer[name]).toEqual("");
+    for (let field of Object.values(TaxonField)) {
+      expect(vm.answer[field]).toEqual("");
     }
   });
 
@@ -66,8 +66,8 @@ describe("Clear", () => {
     const vm: ChallengeFormInstance = factory().vm;
     initializeWithIncorrectSpecies(vm);
     vm.familySciField.clear();
-    for (let name of Object.values(TaxonName)) {
-      expect(vm.answer[name]).toEqual("");
+    for (let field of Object.values(TaxonField)) {
+      expect(vm.answer[field]).toEqual("");
     }
   });
 
@@ -75,8 +75,8 @@ describe("Clear", () => {
     const vm: ChallengeFormInstance = factory().vm;
     initializeWithIncorrectSpecies(vm);
     vm.familyEnField.clear();
-    for (let name of Object.values(TaxonName)) {
-      expect(vm.answer[name]).toEqual("");
+    for (let field of Object.values(TaxonField)) {
+      expect(vm.answer[field]).toEqual("");
     }
   });
 
@@ -84,15 +84,15 @@ describe("Clear", () => {
     const vm: ChallengeFormInstance = factory().vm;
     initializeWithIncorrectSpecies(vm);
     vm.genusField.clear();
-    for (let name of [TaxonName.FamilySci, TaxonName.FamilyEn]) {
-      expect(vm.answer[name]).toEqual(incorrectFamily[name]);
+    for (let field of [TaxonField.FamilySci, TaxonField.FamilyEn]) {
+      expect(vm.answer[field]).toEqual(incorrectFamily[field]);
     }
-    for (let name of [
-      TaxonName.Genus,
-      TaxonName.SpeciesSci,
-      TaxonName.SpeciesEn
+    for (let field of [
+      TaxonField.Genus,
+      TaxonField.SpeciesSci,
+      TaxonField.SpeciesEn
     ]) {
-      expect(vm.answer[name]).toEqual("");
+      expect(vm.answer[field]).toEqual("");
     }
   });
 
@@ -100,15 +100,15 @@ describe("Clear", () => {
     const vm: ChallengeFormInstance = factory().vm;
     initializeWithIncorrectSpecies(vm);
     vm.speciesSciField.clear();
-    for (let name of [
-      TaxonName.FamilySci,
-      TaxonName.FamilyEn,
-      TaxonName.Genus
+    for (let field of [
+      TaxonField.FamilySci,
+      TaxonField.FamilyEn,
+      TaxonField.Genus
     ]) {
-      expect(vm.answer[name]).toEqual(incorrectFamily[name]);
+      expect(vm.answer[field]).toEqual(incorrectFamily[field]);
     }
-    for (let name of [TaxonName.SpeciesSci, TaxonName.SpeciesEn]) {
-      expect(vm.answer[name]).toEqual("");
+    for (let field of [TaxonField.SpeciesSci, TaxonField.SpeciesEn]) {
+      expect(vm.answer[field]).toEqual("");
     }
   });
 
@@ -116,35 +116,35 @@ describe("Clear", () => {
     const vm: ChallengeFormInstance = factory().vm;
     initializeWithIncorrectSpecies(vm);
     vm.speciesEnField.clear();
-    for (let name of [
-      TaxonName.FamilySci,
-      TaxonName.FamilyEn,
-      TaxonName.Genus
+    for (let field of [
+      TaxonField.FamilySci,
+      TaxonField.FamilyEn,
+      TaxonField.Genus
     ]) {
-      expect(vm.answer[name]).toEqual(incorrectFamily[name]);
+      expect(vm.answer[field]).toEqual(incorrectFamily[field]);
     }
-    for (let name of [TaxonName.SpeciesSci, TaxonName.SpeciesEn]) {
-      expect(vm.answer[name]).toEqual("");
+    for (let field of [TaxonField.SpeciesSci, TaxonField.SpeciesEn]) {
+      expect(vm.answer[field]).toEqual("");
     }
   });
 });
 
 function initializeWithIncorrectSpecies(vm: ChallengeFormInstance) {
-  for (let name of Object.values(TaxonName)) {
-    (vm as any)[name + "Field"].answer = incorrectFamily[name];
+  for (let field of Object.values(TaxonField)) {
+    (vm as any)[field + "Field"].answer = incorrectFamily[field];
   }
-  for (let name of Object.values(TaxonName)) {
-    expect(vm.answer[name]).toEqual((vm as any)[name + "Field"].answer);
+  for (let field of Object.values(TaxonField)) {
+    expect(vm.answer[field]).toEqual((vm as any)[field + "Field"].answer);
   }
 }
 
 describe("ChallengeForm autofill and isCorrect", () => {
   test("preconditions", () => {
     const vm: ChallengeFormInstance = factory().vm;
-    for (let name of Object.values(TaxonName)) {
-      let fieldName = name + "Field";
-      expect((vm as any)[fieldName].answer).toEqual("");
-      expect((vm as any)[fieldName].isCorrect()).toEqual(false);
+    for (let field of Object.values(TaxonField)) {
+      let propName = field + "Field";
+      expect((vm as any)[propName].answer).toEqual("");
+      expect((vm as any)[propName].isCorrect()).toEqual(false);
     }
   });
 

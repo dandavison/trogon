@@ -16,7 +16,7 @@ export enum NamesLanguage {
   Both = "both"
 }
 
-export enum TaxonName {
+export enum TaxonField {
   FamilySci = "familySci",
   FamilyEn = "familyEn",
   Genus = "genus",
